@@ -1,0 +1,10 @@
+<nav class="bg-white bg-white shadow overflow-hidden sm:rounded-lg mb-10 px-3 py-3">
+  <div *ngFor="let group of pageGroups" class="pt-2">
+    <h3 class="px-3 text-xs leading-4 font-semibold text-gray-500 uppercase tracking-wider" *ngIf="group.title != ''">
+          {{ group.title }}
+    </h3>
+    <div class="mt-1" role="group">
+      <app-sidebar-item *ngFor="let p of group.pages" [item]="p"></app-sidebar-item>
+    </div>
+  </div>
+</nav>

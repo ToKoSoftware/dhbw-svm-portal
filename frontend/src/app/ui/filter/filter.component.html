@@ -1,0 +1,63 @@
+<h2 class="text-xl leading-5 my-2 mx-2 mb-3">Filter</h2>
+<div class="flex mb-3 mx-2" *ngFor="let f of usedFilters; index as filterIndex;">
+  <div class="flex-none">
+    <div class="relative">
+      <select
+        [(ngModel)]="selectedFilter[filterIndex]"
+        name="filter"
+        class="rounded border appearance-none
+       border-gray-300 py-1
+       focus:outline-none focus:ring-2
+       focus:ring-indigo-200 focus:border-indigo-500
+       text-base pl-3 pr-10">
+        <ng-container
+          *ngFor="let filter of filters; index as i">
+          <option
+            selected
+            [value]="filter.name">
+            {{filter.title}}
+          </option>
+        </ng-container>
+      </select>
+      <span
+        class="absolute right-0 top-0
+        h-full w-10 text-center
+        text-gray-600 pointer-events-none
+        flex items-center justify-center">
+        <svg
+          fill="none" stroke="currentColor"
+          stroke-linecap="round" stroke-linejoin="round"
+          stroke-width="2" class="w-4 h-4"
+          viewBox="0 0 24 24">
+          <path d="M6 9l6 6 6-6"></path>
+        </svg>
+      </span>
+    </div>
+  </div>
+  <div class="px-3 pt-1">ist</div>
+  <div class="md:flex-auto flex-1">
+    <input
+      (keyup.enter)="filter()"
+      [(ngModel)]="selectedFilterValue[filterIndex]"
+      class="rounded border w-full
+      border-gray-300 focus:border-indigo-500
+      text-base outline-none px-3
+      leading-8 transition-colors
+      duration-200 ease-in-out">
+  </div>
+  <div class="text-right">
+    <app-button (click)="removeFilter(filterIndex)" type="blank" label="Entfernen" size="small"></app-button>
+  </div>
+</div>
+<div class="flex justify-between w-full mt-4">
+  <div *ngIf="selectedFilterValue[usedFilters.length - 1] == ''"></div>
+  <app-button (click)="addFilter()"
+              *ngIf="selectedFilterValue[usedFilters.length - 1] != ''"
+              label="+ Filter"
+              type="blank"
+              size="small"></app-button>
+  <app-button (click)="filter()"
+              label="Anwenden" size="small"
+              *ngIf="usedFilters.length"></app-button>
+</div>
+

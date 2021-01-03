@@ -1,0 +1,19 @@
+<div class="relative">
+  <label [for]="name" class="leading-7 text-sm text-gray-600">
+    {{label}}<span class="text-red-500 px-0.5" *ngIf="required">*</span>
+  </label>
+  <input
+    [id]="name"
+    [type]="type"
+    [placeholder]="placeholder"
+    [value]="value"
+    [disabled]="disabled"
+    (input)="onChange($event.target.value)"
+    (blur)="onTouched()"
+    [class.text-black]="disabled"
+    [class.cursor-not-allowed]="disabled"
+    [class.text-gray-700]="!disabled"
+    [class.bg-gray-100]="!disabled"
+    class="w-full mb-4 rounded border border-gray-300 focus:border-indigo-500 text-base outline-none py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+</div>
+

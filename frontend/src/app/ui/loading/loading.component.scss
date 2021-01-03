@@ -1,0 +1,13 @@
+.logo {
+  fill: #faca15 !important;
+  animation: colorSpin 1s infinite;
+}
+
+@keyframes colorSpin {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.25;
+  }
+}

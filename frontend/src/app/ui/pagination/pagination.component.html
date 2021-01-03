@@ -1,0 +1,57 @@
+<div class="bg-white shadow overflow-hidden sm:rounded-lg mb-10 px-3 py-3 flex md:justify-between sm:flex-wrap">
+  <div class="relative">
+    <select
+      (ngModelChange)="changeLimit($event)"
+      [(ngModel)]="limitAndOffset.limit"
+      name="filter"
+      class="rounded border appearance-none
+       border-gray-300 py-1
+       focus:outline-none focus:ring-2
+       focus:ring-indigo-200 focus:border-indigo-500
+       text-base pl-3 pr-10">
+      <option value="25" [selected]="limitAndOffset.limit == 25">
+        25 Elemente
+      </option>
+      <option value="50" [selected]="limitAndOffset.limit == 50">
+        50 Elemente
+      </option>
+      <option value="100" [selected]="limitAndOffset.limit == 100">
+        100 Elemente
+      </option>
+      <option value="500" [selected]="limitAndOffset.limit == 500">
+        500 Elemente
+      </option>
+    </select>
+    <span
+      class="absolute right-0 top-0
+        h-full w-10 text-center
+        text-gray-600 pointer-events-none
+        flex items-center justify-center">
+        <svg
+          fill="none" stroke="currentColor"
+          stroke-linecap="round" stroke-linejoin="round"
+          stroke-width="2" class="w-4 h-4"
+          viewBox="0 0 24 24">
+          <path d="M6 9l6 6 6-6"></path>
+        </svg>
+      </span>
+  </div>
+  <div class="leading-5 pt-1.5 text-gray-600">
+    Seite {{limitAndOffset.offset / limitAndOffset.limit + 1 | number: '1.0-0'}}
+  </div>
+  <div class="flex justify-end">
+    <app-button
+      (click)="changePage(limitAndOffset.offset - limitAndOffset.limit)"
+      label="Vorherige Seite"
+      size="small"
+      *ngIf="limitAndOffset.offset !== 0"
+      type="blank">
+    </app-button>
+    <app-button
+      (click)="changePage(limitAndOffset.offset + limitAndOffset.limit)"
+      label="Nächste Seite"
+      size="small"
+      type="blank">
+    </app-button>
+  </div>
+</div>
