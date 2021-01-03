@@ -1,0 +1,41 @@
+version: "3.7"
+services:
+  db:
+    container_name: portal-database
+    restart: unless-stopped
+    image: postgres
+    env_file:
+      - .env
+    environment:
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_DB: $POSTGRES_DB
+    volumes:
+      - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+    ports:
+      - "5432:5432"
+  web:
+    container_name: portal-server
+    restart: unless-stopped
+    image: "node:10"
+    depends_on:
+      - db
+    ports:
+      - "80:5000"
+    user: "node" # for ubuntu, use root
+    working_dir: /home/node/app
+    volumes:
+      - ./:/home/node/app
+    command: >
+      sh -c "cd server && npm install && npm run db:migrate && npm run db:seed && npm start"
+    env_file:
+      - .env
+    environment:
+      #NODE_ENV: production
+      DATABASE_URL: "db"
+      DATABASE_PASSWORD: $POSTGRES_PASSWORD
+      DATABASE_USER: $POSTGRES_USER
+      DATABASE_NAME: $POSTGRES_DB
+      LOGGING: "true"
+volumes:
+  database-data: # named volumes can be managed easier using docker-compose

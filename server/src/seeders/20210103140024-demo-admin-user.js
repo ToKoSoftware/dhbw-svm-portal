@@ -1,11 +1,10 @@
 'use strict';
 const v4 = require('uuid').v4;
 const bcrypt =  require('bcryptjs');
-const timeFunc = require ('../functions/random-time.func');
 
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        const date = timeFunc.randomTime(timeFunc.startTime, timeFunc.endTime);
+        const date = new Date();
         const SALT_FACTOR = 10;
         const hashedPassword = await bcrypt.hash('admin123', SALT_FACTOR);
         return queryInterface.bulkInsert('Users', [{
