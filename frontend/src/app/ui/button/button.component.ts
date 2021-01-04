@@ -24,5 +24,5 @@ export class ButtonComponent {
   }
 }
 
-export type ButtonType = 'blank' | 'info' | 'danger';
+export type ButtonType = 'blank' | 'info' | 'danger' | 'transparent';
 export type ButtonSize = 'normal' | 'small' | 'full';

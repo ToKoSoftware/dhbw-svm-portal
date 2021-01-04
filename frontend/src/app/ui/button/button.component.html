@@ -1,6 +1,6 @@
 <button
   [type]="formButtonType"
-  class="text-white transition ease-in-out duration-150
+  class="text-white transition ease-in-out duration-150 flex items-center
       border border-transparent mx-2 focus:outline-none rounded"
   [class.focus:border-malachite-700]="type === 'info'"
   [class.bg-malachite-600]="type === 'info'"
@@ -10,8 +10,11 @@
   [class.bg-red-600]="type === 'danger'"
   [class.hover:bg-red-500]="type === 'danger'"
   [class.active:bg-red-700]="type === 'danger'"
-  [class.text-black]="type === 'blank'"
+  [class.text-black]="type === 'blank' || type === 'transparent'"
+  [class.dark:text-white]="type === 'blank' || type === 'transparent'"
+  [class.hover:text-malachite-600]="type === 'transparent'"
   [class.border-black]="type === 'blank'"
+  [class.dark:border-white]="type === 'blank'"
   [class.py-2]="size === 'normal'"
   [class.px-6]="size === 'normal'"
   [class.py-1]="size === 'small'"
@@ -21,8 +24,12 @@
   [class.py-3]="size === 'full'"
   [class.mx-2]="size !== 'full'"
 >
-  <i class="-ml-1 -mt-3 mr-6 h-1 w-1 text-sm" *ngIf="icon !== null">
-    <i-feather [name]="icon"></i-feather>
+  <i class="-ml-1 pt-1 text-sm"
+     [class.mr-3]="label"
+     *ngIf="icon !== null">
+    <i-feather [style.height]="'1rem'" [style.width]="'1rem'" [name]="icon"></i-feather>
   </i>
+  <span>
   {{label}}
+  </span>
 </button>

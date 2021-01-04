@@ -11,6 +11,9 @@ import {AdminLineStatsComponent} from './overview/admin-line-stats/admin-line-st
 import {AdminPieStatsComponent} from './overview/admin-pie-stats/admin-pie-stats.component';
 import {AdminReferrerStatsComponent} from './overview/admin-referrer-stats/admin-referrer-stats.component';
 import {MomentModule} from 'ngx-moment';
+import { EventsComponent } from './events/events.component';
+import { RolesComponent } from './roles/roles.component';
+import { TeamsComponent } from './teams/teams.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,10 @@ import {MomentModule} from 'ngx-moment';
     UsersComponent,
     AdminLineStatsComponent,
     AdminPieStatsComponent,
-    AdminReferrerStatsComponent
+    AdminReferrerStatsComponent,
+    EventsComponent,
+    RolesComponent,
+    TeamsComponent
   ],
   imports: [
     adminRoutes,

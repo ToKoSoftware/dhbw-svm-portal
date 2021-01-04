@@ -28,6 +28,8 @@ import {FilterComponent} from './filter/filter.component';
 import {PaginationComponent} from './pagination/pagination.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { SecondaryNavigationComponent } from './secondary-navigation/secondary-navigation.component';
+import { NewsComponent } from './news/news.component';
+import { TitledContentComponent } from './titled-content/titled-content.component';
 
 
 @NgModule({
@@ -56,7 +58,9 @@ import { SecondaryNavigationComponent } from './secondary-navigation/secondary-n
     FilterComponent,
     PaginationComponent,
     TopBarComponent,
-    SecondaryNavigationComponent
+    SecondaryNavigationComponent,
+    NewsComponent,
+    TitledContentComponent
   ],
   exports: [
     NavbarComponent,
@@ -80,7 +84,9 @@ import { SecondaryNavigationComponent } from './secondary-navigation/secondary-n
     ZeroDataComponent,
     FilterComponent,
     PaginationComponent,
-    TopBarComponent
+    TopBarComponent,
+    NewsComponent,
+    TitledContentComponent
   ],
   imports: [
     CommonModule,
