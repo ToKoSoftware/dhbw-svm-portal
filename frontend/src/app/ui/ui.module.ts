@@ -30,6 +30,8 @@ import { TopBarComponent } from './top-bar/top-bar.component';
 import { SecondaryNavigationComponent } from './secondary-navigation/secondary-navigation.component';
 import { NewsComponent } from './news/news.component';
 import { TitledContentComponent } from './titled-content/titled-content.component';
+import { NotificationComponent } from './notification/notification.component';
+import { NotifierComponent } from './notifier/notifier.component';
 
 
 @NgModule({
@@ -60,7 +62,9 @@ import { TitledContentComponent } from './titled-content/titled-content.componen
     TopBarComponent,
     SecondaryNavigationComponent,
     NewsComponent,
-    TitledContentComponent
+    TitledContentComponent,
+    NotificationComponent,
+    NotifierComponent
   ],
   exports: [
     NavbarComponent,
@@ -86,7 +90,9 @@ import { TitledContentComponent } from './titled-content/titled-content.componen
     PaginationComponent,
     TopBarComponent,
     NewsComponent,
-    TitledContentComponent
+    TitledContentComponent,
+    NotificationComponent,
+    NotifierComponent
   ],
   imports: [
     CommonModule,

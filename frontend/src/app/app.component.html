@@ -6,8 +6,9 @@
     <app-top-bar *ngIf="session.isLoggedIn$ | async"></app-top-bar>
     <router-outlet></router-outlet>
   </div>
+  <app-notifier></app-notifier>
+  <app-confirm-modal></app-confirm-modal>
+  <app-loading-modal></app-loading-modal>
+  <app-custom-modal></app-custom-modal>
 </div>
 
-<app-confirm-modal></app-confirm-modal>
-<app-loading-modal></app-loading-modal>
-<app-custom-modal></app-custom-modal>

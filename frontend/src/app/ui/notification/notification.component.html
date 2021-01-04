@@ -1,0 +1,18 @@
+<div class="my-3 border-l-8 px-2 py-2 flex items-center justify-between"
+[class.border-malachite-700]="type == 'info'"
+[class.bg-malachite-600]="type == 'info'"
+[class.border-yellow-500]="type == 'warning'"
+[class.bg-yellow-400]="type == 'warning'"
+[class.border-red-800]="type == 'error'"
+[class.bg-red-600]="type == 'error'">
+  <div class="flex-grow">
+    <div class="text-md font-medium leading-loose">{{label}}</div>
+    {{description}}
+  </div>
+  <app-button
+    *ngIf="dismissible"
+    type="transparent"
+    size="small"
+    icon="x"
+    (click)="notifications.removeNotification(id)"></app-button>
+</div>
