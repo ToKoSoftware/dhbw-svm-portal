@@ -4,8 +4,7 @@ import {LoginService} from '../../services/login/login.service';
 
 @Component({
   selector: 'app-logout',
-  templateUrl: './logout.component.html',
-  styleUrls: ['./logout.component.scss']
+  template: '',
 })
 export class LogoutComponent implements OnInit {
 
@@ -17,9 +16,7 @@ export class LogoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.login.logout();
-    setTimeout(() => {
-      this.router.navigate(['/']);
-    }, 3000);
+    this.router.navigate(['/']);
   }
 
 }

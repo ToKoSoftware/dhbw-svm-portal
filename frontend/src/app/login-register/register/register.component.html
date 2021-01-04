@@ -1,29 +1,95 @@
-
-  <app-nav-spacer></app-nav-spacer>
-  <app-container>
-        <p class="mt-3 text-base text-black sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-          <span class="text-yellow-400">Sie haben bereits ein Konto? <a class="text-blue-600" [routerLink]="'/login'"> Jetzt anmelden!</a></span>
+<div class="flex h-screen">
+  <div class="flex-1 bg-white dark:bg-black flex flex-col h-full">
+    <div class="mx-auto my-auto w-96">
+      <div class="flex items-center justify-center">
+        <img class="h-16 w-auto" src="/assets/logo.svg">
+        <p class="text-2xl text-malachite-600 dark:text-malachite-600 pt-1.5 font-bold">Mein Team</p>
+      </div>
+      <div class="mt-10">
+        <p *ngIf="error" class="text-red-700">E-Mail oder Passwort falsch!</p>
+        <form (ngSubmit)="createUser()">
+          <p class="py-3 text-xs leading-4 font-semibold text-gray-500 uppercase tracking-wider">
+            Zugangscode
+          </p>
+          <app-input
+            (valueChange)="createUserData.accessCode = $event"
+            required="true"
+            label="Zugangscode">
+          </app-input>
+          <p class="py-3 text-xs leading-4 font-semibold text-gray-500 uppercase tracking-wider">
+            Persönliche Daten
+          </p>
+          <div class="flex space-x-2">
+            <app-input
+              class="flex-1"
+              (valueChange)="createUserData.firstName = $event"
+              required="true"
+              label="Vorname">
+            </app-input>
+            <app-input
+              class="flex-1"
+              (valueChange)="createUserData.lastName = $event"
+              required="true"
+              label="Nachname">
+            </app-input>
+          </div>
+          <div class="flex space-x-2">
+            <app-input
+              class="flex-grow"
+              (valueChange)="createUserData.street = $event"
+              required="true"
+              label="Straße">
+            </app-input>
+            <app-input
+              class="w-16"
+              (valueChange)="createUserData.streetNumber = $event"
+              required="true"
+              label="Hausnr.">
+            </app-input>
+          </div>
+          <div class="flex space-x-2">
+            <app-input
+              class="flex-1"
+              (valueChange)="createUserData.postcode = $event"
+              required="true"
+              label="Postleitzahl">
+            </app-input>
+            <app-input
+              class="flex-1"
+              (valueChange)="createUserData.city = $event"
+              required="true"
+              label="Stadt">
+            </app-input>
+          </div>
+          <p class="py-3 text-xs leading-4 font-semibold text-gray-500 uppercase tracking-wider">
+            Ihre Zugangsdaten
+          </p>
+          <app-input
+            (valueChange)="createUserData.email = $event"
+            required="true"
+            type="email"
+            label="E-Mail">
+          </app-input>
+          <app-input
+            (valueChange)="createUserData.password = $event"
+            required="true"
+            type="password"
+            label="Passwort">
+          </app-input>
+          <app-button
+            formButtonType="submit"
+            size="full"
+            label="Registrieren">
+          </app-button>
+        </form>
+        <p class="mt-3 text-base sm:mt-5 sm:mx-auto md:mt-5 lg:mx-0">
+          Sie haben bereits ein Konto?
+          <a class="text-blue-600" [routerLink]="'/login/'"> Jetzt einloggen!</a>
         </p>
-        <div class="mt-10">
-          <fieldset>
-            <div
-              style="background: rgba(255, 255, 255, 0.8)"
-              class="mt-1 rounded-md shadow-sm">
-              <div>
-                <input type="email"
-                       [(ngModel)]="email"
-                       (keyup.enter)="createUser()"
-                       class="h-16 text-1xl text-center form-input relative block w-full rounded-none rounded-t-md bg-transparent focus:z-10 transition ease-in-out duration-150 sm:leading-5"
-                       placeholder="E-Mail"/>
-                <input type="password"
-                       [(ngModel)]="password"
-                       (keyup.enter)="createUser()"
-                       class="h-16 text-1xl text-center form-input relative block w-full rounded-none rounded-b-md bg-transparent focus:z-10 transition ease-in-out duration-150 sm:leading-5"
-                       placeholder="Passwort"/>
-              </div>
-            </div>
-            <app-button size="full" (click)="createUser()" label="Konto erstellen"></app-button>
-          </fieldset>
-        </div>
-  </app-container>
-
+      </div>
+    </div>
+  </div>
+  <div class="flex-1 hidden md:block min-h-full relative">
+    <img src="/assets/login.jpg" class="absolute inset-0 h-full w-full object-cover">
+  </div>
+</div>

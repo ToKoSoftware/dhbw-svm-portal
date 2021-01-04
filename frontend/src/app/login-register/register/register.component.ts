@@ -12,8 +12,18 @@ import {ConfirmModalService} from '../../services/confirm-modal/confirm-modal.se
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  public email: string;
-  public password: string;
+  public createUserData: CreateUserData = {
+    email: '',
+    accessCode: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    street: '',
+    streetNumber: '',
+    postcode: '',
+    city: '',
+  };
+  public error: false;
 
   constructor(
     private router: Router,
@@ -28,17 +38,14 @@ export class RegisterComponent implements OnInit {
 
   public createUser(): void {
     this.api.post<UserData>('/users',
-      {
-        email: this.email,
-        password: this.password
-      }
+      this.createUserData
     ).subscribe(
       (data) => {
         this.loading.hideLoading();
         this.login();
       }, error => {
         this.confirm.confirm({
-          title: `Es ist ein Fehler beim Anlegen ihrers Accounts aufgetreten.`,
+          title: `Es ist ein Fehler beim Anlegen Ihres Accounts aufgetreten.`,
           confirmButtonType: 'info',
           confirmText: 'Ok',
           description: 'Der Server gab folgenden Fehler an: ' + error.error.data.error,
@@ -51,8 +58,8 @@ export class RegisterComponent implements OnInit {
   private login(): void {
     this.loading.showLoading();
     this.api.post<string>('/login', {
-      email: this.email,
-      password: this.password,
+      email: this.createUserData.email,
+      password: this.createUserData.password,
     }).subscribe(
       data => {
         this.loginService.login(data.data);
@@ -64,3 +71,17 @@ export class RegisterComponent implements OnInit {
     );
   }
 }
+
+export type CreateUserData = {
+  [key in UserDataType]: string;
+};
+
+export type UserDataType = 'email' |
+  'password' |
+  'accessCode' |
+  'firstName' |
+  'lastName' |
+  'street' |
+  'streetNumber' |
+  'postcode' |
+  'city';
