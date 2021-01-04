@@ -5,8 +5,8 @@ module.exports = {
     require('@tailwindcss/ui'),
   ],
   theme: {
-    colors: {
-      extend: {
+    extend: {
+      colors: {
         malachite: {
           '50': '#f4fdf7',
           '100': '#e8fbf0',
@@ -39,5 +39,4 @@ module.exports = {
     enabled: false,
     content: ['./src/**/*.html', './src/**/*.ts'],
   },
-  // ...
 }

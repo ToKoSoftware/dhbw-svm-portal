@@ -8,7 +8,7 @@ export const myProfilePages: SidebarPageGroup[] = [
       {
         title: 'Zugangsdaten bearbeiten',
         icon: 'key',
-        url: '/profile/',
+        url: '/my-profile/',
         matchFull: true
       },
     ]

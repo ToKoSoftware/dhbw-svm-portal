@@ -8,29 +8,14 @@ export const adminPages: SidebarPageGroup[] = [
       {
         title: 'Statistiken',
         icon: 'bar-chart-2',
-        url: '/admin/',
+        url: '/my-team/',
         matchFull: true
       },
       {
         title: 'System-Benutzer',
         icon: 'mouse-pointer',
-        url: '/admin/users',
+        url: '/my-team/users',
       },
-      {
-        title: 'Kunden',
-        icon: 'users',
-        url: '/admin/customers',
-      },
-      {
-        title: 'Tarife',
-        icon: 'map',
-        url: '/admin/plans',
-      },
-      {
-        title: 'Bestellungen',
-        icon: 'shopping-cart',
-        url: '/admin/orders',
-      }
     ]
   },
   {
@@ -39,7 +24,7 @@ export const adminPages: SidebarPageGroup[] = [
       {
         title: 'Profil bearbeiten',
         icon: 'user',
-        url: '/profile/',
+        url: '/my-profile/',
         matchFull: true
       },
     ]
@@ -51,7 +36,7 @@ export const adminBreadcrumb: UiBreadcrumb[] = [
     title: 'Home',
     routerLink: '/'
   }, {
-    title: 'Admin',
-    routerLink: '/admin'
+    title: 'my-team',
+    routerLink: '/my-team'
   }
 ];

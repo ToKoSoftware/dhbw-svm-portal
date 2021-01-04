@@ -9,20 +9,33 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
+    canActivate: [IsLoggedInGuard],
     loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
   },
   {
-    path: 'profile',
+    path: 'my-profile',
     canActivate: [IsLoggedInGuard],
     canActivateChild: [IsLoggedInGuard],
     loadChildren: () => import('./my-profile/my-profile.module').then(m => m.MyProfileModule)
+  },
+  {
+    path: 'join',
+    canActivate: [IsLoggedInGuard],
+    canActivateChild: [IsLoggedInGuard],
+    loadChildren: () => import('./join/join.module').then(m => m.JoinModule)
+  },
+  {
+    path: 'events',
+    canActivate: [IsLoggedInGuard],
+    canActivateChild: [IsLoggedInGuard],
+    loadChildren: () => import('./events/events.module').then(m => m.EventsModule)
   },
   {
     path: 'login',
     loadChildren: () => import('./login-register/login-register.module').then(m => m.LoginRegisterModule)
   },
   {
-    path: 'admin',
+    path: 'my-team',
     canActivate: [IsLoggedInGuard, IsAdminGuard],
     canActivateChild: [IsLoggedInGuard, IsAdminGuard],
     loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)

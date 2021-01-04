@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {LoginService} from '../../services/login/login.service';
+import {SidebarPageGroup} from "../sidebar/sidebar.component";
 
 @Component({
   selector: 'app-navbar',
@@ -10,6 +11,35 @@ import {LoginService} from '../../services/login/login.service';
 export class NavbarComponent implements OnInit {
   @ViewChild('profileMenu') profileMenu: ElementRef<any>;
   public searchQuery = '';
+  public sidebarPageGroups: SidebarPageGroup[] = [{
+    title: 'Portal',
+    pages: [{
+      icon: 'activity',
+      title: 'News',
+      matchFull: true,
+      url: '/'
+    }, {
+      icon: 'calendar',
+      title: 'Events',
+      url: '/events'
+    }, {
+      icon: 'user-check',
+      title: 'Anmeldungen',
+      url: '/join'
+    }]
+  }, {
+    title: 'Mein Verein',
+    pages: [ {
+      icon: 'tool',
+      title: 'Einstellungen',
+      matchFull: true,
+      url: '/my-team'
+    },{
+      icon: 'users',
+      title: 'Benutzer',
+      url: '/my-team/users'
+    },]
+  }]
 
   constructor(
     public login: LoginService,

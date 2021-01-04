@@ -1,5 +1,5 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {ModalService} from './services/modal/modal.service';
+import {Component} from '@angular/core';
+import {LoginService} from "./services/login/login.service";
 
 @Component({
   selector: 'app-root',
@@ -8,6 +8,9 @@ import {ModalService} from './services/modal/modal.service';
 })
 export class AppComponent {
 
-  constructor() { }
+  constructor(
+    public readonly session: LoginService
+  ) {
+  }
 
 }

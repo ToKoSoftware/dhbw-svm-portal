@@ -26,6 +26,7 @@ import {LabeledValueComponent} from './labeled-value/labeled-value.component';
 import {ZeroDataComponent} from './zero-data/zero-data.component';
 import {FilterComponent} from './filter/filter.component';
 import {PaginationComponent} from './pagination/pagination.component';
+import { TopBarComponent } from './top-bar/top-bar.component';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import {PaginationComponent} from './pagination/pagination.component';
     LabeledValueComponent,
     ZeroDataComponent,
     FilterComponent,
-    PaginationComponent
+    PaginationComponent,
+    TopBarComponent
   ],
   exports: [
     NavbarComponent,
@@ -75,7 +77,8 @@ import {PaginationComponent} from './pagination/pagination.component';
     LabeledValueComponent,
     ZeroDataComponent,
     FilterComponent,
-    PaginationComponent
+    PaginationComponent,
+    TopBarComponent
   ],
   imports: [
     CommonModule,

@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Self, Optional} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Optional, Output, Self} from '@angular/core';
 import {ControlValueAccessor, NgControl} from '@angular/forms';
 
 @Component({
@@ -13,8 +13,10 @@ export class InputComponent implements OnInit, ControlValueAccessor {
   @Input() name: string;
   @Input() placeholder = '';
   @Input() type: 'text' | 'email' | 'password' = 'text';
+  @Output() enter = new EventEmitter<unknown>();
+  @Output() valueChange = new EventEmitter<unknown>();
 
-  value: any = '';
+  value: unknown = '';
 
   constructor(
     // Retrieve the dependency only from the local injector,
@@ -64,6 +66,7 @@ export class InputComponent implements OnInit, ControlValueAccessor {
   }
 
   public onChange(event: Event): void {
+    this.valueChange.emit(event);
   }
 
   public onTouched(): void {
