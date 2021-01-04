@@ -6,10 +6,11 @@ import {MyCredentialsComponent} from './credentials/my-credentials.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {IconsModule} from '../icons/icons.module';
 import {MomentModule} from 'ngx-moment';
+import { MyProfileComponent } from './my-profile/my-profile.component';
 
 
 @NgModule({
-  declarations: [MyCredentialsComponent],
+  declarations: [MyCredentialsComponent, MyProfileComponent],
   imports: [
     myProfileRoutes,
     CommonModule,

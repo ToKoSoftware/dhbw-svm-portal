@@ -3,12 +3,18 @@ import {UiBreadcrumb} from '../ui/ui.interface';
 
 export const myProfilePages: SidebarPageGroup[] = [
   {
-    title: 'Verwaltung',
+    title: 'Ihr Profil',
     pages: [
+      {
+        title: 'Profil bearbeiten',
+        icon: 'user',
+        url: '/my-profile/',
+        matchFull: true
+      },
       {
         title: 'Zugangsdaten bearbeiten',
         icon: 'key',
-        url: '/my-profile/',
+        url: '/my-profile/credentials',
         matchFull: true
       },
     ]
