@@ -5,6 +5,7 @@ import {ApiService} from '../../services/api/api.service';
 import {UserData} from '../../interfaces/user.interface';
 import {LoginService} from '../../services/login/login.service';
 import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
+import {NotificationService} from "../../services/notification/notification.service";
 
 @Component({
   selector: 'app-credentials',
@@ -19,6 +20,7 @@ export class MyCredentialsComponent implements OnInit {
   public currentUser: UserData;
 
   constructor(
+    private readonly notifications: NotificationService,
     private formBuilder: FormBuilder,
     private api: ApiService,
     private loadingModalService: LoadingModalService,
@@ -55,10 +57,12 @@ export class MyCredentialsComponent implements OnInit {
       `/users/${id}`,
       {password}).subscribe(
       data => {
+        this.notifications.savedSuccessfully();
         this.currentUser = data.data;
         this.loading = false;
       },
       error => {
+        this.notifications.savingFailed(error.data.error);
         this.loading = false;
       }
     );
@@ -73,12 +77,14 @@ export class MyCredentialsComponent implements OnInit {
       {email})
       .subscribe(
         data => {
+          this.notifications.savedSuccessfully();
           this.loading = false;
           this.currentUser = data.data.user;
           this.login.login(data.data.jwt);
         },
         error => {
           this.loading = false;
+          this.notifications.savingFailed(error.data.error);
         }
       );
   }
