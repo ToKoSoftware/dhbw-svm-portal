@@ -6,7 +6,7 @@
   <ng-container *ngIf="!loading">
     <form (ngSubmit)="updateUser()" [formGroup]="editUserForm">
       <app-titled-content
-        title="Profil bearbeiten"
+        label="Profil bearbeiten"
         description="Ihre Addresse kann lediglich von Administratoren eingesehen werden.">
         <div class="flex space-x-2">
           <app-input

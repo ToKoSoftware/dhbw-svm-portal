@@ -5,6 +5,6 @@ import {Component, Input} from '@angular/core';
   templateUrl: './titled-content.component.html',
 })
 export class TitledContentComponent {
-  @Input() title: string = "";
+  @Input() label: string = "";
   @Input() description: string = "";
 }
