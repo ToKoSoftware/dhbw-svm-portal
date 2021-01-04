@@ -8,17 +8,21 @@
     <app-sidebar [pageGroups]="sidebarPageGroups"></app-sidebar>
   </div>
 
-  <div class="flex items-center flex-shrink-0 bg-white dark:bg-gray-800 bg-gray-100 px-3 py-3">
-    <div>
-      <a routerLink="/my-profile" class="hover:text-malachite-600 transition duration-200 ease-in-out group">
-        First Lastname
-        <span class="text-gray-600 group-hover:text-malachite-600 transition duration-200 ease-in-out group">
+  <div class="flex items-center flex-shrink-0 bg-white dark:bg-gray-800 bg-gray-100 px-3 py-3 space-x-2 justify-between">
+    <a routerLink="/my-profile" class="truncate">
+      <div class="group hover:bg-gray-600 rounded px-2 truncate transition duration-100 ease-in-out">
+        <span class="group-hover:text-malachite-600">
+          {{(login.decodedJwt$ | async)?.firstName}}
+          {{(login.decodedJwt$ | async)?.lastName}}<br>
+        </span>
+        <span
+          class="text-gray-600 dark:text-gray-400 group-hover:text-malachite-600 ">
           {{(login.decodedJwt$ | async)?.email}}
         </span>
-      </a>
-    </div>
+      </div>
+    </a>
     <div>
-      <a routerLink="/login/logout" class="hover:text-malachite-600 transition duration-200 ease-in-out">
+      <a routerLink="/login/logout" class="hover:text-malachite-600 transition duration-200 ease-in-out pt-2">
         <feather-icon
           name="log-out">
         </feather-icon>
