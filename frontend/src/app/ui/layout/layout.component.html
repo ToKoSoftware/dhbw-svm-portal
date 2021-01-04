@@ -1,9 +1,9 @@
-<div class="flex h-full">
+<div class="md:flex h-full">
   <app-secondary-navigation *ngIf="sidebarPages.length !== 0">
     <app-sidebar [pageGroups]="sidebarPages">
     </app-sidebar>
   </app-secondary-navigation>
-  <div class="flex-1 py-3">
+  <div class="flex-1 py-3 h-full overflow-y-auto">
     <app-container>
       <div class="md:flex">
         <div class="flex-1 md:ml-2">
