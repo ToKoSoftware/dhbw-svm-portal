@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FeatherModule } from 'angular-feather';
 import { User, ShoppingCart, BarChart2, Map, Users,
   UploadCloud, DownloadCloud, Trash, Key, MousePointer,
-  AlertCircle, File, LogOut, LogIn, Tool, Activity, Calendar, UserCheck
+  AlertCircle, File, LogOut, LogIn, Tool, Activity, Calendar, UserCheck, Info, Lock
 } from 'angular-feather/icons';
 import {CommonModule} from '@angular/common';
 
@@ -23,7 +23,7 @@ const icons = {
   File,
   LogOut,
   LogIn,
-  Tool, Activity, Calendar, UserCheck
+  Tool, Activity, Calendar, UserCheck, Info, Lock
 };
 
 @NgModule({

@@ -25,7 +25,7 @@ export class IsAdminGuard implements CanActivate, CanActivateChild {
   }
 
   protected get404Tree(): UrlTree {
-    return this.router.parseUrl('**');
+    return this.router.parseUrl('/error404');
   }
 
 }

@@ -31,14 +31,9 @@ export class NavbarComponent implements OnInit {
     title: 'Mein Verein',
     pages: [ {
       icon: 'tool',
-      title: 'Einstellungen',
-      matchFull: true,
+      title: 'Verwaltung',
       url: '/my-team'
-    },{
-      icon: 'users',
-      title: 'Benutzer',
-      url: '/my-team/users'
-    },]
+    }]
   }]
 
   constructor(

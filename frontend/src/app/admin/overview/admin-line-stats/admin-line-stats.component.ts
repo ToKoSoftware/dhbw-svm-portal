@@ -30,7 +30,7 @@ export class AdminLineStatsComponent implements OnInit {
 
   public lineChartColors: Color[] = [
     {
-      borderColor: '#faca15',
+      borderColor: '#1bd565',
       backgroundColor: 'transparent',
     },
   ];

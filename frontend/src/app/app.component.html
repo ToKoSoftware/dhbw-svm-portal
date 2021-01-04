@@ -2,7 +2,7 @@
   <div class="hidden lg:flex lg:flex-shrink-0 border-r" *ngIf="session.isLoggedIn$ | async">
     <app-navbar></app-navbar>
   </div>
-  <div class="w-full dark:bg-black dark:text-white">
+  <div class="w-full bg-white dark:bg-black dark:text-white">
     <app-top-bar *ngIf="session.isLoggedIn$ | async"></app-top-bar>
     <router-outlet></router-outlet>
   </div>

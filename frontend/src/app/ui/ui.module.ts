@@ -27,6 +27,7 @@ import {ZeroDataComponent} from './zero-data/zero-data.component';
 import {FilterComponent} from './filter/filter.component';
 import {PaginationComponent} from './pagination/pagination.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
+import { SecondaryNavigationComponent } from './secondary-navigation/secondary-navigation.component';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { TopBarComponent } from './top-bar/top-bar.component';
     ZeroDataComponent,
     FilterComponent,
     PaginationComponent,
-    TopBarComponent
+    TopBarComponent,
+    SecondaryNavigationComponent
   ],
   exports: [
     NavbarComponent,

@@ -1,18 +1,15 @@
-<app-nav-spacer></app-nav-spacer>
-  <app-header
-    [large]="true"
-    [whiteBg]="true"
-    [breadcrumbs]="breadcrumbs"
-    [buttons]="buttons"
-    [heading]="heading">
-  </app-header>
-<app-container [large]="true">
-  <div class="md:flex">
-    <div class="mb-3 md:mr-2" style="min-width: 300px">
-      <app-sidebar [pageGroups]="sidebarPages"></app-sidebar>
-    </div>
-    <div class="flex-1 md:ml-2">
-      <ng-content></ng-content>
-    </div>
+<div class="flex h-full">
+  <app-secondary-navigation *ngIf="sidebarPages.length !== 0">
+    <app-sidebar [pageGroups]="sidebarPages">
+    </app-sidebar>
+  </app-secondary-navigation>
+  <div class="flex-1 py-3">
+    <app-container>
+      <div class="md:flex">
+        <div class="flex-1 md:ml-2">
+          <ng-content></ng-content>
+        </div>
+      </div>
+    </app-container>
   </div>
-</app-container>
+</div>

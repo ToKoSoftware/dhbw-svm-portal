@@ -3,29 +3,34 @@ import {UiBreadcrumb} from '../ui/ui.interface';
 
 export const adminPages: SidebarPageGroup[] = [
   {
-    title: 'Systemverwaltung',
+    title: 'Verwaltung',
     pages: [
       {
-        title: 'Statistiken',
-        icon: 'bar-chart-2',
+        title: 'Allgemein',
+        icon: 'info',
         url: '/my-team/',
         matchFull: true
       },
       {
-        title: 'System-Benutzer',
+        title: 'Statistiken',
+        icon: 'bar-chart-2',
+        url: '/my-team/stats',
+        matchFull: true
+      },
+      {
+        title: 'Event-Einstellungen',
+        icon: 'calendar',
+        url: '/my-team/events',
+      },
+      {
+        title: 'Benutzer',
         icon: 'mouse-pointer',
         url: '/my-team/users',
       },
-    ]
-  },
-  {
-    title: 'Weitere Funktionen',
-    pages: [
       {
-        title: 'Profil bearbeiten',
-        icon: 'user',
-        url: '/my-profile/',
-        matchFull: true
+        title: 'Rollen',
+        icon: 'lock',
+        url: '/my-team/roles',
       },
     ]
   }
