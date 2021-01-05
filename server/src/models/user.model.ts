@@ -35,7 +35,8 @@ export class User extends Model<User> {
             'street',
             'streetNumber',
             'postcode',
-            'city'
+            'city',
+            'asd'
         ];
     }
 
