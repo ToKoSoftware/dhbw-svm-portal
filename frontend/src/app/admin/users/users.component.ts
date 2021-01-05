@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {UiButtonGroup} from '../../ui/ui.interface';
 import {ApiService} from '../../services/api/api.service';
 import {UserData} from '../../interfaces/user.interface';
@@ -8,20 +8,22 @@ import {LoadingModalService} from '../../services/loading-modal/loading-modal.se
 import {ModalService} from '../../services/modal/modal.service';
 import {AvailableFilter, FilterValue} from '../../ui/filter/filter.component';
 import {LoginService} from '../../services/login/login.service';
+import {ActivatedRoute, Router} from "@angular/router";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent implements OnInit, OnDestroy {
+  private routeSubscription: Subscription;
   public sidebarPages = adminPages;
   public breadcrumb = adminBreadcrumb;
-  @ViewChild('editModal', {static: true}) editModal: TemplateRef<unknown>;
   @ViewChild('relatedCustomersModal', {static: true}) relatedCustomersModal: TemplateRef<unknown>;
   public results: UserData[] = [];
   public loading = false;
-  public currentEditUser: UserData;
+  public currentEditUserId: string = '';
   public buttonGroup: UiButtonGroup = {
     buttons: [
       {
@@ -37,18 +39,33 @@ export class UsersComponent implements OnInit {
   public filters: AvailableFilter[] = [{
     title: "E-Mail",
     name: "email",
-  }]
+  },{
+    title: "Vorname",
+    name: "firstName",
+  },{
+    title: "Nachname",
+    name: "lastName",
+  }];
 
   constructor(
     private confirmService: ConfirmModalService,
     private loadingService: LoadingModalService,
     private modalService: ModalService,
     private login: LoginService,
+    private route: ActivatedRoute,
+    private router: Router,
     private api: ApiService) {
   }
 
   ngOnInit(): void {
     this.loadData();
+    this.routeSubscription = this.route.params.subscribe(params => {
+      this.currentEditUserId = params['id'] || '';
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.routeSubscription.unsubscribe();
   }
 
   private loadData(filter = {}): void {
@@ -93,42 +110,5 @@ export class UsersComponent implements OnInit {
         }
       );
     }
-  }
-
-  public showEditModalForUser(user: UserData): void {
-    this.currentEditUser = {...user};
-    this.modalService.showModal(`"${user.email} " bearbeiten`, this.editModal);
-  }
-
-  public showRelatedCustomersModal(user: UserData): void {
-    this.currentEditUser = {...user};
-    this.modalService.showModal(`Kunden zu "${user.email}"`, this.relatedCustomersModal);
-  }
-
-  public closeEditModal(): void {
-    this.modalService.close();
-  }
-
-
-  public saveEditedUser(): void {
-    this.modalService.close();
-    this.loadingService.showLoading();
-    this.api.put(`/users/${this.currentEditUser.id}`, {
-      email: this.currentEditUser.email,
-    }).subscribe(
-      data => {
-        this.loadingService.hideLoading();
-        this.loadData();
-      }, error => {
-        this.loadingService.hideLoading();
-        this.confirmService.confirm({
-          title: `Es ist ein Fehler beim Ändern aufgetreten.`,
-          confirmButtonType: 'info',
-          confirmText: 'Ok',
-          description: 'Der Server gab folgenden Fehler an: ' + error.error.data.error,
-          showCancelButton: false
-        });
-      }
-    );
   }
 }

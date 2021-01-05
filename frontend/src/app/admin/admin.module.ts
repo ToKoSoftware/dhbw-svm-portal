@@ -14,6 +14,7 @@ import {MomentModule} from 'ngx-moment';
 import { EventsComponent } from './events/events.component';
 import { RolesComponent } from './roles/roles.component';
 import { TeamsComponent } from './teams/teams.component';
+import {EditCreatePagesModule} from "../edit-create-pages/edit-create-pages.module";
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { TeamsComponent } from './teams/teams.component';
     UiModule,
     IconsModule,
     ChartsModule,
-    MomentModule
+    MomentModule,
+    EditCreatePagesModule
   ]
 })
 export class AdminModule {

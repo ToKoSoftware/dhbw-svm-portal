@@ -92,7 +92,8 @@ import { NotifierComponent } from './notifier/notifier.component';
     NewsComponent,
     TitledContentComponent,
     NotificationComponent,
-    NotifierComponent
+    NotifierComponent,
+    SecondaryNavigationComponent
   ],
   imports: [
     CommonModule,

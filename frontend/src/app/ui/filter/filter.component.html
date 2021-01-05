@@ -1,4 +1,3 @@
-<h2 class="text-xl leading-5 my-2 mx-2 mb-3">Filter</h2>
 <div class="flex mb-3 mx-2" *ngFor="let f of usedFilters; index as filterIndex;">
   <div class="flex-none">
     <div class="relative">
@@ -46,10 +45,10 @@
       duration-200 ease-in-out">
   </div>
   <div class="text-right">
-    <app-button (click)="removeFilter(filterIndex)" type="blank" label="Entfernen" size="small"></app-button>
+    <app-button (click)="removeFilter(filterIndex)" type="transparent" icon="trash" size="small"></app-button>
   </div>
 </div>
-<div class="flex justify-between w-full mt-4">
+<div class="flex justify-between w-full">
   <div *ngIf="selectedFilterValue[usedFilters.length - 1] == ''"></div>
   <app-button (click)="addFilter()"
               *ngIf="selectedFilterValue[usedFilters.length - 1] != ''"

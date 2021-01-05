@@ -12,6 +12,7 @@ import {ErrorModule} from './error/error.module';
 import {MomentModule} from 'ngx-moment';
 import 'moment/locale/de';
 import {ChartsModule} from 'ng2-charts';
+import {EditCreatePagesModule} from "./edit-create-pages/edit-create-pages.module";
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import {ChartsModule} from 'ng2-charts';
     HttpClientModule,
     IconsModule,
     UiModule,
+    EditCreatePagesModule,
     ErrorModule,
     MomentModule.forRoot({
       relativeTimeThresholdOptions: {

@@ -3,13 +3,11 @@
     <app-sidebar [pageGroups]="sidebarPages">
     </app-sidebar>
   </app-secondary-navigation>
-  <div class="flex-1 py-3 h-full md:overflow-y-auto">
-    <app-container>
-      <div class="md:flex">
-        <div class="flex-1 md:ml-2">
-          <ng-content></ng-content>
-        </div>
+  <div class="flex-1 h-full md:overflow-y-auto">
+    <div class="md:flex h-full">
+      <div class="flex-1 md:ml-2 h-full">
+        <ng-content></ng-content>
       </div>
-    </app-container>
+    </div>
   </div>
 </div>

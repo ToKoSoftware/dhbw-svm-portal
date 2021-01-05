@@ -1,0 +1,52 @@
+<form (ngSubmit)="updateUser()" [formGroup]="editUserForm" *ngIf="!loading">
+  <div class="flex space-x-2">
+    <app-input
+      class="flex-1"
+      required="true"
+      formControlName="firstName"
+      label="Vorname">
+    </app-input>
+    <app-input
+      class="flex-1"
+      required="true"
+      formControlName="lastName"
+      label="Nachname">
+    </app-input>
+  </div>
+  <div class="flex space-x-2">
+    <app-input
+      class="flex-grow"
+      required="true"
+      formControlName="street"
+      label="Straße">
+    </app-input>
+    <app-input
+      class="w-32"
+      required="true"
+      formControlName="streetNumber"
+      label="Hausnr.">
+    </app-input>
+  </div>
+  <div class="flex space-x-2">
+    <app-input
+      class="flex-1"
+      required="true"
+      formControlName="postcode"
+      label="Postleitzahl">
+    </app-input>
+    <app-input
+      class="flex-1"
+      required="true"
+      formControlName="city"
+      label="Stadt">
+    </app-input>
+  </div>
+  <small class="text-gray-500">Technische ID: {{currentUser.id}}</small>
+  <div class="flex justify-end w-full">
+    <app-button
+      formButtonType="submit"
+      label="Speichern">
+    </app-button>
+  </div>
+</form>
+<app-loading *ngIf="loading"></app-loading>

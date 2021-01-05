@@ -6,7 +6,8 @@ import {MyCredentialsComponent} from './credentials/my-credentials.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {IconsModule} from '../icons/icons.module';
 import {MomentModule} from 'ngx-moment';
-import { MyProfileComponent } from './my-profile/my-profile.component';
+import {MyProfileComponent} from './my-profile/my-profile.component';
+import {EditCreatePagesModule} from "../edit-create-pages/edit-create-pages.module";
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { MyProfileComponent } from './my-profile/my-profile.component';
     ReactiveFormsModule,
     FormsModule,
     IconsModule,
-    MomentModule
+    MomentModule,
+    EditCreatePagesModule
   ]
 })
 export class MyProfileModule {

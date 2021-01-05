@@ -7,4 +7,5 @@ import {Component, Input} from '@angular/core';
 export class TitledContentComponent {
   @Input() label: string = "";
   @Input() description: string = "";
+  @Input() spacing: boolean = true;
 }

@@ -24,8 +24,13 @@ export const adminPages: SidebarPageGroup[] = [
       },
       {
         title: 'Benutzer',
-        icon: 'mouse-pointer',
+        icon: 'user',
         url: '/my-team/users',
+      },
+      {
+        title: 'Teams',
+        icon: 'users',
+        url: '/my-team/teams',
       },
       {
         title: 'Rollen',

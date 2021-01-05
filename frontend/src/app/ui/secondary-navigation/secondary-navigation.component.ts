@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-secondary-navigation',
@@ -6,4 +6,5 @@ import {Component} from '@angular/core';
   styleUrls: ['./secondary-navigation.component.scss']
 })
 export class SecondaryNavigationComponent {
+  @Input() size: 'small' | 'large' = 'small';
 }
