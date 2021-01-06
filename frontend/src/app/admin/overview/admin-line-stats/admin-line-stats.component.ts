@@ -6,7 +6,6 @@ import {ApiService} from '../../../services/api/api.service';
 @Component({
   selector: 'app-order-stats',
   templateUrl: './admin-line-stats.component.html',
-  styleUrls: ['./admin-line-stats.component.scss']
 })
 export class AdminLineStatsComponent implements OnInit {
   @Input() private chartFor: keyof StatsResponse = 'plans';

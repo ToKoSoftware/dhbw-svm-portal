@@ -2,8 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-zero-data',
-  templateUrl: './zero-data.component.html',
-  styleUrls: ['./zero-data.component.scss']
+  templateUrl: './zero-data.component.html'
 })
 export class ZeroDataComponent implements OnInit {
   @Input() image: AvailableZeroDataImages = 'empty';

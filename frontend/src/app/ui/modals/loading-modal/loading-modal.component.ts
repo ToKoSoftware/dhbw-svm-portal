@@ -3,8 +3,7 @@ import {LoadingModalService} from '../../../services/loading-modal/loading-modal
 
 @Component({
   selector: 'app-loading-modal',
-  templateUrl: './loading-modal.component.html',
-  styleUrls: ['./loading-modal.component.scss']
+  templateUrl: './loading-modal.component.html'
 })
 export class LoadingModalComponent {
 

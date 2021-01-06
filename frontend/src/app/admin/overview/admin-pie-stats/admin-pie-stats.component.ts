@@ -5,8 +5,7 @@ import {ChartOptions, ChartType} from 'chart.js';
 
 @Component({
   selector: 'app-admin-pie-stats',
-  templateUrl: './admin-pie-stats.component.html',
-  styleUrls: ['./admin-pie-stats.component.scss']
+  templateUrl: './admin-pie-stats.component.html'
 })
 export class AdminPieStatsComponent implements OnInit {
   public loading = true;

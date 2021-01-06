@@ -2,8 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-filter',
-  templateUrl: './filter.component.html',
-  styleUrls: ['./filter.component.scss']
+  templateUrl: './filter.component.html'
 })
 export class FilterComponent {
   @Input() filters: AvailableFilter[] = [];

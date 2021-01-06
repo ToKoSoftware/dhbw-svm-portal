@@ -10,7 +10,6 @@ import {NotificationService} from "../../services/notification/notification.serv
 @Component({
   selector: 'app-credentials',
   templateUrl: './my-credentials.component.html',
-  styleUrls: ['./my-credentials.component.scss']
 })
 export class MyCredentialsComponent implements OnInit {
   public profilePages = myProfilePages;

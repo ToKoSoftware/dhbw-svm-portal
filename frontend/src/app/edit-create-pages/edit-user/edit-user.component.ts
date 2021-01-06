@@ -8,8 +8,7 @@ import {myProfileBreadcrumb, myProfilePages} from "../../my-profile/my-profile.p
 
 @Component({
   selector: 'app-edit-user',
-  templateUrl: './edit-user.component.html',
-  styleUrls: ['./edit-user.component.scss']
+  templateUrl: './edit-user.component.html'
 })
 export class EditUserComponent implements OnInit, OnChanges {
   public profilePages = myProfilePages;

@@ -5,8 +5,7 @@ import {SidebarPageGroup} from "../sidebar/sidebar.component";
 
 @Component({
   selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  templateUrl: './navbar.component.html'
 })
 export class NavbarComponent implements OnInit {
   @ViewChild('profileMenu') profileMenu: ElementRef<any>;

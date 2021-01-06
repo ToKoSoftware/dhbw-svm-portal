@@ -3,8 +3,7 @@ import {UiButtonGroup} from '../ui.interface';
 
 @Component({
   selector: 'app-button-group',
-  templateUrl: './button-group.component.html',
-  styleUrls: ['./button-group.component.scss']
+  templateUrl: './button-group.component.html'
 })
 export class ButtonGroupComponent implements OnInit {
   @Input('buttons') buttons: UiButtonGroup | null = null;
