@@ -23,7 +23,7 @@ services:
     volumes:
       - ./:/home/node/app
     command: >
-      sh -c "cd frontend && npm run build:prod"
+      sh -c "cd server && npm install && npm run build:frontend"
   backend:
     container_name: portal-backend
     restart: unless-stopped
