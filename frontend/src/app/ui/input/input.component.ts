@@ -9,6 +9,7 @@ export class InputComponent implements OnInit, ControlValueAccessor {
   @Input() disabled: boolean;
   @Input() required: boolean;
   @Input() label: string;
+  @Input() description: string;
   @Input() name: string;
   @Input() placeholder = '';
   @Input() type: 'text' | 'email' | 'password' = 'text';

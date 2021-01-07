@@ -1,7 +1,10 @@
 <div class="relative">
-  <label [for]="name" class="leading-7 text-sm text-gray-600 dark:text-white">
+  <label [for]="name" class="leading-7 text-md text-gray-600 dark:text-white">
     {{label}}<span class="text-red-500 px-0.5" *ngIf="required">*</span>
   </label>
+  <p class="text-sm text-gray-500 mb-3" *ngIf="description">
+    {{description}}
+  </p>
   <input
     [id]="name"
     [type]="type"
