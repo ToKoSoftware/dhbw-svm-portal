@@ -4,17 +4,19 @@ import {OverviewComponent} from './overview/overview.component';
 import {adminRoutes} from './admin.routes';
 import {UiModule} from '../ui/ui.module';
 import {UsersComponent} from './users/users.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {IconsModule} from '../icons/icons.module';
 import {ChartsModule} from 'ng2-charts';
-import {AdminLineStatsComponent} from './overview/admin-line-stats/admin-line-stats.component';
-import {AdminPieStatsComponent} from './overview/admin-pie-stats/admin-pie-stats.component';
-import {AdminReferrerStatsComponent} from './overview/admin-referrer-stats/admin-referrer-stats.component';
+import {AdminLineStatsComponent} from './stats/admin-line-stats/admin-line-stats.component';
+import {AdminPieStatsComponent} from './stats/admin-pie-stats/admin-pie-stats.component';
+import {AdminReferrerStatsComponent} from './stats/admin-referrer-stats/admin-referrer-stats.component';
 import {MomentModule} from 'ngx-moment';
 import { EventsComponent } from './events/events.component';
 import { RolesComponent } from './roles/roles.component';
 import { TeamsComponent } from './teams/teams.component';
 import {EditCreatePagesModule} from "../edit-create-pages/edit-create-pages.module";
+import { PollsComponent } from './polls/polls.component';
+import { StatsComponent } from './stats/stats.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import {EditCreatePagesModule} from "../edit-create-pages/edit-create-pages.modu
     AdminReferrerStatsComponent,
     EventsComponent,
     RolesComponent,
-    TeamsComponent
+    TeamsComponent,
+    PollsComponent,
+    StatsComponent
   ],
   imports: [
     adminRoutes,
@@ -35,6 +39,8 @@ import {EditCreatePagesModule} from "../edit-create-pages/edit-create-pages.modu
     IconsModule,
     ChartsModule,
     MomentModule,
+    FormsModule,
+    ReactiveFormsModule,
     EditCreatePagesModule
   ]
 })
