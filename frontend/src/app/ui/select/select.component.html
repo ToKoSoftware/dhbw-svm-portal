@@ -1,0 +1,42 @@
+<div class="relative">
+  <label [for]="name" class="leading-7 text-md text-gray-600 dark:text-white">
+    {{label}}
+  </label>
+  <p class="text-sm text-gray-500 mb-3" *ngIf="description">
+    {{description}}
+  </p>
+  <div class="relative">
+    <select
+      [id]="name"
+      [name]="name"
+      [value]="value"
+      [disabled]="disabled"
+      (input)="onChange($event.target.value)"
+      (blur)="onTouched()"
+      [class.text-black]="disabled"
+      [class.cursor-not-allowed]="disabled"
+      [class.text-gray-700]="!disabled"
+      [class.bg-gray-100]="!disabled"
+      class="dark:bg-gray-900 rounded border appearance-none
+       border-gray-300 focus:outline-none w-full text-base mb-4 rounded border border-gray-300
+       focus:border-malachite-600 dark:bg-gray-900
+       dark:text-white text-base outline-none
+       py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+      <ng-container
+        *ngFor="let select of items; index as i">
+        <option
+          [selected]="value === select[0]? 'selected' : ''"
+          [value]="select[0]">
+          {{select[1]}}
+        </option>
+      </ng-container>
+    </select>
+    <span
+      class="absolute right-0 -mt-3 pt-1.5 top-0 h-full w-10 text-center dark:text-white text-black pointer-events-none flex items-center justify-center">
+        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+             class="w-4 h-4" viewBox="0 0 24 24">
+          <path d="M6 9l6 6 6-6"></path>
+        </svg>
+      </span>
+  </div>
+</div>

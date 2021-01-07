@@ -32,6 +32,7 @@ import { NewsComponent } from './news/news.component';
 import { TitledContentComponent } from './titled-content/titled-content.component';
 import { NotificationComponent } from './notification/notification.component';
 import { NotifierComponent } from './notifier/notifier.component';
+import { SelectComponent } from './select/select.component';
 
 
 @NgModule({
@@ -64,37 +65,39 @@ import { NotifierComponent } from './notifier/notifier.component';
     NewsComponent,
     TitledContentComponent,
     NotificationComponent,
-    NotifierComponent
-  ],
-  exports: [
-    NavbarComponent,
-    DropdownButtonComponent,
-    SidebarComponent,
-    HeaderComponent,
-    ContainerComponent,
-    ButtonComponent,
-    NavSpacerComponent,
-    ButtonGroupComponent,
-    LoadingComponent,
-    ModalComponent,
-    ConfirmModalComponent,
-    LoadingModalComponent,
-    CustomModalComponent,
-    LayoutComponent,
-    TabsComponent,
-    StepsComponent,
-    InputComponent,
-    LabeledValueComponent,
-    ZeroDataComponent,
-    FilterComponent,
-    PaginationComponent,
-    TopBarComponent,
-    NewsComponent,
-    TitledContentComponent,
-    NotificationComponent,
     NotifierComponent,
-    SecondaryNavigationComponent
+    SelectComponent
   ],
+    exports: [
+        NavbarComponent,
+        DropdownButtonComponent,
+        SidebarComponent,
+        HeaderComponent,
+        ContainerComponent,
+        ButtonComponent,
+        NavSpacerComponent,
+        ButtonGroupComponent,
+        LoadingComponent,
+        ModalComponent,
+        ConfirmModalComponent,
+        LoadingModalComponent,
+        CustomModalComponent,
+        LayoutComponent,
+        TabsComponent,
+        StepsComponent,
+        InputComponent,
+        LabeledValueComponent,
+        ZeroDataComponent,
+        FilterComponent,
+        PaginationComponent,
+        TopBarComponent,
+        NewsComponent,
+        TitledContentComponent,
+        NotificationComponent,
+        NotifierComponent,
+        SecondaryNavigationComponent,
+        SelectComponent
+    ],
   imports: [
     CommonModule,
     IconsModule,
