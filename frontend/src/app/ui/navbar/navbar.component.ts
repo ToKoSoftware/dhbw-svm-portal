@@ -19,12 +19,16 @@ export class NavbarComponent implements OnInit {
       url: '/'
     }, {
       icon: 'calendar',
-      title: 'Events',
+      title: 'Veranstaltungen',
       url: '/events'
     }, {
       icon: 'user-check',
       title: 'Anmeldungen',
       url: '/join'
+    }, {
+      icon: 'pie-chart',
+      title: 'Umfragen',
+      url: '/polls'
     }]
   }, {
     title: 'Mein Verein',
