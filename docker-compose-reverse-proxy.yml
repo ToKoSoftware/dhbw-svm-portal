@@ -45,7 +45,7 @@ services:
     environment:
       VIRTUAL_HOST: $VIRTUAL_HOST
       #NODE_ENV: production
-      DATABASE_URL: "db"
+      DATABASE_URL: "portal-db"
       DATABASE_PASSWORD: $POSTGRES_PASSWORD
       DATABASE_USER: $POSTGRES_USER
       DATABASE_NAME: $POSTGRES_DB
