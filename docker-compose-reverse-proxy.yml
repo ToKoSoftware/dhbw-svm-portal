@@ -1,6 +1,6 @@
 version: "3.7"
 services:
-  db:
+  portal-db:
     container_name: portal-database
     restart: unless-stopped
     image: postgres
@@ -14,7 +14,7 @@ services:
       - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
     expose:
       - "5432"
-  frontend:
+  portal-rontend:
     container_name: portal-frontend
     restart: "no"
     image: "node:14"
@@ -26,7 +26,7 @@ services:
       sh -c "cd server && npm install && npm run build:frontend"
     networks:
       - root_proxy-nety
-  backend:
+  portal-backend:
     container_name: portal-backend
     restart: unless-stopped
     image: "node:14"
