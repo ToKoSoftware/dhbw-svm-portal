@@ -26,13 +26,15 @@ import {LabeledValueComponent} from './labeled-value/labeled-value.component';
 import {ZeroDataComponent} from './zero-data/zero-data.component';
 import {FilterComponent} from './filter/filter.component';
 import {PaginationComponent} from './pagination/pagination.component';
-import { TopBarComponent } from './top-bar/top-bar.component';
-import { SecondaryNavigationComponent } from './secondary-navigation/secondary-navigation.component';
-import { NewsComponent } from './news/news.component';
-import { TitledContentComponent } from './titled-content/titled-content.component';
-import { NotificationComponent } from './notification/notification.component';
-import { NotifierComponent } from './notifier/notifier.component';
-import { SelectComponent } from './select/select.component';
+import {TopBarComponent} from './top-bar/top-bar.component';
+import {SecondaryNavigationComponent} from './secondary-navigation/secondary-navigation.component';
+import {NewsComponent} from './news/news.component';
+import {TitledContentComponent} from './titled-content/titled-content.component';
+import {NotificationComponent} from './notification/notification.component';
+import {NotifierComponent} from './notifier/notifier.component';
+import {SelectComponent} from './select/select.component';
+import {UserPickerComponent} from './user-picker/user-picker.component';
+import {RolePickerComponent} from './role-picker/role-picker.component';
 
 
 @NgModule({
@@ -66,38 +68,41 @@ import { SelectComponent } from './select/select.component';
     TitledContentComponent,
     NotificationComponent,
     NotifierComponent,
-    SelectComponent
+    SelectComponent,
+    UserPickerComponent,
+    RolePickerComponent
   ],
-    exports: [
-        NavbarComponent,
-        DropdownButtonComponent,
-        SidebarComponent,
-        HeaderComponent,
-        ContainerComponent,
-        ButtonComponent,
-        NavSpacerComponent,
-        ButtonGroupComponent,
-        LoadingComponent,
-        ModalComponent,
-        ConfirmModalComponent,
-        LoadingModalComponent,
-        CustomModalComponent,
-        LayoutComponent,
-        TabsComponent,
-        StepsComponent,
-        InputComponent,
-        LabeledValueComponent,
-        ZeroDataComponent,
-        FilterComponent,
-        PaginationComponent,
-        TopBarComponent,
-        NewsComponent,
-        TitledContentComponent,
-        NotificationComponent,
-        NotifierComponent,
-        SecondaryNavigationComponent,
-        SelectComponent
-    ],
+  exports: [
+    NavbarComponent,
+    DropdownButtonComponent,
+    SidebarComponent,
+    HeaderComponent,
+    ContainerComponent,
+    ButtonComponent,
+    NavSpacerComponent,
+    ButtonGroupComponent,
+    LoadingComponent,
+    ModalComponent,
+    ConfirmModalComponent,
+    LoadingModalComponent,
+    CustomModalComponent,
+    LayoutComponent,
+    TabsComponent,
+    StepsComponent,
+    InputComponent,
+    LabeledValueComponent,
+    ZeroDataComponent,
+    FilterComponent,
+    PaginationComponent,
+    TopBarComponent,
+    NewsComponent,
+    TitledContentComponent,
+    NotificationComponent,
+    NotifierComponent,
+    SecondaryNavigationComponent,
+    SelectComponent,
+    RolePickerComponent
+  ],
   imports: [
     CommonModule,
     IconsModule,

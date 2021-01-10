@@ -41,7 +41,7 @@ import { StatsComponent } from './stats/stats.component';
     MomentModule,
     FormsModule,
     ReactiveFormsModule,
-    EditCreatePagesModule
+    EditCreatePagesModule,
   ]
 })
 export class AdminModule {

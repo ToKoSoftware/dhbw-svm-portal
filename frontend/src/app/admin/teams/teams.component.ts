@@ -10,6 +10,7 @@ import {ModalService} from "../../services/modal/modal.service";
 import {LoginService} from "../../services/login/login.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ApiService} from "../../services/api/api.service";
+import {TitleBarService} from "../../services/title-bar/title-bar.service";
 
 @Component({
   selector: 'app-teams',
@@ -38,10 +39,10 @@ export class TeamsComponent implements OnInit {
   public filters: AvailableFilter[] = [{
     title: "E-Mail",
     name: "email",
-  },{
+  }, {
     title: "Vorname",
     name: "firstName",
-  },{
+  }, {
     title: "Nachname",
     name: "lastName",
   }];
@@ -53,10 +54,15 @@ export class TeamsComponent implements OnInit {
     private login: LoginService,
     private route: ActivatedRoute,
     private router: Router,
-    private api: ApiService) {
+    private api: ApiService,
+    public readonly titleBar: TitleBarService) {
   }
 
   ngOnInit(): void {
+    this.titleBar.buttons$.next([{
+      icon: 'plus',
+      title: 'Team'
+    }]);
     this.loadData();
     this.routeSubscription = this.route.params.subscribe(params => {
       this.currentEditUserId = params['id'] || '';
@@ -64,6 +70,7 @@ export class TeamsComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
+    this.titleBar.buttons$.next([]);
     this.routeSubscription.unsubscribe();
   }
 

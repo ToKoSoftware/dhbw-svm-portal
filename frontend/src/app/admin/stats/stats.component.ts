@@ -15,22 +15,7 @@ export class StatsComponent implements OnInit {
   public tiles: StatisticTile[] = [{
     title: 'Benutzer',
     count: 0,
-    icon: 'mouse-pointer',
-    loading: true,
-  }, {
-    title: 'Kunden',
-    count: 0,
     icon: 'user',
-    loading: true,
-  }, {
-    title: 'Bestellungen',
-    count: 0,
-    icon: 'shopping-cart',
-    loading: true,
-  }, {
-    title: 'Tarife',
-    count: 0,
-    icon: 'map',
     loading: true,
   }];
 

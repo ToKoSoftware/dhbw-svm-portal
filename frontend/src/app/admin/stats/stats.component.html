@@ -3,43 +3,25 @@
   [breadcrumbs]="breadcrumb"
   heading="Übersicht"
 >
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-    <div class="bg-white shadow sm:rounded-lg mb-10 px-4 py-6 rounded-lg bg-white" *ngFor="let tile of tiles">
-      <ng-container *ngIf="!tile.loading">
-        <i-feather [name]="tile.icon" class="text-malachite-600" style="width: 40%; height: 40%"></i-feather>
-        <h2 class="title-font font-medium text-3xl text-gray-900">{{tile.count}}</h2>
-      </ng-container>
-      <ng-container *ngIf="tile.loading">
-        <app-loading></app-loading>
-        <h2 class="title-font font-medium text-3xl text-gray-900">Laden...</h2>
-      </ng-container>
-      <p class="leading-relaxed">{{tile.title}}</p>
-    </div>
-  </div>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-8">
-    <div class="bg-white shadow sm:rounded-lg mb-10 px-4 py-6 rounded-lg bg-white p-4">
-      <app-admin-pie-stats>
-      </app-admin-pie-stats>
-    </div>
-    <div class="bg-white shadow sm:rounded-lg mb-10 px-4 py-6 rounded-lg bg-white p-4">
-      <app-admin-referrer-stats>
-      </app-admin-referrer-stats>
-    </div>
-    <div class="bg-white shadow sm:rounded-lg mb-10 px-4 py-6 rounded-lg bg-white p-4">
-      <app-order-stats chartFor="customers" *ngIf="monthlyData !== null" [statData]="monthlyData">
-      </app-order-stats>
-    </div>
-    <div class="bg-white shadow sm:rounded-lg mb-10 px-4 py-6 rounded-lg bg-white p-4">
+  <app-container>
+    <app-titled-content label="Zahlen">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div class="mb-10 px-4 py-6" *ngFor="let tile of tiles">
+          <ng-container *ngIf="!tile.loading">
+            <i-feather [name]="tile.icon" class="text-malachite-600" style="width: 40%; height: 40%"></i-feather>
+            <h2 class="title-font font-medium text-3xl text-gray-900">{{tile.count}}</h2>
+          </ng-container>
+          <ng-container *ngIf="tile.loading">
+            <app-loading></app-loading>
+            <h2 class="title-font font-medium text-3xl text-gray-900">Laden...</h2>
+          </ng-container>
+          <p class="leading-relaxed">{{tile.title}}</p>
+        </div>
+      </div>
+    </app-titled-content>
+    <app-titled-content label="Entwicklung">
       <app-order-stats chartFor="users" *ngIf="monthlyData !== null" [statData]="monthlyData">
       </app-order-stats>
-    </div>
-    <div class="bg-white shadow sm:rounded-lg mb-10 px-4 py-6 rounded-lg bg-white p-4">
-      <app-order-stats chartFor="plans" *ngIf="monthlyData !== null" [statData]="monthlyData">
-      </app-order-stats>
-    </div>
-    <div class="bg-white shadow sm:rounded-lg mb-10 px-4 py-6 rounded-lg bg-white p-4">
-      <app-order-stats chartFor="orders" *ngIf="monthlyData !== null" [statData]="monthlyData">
-      </app-order-stats>
-    </div>
-  </div>
+    </app-titled-content>
+  </app-container>
 </app-layout>
