@@ -3,7 +3,7 @@ import {UiBreadcrumb} from '../ui/ui.interface';
 
 export const adminPages: SidebarPageGroup[] = [
   {
-    title: 'Verwaltung',
+    title: 'Mein Verein',
     pages: [
       {
         title: 'Allgemein',
@@ -16,11 +16,6 @@ export const adminPages: SidebarPageGroup[] = [
         icon: 'bar-chart-2',
         url: '/my-team/stats',
         matchFull: true
-      },
-      {
-        title: 'Event-Einstellungen',
-        icon: 'calendar',
-        url: '/my-team/events',
       },
       {
         title: 'Benutzer',
@@ -36,6 +31,20 @@ export const adminPages: SidebarPageGroup[] = [
         title: 'Rollen',
         icon: 'lock',
         url: '/my-team/roles',
+      },
+    ]
+  }, {
+    title: 'Funktionen',
+    pages: [
+      {
+        title: 'Veranstaltungen',
+        icon: 'calendar',
+        url: '/my-team/events',
+      },
+      {
+        title: 'Umfragen',
+        icon: 'pie-chart',
+        url: '/my-team/polls',
       },
     ]
   }

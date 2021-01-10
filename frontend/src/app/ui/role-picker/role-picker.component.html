@@ -1,0 +1,36 @@
+<ul *ngFor="let role of selectedRoles">
+  <li class="py-3 bg-gray-200 dark:bg-gray-900 dark:text-white px-3 my-3 flex space-x-2 items-center w-full">
+    <i-feather [style.height]="'1rem'" [style.width]="'1rem'" name="users">
+    </i-feather>
+    <div>
+      {{role.title}}
+    </div>
+    <div class="flex-grow flex justify-end">
+      <app-button
+        *ngIf="editable"
+        (click)="editEvent.emit(role)"
+        class="justify-self-end"
+        size="small"
+        type="transparent"
+        icon="edit"></app-button>
+      <app-button
+        *ngIf="removable"
+        (click)="removeEvent.emit(role)"
+        class="justify-self-end"
+        size="small"
+        type="transparent"
+        icon="edit"></app-button>
+      <app-button
+        *ngIf="deletable"
+        (click)="deleteEvent.emit(role)"
+        class="justify-self-end"
+        size="small"
+        type="transparent"
+        icon="trash"></app-button>
+    </div>
+  </li>
+
+</ul>
+<div class="flex-grow flex justify-end">
+  <app-button icon="plus" label="Rolle wählen"></app-button>
+</div>

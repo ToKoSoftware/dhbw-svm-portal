@@ -3,4 +3,12 @@
   <div class="text-lg text-malachite-600 pt-1.5 font-light">
     {{titleBar.title$ | async}}
   </div>
+  <div>
+    <ng-container *ngFor="let b of (titleBar.buttons$ | async)">
+      <app-button
+        size="small"
+        [icon]="b.icon"
+        [label]="b.title"></app-button>
+    </ng-container>
+  </div>
 </div>

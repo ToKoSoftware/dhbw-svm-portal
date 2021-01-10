@@ -31,6 +31,12 @@
           label="Benutzer bearbeiten">
           <app-edit-user [userId]="currentEditUserId"></app-edit-user>
         </app-titled-content>
+        <app-titled-content
+          label="Berechtigungen"
+          description="Diese Berechtigungs-Rollen wurden dem Nutzer vergeben">
+          <app-role-picker>
+          </app-role-picker>
+        </app-titled-content>
       </app-container>
     </div>
   </div>

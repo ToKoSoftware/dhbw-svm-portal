@@ -1,1 +1,37 @@
-<p>teams works!</p>
+<app-layout [sidebarPages]="sidebarPages" [buttons]="buttonGroup" [breadcrumbs]="breadcrumb"
+            heading="Benutzer verwalten">
+  <div class="md:flex h-full w-full">
+    <app-secondary-navigation size="large" class="md:-ml-2">
+      <div class="flex justify-end py-3">
+        <app-filter [filters]="filters" (filterValue)="applyFilter($event)"></app-filter>
+      </div>
+      <div class="md:block hidden" *ngIf="!loading">
+        <a class="block p-3 border-t
+            group font-medium
+            hover:text-gray-900 hover:bg-gray-100 dark:hover:text-malachite-600
+            focus:outline-none focus:bg-gray-200 transition
+            dark:hover:bg-gray-700 ease-in-out duration-150"
+           [routerLink]="'/my-team/users/' + user.id"
+           *ngFor="let user of results"
+           [routerLinkActive]="['bg-gray-200', 'dark:bg-gray-900',
+            'dark:hover:bg-gray-700', 'text-malachite-600', 'hover:text-malachite-600']">
+          <div class="text-md font-medium w-full">
+            {{user.firstName}} {{user.lastName}}
+          </div>
+          <div class="truncate">
+            <a class="text-blue-600" [href]="'mailto:' + user.email">{{ user.email }}</a>
+          </div>
+        </a>
+      </div>
+      <app-loading *ngIf="loading"></app-loading>
+    </app-secondary-navigation>
+    <div class="flex-grow">
+      <app-container *ngIf="currentEditUserId !== ''">
+        <app-titled-content
+          label="Benutzer bearbeiten">
+          <app-edit-user [userId]="currentEditUserId"></app-edit-user>
+        </app-titled-content>
+      </app-container>
+    </div>
+  </div>
+</app-layout>

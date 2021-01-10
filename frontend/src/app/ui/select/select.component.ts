@@ -1,18 +1,17 @@
 import {Component, EventEmitter, Input, OnInit, Optional, Output, Self} from '@angular/core';
-import {ControlValueAccessor, NgControl} from '@angular/forms';
+import {NgControl} from "@angular/forms";
 
 @Component({
-  selector: 'app-input',
-  templateUrl: './input.component.html'
+  selector: 'app-select',
+  templateUrl: './select.component.html'
 })
-export class InputComponent implements OnInit, ControlValueAccessor {
+export class SelectComponent implements OnInit {
   @Input() disabled: boolean;
-  @Input() required: boolean;
   @Input() label: string;
   @Input() description: string;
   @Input() name: string;
-  @Input() placeholder = '';
-  @Input() type: 'text' | 'email' | 'password' = 'text';
+  @Input() selected = '';
+  @Input() items: Array<string | number>[] = [];
   @Output() enter = new EventEmitter<unknown>();
   @Output() valueChange = new EventEmitter<unknown>();
 
@@ -71,4 +70,5 @@ export class InputComponent implements OnInit, ControlValueAccessor {
 
   public onTouched(): void {
   }
+
 }
