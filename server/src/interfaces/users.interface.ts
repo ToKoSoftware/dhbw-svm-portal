@@ -1,13 +1,17 @@
 export interface UserData {
     id?: string;
     email: string;
+    username: string;
     password: string;
     is_admin: boolean;
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
+    gender: genderType;
     street: string;
-    streetNumber: string;
-    postcode: string;
+    street_number: string;
+    post_code: string;
     city: string;
     is_active: boolean
 }
+
+export type genderType = 'M' | 'W' | 'D';

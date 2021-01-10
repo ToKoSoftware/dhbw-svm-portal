@@ -1,6 +1,6 @@
 import {BeforeCreate, Column, Model, Table} from 'sequelize-typescript';
 import {v4 as uuidv4} from 'uuid';
-import {UserData} from '../interfaces/users.interface';
+import {genderType, UserData} from '../interfaces/users.interface';
 
 @Table
 export class User extends Model<User> {
@@ -8,19 +8,23 @@ export class User extends Model<User> {
     @Column
     email: string;
     @Column
+    username: string;
+    @Column
     password: string;
     @Column
     is_admin: boolean;
     @Column
-    firstName: string;
+    first_name: string;
     @Column
-    lastName: string;
+    last_name: string;
+    @Column
+    gender: genderType;
     @Column
     street: string;
     @Column
-    streetNumber: number;
+    street_number: number;
     @Column
-    postcode: string;
+    post_code: string;
     @Column
     city: number;
     @Column
@@ -29,12 +33,14 @@ export class User extends Model<User> {
     public static requiredFields(): Array<keyof UserData> {
         return [
             'email',
+            'username',
             'password',
-            'firstName',
-            'lastName',
+            'first_name',
+            'last_name',
+            'gender',
             'street',
-            'streetNumber',
-            'postcode',
+            'street_number',
+            'post_code',
             'city'
         ];
     }
