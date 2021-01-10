@@ -16,7 +16,7 @@ services:
       - "5432"
     networks:
       - root_proxy-nety
-  portal-rontend:
+  portal-frontend:
     container_name: portal-frontend
     restart: "no"
     image: "node:14"
