@@ -1,0 +1,41 @@
+Ordner: Dokumentation - Meetings - 2021-01-05
+
+
+Besprechung des WEB-Project Anmeldeportals
+
+Docker Installation wurde Erklärt:
+https://github.com/ToKoSoftware/dhbw-svm-portal
+	- siehe Readme.md
+
+
+Das ER-Diagramm wurde Besprochen
+	- user Attribute Fehlen noch
+
+Github Prozess
+
+	- Neuen Branch erstellen
+	- Beim Commit eine Massage mit der Änderung schicken
+	- Pullrequest erstellen
+	- Draftpullrequest erstellen (= es wird noch daran gearbeitet)
+      + Codeüberprüfung auf Semantik beim Pullrequest
+
+Bei unklaren Merge-Konflikten fragen
+
+
+
+Aufgaben:
+	- Googlekalender anlegen - als iFrame (Urs/Leoni)
+	- Bildgrößen Startseite anpassen (Urs/Leoni)
+
+Splitten in Frontend (Tomas/Enrico) und Backend (Dominic/Lisa):
+	- Rechte-System
+	- Update User 
+
+
+Wenn wir etwas anfangen zu tun --> Unter Project/Sprints:
+--> Die Aufgabe in "In progress" ziehen
+--> Wenn Fertig --> In "Review" ziehen & Pullrequest aufmachen
+--> Wenn das Feature "Approved" wurde zieht der Approver das Feature in "Review approved"
+
+
+Unter Projects/Features Ideen aufschreiben, wenn einem welche einfallen..
