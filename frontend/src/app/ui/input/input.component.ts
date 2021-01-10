@@ -3,8 +3,7 @@ import {ControlValueAccessor, NgControl} from '@angular/forms';
 
 @Component({
   selector: 'app-input',
-  templateUrl: './input.component.html',
-  styleUrls: ['./input.component.scss']
+  templateUrl: './input.component.html'
 })
 export class InputComponent implements OnInit, ControlValueAccessor {
   @Input() disabled: boolean;

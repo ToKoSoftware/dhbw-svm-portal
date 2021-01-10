@@ -6,8 +6,7 @@ import {ButtonType} from '../../button/button.component';
 
 @Component({
   selector: 'app-confirm-modal',
-  templateUrl: './confirm-modal.component.html',
-  styleUrls: ['./confirm-modal.component.scss']
+  templateUrl: './confirm-modal.component.html'
 })
 export class ConfirmModalComponent implements OnInit, OnDestroy {
   public showModal = false;

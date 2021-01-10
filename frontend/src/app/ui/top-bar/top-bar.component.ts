@@ -3,8 +3,7 @@ import {TitleBarService} from "../../services/title-bar/title-bar.service";
 
 @Component({
   selector: 'app-top-bar',
-  templateUrl: './top-bar.component.html',
-  styleUrls: ['./top-bar.component.scss']
+  templateUrl: './top-bar.component.html'
 })
 export class TopBarComponent implements OnInit {
 

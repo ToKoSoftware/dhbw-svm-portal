@@ -2,8 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'app-dropdown-button',
-  templateUrl: './dropdown-button.component.html',
-  styleUrls: ['./dropdown-button.component.scss']
+  templateUrl: './dropdown-button.component.html'
 })
 export class DropdownButtonComponent implements OnInit {
   @ViewChild('dropdown') profileMenu: ElementRef<any>;
