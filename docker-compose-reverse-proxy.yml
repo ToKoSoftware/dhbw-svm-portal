@@ -11,7 +11,7 @@ services:
       POSTGRES_USER: $POSTGRES_USER
       POSTGRES_DB: $POSTGRES_DB
     volumes:
-      - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+      - portal-database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
     expose:
       - "5432"
   portal-rontend:
@@ -54,7 +54,7 @@ services:
     networks:
       - root_proxy-nety
 volumes:
-  database-data: # named volumes can be managed easier using docker-compose
+  portal-database-data: # named volumes can be managed easier using docker-compose
   
 networks:
   root_proxy-nety:
