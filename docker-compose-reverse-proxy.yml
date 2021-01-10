@@ -1,6 +1,6 @@
 version: "3.7"
 services:
-  db:
+  portal-db:
     container_name: portal-database
     restart: unless-stopped
     image: postgres
@@ -11,28 +11,32 @@ services:
       POSTGRES_USER: $POSTGRES_USER
       POSTGRES_DB: $POSTGRES_DB
     volumes:
-      - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+      - portal-database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
     expose:
       - "5432"
-  frontend:
+    networks:
+      - root_proxy-nety
+  portal-frontend:
     container_name: portal-frontend
     restart: "no"
     image: "node:14"
-    user: "node" # for ubuntu, use root
+    user: "root"
     working_dir: /home/node/app
     volumes:
       - ./:/home/node/app
     command: >
       sh -c "cd server && npm install && npm run build:frontend"
-  backend:
+    networks:
+      - root_proxy-nety
+  portal-backend:
     container_name: portal-backend
     restart: unless-stopped
     image: "node:14"
     depends_on:
-      - db
-    expose:
-      - "80"
-    user: "node" # for ubuntu, use root
+      - portal-db
+    ports:
+      - "8081:8081"
+    user: "root"
     working_dir: /home/node/app
     volumes:
       - ./:/home/node/app
@@ -41,12 +45,19 @@ services:
     env_file:
       - .env
     environment:
+      VIRTUAL_HOST: $VIRTUAL_HOST
       #NODE_ENV: production
-      DATABASE_URL: "db"
+      DATABASE_URL: "portal-db"
       DATABASE_PASSWORD: $POSTGRES_PASSWORD
       DATABASE_USER: $POSTGRES_USER
       DATABASE_NAME: $POSTGRES_DB
       LOGGING: "true"
-      PORT: 80
+      PORT: 8081
+    networks:
+      - root_proxy-nety
 volumes:
-  database-data: # named volumes can be managed easier using docker-compose
+  portal-database-data: # named volumes can be managed easier using docker-compose
+  
+networks:
+  root_proxy-nety:
+    external: true
