@@ -1,0 +1,32 @@
+<div class="flex flex-col w-64 h-full">
+  <div class="flex-1 w-full bg-white dark:bg-black dark:text-white">
+    <div class="h-15 bg-white dark:bg-black border-b-2 border-malachite-600 items-center flex">
+      <a routerLink="/">
+        <img class="h-8 pl-3 w-auto" src="/assets/logo.svg">
+      </a>
+    </div>
+    <app-sidebar [pageGroups]="sidebarPageGroups"></app-sidebar>
+  </div>
+
+  <div class="flex items-center flex-shrink-0 bg-white dark:bg-gray-800 bg-gray-100 px-3 py-3 space-x-2 justify-between">
+    <a routerLink="/my-profile" class="truncate">
+      <div class="group dark:hover:bg-gray-600 hover:bg-gray-200 rounded px-2 truncate transition duration-100 ease-in-out">
+        <span class="group-hover:text-malachite-600">
+          {{(login.decodedJwt$ | async)?.firstName}}
+          {{(login.decodedJwt$ | async)?.lastName}}<br>
+        </span>
+        <span
+          class="text-gray-600 dark:text-gray-400 group-hover:text-malachite-600 ">
+          {{(login.decodedJwt$ | async)?.email}}
+        </span>
+      </div>
+    </a>
+    <div>
+      <a routerLink="/login/logout" class="hover:text-malachite-600 transition duration-200 ease-in-out pt-2">
+        <feather-icon
+          name="log-out">
+        </feather-icon>
+      </a>
+    </div>
+  </div>
+</div>

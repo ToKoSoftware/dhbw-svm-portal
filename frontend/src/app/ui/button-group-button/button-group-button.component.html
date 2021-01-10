@@ -1,0 +1,10 @@
+<button
+  type="button"
+  [classList]="classes"
+  (click)="handleButtonClick(button)">
+
+  <i class="-ml-1 -mt-3 mr-6 h-3 w-3 text-sm" *ngIf="button?.icon">
+    <i-feather [name]="button.icon"></i-feather>
+  </i>
+  {{button.title}}
+</button>

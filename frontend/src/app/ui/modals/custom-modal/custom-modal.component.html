@@ -1,0 +1,3 @@
+<app-modal *ngIf="modalService.showModal$ | async" [title]="modalService.title">
+  <div *ngTemplateOutlet="modalService.modalContentElementRef"></div>
+</app-modal>

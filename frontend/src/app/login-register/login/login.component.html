@@ -1,0 +1,40 @@
+<div class="flex h-screen">
+  <div class="flex-1 bg-white dark:bg-black flex flex-col h-full">
+    <div class="mx-auto my-auto w-96">
+      <div class="flex items-center justify-center">
+        <img class="h-16 w-auto" src="/assets/logo.svg">
+        <p class="text-2xl text-malachite-600 dark:text-malachite-600 pt-1.5 font-bold">Mein Team</p>
+      </div>
+      <div class="mt-10">
+        <p *ngIf="error" class="text-red-700">E-Mail oder Passwort falsch!</p>
+        <form (ngSubmit)="login()">
+          <app-input
+            (valueChange)="email = $event"
+            required="true"
+            type="email"
+            placeholder="name@email.com"
+            label="E-Mail">
+          </app-input>
+          <app-input
+            (valueChange)="password = $event"
+            required="true"
+            type="password"
+            placeholder="****"
+            label="Passwort">
+          </app-input>
+          <app-button
+            formButtonType="submit"
+            size="full" (click)="login()" label="Login">
+          </app-button>
+        </form>
+        <p class="mt-3 text-base sm:mt-5 sm:mx-auto md:mt-5 lg:mx-0">
+          Noch kein Konto?
+          <a class="text-blue-600" [routerLink]="'/login/register'"> Jetzt erstellen!</a>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="flex-1 hidden md:block min-h-full relative">
+    <img src="/assets/login.jpg" class="absolute inset-0 h-full w-full object-cover">
+  </div>
+</div>

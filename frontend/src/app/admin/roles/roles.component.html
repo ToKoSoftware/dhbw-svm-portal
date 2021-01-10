@@ -1,0 +1,26 @@
+<app-layout [sidebarPages]="sidebarPages" [breadcrumbs]="breadcrumb"
+            heading="Benutzer verwalten">
+  <app-container>
+    <app-titled-content
+      label="Rollen"
+      description="Hier können Sie Rollen bearbeiten.">
+      <ul *ngFor="let role of ['Admin', 'Alle', 'Team Blau Verwalter']">
+        <li class="py-3 bg-gray-200 dark:bg-gray-900 dark:text-white px-3 my-3 flex space-x-2 items-center w-full">
+          <i-feather [style.height]="'1rem'" [style.width]="'1rem'" name="users">
+          </i-feather>
+          <div>
+            {{role}}
+          </div>
+          <div class="flex-grow flex justify-end">
+            <app-button
+              class="justify-self-end"
+              size="small"
+              type="transparent"
+              icon="edit"></app-button>
+          </div>
+        </li>
+
+      </ul>
+    </app-titled-content>
+  </app-container>
+</app-layout>
