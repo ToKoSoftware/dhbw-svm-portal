@@ -34,8 +34,8 @@ services:
     image: "node:14"
     depends_on:
       - portal-db
-    expose:
-      - "80"
+    ports:
+      - "8081:8081"
     user: "root"
     working_dir: /home/node/app
     volumes:
@@ -52,7 +52,7 @@ services:
       DATABASE_USER: $POSTGRES_USER
       DATABASE_NAME: $POSTGRES_DB
       LOGGING: "true"
-      PORT: 80
+      PORT: 8081
     networks:
       - root_proxy-nety
 volumes:
