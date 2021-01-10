@@ -31,7 +31,7 @@ services:
     restart: unless-stopped
     image: "node:14"
     depends_on:
-      - db
+      - portal-db
     expose:
       - "80"
     user: "root"
