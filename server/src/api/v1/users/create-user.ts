@@ -14,7 +14,7 @@ export async function createUser(req: Request, res: Response): Promise<Response>
 
     const requiredFields = User.requiredFields();
     if (!objectHasRequiredAndNotEmptyKeys(mappedIncomingData, requiredFields)) {
-        return res.send(wrapResponse(false, { error: 'Not all required fields have been set' }));
+        return res.status(400).send(wrapResponse(false, { error: 'Not all required fields have been set' }));
     }
     const validEmail = EmailValidator.validate(mappedIncomingData.email);
 
