@@ -14,4 +14,10 @@ export interface UserData {
     is_active: boolean
 }
 
+export interface UserLoginData {
+    email?: string;
+    username?: string;
+    password: string;
+}
+
 export type genderType = 'M' | 'W' | 'D';

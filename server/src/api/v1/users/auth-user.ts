@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
 import {wrapResponse} from '../../../functions/response-wrapper';
-import {UserData} from '../../../interfaces/users.interface';
+import {UserData, UserLoginData} from '../../../interfaces/users.interface';
 import {mapUser} from '../../../functions/map-users.func';
 import {User} from '../../../models/user.model';
 import * as bcrypt from 'bcryptjs';
@@ -8,21 +8,39 @@ import {jwtSign} from '../../../functions/jwt-sign.func';
 
 export async function loginUser(req: Request, res: Response): Promise<Response> {
 
-    const incomingData: UserData = req.body;
-    const mappedIncomingData: UserData = await mapUser(incomingData);
+    const incomingData: UserLoginData = req.body;
+
+    if (incomingData.password === undefined || (incomingData.email === undefined && incomingData.username === undefined)){
+        return res.status(400).send(wrapResponse(false, { error: 'Not all required fields have been set' }));
+    }
 
     let success = true;
-
-    const user = await User.findOne(
-        {
-            where: {
-                email: mappedIncomingData.email,
-            }
-        })
-        .catch(() => {
-            success = false;
-            return null;
-        });
+    let user: User | null;
+    if (incomingData.email !== undefined) {
+        user = await User.findOne(
+            {
+                where: {
+                    email: incomingData.email,
+                }
+            })
+            .catch(() => {
+                success = false;
+                return null;
+            });
+    } else if (incomingData.username !== undefined) {
+        user = await User.findOne(
+            {
+                where: {
+                    username: incomingData.username,
+                }
+            })
+            .catch(() => {
+                success = false;
+                return null;
+            });
+    } else {
+        user = null;
+    }
 
 
     if (!success) {
