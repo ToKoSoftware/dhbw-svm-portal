@@ -5,7 +5,7 @@ module.exports = {
             id: {
                 primaryKey: true,
                 allowNull: false,
-                type: DataType.UUID,
+                type: DataType.STRING,
                 defaultValue: DataType.UUIDV4
             },
             title: {
