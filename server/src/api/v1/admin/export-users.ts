@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
 import {convertObjectArrayToCsv} from '../../../functions/convert-object-array-to-csv.func';
 import {wrapResponse} from '../../../functions/response-wrapper';
-import User from '../../../models/user.model';
+import {User} from '../../../models/user.model';
 
 export async function exportUsers(req: Request, res: Response): Promise<Response>  {
     let success = true;

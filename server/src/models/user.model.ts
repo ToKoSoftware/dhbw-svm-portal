@@ -1,29 +1,40 @@
-import {sequelizeInstance} from '../bootstrap/connect-db.func';
 import {genderType, UserData} from '../interfaces/users.interface';
-import {Model, DataType} from 'sequelize-typescript';
-import Event from './event.model';
-import News from './news.model';
-import Organization from './organization.model';
+import {BelongsTo, Column, ForeignKey, Model, Table} from 'sequelize-typescript';
+import { Organization } from './organization.model';
 
-const config = {
-    tableName: 'Users',
-    sequelize: sequelizeInstance,
-};
+@Table
+export class User extends Model {
 
-class User extends Model {
-    id: string
+    @Column
     email: string;
+    @Column
     username: string;
+    @Column
     password: string;
+    @Column
     is_admin: boolean;
+    @Column
     first_name: string;
+    @Column
     last_name: string;
+    @Column
     gender: genderType;
+    @Column
     street: string;
+    @Column
     street_number: string;
+    @Column
     post_code: string;
+    @Column
     city: string;
+    @Column
     is_active: boolean;
+    @ForeignKey(() => Organization)
+    @Column
+    org_id: string;
+
+    @BelongsTo(() => Organization)
+    organization: Organization;
 
     public static requiredFields(): Array<keyof UserData> {
         return [
@@ -40,82 +51,3 @@ class User extends Model {
         ];
     }
 }
-User.init(
-    {
-        id: {
-            primaryKey: true,
-            allowNull: false,
-            type: DataType.UUID,
-            defaultValue: DataType.UUIDV4
-        },
-        email: {
-            type: DataType.STRING,
-            allowNull: false
-        },
-        username: {
-            type: DataType.STRING,
-            allowNull: false
-        },
-        password: {
-            type: DataType.STRING,
-            allowNull: false
-        },
-        is_admin: {
-            type: DataType.BOOLEAN,
-            allowNull: false,
-            defaultValue: false
-        },
-        first_name: {
-            type: DataType.STRING,
-            allowNull: false
-        },
-        last_name: {
-            type: DataType.STRING,
-            allowNull: false
-        },
-        gender: {
-            type: DataType.CHAR,
-            allowNull: false
-        },
-        street: {
-            type: DataType.STRING,
-            allowNull: false
-        },
-        street_number: {
-            type: DataType.STRING,
-            allowNull: false
-        },
-        post_code: {
-            type: DataType.STRING,
-            allowNull: false
-        },
-        city: {
-            type: DataType.STRING,
-            allowNull: false
-        },
-        is_active: {
-            type: DataType.BOOLEAN,
-            allowNull: false,
-            defaultValue: true
-        },
-        createdAt: {
-            allowNull: false,
-            type: DataType.DATE
-        },
-        updatedAt: {
-            allowNull: false,
-            type: DataType.DATE
-        }
-    },
-    config,
-);
-
-User.hasMany(Event, {
-    foreignKey: 'author_id'
-});
-User.hasMany(News, {
-    foreignKey: 'author_id'
-});
-User.belongsTo(Organization);
-
-export default User;
