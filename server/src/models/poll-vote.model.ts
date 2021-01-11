@@ -25,15 +25,15 @@ PollVote.init(
         user_id: {
             type: DataType.UUID,
             references: {
-              model: User,
-              key: 'id'
+                model: User,
+                key: 'id'
             }
         },
         poll_answer_id: {
             type: DataType.UUID,
             references: {
-              model: PollAnswer,
-              key: 'id'
+                model: PollAnswer,
+                key: 'id'
             }
         },
         title: {

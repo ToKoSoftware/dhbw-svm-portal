@@ -26,15 +26,15 @@ EventRegistration.init(
         user_id: {
             type: DataType.UUID,
             references: {
-              model: User,
-              key: 'id'
+                model: User,
+                key: 'id'
             }
         },
         event_id: {
             type: DataType.UUID,
             references: {
-              model: Event,
-              key: 'id'
+                model: Event,
+                key: 'id'
             }
         },
         body: {

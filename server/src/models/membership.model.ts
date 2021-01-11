@@ -24,15 +24,15 @@ Membership.init(
         user_id: {
             type: DataType.UUID,
             references: {
-              model: User,
-              key: 'id'
+                model: User,
+                key: 'id'
             }
         },
         team_id: {
             type: DataType.UUID,
             references: {
-              model: Team,
-              key: 'id'
+                model: Team,
+                key: 'id'
             }
         },
         createdAt: {

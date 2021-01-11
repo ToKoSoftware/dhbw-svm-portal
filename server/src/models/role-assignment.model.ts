@@ -24,15 +24,15 @@ RoleAssignment.init(
         user_id: {
             type: DataType.UUID,
             references: {
-              model: User,
-              key: 'id'
+                model: User,
+                key: 'id'
             }
         },
         role_id: {
             type: DataType.UUID,
             references: {
-              model: Role,
-              key: 'id'
+                model: Role,
+                key: 'id'
             }
         },
         createdAt: {

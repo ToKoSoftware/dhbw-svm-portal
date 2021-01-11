@@ -83,6 +83,6 @@ Organization.hasMany(User, {
 });
 Organization.hasMany(Poll, {
     foreignKey: 'org_id'
-})
+});
 Organization.belongsTo(Role);
 export default Organization;
