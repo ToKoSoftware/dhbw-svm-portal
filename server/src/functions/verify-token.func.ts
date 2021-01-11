@@ -1,6 +1,6 @@
 import {NextFunction, Response} from 'express';
 import jwt from 'jsonwebtoken';
-import {User} from '../models/user.model';
+import User from '../models/user.model';
 import {Vars} from '../vars';
 import {wrapResponse} from './response-wrapper';
 

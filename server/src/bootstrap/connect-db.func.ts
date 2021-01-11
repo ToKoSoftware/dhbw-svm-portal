@@ -1,6 +1,5 @@
 import {Sequelize} from 'sequelize-typescript';
 import {Vars} from '../vars';
-import {User} from '../models/user.model';
 import {Op} from 'sequelize';
 
 export function connectToDatabase(): void {
@@ -8,7 +7,6 @@ export function connectToDatabase(): void {
         sequelizeInstance.authenticate().then(
             () => Vars.loggy.info('Connection has been established successfully.')
         );
-        sequelizeInstance.addModels([User]);
         sequelizeInstance.sync(); //You can use sequelize.sync() to automatically synchronize all models.
         Vars.db = sequelizeInstance;
         Vars.op = Op;

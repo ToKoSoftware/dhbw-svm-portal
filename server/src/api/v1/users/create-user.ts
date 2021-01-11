@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { UserData } from '../../../interfaces/users.interface';
-import { User } from '../../../models/user.model';
+import User from '../../../models/user.model';
 import { mapUser } from '../../../functions/map-users.func';
 import { objectHasRequiredAndNotEmptyKeys } from '../../../functions/check-inputs.func';
 import * as EmailValidator from 'email-validator';

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { User } from '../../../models/user.model';
+import User from '../../../models/user.model';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { FindOptions } from 'sequelize';
 import { buildQuery, QueryBuilderConfig } from '../../../functions/query-builder.func';

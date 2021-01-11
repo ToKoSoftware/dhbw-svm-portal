@@ -4,7 +4,7 @@ import {checkKeysAreNotEmptyOrNotSet} from '../../../functions/check-inputs.func
 import {mapUser} from '../../../functions/map-users.func';
 import {wrapResponse} from '../../../functions/response-wrapper';
 import {UserData} from '../../../interfaces/users.interface';
-import {User} from '../../../models/user.model';
+import User from '../../../models/user.model';
 import * as EmailValidator from 'email-validator';
 import {currentUserIsAdminOrMatchesId} from '../../../functions/current-user-is-admin-or-matches-id.func';
 import {Op} from 'sequelize';
