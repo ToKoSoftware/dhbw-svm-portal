@@ -1,7 +1,6 @@
 import {Request, Response} from 'express';
 import {wrapResponse} from '../../../functions/response-wrapper';
-import {UserData, UserLoginData} from '../../../interfaces/users.interface';
-import {mapUser} from '../../../functions/map-users.func';
+import {UserLoginData} from '../../../interfaces/users.interface';
 import {User} from '../../../models/user.model';
 import * as bcrypt from 'bcryptjs';
 import {jwtSign} from '../../../functions/jwt-sign.func';
