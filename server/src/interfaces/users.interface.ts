@@ -11,7 +11,6 @@ export interface UserData {
     street_number: string;
     post_code: string;
     city: string;
-    is_active: boolean
 }
 
 export interface UserLoginData {

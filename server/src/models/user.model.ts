@@ -22,11 +22,11 @@ export class User extends Model<User> {
     @Column
     street: string;
     @Column
-    street_number: number;
+    street_number: string;
     @Column
     post_code: string;
     @Column
-    city: number;
+    city: string;
     @Column
     is_active: boolean;
 
