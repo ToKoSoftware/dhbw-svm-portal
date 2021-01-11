@@ -5,41 +5,41 @@ module.exports = {
             id: {
                 primaryKey: true,
                 allowNull: false,
-                type: DataType.STRING,
-                defaultValue: DataType.UUIDV4
+                type: Sequelize.STRING,
+                defaultValue: Sequelize.UUIDV4
             },
             title: {
-                type: DataType.STRING,
+                type: Sequelize.STRING,
                 allowNull: false
             },
             description: {
                 allowNull: false,
-                type: DataType.STRING,
+                type: Sequelize.STRING,
             },
             price: {
                 allowNull: true,
-                type: DataType.INTEGER,
+                type: Sequelize.INTEGER,
             },
             date: {
                 allowNull: false,
-                type: DataType.DATE
+                type: Sequelize.DATE
             },
             max_participants: {
                 allowNull: true,
-                type: DataType.INTEGER
+                type: Sequelize.INTEGER
             },
             is_active: {
-                type: DataType.BOOLEAN,
+                type: Sequelize.BOOLEAN,
                 allowNull: false,
                 defaultValue: true
             },
             createdAt: {
                 allowNull: false,
-                type: DataType.DATE
+                type: Sequelize.DATE
             },
             updatedAt: {
                 allowNull: false,
-                type: DataType.DATE
+                type: Sequelize.DATE
             }
         });
     },
