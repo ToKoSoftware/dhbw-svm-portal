@@ -1,19 +1,28 @@
-import {sequelizeInstance} from '../bootstrap/connect-db.func';
-import {Model, DataType} from 'sequelize-typescript';
+import {BelongsTo, Column, ForeignKey, Model, Table} from 'sequelize-typescript';
 import {NewsData} from '../interfaces/news.interface';
-import User from './user.model';
-import Organization from './organization.model';
+import { Organization } from './organization.model';
+import { User } from './user.model';
 
-const config = {
-    tableName: 'News',
-    sequelize: sequelizeInstance,
-};
-
-class News extends Model {
-    id: string;
+@Table
+export class News extends Model {
+    
+    @Column
     title: string;
+    @Column
     body: string;
+    @ForeignKey(() => Organization)
+    @Column
+    org_id: string;
+    @ForeignKey(() => User)
+    @Column
+    author_id: string;
+    @Column
     is_active: boolean;
+
+    @BelongsTo(() => Organization)
+    organization: Organization;
+    @BelongsTo(() => User)
+    author: User;
 
     public static requiredFields(): Array<keyof NewsData> {
         return [
@@ -22,40 +31,3 @@ class News extends Model {
         ];
     }
 }
-News.init(
-    {
-        id: {
-            primaryKey: true,
-            allowNull: false,
-            type: DataType.UUID,
-            defaultValue: DataType.UUIDV4
-        },
-        title: {
-            type: DataType.STRING,
-            allowNull: false
-        },
-        body: {
-            type: DataType.STRING,
-            allowNull: false
-        },
-        is_active: {
-            type: DataType.BOOLEAN,
-            allowNull: false,
-            defaultValue: true
-        },
-        createdAt: {
-            allowNull: false,
-            type: DataType.DATE
-        },
-        updatedAt: {
-            allowNull: false,
-            type: DataType.DATE
-        }
-    },
-    config,
-);
-
-News.belongsTo(User);
-News.belongsTo(Organization);
-
-export default News;

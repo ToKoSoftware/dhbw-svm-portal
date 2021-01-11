@@ -1,8 +1,9 @@
 import {genderType, UserData} from '../interfaces/users.interface';
-import {BelongsTo, BelongsToMany, Column, ForeignKey, Model, Table} from 'sequelize-typescript';
+import {BelongsTo, BelongsToMany, Column, ForeignKey, HasMany, Model, Table} from 'sequelize-typescript';
 import { Organization } from './organization.model';
 import { EventRegistration } from './event-registration.model';
 import { Event } from './event.model';
+import { News } from './news.model';
 
 @Table
 export class User extends Model {
@@ -39,6 +40,11 @@ export class User extends Model {
     organization: Organization;
     @BelongsToMany(() => Event, () => EventRegistration)
     registered_events: Array<Event & {event_registrations: EventRegistration}>;
+
+    @HasMany(() => Event) //TODO: Checken, ob das richtig aufgelöst wird!
+    events: Event[];
+    @HasMany(() => News)
+    news: News[];
 
     public static requiredFields(): Array<keyof UserData> {
         return [
