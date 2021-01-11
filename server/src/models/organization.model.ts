@@ -23,5 +23,5 @@ export class Organization extends Model {
     }
 
     @HasMany(() => User)
-    Users: User[];
+    users: User[];
 }

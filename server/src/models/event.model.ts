@@ -1,22 +1,33 @@
-import {sequelizeInstance} from '../bootstrap/connect-db.func';
-import {Model, DataType} from 'sequelize-typescript';
+import {BelongsTo, Column, ForeignKey, Model} from 'sequelize-typescript';
 import {EventData} from '../interfaces/event.interface';
-import User from './user.model';
-import Organization from './organization.model';
+import { Organization } from './organization.model';
+import { User } from './user.model';
 
-const config = {
-    tableName: 'Events',
-    sequelize: sequelizeInstance,
-};
+export class Event extends Model {
 
-class Event extends Model {
-    id: string;
+    @Column
     title: string;
+    @Column
     description: string;
+    @Column
     price: number | null;
+    @Column
     date: Date;
+    @Column
     max_participants: number | null;
+    @ForeignKey(() => User)
+    @Column
+    author_id: string;
+    @ForeignKey(() => Organization)
+    @Column
+    org_id: string;
+    @Column
     is_active: boolean;
+
+    @BelongsTo(() => Organization)
+    organization: Organization;
+    @BelongsTo(() => User)
+    author: User;
 
     public static requiredFields(): Array<keyof EventData> {
         return [
@@ -28,52 +39,3 @@ class Event extends Model {
         ];
     }
 }
-Event.init(
-    {
-        id: {
-            primaryKey: true,
-            allowNull: false,
-            type: DataType.UUID,
-            defaultValue: DataType.UUIDV4
-        },
-        title: {
-            type: DataType.STRING,
-            allowNull: false
-        },
-        description: {
-            allowNull: false,
-            type: DataType.STRING,
-        },
-        price: {
-            allowNull: true,
-            type: DataType.INTEGER,
-        },
-        date: {
-            allowNull: false,
-            type: DataType.DATE
-        },
-        max_participants: {
-            allowNull: true,
-            type: DataType.INTEGER
-        },
-        is_active: {
-            type: DataType.BOOLEAN,
-            allowNull: false,
-            defaultValue: true
-        },
-        createdAt: {
-            allowNull: false,
-            type: DataType.DATE
-        },
-        updatedAt: {
-            allowNull: false,
-            type: DataType.DATE
-        }
-    },
-    config,
-);
-
-Event.belongsTo(User);
-Event.belongsTo(Organization);
-
-export default Event;
