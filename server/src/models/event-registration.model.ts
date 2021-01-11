@@ -1,28 +1,21 @@
 import {sequelizeInstance} from '../bootstrap/connect-db.func';
 import {Model, DataType} from 'sequelize-typescript';
-import {NewsData} from '../interfaces/news.interface';
 import User from './user.model';
-import Organization from './organization.model';
+import Event from './event.model';
 
 const config = {
-    tableName: 'News',
+    tableName: 'EventRegistrations',
     sequelize: sequelizeInstance,
 };
 
-class News extends Model {
+class EventRegistration extends Model {
     id?: string;
-    title: string;
+    user_id: string;
+    event_id: string;
     body: string;
-    is_active: boolean;
-
-    public static requiredFields(): Array<keyof NewsData> {
-        return [
-            'title',
-            'body'
-        ];
-    }
+    payment_done: boolean;
 }
-News.init(
+EventRegistration.init(
     {
         id: {
             primaryKey: true,
@@ -30,18 +23,28 @@ News.init(
             type: DataType.UUID,
             defaultValue: DataType.UUIDV4
         },
-        title: {
-            type: DataType.STRING,
-            allowNull: false
+        user_id: {
+            type: DataType.UUID,
+            references: {
+              model: User,
+              key: 'id'
+            }
+        },
+        event_id: {
+            type: DataType.UUID,
+            references: {
+              model: Event,
+              key: 'id'
+            }
         },
         body: {
             type: DataType.STRING,
-            allowNull: false
+            allowNull: true
         },
-        is_active: {
+        payment_done: {
             type: DataType.BOOLEAN,
             allowNull: false,
-            defaultValue: true
+            defaultValue: false
         },
         createdAt: {
             allowNull: false,
@@ -54,8 +57,7 @@ News.init(
     },
     config,
 );
+User.belongsToMany(Event, {through: EventRegistration});
+Event.belongsToMany(User, {through: EventRegistration});
 
-News.belongsTo(User);
-News.belongsTo(Organization);
-
-export default News;
+export default EventRegistration;

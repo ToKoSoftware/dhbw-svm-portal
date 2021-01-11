@@ -1,13 +1,19 @@
-import {BeforeCreate, Column, Model, Table} from 'sequelize-typescript';
-import {v4 as uuidv4} from 'uuid';
+import {sequelizeInstance} from '../bootstrap/connect-db.func';
+import {Model, DataType} from 'sequelize-typescript';
 import {TeamData} from '../interfaces/team.interface';
+import Role from './role.model';
+import Poll from './poll.model';
+import User from './user.model';
+import Organization from './organization.model';
 
-@Table
-export class Team extends Model<Team> {
+const config = {
+    tableName: 'Teams',
+    sequelize: sequelizeInstance,
+};
 
-    @Column
+class Team extends Model {
+    id?: string;
     title: string;
-    @Column
     is_active: boolean;
 
     public static requiredFields(): Array<keyof TeamData> {
@@ -15,9 +21,45 @@ export class Team extends Model<Team> {
             'title'
         ];
     }
-
-    @BeforeCreate
-    static addUuid(instance: Team): string {
-        return instance.id = uuidv4();
-    }
 }
+Team.init(
+    {
+        id: {
+            primaryKey: true,
+            allowNull: false,
+            type: DataType.UUID,
+            defaultValue: DataType.UUIDV4
+        },
+        title: {
+            type: DataType.STRING,
+            allowNull: false
+        },
+        is_active: {
+            type: DataType.BOOLEAN,
+            allowNull: false,
+            defaultValue: true
+        },
+        createdAt: {
+            allowNull: false,
+            type: DataType.DATE
+        },
+        updatedAt: {
+            allowNull: false,
+            type: DataType.DATE
+        }
+    },
+    config,
+);
+
+Team.hasMany(Role, {
+    foreignKey: 'maintain_role_id'
+});
+Team.hasMany(Poll, {
+    foreignKey: 'answer_team_id'
+});
+Team.hasMany(User, {
+    foreignKey: 'author_id'
+});
+Team.belongsTo(Organization);
+
+export default Team;
