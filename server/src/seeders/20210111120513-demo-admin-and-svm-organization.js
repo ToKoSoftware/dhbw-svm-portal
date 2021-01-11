@@ -4,11 +4,20 @@ const bcrypt =  require('bcryptjs');
 
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        queryInterface.bulkDelete('Users', null, {});
         const date = new Date();
+        const org_id = v4();
+        queryInterface.bulkInsert('Organizations', [{
+            id: org_id,
+            access_code: 'svm2020',
+            config: {},
+            title: 'SVM',
+            is_active: true,
+            createdAt: date,
+            updatedAt: date
+        }]);
         const SALT_FACTOR = 10;
         const hashedPassword = await bcrypt.hash('admin123', SALT_FACTOR);
-        return queryInterface.bulkInsert('Users', [{
+        queryInterface.bulkInsert('Users', [{
             id: v4(),
             email: 'admin@admin.com',
             username: 'admin',
@@ -20,6 +29,7 @@ module.exports = {
             street_number: '9',
             post_code: '89522',
             city: 'Heidenheim',
+            org_id: org_id,
             is_active: true,
             is_admin: true,
             createdAt: date,
@@ -29,23 +39,6 @@ module.exports = {
 
     down: async (queryInterface, Sequelize) => {
         queryInterface.bulkDelete('Users', null, {});
-        const date = new Date();
-        const SALT_FACTOR = 10;
-        const hashedPassword = await bcrypt.hash('admin123', SALT_FACTOR);
-        return queryInterface.bulkInsert('Users', [{
-            id: v4(),
-            email: 'admin@admin.com',
-            password:  hashedPassword,
-            firstName: 'Katharina',
-            lastName: 'Blessing-Kehren',
-            street: 'Oberdorfstr.',
-            streetNumber: '9',
-            postcode: '89522',
-            city: 'Heidenheim',
-            is_active: true,
-            is_admin: true,
-            createdAt: date,
-            updatedAt: date
-        }]);
+        queryInterface.bulkDelete('Organizations', null, {});
     }
 };
