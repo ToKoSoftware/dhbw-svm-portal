@@ -9,7 +9,7 @@ const config = {
 };
 
 class EventRegistration extends Model {
-    id?: string;
+    id: string;
     user_id: string;
     event_id: string;
     body: string;

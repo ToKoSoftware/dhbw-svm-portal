@@ -9,7 +9,7 @@ const config = {
 };
 
 class Membership extends Model {
-    id?: string;
+    id: string;
     user_id: string;
     team_id: string;
 }

@@ -9,7 +9,7 @@ const config = {
 };
 
 class PollVote extends Model {
-    id?: string;
+    id: string;
     user_id: string;
     poll_answer_id: string;
     title: string | null;

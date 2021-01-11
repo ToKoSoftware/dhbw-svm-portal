@@ -9,7 +9,7 @@ const config = {
 };
 
 class RoleAssignment extends Model {
-    id?: string;
+    id: string;
     user_id: string;
     role_id: string;
 }

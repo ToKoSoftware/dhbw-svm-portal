@@ -10,7 +10,7 @@ const config = {
 };
 
 class News extends Model {
-    id?: string;
+    id: string;
     title: string;
     body: string;
     is_active: boolean;

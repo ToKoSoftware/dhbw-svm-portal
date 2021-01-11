@@ -11,7 +11,7 @@ const config = {
 };
 
 class User extends Model {
-    id?: string
+    id: string
     email: string;
     username: string;
     password: string;

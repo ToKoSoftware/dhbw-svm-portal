@@ -12,7 +12,7 @@ const config = {
 };
 
 class Team extends Model {
-    id?: string;
+    id: string;
     title: string;
     is_active: boolean;
 

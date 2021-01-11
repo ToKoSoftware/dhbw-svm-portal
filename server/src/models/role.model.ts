@@ -10,7 +10,7 @@ const config = {
 };
 
 class Role extends Model {
-    id?: string;
+    id: string;
     title: string;
     user_deletable: boolean;
     is_active: boolean;

@@ -15,7 +15,7 @@ const config = {
 
 export class Organization extends Model {
 
-    id?: string;
+    id: string;
     title: string;
     access_code: string;
     config: JSON;

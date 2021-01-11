@@ -10,7 +10,7 @@ const config = {
 };
 
 class Event extends Model {
-    id?: string;
+    id: string;
     title: string;
     description: string;
     price: number | null;

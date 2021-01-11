@@ -12,7 +12,7 @@ const config = {
 };
 
 class Poll extends Model {
-    id?: string;
+    id: string;
     title: string;
     body: string;
     closes_at: Date;

@@ -10,6 +10,7 @@ export function verifyToken(res: Response, token: string, next: NextFunction): v
             res.status(403).send(wrapResponse(false, {error: 'Unauthorized!'}));
         } else {
             Vars.currentJWT = token;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const userData: string | { [key: string]: any; } | null = jwt.decode(token);
             if (!(userData instanceof Object) || userData === null) {
                 return res.status(403).send(wrapResponse(false, {error: 'Error occured during authorization!'}));

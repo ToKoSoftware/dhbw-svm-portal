@@ -9,7 +9,7 @@ const config = {
 };
 
 class PollAnswer extends Model {
-    id?: string;
+    id: string;
     title: string;
     is_active: boolean;
 
