@@ -9,6 +9,8 @@ import { PollAnswer } from './poll-answer.model';
 import { PollVote } from './poll-vote.model';
 import { Team } from './team.model';
 import { Membership } from './membership.model';
+import { Role } from './role.model';
+import { RoleAssignment } from './role-assignment.model';
 
 @Table
 export class User extends Model {
@@ -49,6 +51,8 @@ export class User extends Model {
     voted_poll_answers: Array<PollAnswer & {poll_vote: PollVote}>;
     @BelongsToMany(() => Team, () => Membership)
     teams: Array<Team & {membership: Membership}>;
+    @BelongsToMany(() => Role, () => RoleAssignment)
+    assigned_roles: Array<Role & {role_assignment: RoleAssignment}>;
 
     @HasMany(() => Event)
     created_events: Event[];
