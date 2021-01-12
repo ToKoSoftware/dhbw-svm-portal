@@ -15,32 +15,18 @@ export async function loginUser(req: Request, res: Response): Promise<Response> 
     }
 
     let success = true;
-    let user: User | null;
-    if (incomingData.email !== undefined) {
-        user = await User.findOne(
-            {
-                where: {
-                    email: incomingData.email,
-                }
-            })
-            .catch(() => {
-                success = false;
-                return null;
-            });
-    } else if (incomingData.username !== undefined) {
-        user = await User.findOne(
-            {
-                where: {
-                    username: incomingData.username,
-                }
-            })
-            .catch(() => {
-                success = false;
-                return null;
-            });
-    } else {
-        user = null;
-    }
+    const selectStatement = {
+        where: {
+            ...(incomingData?.email ? {email: incomingData.email} : {}),
+            ...(incomingData?.username ? {email: incomingData.username} : {}),
+        }
+    };
+    
+    const user = await User.findOne(selectStatement)
+        .catch(() => {
+            success = false;
+            return null;
+        });
 
 
     if (!success) {
