@@ -34,5 +34,3 @@ export class Team extends Model {
         ];
     }
 }
-
-// TODO Team.hasMany(Role, {foreignKey: 'maintain_role_id'});
