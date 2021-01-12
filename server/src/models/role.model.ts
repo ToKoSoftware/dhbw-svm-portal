@@ -1,4 +1,4 @@
-import {Model, Table, Column, ForeignKey, BelongsTo, HasOne, HasMany, BelongsToMany} from 'sequelize-typescript';
+import {Model, Table, Column, ForeignKey, BelongsTo, HasOne, HasMany, BelongsToMany, PrimaryKey} from 'sequelize-typescript';
 import {RoleData} from '../interfaces/role.interface';
 import { Organization } from './organization.model';
 import { RoleAssignment } from './role-assignment.model';
@@ -8,6 +8,9 @@ import { User } from './user.model';
 @Table
 export class Role extends Model {
 
+    @PrimaryKey
+    @Column
+    id: string;
     @Column
     title: string;
     @Column

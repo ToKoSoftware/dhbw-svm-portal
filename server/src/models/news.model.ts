@@ -1,4 +1,4 @@
-import {BelongsTo, Column, ForeignKey, Model, Table} from 'sequelize-typescript';
+import {BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table} from 'sequelize-typescript';
 import {NewsData} from '../interfaces/news.interface';
 import { Organization } from './organization.model';
 import { User } from './user.model';
@@ -6,6 +6,9 @@ import { User } from './user.model';
 @Table
 export class News extends Model {
     
+    @PrimaryKey
+    @Column
+    id: string;
     @Column
     title: string;
     @Column

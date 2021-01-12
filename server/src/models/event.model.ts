@@ -1,4 +1,4 @@
-import {AllowNull, BelongsTo, BelongsToMany, Column, ForeignKey, Model, Table} from 'sequelize-typescript';
+import {AllowNull, BelongsTo, BelongsToMany, Column, ForeignKey, Model, PrimaryKey, Table} from 'sequelize-typescript';
 import {EventData} from '../interfaces/event.interface';
 import { EventRegistration } from './event-registration.model';
 import { Organization } from './organization.model';
@@ -7,6 +7,9 @@ import { User } from './user.model';
 @Table
 export class Event extends Model {
 
+    @PrimaryKey
+    @Column
+    id: string;
     @Column
     title: string;
     @Column

@@ -1,10 +1,13 @@
-import {BelongsTo, Column, ForeignKey, Model, Table} from 'sequelize-typescript';
+import {BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table} from 'sequelize-typescript';
 import { Role } from './role.model';
 import { User } from './user.model';
 
 @Table
 export class RoleAssignment extends Model {
 
+    @PrimaryKey
+    @Column
+    id: string;
     @ForeignKey(() => User)
     @Column
     user_id: string;

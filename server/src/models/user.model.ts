@@ -1,5 +1,5 @@
 import {genderType, UserData} from '../interfaces/users.interface';
-import {BelongsTo, BelongsToMany, Column, ForeignKey, HasMany, Model, Table} from 'sequelize-typescript';
+import {BelongsTo, BelongsToMany, Column, ForeignKey, HasMany, Model, PrimaryKey, Table} from 'sequelize-typescript';
 import { Organization } from './organization.model';
 import { EventRegistration } from './event-registration.model';
 import { Event } from './event.model';
@@ -15,6 +15,9 @@ import { RoleAssignment } from './role-assignment.model';
 @Table
 export class User extends Model {
 
+    @PrimaryKey
+    @Column
+    id: string;
     @Column
     email: string;
     @Column

@@ -1,4 +1,4 @@
-import {Model, Table, Column, ForeignKey, BelongsTo, BelongsToMany} from 'sequelize-typescript';
+import {Model, Table, Column, ForeignKey, BelongsTo, BelongsToMany, PrimaryKey} from 'sequelize-typescript';
 import { PollAnswerData } from '../interfaces/poll-answer.interface';
 import { PollVote } from './poll-vote.model';
 import { Poll } from './poll.model';
@@ -7,6 +7,9 @@ import { User } from './user.model';
 @Table
 export class PollAnswer extends Model {
     
+    @PrimaryKey
+    @Column
+    id: string;
     @Column
     title: string;
     @Column

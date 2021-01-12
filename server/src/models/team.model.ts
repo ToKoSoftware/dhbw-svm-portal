@@ -1,4 +1,4 @@
-import {BelongsTo, BelongsToMany, Column, ForeignKey, HasMany, Model, Table} from 'sequelize-typescript';
+import {BelongsTo, BelongsToMany, Column, ForeignKey, HasMany, Model, PrimaryKey, Table} from 'sequelize-typescript';
 import {TeamData} from '../interfaces/team.interface';
 import { Membership } from './membership.model';
 import { Organization } from './organization.model';
@@ -9,6 +9,9 @@ import { User } from './user.model';
 @Table
 export class Team extends Model {
 
+    @PrimaryKey
+    @Column
+    id: string;
     @Column
     title: string;
     @Column
