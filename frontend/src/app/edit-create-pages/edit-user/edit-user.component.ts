@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {UserData} from '../../interfaces/user.interface';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '../../services/api/api.service';
 import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
 import {LoginService} from '../../services/login/login.service';
@@ -46,7 +46,7 @@ export class EditUserComponent implements OnInit, OnChanges {
             firstName: [data.data.firstName],
             lastName: [data.data.lastName],
             city: [data.data.city],
-            postcode: [data.data.postcode],
+            postcode: [data.data.postcode, Validators.minLength(4)],
             street: [data.data.street],
             streetNumber: [data.data.streetNumber],
           }

@@ -10,7 +10,7 @@ import {ConfirmModalService} from '../../services/confirm-modal/confirm-modal.se
   selector: 'app-register',
   templateUrl: './register.component.html'
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
   public createUserData: CreateUserData = {
     email: '',
     accessCode: '',
@@ -30,9 +30,6 @@ export class RegisterComponent implements OnInit {
     private readonly loginService: LoginService,
     private readonly confirm: ConfirmModalService,
     private readonly loading: LoadingModalService) {
-  }
-
-  ngOnInit(): void {
   }
 
   public createUser(): void {
