@@ -18,9 +18,9 @@ export class Role extends Model {
     @Column
     org_id: string;
 
-    @BelongsTo(() => Organization)
+    @BelongsTo(() => Organization, 'org_id')
     organization: Organization;
-    @HasOne(() => Organization)
+    @HasOne(() => Organization, 'admin_role_id')
     admin_of_organization: Organization;
     @HasMany(() => Team)
     maintained_teams: Team[];

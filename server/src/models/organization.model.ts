@@ -22,7 +22,7 @@ export class Organization extends Model {
     @Column
     admin_role_id: string;
 
-    @BelongsTo(() => Role)
+    @BelongsTo(() => Role, 'admin_role_id')
     admin_role: Role;
 
     @HasMany(() => User)
@@ -33,7 +33,7 @@ export class Organization extends Model {
     news: News[];
     @HasMany(() => Poll)
     polls: Poll[];
-    @HasMany(() => Role)
+    @HasMany(() => Role, 'org_id')
     roles: Role[];
     @HasMany(() => Team)
     teams: Team[];

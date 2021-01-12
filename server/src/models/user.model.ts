@@ -30,6 +30,8 @@ export class User extends Model {
     @Column
     gender: genderType;
     @Column
+    birthday: Date;
+    @Column
     street: string;
     @Column
     street_number: string;
