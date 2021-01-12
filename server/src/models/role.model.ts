@@ -1,19 +1,27 @@
-import {sequelizeInstance} from '../bootstrap/connect-db.func';
-import {Model, DataType} from 'sequelize-typescript';
+import {Model, Table, Column, ForeignKey, BelongsTo, HasOne, HasMany} from 'sequelize-typescript';
 import {RoleData} from '../interfaces/role.interface';
-import Team from './team.model';
-import Organization from './organization.model';
+import { Organization } from './organization.model';
+import { Team } from './team.model';
 
-const config = {
-    tableName: 'Roles',
-    sequelize: sequelizeInstance,
-};
+@Table
+export class Role extends Model {
 
-class Role extends Model {
-    id: string;
+    @Column
     title: string;
+    @Column
     user_deletable: boolean;
+    @Column
     is_active: boolean;
+    @ForeignKey(() => Organization)
+    @Column
+    org_id: string;
+
+    @BelongsTo(() => Organization)
+    organization: Organization;
+    @HasOne(() => Organization)
+    admin_of_organization: Organization;
+    @HasMany(() => Team)
+    maintained_teams: Team[];
 
     public static requiredFields(): Array<keyof RoleData> {
         return [
@@ -22,44 +30,3 @@ class Role extends Model {
         ];
     }
 }
-Role.init(
-    {
-        id: {
-            primaryKey: true,
-            allowNull: false,
-            type: DataType.UUID,
-            defaultValue: DataType.UUIDV4
-        },
-        title: {
-            type: DataType.STRING,
-            allowNull: false
-        },
-        user_deletable: {
-            type: DataType.BOOLEAN,
-            allowNull: false,
-            defaultValue: true
-        },
-        is_active: {
-            type: DataType.BOOLEAN,
-            allowNull: false,
-            defaultValue: true
-        },
-        createdAt: {
-            allowNull: false,
-            type: DataType.DATE
-        },
-        updatedAt: {
-            allowNull: false,
-            type: DataType.DATE
-        }
-    },
-    config,
-);
-
-Role.belongsTo(Team);
-Role.belongsTo(Organization);
-Role.hasOne(Organization, {
-    foreignKey: 'admin_role_id'
-});
-
-export default Role;
