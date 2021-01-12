@@ -12,6 +12,7 @@ import { RoleAssignment } from '../models/role-assignment.model';
 import { Role } from '../models/role.model';
 import { Team } from '../models/team.model';
 import { Event } from '../models/event.model';
+import {Op} from 'sequelize';
 
 
 export function connectToDatabase(): void {
@@ -25,7 +26,8 @@ export function connectToDatabase(): void {
             dialect: 'postgres',
             models: [User, Organization, EventRegistration, Membership, News, Poll, PollAnswer, PollVote, RoleAssignment, Role, Team, Event]
         });
-        
+        Vars.db = sequelize;
+        Vars.op = Op;
         sequelize.authenticate().then(
             () => Vars.loggy.info('Connection has been established successfully.')
         );
