@@ -1,6 +1,12 @@
-import {Model, Table, ForeignKey, Column, BelongsTo, PrimaryKey, IsUUID} from 'sequelize-typescript';
+import {Model, Table, ForeignKey, Column, BelongsTo, PrimaryKey, IsUUID, Scopes} from 'sequelize-typescript';
 import { Event } from './event.model';
 import { User } from './user.model';
+
+@Scopes(() => ({
+    full: {
+        include: [User, Event]
+    }
+}))
 
 @Table
 export class EventRegistration extends Model {

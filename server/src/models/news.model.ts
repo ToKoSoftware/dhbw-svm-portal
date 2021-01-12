@@ -1,7 +1,24 @@
-import {BelongsTo, Column, ForeignKey, IsUUID, Model, NotEmpty, PrimaryKey, Table} from 'sequelize-typescript';
+import {BelongsTo, Column, DefaultScope, ForeignKey, IsUUID, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
 import {NewsData} from '../interfaces/news.interface';
 import { Organization } from './organization.model';
 import { User } from './user.model';
+
+@DefaultScope(() => ({
+    where: {
+        is_active: true
+    }
+}))
+@Scopes(() => ({
+    full: {
+        include: [Organization, User]
+    },
+    fullAndActive: {
+        include: [Organization, User],
+        where: {
+            is_active: true
+        }
+    }
+})) 
 
 @Table
 export class News extends Model {

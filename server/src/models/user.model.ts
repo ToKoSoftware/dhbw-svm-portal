@@ -1,5 +1,5 @@
 import {genderType, UserData} from '../interfaces/users.interface';
-import {BelongsTo, BelongsToMany, Column, ForeignKey, HasMany, Is, IsBefore, IsDate, IsEmail, IsIn, IsUUID, Length, Model, PrimaryKey, Table} from 'sequelize-typescript';
+import {BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, HasMany, IsBefore, IsDate, IsEmail, IsIn, IsUUID, Length, Model, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
 import { Organization } from './organization.model';
 import { EventRegistration } from './event-registration.model';
 import { Event } from './event.model';
@@ -11,6 +11,32 @@ import { Team } from './team.model';
 import { Membership } from './membership.model';
 import { Role } from './role.model';
 import { RoleAssignment } from './role-assignment.model';
+
+@DefaultScope(() => ({
+    attributes: { 
+        exclude: ['password'] 
+    },
+    where: {
+        is_active: true
+    }
+}))
+@Scopes(() => ({
+    full: {
+        attributes: { 
+            exclude: ['password'] 
+        },
+        include: [Organization, Event, PollAnswer, Team, Role]
+    },
+    fullAndActive: {
+        attributes: { 
+            exclude: ['password'] 
+        },
+        include: [Organization, Event, PollAnswer, Team, Role],
+        where: {
+            is_active: true
+        }
+    }
+})) 
 
 @Table
 export class User extends Model {

@@ -1,9 +1,45 @@
-import {BelongsTo, Column, ForeignKey, HasMany, IsDate, IsUUID, Model, NotEmpty, PrimaryKey, Table} from 'sequelize-typescript';
+import {BelongsTo, Column, DefaultScope, ForeignKey, HasMany, IsDate, IsUUID, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
 import { PollData } from '../interfaces/poll.interface';
 import { Organization } from './organization.model';
 import { PollAnswer } from './poll-answer.model';
 import { Team } from './team.model';
 import { User } from './user.model';
+import {Op} from 'sequelize';
+
+@DefaultScope(() => ({
+    where: {
+        is_active: true,
+        closes_at: {
+            [Op.gte]: Date()
+        }
+    }
+}))
+@Scopes(() => ({
+    full: {
+        include: [Organization, User, Team, PollAnswer]
+    },
+    fullAndActive: {
+        include: [Organization, User, Team, PollAnswer],
+        where: {
+            is_active: true
+        }
+    },
+    eexpired: {
+        where: {
+            $or: [
+                {
+                    closes_at: {
+                        [Op.lte]: Date()
+                    }
+                },
+                {
+                    is_active: false
+                }
+            ]
+        }
+    }
+})) 
+
 
 @Table
 export class Poll extends Model {

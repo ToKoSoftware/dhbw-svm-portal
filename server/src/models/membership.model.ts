@@ -1,6 +1,12 @@
-import {BelongsTo, Column, ForeignKey, IsUUID, Model, PrimaryKey, Table} from 'sequelize-typescript';
+import {BelongsTo, Column, ForeignKey, IsUUID, Model, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
 import { Team } from './team.model';
 import { User } from './user.model';
+
+@Scopes(() => ({
+    full: {
+        include: [User, Team]
+    }
+}))
 
 @Table
 export class Membership extends Model {

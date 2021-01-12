@@ -1,8 +1,49 @@
-import {AllowNull, BelongsTo, BelongsToMany, Column, ForeignKey, IsDate, IsInt, IsUUID, Model, NotEmpty, PrimaryKey, Table} from 'sequelize-typescript';
+import {AllowNull, BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, IsDate, IsInt, IsUUID, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
 import {EventData} from '../interfaces/event.interface';
 import { EventRegistration } from './event-registration.model';
 import { Organization } from './organization.model';
 import { User } from './user.model';
+import {Op} from 'sequelize';
+
+@DefaultScope(() => ({
+    where: {
+        is_active: true,
+        date: {
+            [Op.gte]: Date()
+        },
+
+    }
+}))
+@Scopes(() => ({
+    full: {
+        include: [Organization, User]
+    },
+    fullAndActive: {
+        include: [Organization, User],
+        where: {
+            is_active: true
+        }
+    },
+    expired: {
+        where: {
+            $or: [
+                {
+                    closes_at: {
+                        [Op.lte]: Date()
+                    }
+                },
+                {
+                    is_active: false
+                }
+            ]
+        }
+    },
+    free: {
+        where: {
+            price: null
+        }
+    }
+})) 
 
 @Table
 export class Event extends Model {

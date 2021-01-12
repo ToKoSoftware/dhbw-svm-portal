@@ -1,4 +1,4 @@
-import {BelongsTo, Column, ForeignKey, HasMany, IsUUID, Model, NotEmpty, PrimaryKey, Table} from 'sequelize-typescript';
+import {BelongsTo, Column, DefaultScope, ForeignKey, HasMany, IsUUID, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
 import {OrganizationData} from '../interfaces/organization.interface';
 import { Event } from './event.model';
 import { News } from './news.model';
@@ -6,6 +6,32 @@ import { Poll } from './poll.model';
 import { Role } from './role.model';
 import { Team } from './team.model';
 import { User } from './user.model';
+
+@DefaultScope(() => ({
+    attributes: { 
+        exclude: ['aceess_code'] 
+    },
+    where: {
+        is_active: true
+    }
+}))
+@Scopes(() => ({
+    full: {
+        attributes: { 
+            exclude: ['aceess_code'] 
+        },
+        include: [{model: Role, as: 'admin_role'},{model: Role, as: 'roles'}, User, Team, News, Poll, Event]
+    },
+    fullAndActive: {
+        attributes: { 
+            exclude: ['aceess_code'] 
+        },
+        include: [{model: Role, as: 'admin_role'},{model: Role, as: 'roles'}, User, Team, News, Poll, Event],
+        where: {
+            is_active: true
+        }
+    }
+}))
 
 @Table
 export class Organization extends Model {

@@ -1,6 +1,12 @@
-import {BelongsTo, Column, ForeignKey, IsUUID, Model, PrimaryKey, Table} from 'sequelize-typescript';
+import {BelongsTo, Column, ForeignKey, IsUUID, Model, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
 import { Role } from './role.model';
 import { User } from './user.model';
+
+@Scopes(() => ({
+    full: {
+        include: [User, Role]
+    }
+}))
 
 @Table
 export class RoleAssignment extends Model {

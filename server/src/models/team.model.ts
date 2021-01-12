@@ -1,10 +1,27 @@
-import {BelongsTo, BelongsToMany, Column, ForeignKey, HasMany, IsUUID, Model, NotEmpty, PrimaryKey, Table} from 'sequelize-typescript';
+import {BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, HasMany, IsUUID, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
 import {TeamData} from '../interfaces/team.interface';
 import { Membership } from './membership.model';
 import { Organization } from './organization.model';
 import { Poll } from './poll.model';
 import { Role } from './role.model';
 import { User } from './user.model';
+
+@DefaultScope(() => ({
+    where: {
+        is_active: true
+    }
+}))
+@Scopes(() => ({
+    full: {
+        include: [Organization, Role, User]
+    },
+    fullAndActive: {
+        include: [Organization, Role, User],
+        where: {
+            is_active: true
+        }
+    }
+}))
 
 @Table
 export class Team extends Model {

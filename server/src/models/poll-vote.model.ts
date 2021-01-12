@@ -1,6 +1,12 @@
-import {Model, Table, ForeignKey, Column, BelongsTo, AllowNull, PrimaryKey, IsUUID} from 'sequelize-typescript';
+import {Model, Table, ForeignKey, Column, BelongsTo, AllowNull, PrimaryKey, IsUUID, Scopes} from 'sequelize-typescript';
 import { PollAnswer } from './poll-answer.model';
 import { User } from './user.model';
+
+@Scopes(() => ({
+    full: {
+        include: [User, PollAnswer]
+    }
+})) 
 
 @Table
 export class PollVote extends Model {
