@@ -7,10 +7,13 @@ export interface UserData {
     first_name: string;
     last_name: string;
     gender: genderType;
+    birthday: Date;
     street: string;
     street_number: string;
     post_code: string;
     city: string;
+    org_id: string;
+    is_active?: boolean;
 }
 
 export interface UserLoginData {

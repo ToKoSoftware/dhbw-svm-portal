@@ -1,5 +1,8 @@
 export interface OrganizationData{
-    access_code: string;
+    id?: string;
     title: string;
-    config: JSON;
+    access_code: string;
+    config: string;
+    admin_role_id: string;
+    is_active?: boolean;
 }
