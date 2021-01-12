@@ -21,7 +21,7 @@ module.exports = {
                 type: Sequelize.STRING,
             },
             author_id: {
-                allowNull: true,
+                allowNull: false,
                 type: Sequelize.STRING,
             },
             is_active: {

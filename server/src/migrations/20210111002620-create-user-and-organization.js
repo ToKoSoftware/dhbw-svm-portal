@@ -91,6 +91,10 @@ module.exports = {
                 type: Sequelize.JSON,
                 allowNull: false
             },
+            admin_role_id: {
+                type: Sequelize.STRING,
+                allowNull: false
+            },
             is_active: {
                 type: Sequelize.BOOLEAN,
                 allowNull: false,

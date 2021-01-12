@@ -17,7 +17,7 @@ module.exports = {
                 type: Sequelize.BOOLEAN,
             },
             user_id: {
-                allowNull: true,
+                allowNull: false,
                 type: Sequelize.STRING,
             },
             event_id: {

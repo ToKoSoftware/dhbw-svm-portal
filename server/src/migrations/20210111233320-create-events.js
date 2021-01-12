@@ -28,6 +28,14 @@ module.exports = {
                 allowNull: true,
                 type: Sequelize.INTEGER
             },
+            author_id: {
+                allowNull: false,
+                type: Sequelize.STRING
+            },
+            org_id: {
+                allowNull: false,
+                type: Sequelize.STRING,
+            },
             is_active: {
                 type: Sequelize.BOOLEAN,
                 allowNull: false,
