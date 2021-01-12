@@ -56,8 +56,7 @@ services:
     networks:
       - root_proxy-nety
 volumes:
-  portal-database-data: # named volumes can be managed easier using docker-compose
-  
+  portal-database-data:
 networks:
   root_proxy-nety:
     external: true
