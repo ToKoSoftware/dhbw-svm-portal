@@ -2,6 +2,7 @@ import {BelongsTo, Column, ForeignKey, HasMany, Model, Table} from 'sequelize-ty
 import { PollData } from '../interfaces/poll.interface';
 import { Organization } from './organization.model';
 import { PollAnswer } from './poll-answer.model';
+import { Team } from './team.model';
 import { User } from './user.model';
 
 @Table
@@ -21,11 +22,16 @@ export class Poll extends Model {
     @ForeignKey(() => Organization)
     @Column
     org_id: string;
+    @ForeignKey(() => Team)
+    @Column
+    answer_team_id: string;
 
     @BelongsTo(() => User)
     author: User;
     @BelongsTo(() => Organization)
     organization: Organization;
+    @BelongsTo(() => Team)
+    answer_team: Team;
 
     @HasMany(() => PollAnswer)
     poll_answers: PollAnswer[];
@@ -38,7 +44,3 @@ export class Poll extends Model {
         ];
     }
 }
-/**
- * TODO
- * Poll.belongsTo(Team);
- */

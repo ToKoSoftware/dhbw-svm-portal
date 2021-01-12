@@ -1,20 +1,24 @@
-import {sequelizeInstance} from '../bootstrap/connect-db.func';
-import {Model, DataType} from 'sequelize-typescript';
+import {BelongsTo, Column, ForeignKey, HasMany, Model, Table} from 'sequelize-typescript';
 import {TeamData} from '../interfaces/team.interface';
-import Role from './role.model';
-import Poll from './poll.model';
-import User from './user.model';
-import Organization from './organization.model';
+import { Organization } from './organization.model';
+import { Poll } from './poll.model';
 
-const config = {
-    tableName: 'Teams',
-    sequelize: sequelizeInstance,
-};
+@Table
+export class Team extends Model {
 
-class Team extends Model {
-    id: string;
+    @Column
     title: string;
+    @Column
     is_active: boolean;
+    @ForeignKey(() => Organization)
+    @Column
+    org_id: string;
+
+    @BelongsTo(() => Organization)
+    organization: Organization;
+
+    @HasMany(() => Poll)
+    can_answer_polls: Poll[];
 
     public static requiredFields(): Array<keyof TeamData> {
         return [
@@ -22,44 +26,5 @@ class Team extends Model {
         ];
     }
 }
-Team.init(
-    {
-        id: {
-            primaryKey: true,
-            allowNull: false,
-            type: DataType.UUID,
-            defaultValue: DataType.UUIDV4
-        },
-        title: {
-            type: DataType.STRING,
-            allowNull: false
-        },
-        is_active: {
-            type: DataType.BOOLEAN,
-            allowNull: false,
-            defaultValue: true
-        },
-        createdAt: {
-            allowNull: false,
-            type: DataType.DATE
-        },
-        updatedAt: {
-            allowNull: false,
-            type: DataType.DATE
-        }
-    },
-    config,
-);
 
-Team.hasMany(Role, {
-    foreignKey: 'maintain_role_id'
-});
-Team.hasMany(Poll, {
-    foreignKey: 'answer_team_id'
-});
-Team.hasMany(User, {
-    foreignKey: 'author_id'
-});
-Team.belongsTo(Organization);
-
-export default Team;
+// TODO Team.hasMany(Role, {foreignKey: 'maintain_role_id'});
