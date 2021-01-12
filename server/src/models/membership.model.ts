@@ -1,52 +1,20 @@
-import {sequelizeInstance} from '../bootstrap/connect-db.func';
-import {Model, DataType} from 'sequelize-typescript';
-import User from './user.model';
-import Team from './team.model';
+import {BelongsTo, Column, ForeignKey, Model, Table} from 'sequelize-typescript';
+import { Team } from './team.model';
+import { User } from './user.model';
 
-const config = {
-    tableName: 'Memberships',
-    sequelize: sequelizeInstance,
-};
+@Table
+export class Membership extends Model {
 
-class Membership extends Model {
-    id: string;
+    @ForeignKey(() => User)
+    @Column
     user_id: string;
+    @ForeignKey(() => Team)
+    @Column
     team_id: string;
-}
-Membership.init(
-    {
-        id: {
-            primaryKey: true,
-            allowNull: false,
-            type: DataType.UUID,
-            defaultValue: DataType.UUIDV4
-        },
-        user_id: {
-            type: DataType.UUID,
-            references: {
-                model: User,
-                key: 'id'
-            }
-        },
-        team_id: {
-            type: DataType.UUID,
-            references: {
-                model: Team,
-                key: 'id'
-            }
-        },
-        createdAt: {
-            allowNull: false,
-            type: DataType.DATE
-        },
-        updatedAt: {
-            allowNull: false,
-            type: DataType.DATE
-        }
-    },
-    config,
-);
-User.belongsToMany(Team, {through: Membership});
-Team.belongsToMany(User, {through: Membership});
 
-export default Membership;
+    @BelongsTo(() => User)
+    user: User;
+    @BelongsTo(() => Team)
+    team: Team;
+
+}

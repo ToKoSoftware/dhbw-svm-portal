@@ -1,7 +1,9 @@
-import {BelongsTo, Column, ForeignKey, HasMany, Model, Table} from 'sequelize-typescript';
+import {BelongsTo, BelongsToMany, Column, ForeignKey, HasMany, Model, Table} from 'sequelize-typescript';
 import {TeamData} from '../interfaces/team.interface';
+import { Membership } from './membership.model';
 import { Organization } from './organization.model';
 import { Poll } from './poll.model';
+import { User } from './user.model';
 
 @Table
 export class Team extends Model {
@@ -16,6 +18,8 @@ export class Team extends Model {
 
     @BelongsTo(() => Organization)
     organization: Organization;
+    @BelongsToMany(() => User, () => Membership)
+    users: Array<User & {membership: Membership}>;
 
     @HasMany(() => Poll)
     can_answer_polls: Poll[];
