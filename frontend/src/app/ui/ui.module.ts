@@ -35,6 +35,7 @@ import {NotifierComponent} from './notifier/notifier.component';
 import {SelectComponent} from './select/select.component';
 import {UserPickerComponent} from './user-picker/user-picker.component';
 import {RolePickerComponent} from './role-picker/role-picker.component';
+import { CardComponent } from './card/card.component';
 
 
 @NgModule({
@@ -70,7 +71,8 @@ import {RolePickerComponent} from './role-picker/role-picker.component';
     NotifierComponent,
     SelectComponent,
     UserPickerComponent,
-    RolePickerComponent
+    RolePickerComponent,
+    CardComponent
   ],
   exports: [
     NavbarComponent,
