@@ -3,6 +3,7 @@ import {TeamData} from '../interfaces/team.interface';
 import { Membership } from './membership.model';
 import { Organization } from './organization.model';
 import { Poll } from './poll.model';
+import { Role } from './role.model';
 import { User } from './user.model';
 
 @Table
@@ -15,6 +16,9 @@ export class Team extends Model {
     @ForeignKey(() => Organization)
     @Column
     org_id: string;
+    @ForeignKey(() => Role)
+    @Column
+    maintain_role_id: string;
 
     @BelongsTo(() => Organization)
     organization: Organization;

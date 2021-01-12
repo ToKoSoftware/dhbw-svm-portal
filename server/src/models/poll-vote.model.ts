@@ -12,7 +12,7 @@ export class PollVote extends Model {
     @Column
     poll_answer_id: string;
     @Column
-    title: string | null;
+    title: string;
 
     @BelongsTo(() => User)
     user: User;

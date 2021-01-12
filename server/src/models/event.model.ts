@@ -1,9 +1,10 @@
-import {BelongsTo, BelongsToMany, Column, ForeignKey, Model} from 'sequelize-typescript';
+import {BelongsTo, BelongsToMany, Column, ForeignKey, Model, Table} from 'sequelize-typescript';
 import {EventData} from '../interfaces/event.interface';
 import { EventRegistration } from './event-registration.model';
 import { Organization } from './organization.model';
 import { User } from './user.model';
 
+@Table
 export class Event extends Model {
 
     @Column
@@ -11,11 +12,11 @@ export class Event extends Model {
     @Column
     description: string;
     @Column
-    price: number | null;
+    price: number;
     @Column
     date: Date;
     @Column
-    max_participants: number | null;
+    max_participants: number;
     @ForeignKey(() => User)
     @Column
     author_id: string;
