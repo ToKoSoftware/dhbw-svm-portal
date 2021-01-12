@@ -1,4 +1,4 @@
-import {Model, Table, ForeignKey, Column, BelongsTo} from 'sequelize-typescript';
+import {Model, Table, ForeignKey, Column, BelongsTo, AllowNull} from 'sequelize-typescript';
 import { PollAnswer } from './poll-answer.model';
 import { User } from './user.model';
 
@@ -11,6 +11,7 @@ export class PollVote extends Model {
     @ForeignKey(() => PollAnswer)
     @Column
     poll_answer_id: string;
+    @AllowNull
     @Column
     title: string;
 

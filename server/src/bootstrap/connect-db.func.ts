@@ -11,6 +11,7 @@ import { Poll } from '../models/poll.model';
 import { RoleAssignment } from '../models/role-assignment.model';
 import { Role } from '../models/role.model';
 import { Team } from '../models/team.model';
+import { Event } from '../models/event.model';
 
 
 export function connectToDatabase(): void {
@@ -22,7 +23,7 @@ export function connectToDatabase(): void {
             host: Vars.config.database.url,
             port: Number(Vars.config.database.port),
             dialect: 'postgres',
-            models: [User, Organization, EventRegistration, Membership, News, Poll, PollAnswer, PollVote, RoleAssignment, Role, Team]
+            models: [User, Organization, EventRegistration, Membership, News, Poll, PollAnswer, PollVote, RoleAssignment, Role, Team, Event]
         });
         
         sequelize.authenticate().then(
