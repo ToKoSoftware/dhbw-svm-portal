@@ -11,7 +11,7 @@ module.exports = {
         const role_id_svm_admin = v4();
         const organizations = [{
             id: org_id_svm,
-            access_code: 'svm2020',
+            access_code: 'svm2021',
             config: '{}',
             title: 'SV Mergelstetten 1879 e.V.',
             is_active: true,
