@@ -1,6 +1,7 @@
-import {BelongsTo, Column, ForeignKey, Model, Table} from 'sequelize-typescript';
+import {BelongsTo, Column, ForeignKey, HasMany, Model, Table} from 'sequelize-typescript';
 import { PollData } from '../interfaces/poll.interface';
 import { Organization } from './organization.model';
+import { PollAnswer } from './poll-answer.model';
 import { User } from './user.model';
 
 @Table
@@ -26,6 +27,9 @@ export class Poll extends Model {
     @BelongsTo(() => Organization)
     organization: Organization;
 
+    @HasMany(() => PollAnswer)
+    poll_answers: PollAnswer[];
+
     public static requiredFields(): Array<keyof PollData> {
         return [
             'title',
@@ -37,7 +41,4 @@ export class Poll extends Model {
 /**
  * TODO
  * Poll.belongsTo(Team);
- * Poll.hasMany(PollAnswer, {
- *  foreignKey: 'poll_id'
- * });
  */

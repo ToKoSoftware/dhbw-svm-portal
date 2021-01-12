@@ -1,17 +1,20 @@
-import {sequelizeInstance} from '../bootstrap/connect-db.func';
-import {Model, DataType} from 'sequelize-typescript';
+import {Model, Table, Column, ForeignKey, BelongsTo} from 'sequelize-typescript';
 import { PollAnswerData } from '../interfaces/poll-answer.interface';
-import Poll from './poll.model';
+import { Poll } from './poll.model';
 
-const config = {
-    tableName: 'PollAnswers',
-    sequelize: sequelizeInstance,
-};
-
-class PollAnswer extends Model {
-    id: string;
+@Table
+export class PollAnswer extends Model {
+    
+    @Column
     title: string;
+    @Column
     is_active: boolean;
+    @ForeignKey(() => Poll)
+    @Column
+    poll_id: string;
+
+    @BelongsTo(() => Poll)
+    poll: Poll;
 
     public static requiredFields(): Array<keyof PollAnswerData> {
         return [
@@ -19,35 +22,3 @@ class PollAnswer extends Model {
         ];
     }
 }
-PollAnswer.init(
-    {
-        id: {
-            primaryKey: true,
-            allowNull: false,
-            type: DataType.UUID,
-            defaultValue: DataType.UUIDV4
-        },
-        title: {
-            type: DataType.STRING,
-            allowNull: false
-        },
-        is_active: {
-            type: DataType.BOOLEAN,
-            allowNull: false,
-            defaultValue: true
-        },
-        createdAt: {
-            allowNull: false,
-            type: DataType.DATE
-        },
-        updatedAt: {
-            allowNull: false,
-            type: DataType.DATE
-        }
-    },
-    config,
-);
-
-PollAnswer.belongsTo(Poll);
-
-export default PollAnswer;
