@@ -4,42 +4,29 @@ import {UserLoginData} from '../../../interfaces/users.interface';
 import {User} from '../../../models/user.model';
 import * as bcrypt from 'bcryptjs';
 import {jwtSign} from '../../../functions/jwt-sign.func';
+import { checkKeysAreNotEmptyOrNotSet } from '../../../functions/check-inputs.func';
 
 export async function loginUser(req: Request, res: Response): Promise<Response> {
 
     const incomingData: UserLoginData = req.body;
 
-    if (incomingData.password === undefined || (incomingData.email === undefined && incomingData.username === undefined)){
+    if (!checkKeysAreNotEmptyOrNotSet(incomingData, ['email', 'password']) || !checkKeysAreNotEmptyOrNotSet(incomingData, ['user', 'password'])){
         return res.status(400).send(wrapResponse(false, { error: 'Not all required fields have been set' }));
     }
 
     let success = true;
-    let user: User | null;
-    if (incomingData.email !== undefined) {
-        user = await User.findOne(
-            {
-                where: {
-                    email: incomingData.email,
-                }
-            })
-            .catch(() => {
-                success = false;
-                return null;
-            });
-    } else if (incomingData.username !== undefined) {
-        user = await User.findOne(
-            {
-                where: {
-                    username: incomingData.username,
-                }
-            })
-            .catch(() => {
-                success = false;
-                return null;
-            });
-    } else {
-        user = null;
-    }
+    const selectStatement = {
+        where: {
+            ...(incomingData?.email ? {email: incomingData.email} : {}),
+            ...(incomingData?.username ? {email: incomingData.username} : {}),
+        }
+    };
+    
+    const user = await User.findOne(selectStatement)
+        .catch(() => {
+            success = false;
+            return null;
+        });
 
 
     if (!success) {

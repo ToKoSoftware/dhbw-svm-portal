@@ -1,5 +1,5 @@
 import {BelongsTo, Column, DefaultScope, ForeignKey, IsUUID, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
-import {NewsData} from '../interfaces/news.interface';
+import {RawNewsData} from '../interfaces/news.interface';
 import { Organization } from './organization.model';
 import { User } from './user.model';
 
@@ -50,7 +50,7 @@ export class News extends Model {
     @BelongsTo(() => User)
     author: User;
 
-    public static requiredFields(): Array<keyof NewsData> {
+    public static requiredFields(): Array<keyof RawNewsData> {
         return [
             'title',
             'body'

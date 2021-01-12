@@ -1,5 +1,5 @@
 import {Model, Table, Column, ForeignKey, BelongsTo, HasOne, HasMany, BelongsToMany, PrimaryKey, IsUUID, NotEmpty, DefaultScope, Scopes} from 'sequelize-typescript';
-import {RoleData} from '../interfaces/role.interface';
+import {RawRoleData} from '../interfaces/role.interface';
 import { Organization } from './organization.model';
 import { RoleAssignment } from './role-assignment.model';
 import { Team } from './team.model';
@@ -54,7 +54,7 @@ export class Role extends Model {
     users: Array<User & {role_assignment: RoleAssignment}>;
 
 
-    public static requiredFields(): Array<keyof RoleData> {
+    public static requiredFields(): Array<keyof RawRoleData> {
         return [
             'title',
             'user_deletable'

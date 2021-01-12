@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('PollVots', {
+        await queryInterface.createTable('PollVotes', {
             id: {
                 primaryKey: true,
                 allowNull: false,
@@ -31,6 +31,6 @@ module.exports = {
         });
     },
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('PollVots');
+        await queryInterface.dropTable('PollVotes');
     }
 };

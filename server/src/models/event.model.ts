@@ -1,5 +1,5 @@
 import {AllowNull, BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, IsDate, IsInt, IsUUID, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
-import {EventData} from '../interfaces/event.interface';
+import {RawEventData} from '../interfaces/event.interface';
 import { EventRegistration } from './event-registration.model';
 import { Organization } from './organization.model';
 import { User } from './user.model';
@@ -78,7 +78,7 @@ export class Event extends Model {
     @BelongsToMany(() => User, () => EventRegistration)
     registered_users: Array<User & {event_registrations: EventRegistration}>;
 
-    public static requiredFields(): Array<keyof EventData> {
+    public static requiredFields(): Array<keyof RawEventData> {
         return [
             'title',
             'description',

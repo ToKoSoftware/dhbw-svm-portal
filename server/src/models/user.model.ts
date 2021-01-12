@@ -1,5 +1,5 @@
-import {genderType, UserData} from '../interfaces/users.interface';
 import {BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, HasMany, IsBefore, IsDate, IsEmail, IsIn, IsUUID, Length, Model, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
+import {genderType, RawUserData} from '../interfaces/users.interface';
 import { Organization } from './organization.model';
 import { EventRegistration } from './event-registration.model';
 import { Event } from './event.model';
@@ -103,7 +103,7 @@ export class User extends Model {
     created_polls: Poll[];
 
 
-    public static requiredFields(): Array<keyof UserData> {
+    public static requiredFields(): Array<keyof RawUserData> {
         return [
             'email',
             'username',
