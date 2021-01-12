@@ -5,6 +5,8 @@ import { EventRegistration } from './event-registration.model';
 import { Event } from './event.model';
 import { News } from './news.model';
 import { Poll } from './poll.model';
+import { PollAnswer } from './poll-answer.model';
+import { PollVote } from './poll-vote.model';
 
 @Table
 export class User extends Model {
@@ -41,6 +43,8 @@ export class User extends Model {
     organization: Organization;
     @BelongsToMany(() => Event, () => EventRegistration)
     registered_events: Array<Event & {event_registrations: EventRegistration}>;
+    @BelongsToMany(() => PollAnswer, () => PollVote)
+    voted_poll_answers: Array<PollAnswer & {poll_vote: PollVote}>;
 
     @HasMany(() => Event) //TODO: Checken, ob das richtig aufgelöst wird!
     created_events: Event[];
