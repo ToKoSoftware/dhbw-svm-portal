@@ -66,7 +66,7 @@ module.exports = {
         const users = [{
             id: user_id_svm_admin,
             email: 'admin@admin.com',
-            username: 'svm_admin',
+            username: 'kehren',
             password:  hashedPassword,
             first_name: 'Katharina',
             last_name: 'Blessing-Kehren',
