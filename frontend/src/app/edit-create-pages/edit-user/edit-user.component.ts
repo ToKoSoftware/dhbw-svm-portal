@@ -1,10 +1,10 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {UserData} from "../../interfaces/user.interface";
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {ApiService} from "../../services/api/api.service";
-import {LoadingModalService} from "../../services/loading-modal/loading-modal.service";
-import {LoginService} from "../../services/login/login.service";
-import {myProfileBreadcrumb, myProfilePages} from "../../my-profile/my-profile.pages";
+import {UserData} from '../../interfaces/user.interface';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {ApiService} from '../../services/api/api.service';
+import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
+import {LoginService} from '../../services/login/login.service';
+import {myProfileBreadcrumb, myProfilePages} from '../../my-profile/my-profile.pages';
 
 @Component({
   selector: 'app-edit-user',
@@ -22,7 +22,8 @@ export class EditUserComponent implements OnInit, OnChanges {
     private formBuilder: FormBuilder,
     private api: ApiService,
     private loadingModalService: LoadingModalService,
-    private login: LoginService) { }
+    private login: LoginService) {
+  }
 
   ngOnInit(): void {
     this.userId = this.userId != '' ? this.userId : this.login.decodedJwt$.value?.id || '';
@@ -55,6 +56,9 @@ export class EditUserComponent implements OnInit, OnChanges {
   }
 
   public updateUser(): void {
+    if (this.editUserForm.dirty && !this.editUserForm.valid) {
+      return;
+    }
     this.loading = true;
     const id = this.login.decodedJwt$.value?.id || '';
     const password = this.editUserForm.value.password;

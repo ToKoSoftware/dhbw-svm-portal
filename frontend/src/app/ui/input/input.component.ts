@@ -25,7 +25,7 @@ export class InputComponent implements OnInit, ControlValueAccessor {
     // We want to be able to use the component without a form,
     // so we mark the dependency as optional.
     @Optional()
-    private ngControl: NgControl
+    public ngControl: NgControl
   ) {
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
@@ -71,4 +71,22 @@ export class InputComponent implements OnInit, ControlValueAccessor {
 
   public onTouched(): void {
   }
+
+  get errorMessage() {
+    for (let propertyName in this.ngControl.errors) {
+      if (this.ngControl.errors.hasOwnProperty(propertyName)) {
+        if (error.hasOwnProperty(propertyName)) {
+          return error[propertyName];
+        }
+        return "Fehlerhafte Eingabe.";
+      }
+    }
+
+    return null;
+  }
 }
+
+const error: {[k: string]: string} = {
+  required: 'Bitte füllen Sie dieses Feld aus.',
+  minlength: 'Mindestlänge nicht erreicht.',
+};
