@@ -1,5 +1,5 @@
 import {Model, Table, Column, ForeignKey, BelongsTo, BelongsToMany, PrimaryKey} from 'sequelize-typescript';
-import { PollAnswerData } from '../interfaces/poll-answer.interface';
+import { RawPollAnswerData } from '../interfaces/poll-answer.interface';
 import { PollVote } from './poll-vote.model';
 import { Poll } from './poll.model';
 import { User } from './user.model';
@@ -24,7 +24,7 @@ export class PollAnswer extends Model {
     voted_users: Array<User & {poll_vote: PollVote}>;
 
 
-    public static requiredFields(): Array<keyof PollAnswerData> {
+    public static requiredFields(): Array<keyof RawPollAnswerData> {
         return [
             'title',
         ];

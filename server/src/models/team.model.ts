@@ -1,5 +1,5 @@
 import {BelongsTo, BelongsToMany, Column, ForeignKey, HasMany, Model, PrimaryKey, Table} from 'sequelize-typescript';
-import {TeamData} from '../interfaces/team.interface';
+import {RawTeamData} from '../interfaces/team.interface';
 import { Membership } from './membership.model';
 import { Organization } from './organization.model';
 import { Poll } from './poll.model';
@@ -25,13 +25,15 @@ export class Team extends Model {
 
     @BelongsTo(() => Organization)
     organization: Organization;
+    @BelongsTo(() => Role)
+    maintain_role: Role;
     @BelongsToMany(() => User, () => Membership)
     users: Array<User & {membership: Membership}>;
 
     @HasMany(() => Poll)
     can_answer_polls: Poll[];
 
-    public static requiredFields(): Array<keyof TeamData> {
+    public static requiredFields(): Array<keyof RawTeamData> {
         return [
             'title'
         ];

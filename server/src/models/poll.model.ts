@@ -1,5 +1,5 @@
 import {BelongsTo, Column, ForeignKey, HasMany, Model, PrimaryKey, Table} from 'sequelize-typescript';
-import { PollData } from '../interfaces/poll.interface';
+import { RawPollData } from '../interfaces/poll.interface';
 import { Organization } from './organization.model';
 import { PollAnswer } from './poll-answer.model';
 import { Team } from './team.model';
@@ -39,7 +39,7 @@ export class Poll extends Model {
     @HasMany(() => PollAnswer)
     poll_answers: PollAnswer[];
 
-    public static requiredFields(): Array<keyof PollData> {
+    public static requiredFields(): Array<keyof RawPollData> {
         return [
             'title',
             'body',

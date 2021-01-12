@@ -1,5 +1,5 @@
 import {BelongsTo, Column, ForeignKey, HasMany, Model, PrimaryKey, Table} from 'sequelize-typescript';
-import {OrganizationData} from '../interfaces/organization.interface';
+import {RawOrganizationData} from '../interfaces/organization.interface';
 import { Event } from './event.model';
 import { News } from './news.model';
 import { Poll } from './poll.model';
@@ -41,7 +41,7 @@ export class Organization extends Model {
     @HasMany(() => Team)
     teams: Team[];
 
-    public static requiredFields(): Array<keyof OrganizationData> {
+    public static requiredFields(): Array<keyof RawOrganizationData> {
         return [
             'title',
             'access_code',
