@@ -11,9 +11,9 @@ module.exports = {
         const role_id_svm_admin = v4();
         const organizations = [{
             id: org_id_svm,
-            access_code: 'svm2020',
+            access_code: 'svm2021',
             config: '{}',
-            title: 'SVM',
+            title: 'SV Mergelstetten 1879 e.V.',
             is_active: true,
             admin_role_id: role_id_svm_admin,
             createdAt: date,
@@ -66,7 +66,7 @@ module.exports = {
         const users = [{
             id: user_id_svm_admin,
             email: 'admin@admin.com',
-            username: 'svm_admin',
+            username: 'kehren',
             password:  hashedPassword,
             first_name: 'Katharina',
             last_name: 'Blessing-Kehren',
