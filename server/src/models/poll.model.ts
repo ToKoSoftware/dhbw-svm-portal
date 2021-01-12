@@ -4,14 +4,11 @@ import { Organization } from './organization.model';
 import { PollAnswer } from './poll-answer.model';
 import { Team } from './team.model';
 import { User } from './user.model';
-import {Op} from 'sequelize';
 
 @DefaultScope(() => ({
+    required: false,
     where: {
-        is_active: true,
-        closes_at: {
-            [Op.gte]: Date()
-        }
+        is_active: true
     }
 }))
 @Scopes(() => ({
@@ -19,23 +16,16 @@ import {Op} from 'sequelize';
         include: [Organization, User, Team, PollAnswer]
     },
     fullAndActive: {
+        required: false,
         include: [Organization, User, Team, PollAnswer],
         where: {
             is_active: true
         }
     },
-    eexpired: {
+    expired: {
+        required: false,
         where: {
-            $or: [
-                {
-                    closes_at: {
-                        [Op.lte]: Date()
-                    }
-                },
-                {
-                    is_active: false
-                }
-            ]
+            is_active: false  
         }
     }
 })) 

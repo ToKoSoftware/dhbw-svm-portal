@@ -5,6 +5,7 @@ import { Poll } from './poll.model';
 import { User } from './user.model';
 
 @DefaultScope(() => ({
+    required: false,
     where: {
         is_active: true
     }
@@ -14,6 +15,7 @@ import { User } from './user.model';
         include: [Poll, User]
     },
     fullAndActive: {
+        required: false,
         include: [Poll, User],
         where: {
             is_active: true

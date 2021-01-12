@@ -13,6 +13,7 @@ import { Role } from './role.model';
 import { RoleAssignment } from './role-assignment.model';
 
 @DefaultScope(() => ({
+    required: false,
     attributes: { 
         exclude: ['password'] 
     },
@@ -22,16 +23,18 @@ import { RoleAssignment } from './role-assignment.model';
 }))
 @Scopes(() => ({
     full: {
+        required: false,
         attributes: { 
             exclude: ['password'] 
         },
-        include: [Organization, Event, PollAnswer, Team, Role]
+        include: [Organization, {model: Event, as: 'registered_events'}, {model: Event, as: 'created_events'}, PollAnswer, Team, Role, News, Poll]
     },
     fullAndActive: {
+        required: false,
         attributes: { 
             exclude: ['password'] 
         },
-        include: [Organization, Event, PollAnswer, Team, Role],
+        include: [Organization, {model: Event, as: 'registered_events'}, {model: Event, as: 'created_events'}, PollAnswer, Team, Role, News, Poll],
         where: {
             is_active: true
         }

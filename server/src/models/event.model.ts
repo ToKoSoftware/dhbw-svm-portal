@@ -3,42 +3,34 @@ import {EventData} from '../interfaces/event.interface';
 import { EventRegistration } from './event-registration.model';
 import { Organization } from './organization.model';
 import { User } from './user.model';
-import {Op} from 'sequelize';
 
 @DefaultScope(() => ({
+    required: false,
     where: {
-        is_active: true,
-        date: {
-            [Op.gte]: Date()
-        },
+        is_active: true
 
     }
 }))
 @Scopes(() => ({
     full: {
-        include: [Organization, User]
+        include: [Organization, {model: User, as: 'author'}, {model: User, as: 'registered_users'}]
     },
     fullAndActive: {
-        include: [Organization, User],
+        required: false,
+        include: [Organization, {model: User, as: 'author'}, {model: User, as: 'registered_users'}],
         where: {
             is_active: true
         }
     },
     expired: {
+        required: false,
         where: {
-            $or: [
-                {
-                    closes_at: {
-                        [Op.lte]: Date()
-                    }
-                },
-                {
-                    is_active: false
-                }
-            ]
+            is_active: false
         }
+        
     },
     free: {
+        required: false,
         where: {
             price: null
         }

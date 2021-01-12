@@ -4,6 +4,7 @@ import { User } from './user.model';
 
 @Scopes(() => ({
     full: {
+        required: false,
         include: [User, Team]
     }
 }))

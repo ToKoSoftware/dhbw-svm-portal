@@ -6,6 +6,7 @@ import { Team } from './team.model';
 import { User } from './user.model';
 
 @DefaultScope(() => ({
+    required: false,
     where: {
         is_active: true
     }
@@ -15,6 +16,7 @@ import { User } from './user.model';
         include: [{model: Organization, as: 'organization'},{model: Organization, as: 'admin_of_organization'}, Team, User]
     },
     fullAndActive: {
+        required: false,
         include: [{model: Organization, as: 'organization'},{model: Organization, as: 'admin_of_organization'}, Team, User],
         where: {
             is_active: true
