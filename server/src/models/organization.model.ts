@@ -1,4 +1,4 @@
-import {BelongsTo, Column, ForeignKey, HasMany, Model, PrimaryKey, Table} from 'sequelize-typescript';
+import {BelongsTo, Column, ForeignKey, HasMany, IsUUID, Model, NotEmpty, PrimaryKey, Table} from 'sequelize-typescript';
 import {OrganizationData} from '../interfaces/organization.interface';
 import { Event } from './event.model';
 import { News } from './news.model';
@@ -10,17 +10,21 @@ import { User } from './user.model';
 @Table
 export class Organization extends Model {
 
+    @IsUUID(4)
     @PrimaryKey
     @Column
     id: string;
+    @NotEmpty
     @Column
     title: string;
+    @NotEmpty
     @Column
     access_code: string;
     @Column
     config: string;
     @Column
     is_active: boolean;
+    @IsUUID(4)
     @ForeignKey(() => Role)
     @Column
     admin_role_id: string;

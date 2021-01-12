@@ -1,5 +1,5 @@
 import {genderType, UserData} from '../interfaces/users.interface';
-import {BelongsTo, BelongsToMany, Column, ForeignKey, HasMany, Model, PrimaryKey, Table} from 'sequelize-typescript';
+import {BelongsTo, BelongsToMany, Column, ForeignKey, HasMany, Is, IsBefore, IsDate, IsEmail, IsIn, IsUUID, Length, Model, PrimaryKey, Table} from 'sequelize-typescript';
 import { Organization } from './organization.model';
 import { EventRegistration } from './event-registration.model';
 import { Event } from './event.model';
@@ -15,9 +15,11 @@ import { RoleAssignment } from './role-assignment.model';
 @Table
 export class User extends Model {
 
+    @IsUUID(4)
     @PrimaryKey
     @Column
     id: string;
+    @IsEmail
     @Column
     email: string;
     @Column
@@ -30,20 +32,25 @@ export class User extends Model {
     first_name: string;
     @Column
     last_name: string;
+    @IsIn([['M', 'W', 'D']])
     @Column
     gender: genderType;
+    @IsDate
+    @IsBefore(Date())
     @Column
     birthday: Date;
     @Column
     street: string;
     @Column
     street_number: string;
+    @Length({min: 5, max: 5})
     @Column
     post_code: string;
     @Column
     city: string;
     @Column
     is_active: boolean;
+    @IsUUID(4)
     @ForeignKey(() => Organization)
     @Column
     org_id: string;

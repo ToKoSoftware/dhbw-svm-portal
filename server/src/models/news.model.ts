@@ -1,4 +1,4 @@
-import {BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table} from 'sequelize-typescript';
+import {BelongsTo, Column, ForeignKey, IsUUID, Model, NotEmpty, PrimaryKey, Table} from 'sequelize-typescript';
 import {NewsData} from '../interfaces/news.interface';
 import { Organization } from './organization.model';
 import { User } from './user.model';
@@ -6,16 +6,20 @@ import { User } from './user.model';
 @Table
 export class News extends Model {
     
+    @IsUUID(4)
     @PrimaryKey
     @Column
     id: string;
+    @NotEmpty
     @Column
     title: string;
     @Column
     body: string;
+    @IsUUID(4)
     @ForeignKey(() => Organization)
     @Column
     org_id: string;
+    @IsUUID(4)
     @ForeignKey(() => User)
     @Column
     author_id: string;

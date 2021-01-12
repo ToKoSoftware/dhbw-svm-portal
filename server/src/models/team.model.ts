@@ -1,4 +1,4 @@
-import {BelongsTo, BelongsToMany, Column, ForeignKey, HasMany, Model, PrimaryKey, Table} from 'sequelize-typescript';
+import {BelongsTo, BelongsToMany, Column, ForeignKey, HasMany, IsUUID, Model, NotEmpty, PrimaryKey, Table} from 'sequelize-typescript';
 import {TeamData} from '../interfaces/team.interface';
 import { Membership } from './membership.model';
 import { Organization } from './organization.model';
@@ -9,16 +9,20 @@ import { User } from './user.model';
 @Table
 export class Team extends Model {
 
+    @IsUUID(4)
     @PrimaryKey
     @Column
     id: string;
+    @NotEmpty
     @Column
     title: string;
     @Column
     is_active: boolean;
+    @IsUUID(4)
     @ForeignKey(() => Organization)
     @Column
     org_id: string;
+    @IsUUID(4)
     @ForeignKey(() => Role)
     @Column
     maintain_role_id: string;
