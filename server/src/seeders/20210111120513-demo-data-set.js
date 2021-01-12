@@ -13,7 +13,7 @@ module.exports = {
             id: org_id_svm,
             access_code: 'svm2020',
             config: '{}',
-            title: 'SVM',
+            title: 'SV Mergelstetten 1879 e.V.',
             is_active: true,
             admin_role_id: role_id_svm_admin,
             createdAt: date,
