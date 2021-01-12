@@ -23,7 +23,7 @@ module.exports = {
         
         const roles = [{
             id: role_id_svm_admin,
-            title: 'SVM Admin',
+            title: 'Alle Administratoren',
             user_deletable: false,
             is_active: true,
             org_id: org_id_svm,
