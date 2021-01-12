@@ -4,12 +4,13 @@ import {UserLoginData} from '../../../interfaces/users.interface';
 import {User} from '../../../models/user.model';
 import * as bcrypt from 'bcryptjs';
 import {jwtSign} from '../../../functions/jwt-sign.func';
+import { checkKeysAreNotEmptyOrNotSet } from '../../../functions/check-inputs.func';
 
 export async function loginUser(req: Request, res: Response): Promise<Response> {
 
     const incomingData: UserLoginData = req.body;
 
-    if (incomingData.password === undefined || (incomingData.email === undefined && incomingData.username === undefined)){
+    if (!checkKeysAreNotEmptyOrNotSet(incomingData, ['email', 'password']) || !checkKeysAreNotEmptyOrNotSet(incomingData, ['user', 'password'])){
         return res.status(400).send(wrapResponse(false, { error: 'Not all required fields have been set' }));
     }
 
