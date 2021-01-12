@@ -4,6 +4,7 @@ import { Organization } from './organization.model';
 import { EventRegistration } from './event-registration.model';
 import { Event } from './event.model';
 import { News } from './news.model';
+import { Poll } from './poll.model';
 
 @Table
 export class User extends Model {
@@ -42,9 +43,12 @@ export class User extends Model {
     registered_events: Array<Event & {event_registrations: EventRegistration}>;
 
     @HasMany(() => Event) //TODO: Checken, ob das richtig aufgelöst wird!
-    events: Event[];
+    created_events: Event[];
     @HasMany(() => News)
-    news: News[];
+    created_news: News[];
+    @HasMany(() => Poll)
+    created_polls: Poll[];
+
 
     public static requiredFields(): Array<keyof UserData> {
         return [

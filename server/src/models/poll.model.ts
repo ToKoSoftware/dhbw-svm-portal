@@ -1,22 +1,30 @@
-import {sequelizeInstance} from '../bootstrap/connect-db.func';
-import {Model, DataType} from 'sequelize-typescript';
+import {BelongsTo, Column, ForeignKey, Model, Table} from 'sequelize-typescript';
 import { PollData } from '../interfaces/poll.interface';
-import Team from './team.model';
-import User from './user.model';
-import PollAnswer from './poll-answer.model';
-import Organization from './organization.model';
+import { Organization } from './organization.model';
+import { User } from './user.model';
 
-const config = {
-    tableName: 'Polls',
-    sequelize: sequelizeInstance,
-};
+@Table
+export class Poll extends Model {
 
-class Poll extends Model {
-    id: string;
+    @Column
     title: string;
+    @Column
     body: string;
+    @Column
     closes_at: Date;
+    @Column
     is_active: boolean;
+    @ForeignKey(() => User)
+    @Column
+    author_id: string;
+    @ForeignKey(() => Organization)
+    @Column
+    org_id: string;
+
+    @BelongsTo(() => User)
+    author: User;
+    @BelongsTo(() => Organization)
+    organization: Organization;
 
     public static requiredFields(): Array<keyof PollData> {
         return [
@@ -26,48 +34,10 @@ class Poll extends Model {
         ];
     }
 }
-Poll.init(
-    {
-        id: {
-            primaryKey: true,
-            allowNull: false,
-            type: DataType.UUID,
-            defaultValue: DataType.UUIDV4
-        },
-        title: {
-            type: DataType.STRING,
-            allowNull: false
-        },
-        body: {
-            type: DataType.STRING,
-            allowNull: false
-        },
-        closes_at: {
-            type: DataType.DATE,
-            allowNull: false
-        },
-        is_active: {
-            type: DataType.BOOLEAN,
-            allowNull: false,
-            defaultValue: true
-        },
-        createdAt: {
-            allowNull: false,
-            type: DataType.DATE
-        },
-        updatedAt: {
-            allowNull: false,
-            type: DataType.DATE
-        }
-    },
-    config,
-);
-
-Poll.belongsTo(Team);
-Poll.belongsTo(User);
-Poll.hasMany(PollAnswer, {
-    foreignKey: 'poll_id'
-});
-Poll.belongsTo(Organization);
-
-export default Poll;
+/**
+ * TODO
+ * Poll.belongsTo(Team);
+ * Poll.hasMany(PollAnswer, {
+ *  foreignKey: 'poll_id'
+ * });
+ */
