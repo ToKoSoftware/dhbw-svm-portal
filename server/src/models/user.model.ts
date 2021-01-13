@@ -46,7 +46,6 @@ import { RoleAssignment } from './role-assignment.model';
 @Table
 export class User extends Model {
 
-    @IsUUID(4)
     @PrimaryKey
     @Column
     id: string;
@@ -81,7 +80,6 @@ export class User extends Model {
     city: string;
     @Column
     is_active: boolean;
-    @IsUUID(4)
     @ForeignKey(() => Organization)
     @Column
     org_id: string;
