@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {myProfileBreadcrumb, myProfilePages} from '../my-profile.pages';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ApiService} from '../../services/api/api.service';
 import {UserData} from '../../interfaces/user.interface';
 import {LoginService} from '../../services/login/login.service';
@@ -39,9 +39,9 @@ export class MyCredentialsComponent implements OnInit {
         this.currentUser = data.data;
         this.editUserForm = this.formBuilder.group(
           {
-            email: [data.data.email],
+            email: [data.data.email, Validators.email],
             currentPassword: [''],
-            password: [''],
+            password: ['', Validators.minLength(6)],
           }
         );
       }
