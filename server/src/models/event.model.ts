@@ -1,4 +1,4 @@
-import {AllowNull, BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, IsDate, IsInt, IsUUID, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
+import {AllowNull, BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, IsDate, IsInt, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
 import {RawEventData} from '../interfaces/event.interface';
 import { EventRegistration } from './event-registration.model';
 import { Organization } from './organization.model';
@@ -47,7 +47,6 @@ import {Op} from 'sequelize';
 @Table
 export class Event extends Model {
 
-    @IsUUID(4)
     @PrimaryKey
     @Column
     id: string;
@@ -67,11 +66,9 @@ export class Event extends Model {
     @AllowNull
     @Column
     max_participants: number;
-    @IsUUID(4)
     @ForeignKey(() => User)
     @Column
     author_id: string;
-    @IsUUID(4)
     @ForeignKey(() => Organization)
     @Column
     org_id: string;

@@ -1,4 +1,4 @@
-import {BelongsTo, Column, DefaultScope, ForeignKey, IsUUID, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
+import {BelongsTo, Column, DefaultScope, ForeignKey, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
 import {RawNewsData} from '../interfaces/news.interface';
 import { Organization } from './organization.model';
 import { User } from './user.model';
@@ -30,7 +30,6 @@ import { User } from './user.model';
 @Table
 export class News extends Model {
     
-    @IsUUID(4)
     @PrimaryKey
     @Column
     id: string;
@@ -39,11 +38,9 @@ export class News extends Model {
     title: string;
     @Column
     body: string;
-    @IsUUID(4)
     @ForeignKey(() => Organization)
     @Column
     org_id: string;
-    @IsUUID(4)
     @ForeignKey(() => User)
     @Column
     author_id: string;

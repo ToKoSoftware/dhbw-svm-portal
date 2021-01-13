@@ -1,4 +1,4 @@
-import {Model, Table, Column, ForeignKey, BelongsTo, BelongsToMany, PrimaryKey, IsUUID, NotEmpty, DefaultScope, Scopes} from 'sequelize-typescript';
+import {Model, Table, Column, ForeignKey, BelongsTo, BelongsToMany, PrimaryKey, NotEmpty, DefaultScope, Scopes} from 'sequelize-typescript';
 import { RawPollAnswerData } from '../interfaces/poll-answer.interface';
 import { PollVote } from './poll-vote.model';
 import { Poll } from './poll.model';
@@ -31,7 +31,6 @@ import { User } from './user.model';
 @Table
 export class PollAnswer extends Model {
     
-    @IsUUID(4)
     @PrimaryKey
     @Column
     id: string;
@@ -40,7 +39,6 @@ export class PollAnswer extends Model {
     title: string;
     @Column
     is_active: boolean;
-    @IsUUID(4)
     @ForeignKey(() => Poll)
     @Column
     poll_id: string;

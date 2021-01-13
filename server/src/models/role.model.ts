@@ -1,4 +1,4 @@
-import {Model, Table, Column, ForeignKey, BelongsTo, HasOne, HasMany, BelongsToMany, PrimaryKey, IsUUID, NotEmpty, DefaultScope, Scopes} from 'sequelize-typescript';
+import {Model, Table, Column, ForeignKey, BelongsTo, HasOne, HasMany, BelongsToMany, PrimaryKey, NotEmpty, DefaultScope, Scopes} from 'sequelize-typescript';
 import {RawRoleData} from '../interfaces/role.interface';
 import { Organization } from './organization.model';
 import { RoleAssignment } from './role-assignment.model';
@@ -32,7 +32,6 @@ import { User } from './user.model';
 @Table
 export class Role extends Model {
 
-    @IsUUID(4)
     @PrimaryKey
     @Column
     id: string;
@@ -43,7 +42,6 @@ export class Role extends Model {
     user_deletable: boolean;
     @Column
     is_active: boolean;
-    @IsUUID(4)
     @ForeignKey(() => Organization)
     @Column
     org_id: string;

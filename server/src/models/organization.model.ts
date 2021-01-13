@@ -1,4 +1,4 @@
-import {BelongsTo, Column, DefaultScope, ForeignKey, HasMany, IsUUID, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
+import {BelongsTo, Column, DefaultScope, ForeignKey, HasMany, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
 import {RawOrganizationData} from '../interfaces/organization.interface';
 import { Event } from './event.model';
 import { News } from './news.model';
@@ -40,7 +40,6 @@ import { User } from './user.model';
 @Table
 export class Organization extends Model {
 
-    @IsUUID(4)
     @PrimaryKey
     @Column
     id: string;
@@ -54,7 +53,6 @@ export class Organization extends Model {
     config: string;
     @Column
     is_active: boolean;
-    @IsUUID(4)
     @ForeignKey(() => Role)
     @Column
     admin_role_id: string;
