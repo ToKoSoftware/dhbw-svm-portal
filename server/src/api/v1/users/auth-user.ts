@@ -22,7 +22,7 @@ export async function loginUser(req: Request, res: Response): Promise<Response> 
         }
     };
     
-    const user = await User.findOne(selectStatement)
+    const user = await User.unscoped().findOne(selectStatement)
         .catch(() => {
             success = false;
             return null;
