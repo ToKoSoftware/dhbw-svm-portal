@@ -4,6 +4,7 @@ import { Organization } from './organization.model';
 import { PollAnswer } from './poll-answer.model';
 import { Team } from './team.model';
 import { User } from './user.model';
+import {Op} from 'sequelize';
 
 @DefaultScope(() => ({
     required: false,
@@ -15,19 +16,26 @@ import { User } from './user.model';
     full: {
         include: [Organization, User, Team, PollAnswer]
     },
-    fullAndActive: {
+    active: {
         required: false,
-        include: [Organization, User, Team, PollAnswer],
         where: {
             is_active: true
+        }
+    },
+    inactive: {
+        required: false,
+        where: {
+            is_active: false
         }
     },
     expired: {
         required: false,
         where: {
-            is_active: false  
+            closes_at: {
+                [Op.lte]: new Date()
+            }
         }
-    }
+    },
 })) 
 
 

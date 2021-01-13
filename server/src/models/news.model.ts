@@ -13,11 +13,16 @@ import { User } from './user.model';
     full: {
         include: [Organization, User]
     },
-    fullAndActive: {
+    active: {
         required: false,
-        include: [Organization, User],
         where: {
             is_active: true
+        }
+    },
+    inactive: {
+        required: false,
+        where: {
+            is_active: false
         }
     }
 })) 

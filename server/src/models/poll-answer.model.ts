@@ -14,11 +14,16 @@ import { User } from './user.model';
     full: {
         include: [Poll, User]
     },
-    fullAndActive: {
+    active: {
         required: false,
-        include: [Poll, User],
         where: {
             is_active: true
+        }
+    },
+    inactive: {
+        required: false,
+        where: {
+            is_active: false
         }
     }
 })) 

@@ -3,6 +3,7 @@ import {RawEventData} from '../interfaces/event.interface';
 import { EventRegistration } from './event-registration.model';
 import { Organization } from './organization.model';
 import { User } from './user.model';
+import {Op} from 'sequelize';
 
 @DefaultScope(() => ({
     required: false,
@@ -15,19 +16,25 @@ import { User } from './user.model';
     full: {
         include: [Organization, {model: User, as: 'author'}, {model: User, as: 'registered_users'}]
     },
-    fullAndActive: {
+    active: {
         required: false,
-        include: [Organization, {model: User, as: 'author'}, {model: User, as: 'registered_users'}],
         where: {
             is_active: true
+        }
+    },
+    inactive: {
+        required: false,
+        where: {
+            is_active: false
         }
     },
     expired: {
         required: false,
         where: {
-            is_active: false
+            date: {
+                [Op.lte]: new Date()
+            }
         }
-        
     },
     free: {
         required: false,

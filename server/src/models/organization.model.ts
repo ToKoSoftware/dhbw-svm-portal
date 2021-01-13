@@ -23,14 +23,16 @@ import { User } from './user.model';
         },
         include: [{model: Role, as: 'admin_role'},{model: Role, as: 'roles'}, User, Team, News, Poll, Event]
     },
-    fullAndActive: {
+    active: {
         required: false,
-        attributes: { 
-            exclude: ['access_code'] 
-        },
-        include: [{model: Role, as: 'admin_role'},{model: Role, as: 'roles'}, User, Team, News, Poll, Event],
         where: {
             is_active: true
+        }
+    },
+    inactive: {
+        required: false,
+        where: {
+            is_active: false
         }
     }
 }))
