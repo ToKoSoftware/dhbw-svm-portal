@@ -31,14 +31,14 @@ import {Op} from 'sequelize';
     /** TODO: Noch nicht funktionabel 
      * Problem: wird beim Server-Start generiert und dann auf dieses Datum festgesetzt. Nicht dynamisch!
     */
-    expired: {
+    expired: (date: Date) => ({
         required: false,
         where: {
             date: {
-                [Op.lte]: new Date()
+                [Op.lte]: date
             }
         }
-    },
+    }),
     free: {
         required: false,
         where: {
