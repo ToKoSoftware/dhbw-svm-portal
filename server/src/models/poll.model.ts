@@ -31,7 +31,7 @@ import {Op} from 'sequelize';
     expired: (date: Date) => ({
         required: false,
         where: {
-            date: {
+            closes_at: {
                 [Op.lte]: date
             }
         }
