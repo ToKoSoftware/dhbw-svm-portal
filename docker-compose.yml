@@ -30,8 +30,8 @@ services:
     image: "node:14"
     depends_on:
       - db
-    ports:
-      - "80:5000"
+    expose:
+      - "80"
     user: "node" # for ubuntu, use root
     working_dir: /home/node/app
     volumes:
@@ -47,5 +47,6 @@ services:
       DATABASE_USER: $POSTGRES_USER
       DATABASE_NAME: $POSTGRES_DB
       LOGGING: "true"
+      PORT: 80
 volumes:
   database-data:

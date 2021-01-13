@@ -1,24 +1,28 @@
 import {Request, Response} from 'express';
 import {wrapResponse} from '../../../functions/response-wrapper';
-import {UserData} from '../../../interfaces/users.interface';
-import {mapUser} from '../../../functions/map-users.func';
+import {UserLoginData} from '../../../interfaces/users.interface';
 import {User} from '../../../models/user.model';
 import * as bcrypt from 'bcryptjs';
 import {jwtSign} from '../../../functions/jwt-sign.func';
+import { checkKeysAreNotEmptyOrNotSet } from '../../../functions/check-inputs.func';
 
 export async function loginUser(req: Request, res: Response): Promise<Response> {
 
-    const incomingData: UserData = req.body;
-    const mappedIncomingData: UserData = await mapUser(incomingData);
+    const incomingData: UserLoginData = req.body;
+
+    if (!checkKeysAreNotEmptyOrNotSet(incomingData, ['email', 'password']) || !checkKeysAreNotEmptyOrNotSet(incomingData, ['user', 'password'])){
+        return res.status(400).send(wrapResponse(false, { error: 'Not all required fields have been set' }));
+    }
 
     let success = true;
-
-    const user = await User.findOne(
-        {
-            where: {
-                email: mappedIncomingData.email,
-            }
-        })
+    const selectStatement = {
+        where: {
+            ...(incomingData?.email ? {email: incomingData.email} : {}),
+            ...(incomingData?.username ? {email: incomingData.username} : {}),
+        }
+    };
+    
+    const user = await User.findOne(selectStatement)
         .catch(() => {
             success = false;
             return null;

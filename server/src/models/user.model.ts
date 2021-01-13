@@ -1,46 +1,84 @@
-import {BeforeCreate, Column, Model, Table} from 'sequelize-typescript';
-import {v4 as uuidv4} from 'uuid';
-import {UserData} from '../interfaces/users.interface';
+import {genderType, RawUserData} from '../interfaces/users.interface';
+import {BelongsTo, BelongsToMany, Column, ForeignKey, HasMany, Model, PrimaryKey, Table} from 'sequelize-typescript';
+import { Organization } from './organization.model';
+import { EventRegistration } from './event-registration.model';
+import { Event } from './event.model';
+import { News } from './news.model';
+import { Poll } from './poll.model';
+import { PollAnswer } from './poll-answer.model';
+import { PollVote } from './poll-vote.model';
+import { Team } from './team.model';
+import { Membership } from './membership.model';
+import { Role } from './role.model';
+import { RoleAssignment } from './role-assignment.model';
 
 @Table
-export class User extends Model<User> {
+export class User extends Model {
 
+    @PrimaryKey
+    @Column
+    id: string;
     @Column
     email: string;
+    @Column
+    username: string;
     @Column
     password: string;
     @Column
     is_admin: boolean;
     @Column
-    firstName: string;
+    first_name: string;
     @Column
-    lastName: string;
+    last_name: string;
+    @Column
+    gender: genderType;
+    @Column
+    birthday: Date;
     @Column
     street: string;
     @Column
-    streetNumber: number;
+    street_number: string;
     @Column
-    postcode: string;
+    post_code: string;
     @Column
-    city: number;
+    city: string;
     @Column
     is_active: boolean;
+    @ForeignKey(() => Organization)
+    @Column
+    org_id: string;
 
-    public static requiredFields(): Array<keyof UserData> {
+    @BelongsTo(() => Organization)
+    organization: Organization;
+    @BelongsToMany(() => Event, () => EventRegistration)
+    registered_events: Array<Event & {event_registrations: EventRegistration}>;
+    @BelongsToMany(() => PollAnswer, () => PollVote)
+    voted_poll_answers: Array<PollAnswer & {poll_vote: PollVote}>;
+    @BelongsToMany(() => Team, () => Membership)
+    teams: Array<Team & {membership: Membership}>;
+    @BelongsToMany(() => Role, () => RoleAssignment)
+    assigned_roles: Array<Role & {role_assignment: RoleAssignment}>;
+
+    @HasMany(() => Event)
+    created_events: Event[];
+    @HasMany(() => News)
+    created_news: News[];
+    @HasMany(() => Poll)
+    created_polls: Poll[];
+
+
+    public static requiredFields(): Array<keyof RawUserData> {
         return [
             'email',
+            'username',
             'password',
-            'firstName',
-            'lastName',
+            'first_name',
+            'last_name',
+            'gender',
             'street',
-            'streetNumber',
-            'postcode',
+            'street_number',
+            'post_code',
             'city'
         ];
-    }
-
-    @BeforeCreate
-    static addUuid(instance: User): string {
-        return instance.id = uuidv4();
     }
 }
