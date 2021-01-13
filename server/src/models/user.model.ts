@@ -1,5 +1,5 @@
+import {BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, HasMany, IsBefore, IsDate, IsEmail, IsIn, IsUUID, Length, Model, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
 import {genderType, RawUserData} from '../interfaces/users.interface';
-import {BelongsTo, BelongsToMany, Column, ForeignKey, HasMany, Model, PrimaryKey, Table} from 'sequelize-typescript';
 import { Organization } from './organization.model';
 import { EventRegistration } from './event-registration.model';
 import { Event } from './event.model';
@@ -12,12 +12,44 @@ import { Membership } from './membership.model';
 import { Role } from './role.model';
 import { RoleAssignment } from './role-assignment.model';
 
+@DefaultScope(() => ({
+    required: false,
+    attributes: { 
+        exclude: ['password'] 
+    },
+    where: {
+        is_active: true
+    }
+}))
+@Scopes(() => ({
+    full: {
+        required: false,
+        attributes: { 
+            exclude: ['password'] 
+        },
+        include: [Organization, {model: Event, as: 'registered_events'}, {model: Event, as: 'created_events'}, PollAnswer, Team, Role, News, Poll]
+    },
+    active: {
+        required: false,
+        where: {
+            is_active: true
+        }
+    },
+    inactive: {
+        required: false,
+        where: {
+            is_active: false
+        }
+    }
+})) 
+
 @Table
 export class User extends Model {
 
     @PrimaryKey
     @Column
     id: string;
+    @IsEmail
     @Column
     email: string;
     @Column
@@ -30,14 +62,18 @@ export class User extends Model {
     first_name: string;
     @Column
     last_name: string;
+    @IsIn([['M', 'W', 'D']])
     @Column
     gender: genderType;
+    @IsDate
+    @IsBefore(Date())
     @Column
     birthday: Date;
     @Column
     street: string;
     @Column
     street_number: string;
+    @Length({min: 5, max: 5})
     @Column
     post_code: string;
     @Column

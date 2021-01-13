@@ -1,9 +1,46 @@
-import {BelongsTo, Column, ForeignKey, HasMany, Model, PrimaryKey, Table} from 'sequelize-typescript';
+import {BelongsTo, Column, DefaultScope, ForeignKey, HasMany, IsDate, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
 import { RawPollData } from '../interfaces/poll.interface';
 import { Organization } from './organization.model';
 import { PollAnswer } from './poll-answer.model';
 import { Team } from './team.model';
 import { User } from './user.model';
+import {Op} from 'sequelize';
+
+@DefaultScope(() => ({
+    required: false,
+    where: {
+        is_active: true
+    }
+}))
+@Scopes(() => ({
+    full: {
+        include: [Organization, User, Team, PollAnswer]
+    },
+    active: {
+        required: false,
+        where: {
+            is_active: true
+        }
+    },
+    inactive: {
+        required: false,
+        where: {
+            is_active: false
+        }
+    },
+    /** TODO: Noch nicht funktionabel 
+     * Problem: wird beim Server-Start generiert und dann auf dieses Datum festgesetzt. Nicht dynamisch!
+    */
+    expired: {
+        required: false,
+        where: {
+            closes_at: {
+                [Op.lte]: new Date()
+            }
+        }
+    },
+})) 
+
 
 @Table
 export class Poll extends Model {
@@ -11,10 +48,12 @@ export class Poll extends Model {
     @PrimaryKey
     @Column
     id: string;
+    @NotEmpty
     @Column
     title: string;
     @Column
     body: string;
+    @IsDate
     @Column
     closes_at: Date;
     @Column

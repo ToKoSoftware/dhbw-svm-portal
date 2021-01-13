@@ -1,4 +1,4 @@
-import {BelongsTo, BelongsToMany, Column, ForeignKey, HasMany, Model, PrimaryKey, Table} from 'sequelize-typescript';
+import {BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, HasMany, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
 import {RawTeamData} from '../interfaces/team.interface';
 import { Membership } from './membership.model';
 import { Organization } from './organization.model';
@@ -6,12 +6,37 @@ import { Poll } from './poll.model';
 import { Role } from './role.model';
 import { User } from './user.model';
 
+@DefaultScope(() => ({
+    required: false,
+    where: {
+        is_active: true
+    }
+}))
+@Scopes(() => ({
+    full: {
+        include: [Organization, Role, User]
+    },
+    active: {
+        required: false,
+        where: {
+            is_active: true
+        }
+    },
+    inactive: {
+        required: false,
+        where: {
+            is_active: false
+        }
+    }
+}))
+
 @Table
 export class Team extends Model {
 
     @PrimaryKey
     @Column
     id: string;
+    @NotEmpty
     @Column
     title: string;
     @Column
