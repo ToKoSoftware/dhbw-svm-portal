@@ -29,14 +29,16 @@ import { RoleAssignment } from './role-assignment.model';
         },
         include: [Organization, {model: Event, as: 'registered_events'}, {model: Event, as: 'created_events'}, PollAnswer, Team, Role, News, Poll]
     },
-    fullAndActive: {
+    active: {
         required: false,
-        attributes: { 
-            exclude: ['password'] 
-        },
-        include: [Organization, {model: Event, as: 'registered_events'}, {model: Event, as: 'created_events'}, PollAnswer, Team, Role, News, Poll],
         where: {
             is_active: true
+        }
+    },
+    inactive: {
+        required: false,
+        where: {
+            is_active: false
         }
     }
 })) 
