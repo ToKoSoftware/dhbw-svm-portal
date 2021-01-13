@@ -28,9 +28,6 @@ import {Op} from 'sequelize';
             is_active: false
         }
     },
-    /** TODO: Noch nicht funktionabel 
-     * Problem: wird beim Server-Start generiert und dann auf dieses Datum festgesetzt. Nicht dynamisch!
-    */
     expired: (date: Date) => ({
         required: false,
         where: {
