@@ -1,7 +1,31 @@
-import {BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table} from 'sequelize-typescript';
+import {BelongsTo, Column, DefaultScope, ForeignKey, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
 import {RawNewsData} from '../interfaces/news.interface';
 import { Organization } from './organization.model';
 import { User } from './user.model';
+
+@DefaultScope(() => ({
+    required: false,
+    where: {
+        is_active: true
+    }
+}))
+@Scopes(() => ({
+    full: {
+        include: [Organization, User]
+    },
+    active: {
+        required: false,
+        where: {
+            is_active: true
+        }
+    },
+    inactive: {
+        required: false,
+        where: {
+            is_active: false
+        }
+    }
+})) 
 
 @Table
 export class News extends Model {
@@ -9,6 +33,7 @@ export class News extends Model {
     @PrimaryKey
     @Column
     id: string;
+    @NotEmpty
     @Column
     title: string;
     @Column

@@ -1,4 +1,4 @@
-import {BelongsTo, Column, ForeignKey, HasMany, Model, PrimaryKey, Table} from 'sequelize-typescript';
+import {BelongsTo, Column, DefaultScope, ForeignKey, HasMany, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
 import {RawOrganizationData} from '../interfaces/organization.interface';
 import { Event } from './event.model';
 import { News } from './news.model';
@@ -7,14 +7,46 @@ import { Role } from './role.model';
 import { Team } from './team.model';
 import { User } from './user.model';
 
+@DefaultScope(() => ({
+    required: false,
+    attributes: { 
+        exclude: ['access_code'] 
+    },
+    where: {
+        is_active: true
+    }
+}))
+@Scopes(() => ({
+    full: {
+        attributes: { 
+            exclude: ['access_code'] 
+        },
+        include: [{model: Role, as: 'admin_role'},{model: Role, as: 'roles'}, User, Team, News, Poll, Event]
+    },
+    active: {
+        required: false,
+        where: {
+            is_active: true
+        }
+    },
+    inactive: {
+        required: false,
+        where: {
+            is_active: false
+        }
+    }
+}))
+
 @Table
 export class Organization extends Model {
 
     @PrimaryKey
     @Column
     id: string;
+    @NotEmpty
     @Column
     title: string;
+    @NotEmpty
     @Column
     access_code: string;
     @Column
