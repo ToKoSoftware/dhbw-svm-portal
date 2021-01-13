@@ -3,11 +3,11 @@ export interface UserData {
   email: string;
   password?: string;
   is_admin: boolean;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   street: string;
-  streetNumber: string;
-  postcode: string;
+  street_number: string;
+  post_code: string;
   city: string;
   is_active: boolean
   createdAt: string;

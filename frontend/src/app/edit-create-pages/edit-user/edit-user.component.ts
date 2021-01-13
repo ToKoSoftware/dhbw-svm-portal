@@ -43,12 +43,12 @@ export class EditUserComponent implements OnInit, OnChanges {
         this.editUserForm = this.formBuilder.group(
           {
             email: [data.data.email],
-            firstName: [data.data.firstName],
-            lastName: [data.data.lastName],
+            firstName: [data.data.first_name],
+            lastName: [data.data.last_name],
             city: [data.data.city],
-            postcode: [data.data.postcode, Validators.minLength(4)],
+            postcode: [data.data.post_code, Validators.minLength(4)],
             street: [data.data.street],
-            streetNumber: [data.data.streetNumber],
+            streetNumber: [data.data.street_number],
           }
         );
       }

@@ -11,9 +11,9 @@
   <div class="flex items-center flex-shrink-0 bg-white dark:bg-gray-800 bg-gray-100 px-3 py-3 space-x-2 justify-between">
     <a routerLink="/my-profile" class="truncate">
       <div class="group dark:hover:bg-gray-600 hover:bg-gray-200 rounded px-2 truncate transition duration-100 ease-in-out">
-        <span class="group-hover:text-malachite-600">
-          {{(login.decodedJwt$ | async)?.firstName}}
-          {{(login.decodedJwt$ | async)?.lastName}}<br>
+        <span class="group-hover:text-malachite-600" [title]="(login.decodedJwt$ | async)?.first_name + ' ' + (login.decodedJwt$ | async)?.last_name">
+          {{(login.decodedJwt$ | async)?.first_name}}
+          {{(login.decodedJwt$ | async)?.last_name}}<br>
         </span>
         <span
           class="text-gray-600 dark:text-gray-400 group-hover:text-malachite-600 ">
