@@ -1,5 +1,6 @@
 import {BelongsTo, Column, DefaultScope, ForeignKey, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
 import {RawNewsData} from '../interfaces/news.interface';
+import { currentOrg } from './current-org.scope';
 import { Organization } from './organization.model';
 import { User } from './user.model';
 
@@ -25,12 +26,7 @@ import { User } from './user.model';
             is_active: false
         }
     },
-    onlyCurrentOrg: (org_id: string) => ({
-        required: false,
-        where: {
-            org_id: org_id
-        }
-    })
+    onlyCurrentOrg: (org_id: string) => currentOrg(org_id)
 })) 
 
 @Table

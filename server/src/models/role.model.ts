@@ -1,5 +1,6 @@
 import {Model, Table, Column, ForeignKey, BelongsTo, HasOne, HasMany, BelongsToMany, PrimaryKey, NotEmpty, DefaultScope, Scopes} from 'sequelize-typescript';
 import {RawRoleData} from '../interfaces/role.interface';
+import { currentOrg } from './current-org.scope';
 import { Organization } from './organization.model';
 import { RoleAssignment } from './role-assignment.model';
 import { Team } from './team.model';
@@ -27,12 +28,7 @@ import { User } from './user.model';
             is_active: false
         }
     },
-    onlyCurrentOrg: (org_id: string) => ({
-        required: false,
-        where: {
-            org_id: org_id
-        }
-    })
+    onlyCurrentOrg: (org_id: string) => currentOrg(org_id)
 }))
 
 @Table

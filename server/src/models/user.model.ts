@@ -31,18 +31,27 @@ import { RoleAssignment } from './role-assignment.model';
     },
     active: {
         required: false,
+        attributes: { 
+            exclude: ['password'] 
+        },
         where: {
             is_active: true
         }
     },
     inactive: {
         required: false,
+        attributes: { 
+            exclude: ['password'] 
+        },
         where: {
             is_active: false
         }
     },
     onlyCurrentOrg: (org_id: string) => ({
         required: false,
+        attributes: { 
+            exclude: ['password'] 
+        },
         where: {
             org_id: org_id
         }
