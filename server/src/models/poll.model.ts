@@ -36,6 +36,12 @@ import {Op} from 'sequelize';
             }
         }
     }),
+    onlyCurrentOrg: (org_id: string) => ({
+        required: false,
+        where: {
+            org_id: org_id
+        }
+    })
 })) 
 
 

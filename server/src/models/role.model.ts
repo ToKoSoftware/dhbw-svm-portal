@@ -26,7 +26,13 @@ import { User } from './user.model';
         where: {
             is_active: false
         }
-    }
+    },
+    onlyCurrentOrg: (org_id: string) => ({
+        required: false,
+        where: {
+            org_id: org_id
+        }
+    })
 }))
 
 @Table
