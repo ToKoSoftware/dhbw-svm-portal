@@ -2,10 +2,9 @@ import {Request, Response} from 'express';
 import {User} from '../../../models/user.model';
 import {wrapResponse} from '../../../functions/response-wrapper';
 import {FindOptions} from 'sequelize';
-import {addRelations, buildQuery, QueryBuilderConfig} from '../../../functions/query-builder.func';
+import {buildQuery, QueryBuilderConfig} from '../../../functions/query-builder.func';
 import {currentUserIsAdminOrMatchesId} from '../../../functions/current-user-is-admin-or-matches-id.func';
 import {Organization} from '../../../models/organization.model';
-import {RoleAssignment} from '../../../models/role-assignment.model';
 import {Event} from '../../../models/event.model';
 import {PollAnswer} from '../../../models/poll-answer.model';
 import {Team} from '../../../models/team.model';
@@ -27,7 +26,10 @@ export async function getUser(req: Request, res: Response): Promise<Response> {
             where: {
                 id: req.params.id
             },
-            include: [Organization, {model: Event, as: 'registered_events'}, {model: Event, as: 'created_events'}, PollAnswer, Team, Role, News, Poll]
+            include: [Organization, {model: Event, as: 'registered_events'}, {
+                model: Event,
+                as: 'created_events'
+            }, PollAnswer, Team, Role, News, Poll]
         })
         .catch(() => {
             success = false;

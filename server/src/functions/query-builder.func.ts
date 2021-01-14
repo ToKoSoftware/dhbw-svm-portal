@@ -12,7 +12,7 @@ export function buildQuery(config: QueryBuilderConfig, req: Request): QueryBuild
     if (config.allowedSearchFields && config.searchString) {
         config.query = buildOrLikeSearchQuery(config.query, config.searchString, config.allowedSearchFields);
     }
-    if (config.allowedFilterFields && config.customFilterResolver) {
+    if (config.allowedFilterFields) {
         config.query = buildFilter(config.query, req, config.allowedFilterFields, config.customFilterResolver);
     }
     if (config.allowedOrderFields) {
@@ -78,17 +78,19 @@ export function buildOrLikeSearchQuery(query: QueryBuilderData, needle: string, 
     return query;
 }
 
-export function buildFilter(query: QueryBuilderData, req: Request, allowedFields: string[] = [], customResolver: customFilterResolverMap): QueryBuilderData {
+export function buildFilter(query: QueryBuilderData, req: Request, allowedFields: string[] = [], customResolver: customFilterResolverMap | undefined): QueryBuilderData {
     const filter: { [name: string]: string } = {};
     allowedFields.forEach(field => {
         let value = '';
         if (req.query[field] != undefined && !isBlank(req.query[field])) {
             value = req.query[field] as string;
         }
-        if (customResolver.has(field) && customResolver.get(field) != undefined) {
-            const fun = customResolver.get(field);
-            if (fun != undefined) {
-                value = fun.call(0, field, req, value);
+        if (customResolver != undefined) {
+            if (customResolver.has(field) && customResolver.get(field) != undefined) {
+                const fun = customResolver.get(field);
+                if (fun != undefined) {
+                    value = fun.call(0, field, req, value);
+                }
             }
         }
         if (value !== '') {
@@ -131,7 +133,6 @@ export interface QueryBuilderConfig {
     query: QueryBuilderData;
     allowedOrderFields?: string[];
     allowedSearchFields?: string[];
-    allowOnlyCurrentOrganization?: boolean;
     allowLimitAndOffset: boolean;
     allowedFilterFields?: string[];
     customFilterResolver?: customFilterResolverMap;
