@@ -48,8 +48,8 @@ export class LoginService {
 
 export interface JWT {
   email: string;
-  firstName: string;
-  lastName: string;
+  fist_name: string;
+  last_name: string;
   id: string;
   is_admin: boolean;
   iat: number;
