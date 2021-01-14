@@ -33,9 +33,7 @@ export async function getTeam(req: Request, res: Response): Promise<Response> {
 }
 
 export async function getTeams(req: Request, res: Response): Promise<Response> {
-    let query: FindOptions = {
-        raw: true,
-    };
+    let query: FindOptions = {};
     const allowedSearchFilterAndOrderFields = ['title'];
     const queryConfig: QueryBuilderConfig = {
         query: query,
