@@ -1,11 +1,24 @@
 import {Request} from 'express';
 import isBlank from 'is-blank';
 import {Vars} from '../vars';
+import {FindOptions} from 'sequelize';
+import {Includeable} from 'sequelize/types/lib/model';
+import {Organization} from '../models/organization.model';
+import {RoleAssignment} from '../models/role-assignment.model';
+import {PollAnswer} from '../models/poll-answer.model';
+import {Team} from '../models/team.model';
+import {Role} from '../models/role.model';
+import {News} from '../models/news.model';
+import {Poll} from '../models/poll.model';
+import {Event} from '../models/event.model';
 
 
 export function buildQuery(config: QueryBuilderConfig, req: Request): QueryBuilderData {
     if (config.allowLimitAndOffset) {
         config.query = buildLimitAndOffset(config.query, req);
+    }
+    if (config.allowOnlyCurrentOrganization) {
+        config.query = buildMultiTenantRestrictionQuery(config.query);
     }
     if (config.allowedSearchFields && config.searchString) {
         config.query = buildOrLikeSearchQuery(config.query, config.searchString, config.allowedSearchFields);
@@ -16,10 +29,11 @@ export function buildQuery(config: QueryBuilderConfig, req: Request): QueryBuild
     if (config.allowedOrderFields) {
         config.query = buildOrder(config.query, req, config.allowedOrderFields);
     }
+    config.query = buildMultiTenantRestrictionQuery(config.query);
     return config.query;
 }
 
-export function buildLimitAndOffset(query: QueryBuilderData, req: Request) {
+export function buildLimitAndOffset(query: QueryBuilderData, req: Request): QueryBuilderData {
     if (req.query.limit && !isBlank(req.query.limit)) {
         if (req.query.offset && !isBlank(req.query.offset)) {
             return {
@@ -40,7 +54,7 @@ export function buildLimitAndOffset(query: QueryBuilderData, req: Request) {
     return query;
 }
 
-export function buildOrder(query: QueryBuilderData, req: Request, allowedOrders: string[] = []) {
+export function buildOrder(query: QueryBuilderData, req: Request, allowedOrders: string[] = []): QueryBuilderData {
     if (req.query.order && !isBlank(req.query.order) || req.query.sort && !isBlank(req.query.sort)) {
         let o = req.query.order as string || req.query.sort as string;
         let direction = 'DESC';
@@ -60,25 +74,43 @@ export function buildOrder(query: QueryBuilderData, req: Request, allowedOrders:
     return query;
 }
 
-export function buildOrLikeSearchQuery(query: QueryBuilderData, needle: string, allowedFields: string[] = []) {
-    let length = 0;
+export function buildOrLikeSearchQuery(query: QueryBuilderData, needle: string, allowedFields: string[] = []): QueryBuilderData {
     const search = {
-        [Vars.op.or]: allowedFields.map(field => {
-            const a: { [name: string]: unknown } = {};
-            a[field] = {
-                [Vars.op.iLike]: '%' + needle + '%'
-            };
-            length++;
-            return a;
-        }
+        [Vars.op.or]: allowedFields.map(
+            field => {
+                const a: { [name: string]: unknown } = {};
+                a[field] = {
+                    [Vars.op.iLike]: '%' + needle + '%'
+                };
+                return a;
+            }
         )
     };
-    query = mergeQueryBuilders(query, search);
+    query = mergeQueryBuilderField(query, search);
     return query;
 }
 
+export function buildMultiTenantRestrictionQuery(query: QueryBuilderData): QueryBuilderData {
+    if (!Vars.currentOrganization.id) {
+        Vars.loggy.log('error');
+        return query;
+    }
+    /*const include = {
+        model: Organization,
+        where: {
+            id: Vars.currentOrganization.id
+        }
+    };
+    query = mergeQueryBuilderField(query, include, 'include');*/
+    const include1 = {
+        model: RoleAssignment,
+    };
+    query = mergeQueryBuilderField(query, include1, 'include');
+    query.include = [Organization, {model: Event, as: 'registered_events'}, {model: Event, as: 'created_events'}, PollAnswer, Poll];
+    return query;
+}
 
-export function buildFilter(query: QueryBuilderData, req: Request, allowedFields: string[] = [], customResolver: customFilterResolverMap) {
+export function buildFilter(query: QueryBuilderData, req: Request, allowedFields: string[] = [], customResolver: customFilterResolverMap): QueryBuilderData {
     const filter: { [name: string]: string } = {};
     allowedFields.forEach(field => {
         let value = '';
@@ -95,24 +127,29 @@ export function buildFilter(query: QueryBuilderData, req: Request, allowedFields
             filter[field] = value;
         }
     });
-    query = mergeQueryBuilders(query, filter);
+    query = mergeQueryBuilderField(query, filter);
     return query;
 }
 
-function mergeQueryBuilders(query: QueryBuilderData, newQuery: any): QueryBuilderData {
-    if (Object.prototype.hasOwnProperty.call(query, 'where')) {
-        query.where = {
-            ...query.where,
+function mergeQueryBuilderField(query: QueryBuilderData, newQuery: { [s: string]: unknown }, fieldName: keyof QueryBuilderData = 'where'): QueryBuilderData {
+    if (Object.prototype.hasOwnProperty.call(query, fieldName)) {
+        query[fieldName] = {
+            ...query[fieldName],
             ...newQuery
         };
     } else {
         // !Object.keys(search).length is not working here, don't know why
-        query.where = newQuery;
+        query[fieldName] = newQuery;
     }
     return query;
 }
 
-export interface QueryBuilderData {
+export function addRelations(query: QueryBuilderData, models: Includeable): QueryBuilderData {
+    const include = {include: models};
+    return mergeQueryBuilderField(query, include);
+}
+
+export interface QueryBuilderData extends FindOptions {
     where?: any;
     offset?: number;
     limit?: number;
@@ -126,6 +163,7 @@ export interface QueryBuilderConfig {
     query: QueryBuilderData;
     allowedOrderFields?: string[];
     allowedSearchFields?: string[];
+    allowOnlyCurrentOrganization?: boolean;
     allowLimitAndOffset: boolean;
     allowedFilterFields?: string[];
     customFilterResolver?: customFilterResolverMap;

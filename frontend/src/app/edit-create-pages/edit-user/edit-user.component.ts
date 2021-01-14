@@ -46,7 +46,7 @@ export class EditUserComponent implements OnInit, OnChanges {
             firstName: [data.data.first_name],
             lastName: [data.data.last_name],
             city: [data.data.city],
-            postcode: [data.data.post_code, Validators.minLength(4)],
+            postcode: [data.data.post_code, Validators.minLength(5)],
             street: [data.data.street],
             streetNumber: [data.data.street_number],
           }
