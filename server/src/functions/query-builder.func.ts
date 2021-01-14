@@ -3,22 +3,11 @@ import isBlank from 'is-blank';
 import {Vars} from '../vars';
 import {FindOptions} from 'sequelize';
 import {Includeable} from 'sequelize/types/lib/model';
-import {Organization} from '../models/organization.model';
-import {RoleAssignment} from '../models/role-assignment.model';
-import {PollAnswer} from '../models/poll-answer.model';
-import {Team} from '../models/team.model';
-import {Role} from '../models/role.model';
-import {News} from '../models/news.model';
-import {Poll} from '../models/poll.model';
-import {Event} from '../models/event.model';
 
 
 export function buildQuery(config: QueryBuilderConfig, req: Request): QueryBuilderData {
     if (config.allowLimitAndOffset) {
         config.query = buildLimitAndOffset(config.query, req);
-    }
-    if (config.allowOnlyCurrentOrganization) {
-        config.query = buildMultiTenantRestrictionQuery(config.query);
     }
     if (config.allowedSearchFields && config.searchString) {
         config.query = buildOrLikeSearchQuery(config.query, config.searchString, config.allowedSearchFields);
@@ -29,7 +18,6 @@ export function buildQuery(config: QueryBuilderConfig, req: Request): QueryBuild
     if (config.allowedOrderFields) {
         config.query = buildOrder(config.query, req, config.allowedOrderFields);
     }
-    config.query = buildMultiTenantRestrictionQuery(config.query);
     return config.query;
 }
 
@@ -87,26 +75,6 @@ export function buildOrLikeSearchQuery(query: QueryBuilderData, needle: string, 
         )
     };
     query = mergeQueryBuilderField(query, search);
-    return query;
-}
-
-export function buildMultiTenantRestrictionQuery(query: QueryBuilderData): QueryBuilderData {
-    if (!Vars.currentOrganization.id) {
-        Vars.loggy.log('error');
-        return query;
-    }
-    /*const include = {
-        model: Organization,
-        where: {
-            id: Vars.currentOrganization.id
-        }
-    };
-    query = mergeQueryBuilderField(query, include, 'include');*/
-    const include1 = {
-        model: RoleAssignment,
-    };
-    query = mergeQueryBuilderField(query, include1, 'include');
-    query.include = [Organization, {model: Event, as: 'registered_events'}, {model: Event, as: 'created_events'}, PollAnswer, Poll];
     return query;
 }
 
