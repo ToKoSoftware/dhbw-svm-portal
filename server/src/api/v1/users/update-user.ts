@@ -93,7 +93,7 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
             return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
         }
         if (updateResult === null || updateResult[0] == 0) {
-            return res.send(wrapResponse(false, {error: 'No user updated'}));
+            return res.send(wrapResponse(true, {info: 'No user updated'}));
         }
 
     } else if (user === null) {
