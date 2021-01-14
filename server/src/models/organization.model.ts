@@ -25,12 +25,18 @@ import { User } from './user.model';
     },
     active: {
         required: false,
+        attributes: { 
+            exclude: ['access_code'] 
+        },
         where: {
             is_active: true
         }
     },
     inactive: {
         required: false,
+        attributes: { 
+            exclude: ['access_code'] 
+        },
         where: {
             is_active: false
         }

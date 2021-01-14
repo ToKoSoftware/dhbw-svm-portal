@@ -4,6 +4,7 @@ import { EventRegistration } from './event-registration.model';
 import { Organization } from './organization.model';
 import { User } from './user.model';
 import {Op} from 'sequelize';
+import { currentOrg } from './current-org.scope';
 
 @DefaultScope(() => ({
     required: false,
@@ -41,7 +42,8 @@ import {Op} from 'sequelize';
         where: {
             price: null
         }
-    }
+    },
+    onlyCurrentOrg: (org_id: string) => currentOrg(org_id)
 })) 
 
 @Table
