@@ -4,6 +4,7 @@ import { buildQuery, QueryBuilderConfig } from '../../../functions/query-builder
 import { currentUserIsAdminOrMatchesId } from '../../../functions/current-user-is-admin-or-matches-id.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { Team } from '../../../models/team.model';
+import { Vars } from '../../../vars';
 
 export async function getTeam(req: Request, res: Response): Promise<Response> {
     let success = true;
@@ -12,7 +13,7 @@ export async function getTeam(req: Request, res: Response): Promise<Response> {
         return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));
     }
 
-    const data = await Team.findOne( //TODO: scope: currentOrg
+    const data = await Team.scope({method: ['onlyCurrentOrg', Vars.currentOrganization.id]}).findOne(
         {
             where: {
                 id: req.params.id
@@ -47,7 +48,7 @@ export async function getTeams(req: Request, res: Response): Promise<Response> {
     query = buildQuery(queryConfig, req);
 
     let success = true;
-    const data = await Team.findAll(query) //TODO: scope: currentOrg
+    const data = await Team.scope({method: ['onlyCurrentOrg', Vars.currentOrganization.id]}).findAll(query)
         .catch(() => {
             success = false;
             return null;
