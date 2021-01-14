@@ -43,9 +43,7 @@ export async function getUser(req: Request, res: Response): Promise<Response> {
 }
 
 export async function getUsers(req: Request, res: Response): Promise<Response> {
-    let query: FindOptions = {
-        include: [Team, Role, News]
-    };
+    let query: FindOptions = {};
     const allowedSearchFilterAndOrderFields = ['email'];
     const queryConfig: QueryBuilderConfig = {
         query: query,
@@ -56,10 +54,6 @@ export async function getUsers(req: Request, res: Response): Promise<Response> {
         allowedOrderFields: allowedSearchFilterAndOrderFields
     };
     query = buildQuery(queryConfig, req);
-    // hide password from api calls
-    query.attributes = {
-        exclude: ['password']
-    };
 
     let success = true;
     const data = await User.findAll(query)
