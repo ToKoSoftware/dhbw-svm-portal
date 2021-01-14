@@ -5,6 +5,7 @@ import { PollAnswer } from './poll-answer.model';
 import { Team } from './team.model';
 import { User } from './user.model';
 import {Op} from 'sequelize';
+import { currentOrg } from './current-org.scope';
 
 @DefaultScope(() => ({
     required: false,
@@ -36,6 +37,7 @@ import {Op} from 'sequelize';
             }
         }
     }),
+    onlyCurrentOrg: (org_id: string) => currentOrg(org_id)
 })) 
 
 
