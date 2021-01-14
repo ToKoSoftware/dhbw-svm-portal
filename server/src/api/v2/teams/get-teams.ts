@@ -13,7 +13,7 @@ export async function getTeam(req: Request, res: Response): Promise<Response> {
         return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));
     }
 
-    const data = await Team.scope({method: ['onlyCurrentOrg', Vars.currentOrganization.id]}).findOne(
+    const data = await Team.scope(['full', {method: ['onlyCurrentOrg', Vars.currentOrganization.id]}]).findOne(
         {
             where: {
                 id: req.params.id
@@ -48,7 +48,7 @@ export async function getTeams(req: Request, res: Response): Promise<Response> {
     query = buildQuery(queryConfig, req);
 
     let success = true;
-    const data = await Team.scope({method: ['onlyCurrentOrg', Vars.currentOrganization.id]}).findAll(query)
+    const data = await Team.scope(['full', {method: ['onlyCurrentOrg', Vars.currentOrganization.id]}]).findAll(query)
         .catch(() => {
             success = false;
             return null;
