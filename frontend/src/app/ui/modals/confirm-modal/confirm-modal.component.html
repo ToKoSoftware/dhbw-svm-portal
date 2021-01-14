@@ -1,0 +1,19 @@
+<app-modal [blocking]="true" *ngIf="showModal">
+  <h1>{{config.title}}</h1>
+  <hr class="my-5">
+  <p class="my-5">{{config.description}}</p>
+  <div class="flex justify-end w-full">
+    <div class="">
+      <app-button
+                  *ngIf="config?.showCancelButton === true"
+                  (click)="runCancelAction()"
+                  type="blank"
+                  [label]="config.cancelText"
+                  [icon]="null"></app-button>
+      <app-button
+                  (click)="runConfirmAction()"
+                  [type]="config.confirmButtonType"
+                  [label]="config.confirmText"></app-button>
+    </div>
+  </div>
+</app-modal>

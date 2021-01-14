@@ -1,0 +1,11 @@
+<app-layout [sidebarPages]="sidebarPages" [breadcrumbs]="breadcrumb"
+            heading="Benutzer verwalten">
+  <app-container>
+    <app-titled-content
+      label="Rollen"
+      description="Hier können Sie Rollen bearbeiten.">
+      <app-role-picker [editable]="true"
+                       [deletable]="true"></app-role-picker>
+    </app-titled-content>
+  </app-container>
+</app-layout>

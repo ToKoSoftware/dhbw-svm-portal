@@ -14,14 +14,24 @@ services:
       - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
     ports:
       - "5432:5432"
-  web:
-    container_name: portal-server
+  frontend:
+    container_name: portal-frontend
+    restart: "no"
+    image: "node:14"
+    user: "node" # for ubuntu, use root
+    working_dir: /home/node/app
+    volumes:
+      - ./:/home/node/app
+    command: >
+      sh -c "cd server && npm install && npm run build:frontend"
+  backend:
+    container_name: portal-backend
     restart: unless-stopped
-    image: "node:10"
+    image: "node:14"
     depends_on:
       - db
-    ports:
-      - "80:5000"
+    expose:
+      - "80"
     user: "node" # for ubuntu, use root
     working_dir: /home/node/app
     volumes:
@@ -37,5 +47,6 @@ services:
       DATABASE_USER: $POSTGRES_USER
       DATABASE_NAME: $POSTGRES_DB
       LOGGING: "true"
+      PORT: 80
 volumes:
-  database-data: # named volumes can be managed easier using docker-compose
+  database-data:

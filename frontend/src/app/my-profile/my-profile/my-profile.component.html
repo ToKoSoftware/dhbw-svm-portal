@@ -1,0 +1,13 @@
+<app-layout
+  heading="Ihr Profil"
+  [sidebarPages]="profilePages"
+  [breadcrumbs]="breadcrumbs">
+  <app-container>
+      <app-titled-content
+        label="Profil bearbeiten"
+        description="Ihre Addresse kann lediglich von Administratoren eingesehen werden.">
+        <app-edit-user></app-edit-user>
+      </app-titled-content>
+  </app-container>
+
+</app-layout>

@@ -1,0 +1,35 @@
+<div class="relative">
+  <label [for]="name" class="leading-7 text-md text-gray-600 dark:text-white">
+    {{label}}<span class="text-red-500 px-0.5" *ngIf="required">*</span>
+  </label>
+  <p class="text-sm text-gray-500 mb-3" *ngIf="description">
+    {{description}}
+  </p>
+  <input
+    [id]="name"
+    [type]="type"
+    [placeholder]="placeholder"
+    [value]="value"
+    [disabled]="disabled"
+    (input)="onChange($event.target.value); value = $event.target.value"
+    (blur)="onTouched()"
+    [class.text-black]="disabled"
+    [class.cursor-not-allowed]="disabled"
+    [class.text-gray-700]="!disabled"
+    [class.bg-gray-100]="!disabled"
+    (keyup.enter)="enter.emit($event)"
+    [class.focus:border-malachite-600]="!ngControl.errors || ngControl.touched"
+    [class.border-malachite-600]="!ngControl.errors && ngControl.touched && value !== initialValue"
+    [class.focus:border-red-500]="ngControl.errors && ngControl.touched"
+    [class.border-red-500]="ngControl.errors && ngControl.touched"
+    [class.mb-0]="ngControl.errors && ngControl.touched"
+    [class.mb-4]="!(ngControl.errors && ngControl.touched)"
+    class="w-full rounded border border-gray-300
+     dark:bg-gray-900
+    dark:text-white text-base outline-none
+    pt-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+  <p class="text-sm text-red-500 px-1" *ngIf="ngControl.errors && ngControl.touched">
+    {{errorMessage}}
+  </p>
+</div>
+

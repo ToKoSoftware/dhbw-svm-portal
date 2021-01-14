@@ -3,7 +3,7 @@ import isBlank from 'is-blank';
 import {checkKeysAreNotEmptyOrNotSet} from '../../../functions/check-inputs.func';
 import {mapUser} from '../../../functions/map-users.func';
 import {wrapResponse} from '../../../functions/response-wrapper';
-import {UserData} from '../../../interfaces/users.interface';
+import {RawUserData} from '../../../interfaces/users.interface';
 import {User} from '../../../models/user.model';
 import * as EmailValidator from 'email-validator';
 import {currentUserIsAdminOrMatchesId} from '../../../functions/current-user-is-admin-or-matches-id.func';
@@ -13,8 +13,8 @@ import {jwtSign} from '../../../functions/jwt-sign.func';
 export async function updateUser(req: Request, res: Response): Promise<Response> {
     let success = true;
     let updateResult: [number, User[]] | null;
-    const incomingData: UserData = req.body;
-    const mappedIncomingData: UserData = await mapUser(incomingData);
+    const incomingData: RawUserData = req.body;
+    const mappedIncomingData: RawUserData = await mapUser(incomingData);
 
     const requiredFields = User.requiredFields();
 
@@ -93,7 +93,7 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
             return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
         }
         if (updateResult === null || updateResult[0] == 0) {
-            return res.status(404).send(wrapResponse(false, {error: 'No user updated'}));
+            return res.send(wrapResponse(false, {error: 'No user updated'}));
         }
 
     } else if (user === null) {

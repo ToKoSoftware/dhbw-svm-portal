@@ -1,7 +1,7 @@
 import Loggy from './functions/loggy.func';
 import {Configuration} from './interfaces/configutation.interface';
 import {Op, Sequelize} from 'sequelize';
-import {User} from './models/user.model';
+import { User } from './models/user.model';
 
 
 export abstract class Vars {

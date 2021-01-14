@@ -7,7 +7,9 @@ export function jwtSign(user: User, expiration = 3600): string{
         {
             id: user.id,
             email: user.email,
-            is_admin: user.is_admin
+            is_admin: user.is_admin,
+            first_name: user.first_name,
+            last_name: user.last_name,
         },
         Vars.config.database.jwtSalt,
         {

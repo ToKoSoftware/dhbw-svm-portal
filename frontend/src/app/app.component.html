@@ -1,0 +1,14 @@
+<div class="h-screen flex overflow-hidden dark:text-white">
+  <div class="hidden lg:flex lg:flex-shrink-0 border-r" *ngIf="session.isLoggedIn$ | async">
+    <app-navbar></app-navbar>
+  </div>
+  <div class="w-full bg-white dark:bg-black dark:text-white md:overflow-hidden overflow-y-auto">
+    <app-top-bar *ngIf="session.isLoggedIn$ | async"></app-top-bar>
+    <router-outlet></router-outlet>
+  </div>
+  <app-notifier></app-notifier>
+  <app-confirm-modal></app-confirm-modal>
+  <app-loading-modal></app-loading-modal>
+  <app-custom-modal></app-custom-modal>
+</div>
+

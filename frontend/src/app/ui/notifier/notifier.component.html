@@ -1,0 +1,12 @@
+<div
+  class="fixed bottom-5 right-5 w-96">
+  <div class="relative"
+       *ngFor="let n of (notifications.notifications$ | async)">
+  <app-notification
+    [id]="n.id"
+    [dismissible]="n?.dismissible? n?.dismissible: true"
+    [label]="n.title"
+    [type]="n.type"
+    [description]="n.description"></app-notification>
+  </div>
+</div>

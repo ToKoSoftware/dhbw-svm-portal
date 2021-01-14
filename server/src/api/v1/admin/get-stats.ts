@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { wrapResponse } from '../../../functions/response-wrapper';
-import { User } from '../../../models/user.model';
+import {User} from '../../../models/user.model';
 
 export async function getStats(req: Request, res: Response): Promise<Response> {
     const usersCount = await countTotalEntities(User);

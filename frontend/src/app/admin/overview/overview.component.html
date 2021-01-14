@@ -1,0 +1,33 @@
+<app-layout
+  [sidebarPages]="sidebarPages"
+  heading="Übersicht"
+>
+  <app-container>
+    <form [formGroup]="editOrgForm">
+      <app-titled-content
+        label="Allgemeine Einstellungen">
+        <app-input
+          required="true"
+          type="text"
+          formControlName="title"
+          placeholder="1. FC Musterhausen"
+          label="Vereinsname">
+        </app-input>
+        <app-input
+          required="true"
+          formControlName="access_code"
+          type="text"
+          placeholder="FCMSTR2021"
+          description="Dieser Code muss von neuen Nutzern angegeben werden, um sich bei der Plattform zu registrieren."
+          label="Zugangscode">
+        </app-input>
+        <div class="flex justify-end w-full">
+          <app-button
+            formButtonType="submit"
+            label="Speichern">
+          </app-button>
+        </div>
+      </app-titled-content>
+    </form>
+  </app-container>
+</app-layout>
