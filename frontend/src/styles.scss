@@ -2,3 +2,6 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+router-outlet + * {
+ width: 100%;
+}

@@ -1,8 +1,8 @@
 <app-layout [sidebarPages]="sidebarPages" [buttons]="buttonGroup" [breadcrumbs]="breadcrumb"
             heading="Benutzer verwalten">
-  <div class="md:flex h-full w-full">
+  <div class="md:flex md:h-full">
     <app-secondary-navigation size="large" class="md:-ml-2">
-      <div class="flex justify-end py-3">
+      <div class="flex justify-end py-10">
         <app-filter [filters]="filters" (filterValue)="applyFilter($event)"></app-filter>
       </div>
       <div class="md:block hidden" *ngIf="!loading">
@@ -25,8 +25,8 @@
       </div>
       <app-loading *ngIf="loading"></app-loading>
     </app-secondary-navigation>
-    <div class="flex-grow">
-      <app-container *ngIf="currentEditUserId !== ''">
+    <div class="flex-grow h-full w-full overflow-y-auto">
+      <app-container *ngIf="currentEditUserId !== ''" class="h-full">
         <app-titled-content
           label="Benutzer bearbeiten">
           <app-edit-user [userId]="currentEditUserId"></app-edit-user>

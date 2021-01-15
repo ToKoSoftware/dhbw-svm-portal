@@ -1,13 +1,14 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostBinding, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {LoginService} from '../../services/login/login.service';
-import {SidebarPageGroup} from "../sidebar/sidebar.component";
+import {SidebarPageGroup} from '../sidebar/sidebar.component';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html'
 })
 export class NavbarComponent implements OnInit {
+  @HostBinding('class') classes = 'h-full flex flex-col';
   @ViewChild('profileMenu') profileMenu: ElementRef<any>;
   public searchQuery = '';
   public sidebarPageGroups: SidebarPageGroup[] = [{
@@ -32,12 +33,12 @@ export class NavbarComponent implements OnInit {
     }]
   }, {
     title: 'Mein Verein',
-    pages: [ {
+    pages: [{
       icon: 'tool',
       title: 'Verwaltung',
       url: '/my-team'
     }]
-  }]
+  }];
 
   constructor(
     public login: LoginService,
