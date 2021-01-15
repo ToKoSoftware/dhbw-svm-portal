@@ -17,6 +17,7 @@ export async function loginUser(req: Request, res: Response): Promise<Response> 
     let success = true;
     const selectStatement = {
         where: {
+            is_active: true,
             ...(incomingData?.email ? {email: incomingData.email} : {}),
             ...(incomingData?.username ? {email: incomingData.username} : {}),
         }

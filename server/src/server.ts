@@ -17,6 +17,7 @@ import {exportUsers} from './api/v1/admin/export-users';
 import {getStats} from './api/v1/admin/get-stats';
 import {getMonthlyStats} from './api/v1/admin/get-monthly-stats';
 import path from 'path';
+import { getTeam, getTeams } from './api/v2/teams/get-teams';
 
 
 export default function startServer(): void {
@@ -57,6 +58,13 @@ export default function startServer(): void {
     app.post('/api/v1/users', (req, res) => createUser(req, res));
     app.put('/api/v1/users/:id', userIsAuthorized, (req, res) => updateUser(req, res));
     app.delete('/api/v1/users/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteUser(req, res));
+
+    /** 
+     * Team
+     */
+    app.get('/api/v2/teams', userIsAuthorized, userIsAdmin, (req, res) => getTeams(req, res));
+    app.get('/api/v2/teams/:id', userIsAuthorized, (req, res) => getTeam(req, res));
+
 
     /**
      * Admin
