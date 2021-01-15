@@ -12,7 +12,6 @@ import { Role } from '../../../models/role.model';
 export async function getTeam(req: Request, res: Response): Promise<Response> {
     let success = true;
 
-    Vars.loggy.log(Vars.currentUser);
 
     const teamData: TeamData | null = await Team
         .scope({method: ['onlyCurrentOrg', Vars.currentOrganization.id]})
@@ -27,7 +26,7 @@ export async function getTeam(req: Request, res: Response): Promise<Response> {
                 include: [Organization, Role, User]
             } : {
                 include: {
-                    model: User.scope('openData')
+                    model: User.scope('publicData')
                 }
             }
         })
