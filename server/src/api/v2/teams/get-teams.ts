@@ -1,22 +1,34 @@
 import { Request, Response } from 'express';
-import { FindOptions } from 'sequelize';
+import { FindOptions, Op } from 'sequelize';
 import { buildQuery, QueryBuilderConfig } from '../../../functions/query-builder.func';
-import { currentUserIsAdminOrMatchesId } from '../../../functions/current-user-is-admin-or-matches-id.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { Team } from '../../../models/team.model';
 import { Vars } from '../../../vars';
+import { TeamData } from '../../../interfaces/team.interface';
+import { User } from '../../../models/user.model';
+import { Organization } from '../../../models/organization.model';
+import { Role } from '../../../models/role.model';
 
 export async function getTeam(req: Request, res: Response): Promise<Response> {
     let success = true;
 
-    if (!currentUserIsAdminOrMatchesId(req.params.id)) {
-        return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));
-    }
+    Vars.loggy.log(Vars.currentUser);
 
-    const data = await Team.scope(['full', {method: ['onlyCurrentOrg', Vars.currentOrganization.id]}]).findOne(
-        {
+    const teamData: TeamData | null = await Team
+        .scope({method: ['onlyCurrentOrg', Vars.currentOrganization.id]})
+        .findOne({
             where: {
-                id: req.params.id
+                [Op.and]: [
+                    { id: req.params.id },
+                    { id: Vars.currentUser.teams.map(t => t.id)}
+                ]
+            },
+            ... Vars.currentUser.is_admin ? {
+                include: [Organization, Role, User]
+            } : {
+                include: {
+                    model: User.scope('openData')
+                }
             }
         })
         .catch(() => {
@@ -26,10 +38,10 @@ export async function getTeam(req: Request, res: Response): Promise<Response> {
     if (!success) {
         return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
-    if (data === null) {
+    if (teamData === null) {
         return res.status(404).send(wrapResponse(false));
     }
-    return res.send(wrapResponse(data != null, data));
+    return res.send(wrapResponse(true, teamData));
 }
 
 export async function getTeams(req: Request, res: Response): Promise<Response> {

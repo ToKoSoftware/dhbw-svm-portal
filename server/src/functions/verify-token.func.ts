@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken';
 import {User} from '../models/user.model';
 import {Vars} from '../vars';
 import {wrapResponse} from './response-wrapper';
-import {Organization} from '../models/organization.model';
 
 export function verifyToken(res: Response, token: string, next: NextFunction): void {
     jwt.verify(token, Vars.config.database.jwtSalt, async (err: unknown) => {
@@ -16,11 +15,10 @@ export function verifyToken(res: Response, token: string, next: NextFunction): v
             if (!(userData instanceof Object) || userData === null) {
                 return res.status(403).send(wrapResponse(false, {error: 'Error occured during authorization!'}));
             }
-            const user = await User.findOne({
+            const user = await User.scope('full').findOne({
                 where: {
                     id: userData.id
-                },
-                include: Organization
+                }
             });
 
             if (user === null) {

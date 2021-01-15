@@ -55,7 +55,14 @@ import { RoleAssignment } from './role-assignment.model';
         where: {
             org_id: org_id
         }
-    })
+    }),
+    openData: {
+        required: false,
+        attributes: ['id', 'username', 'first_name', 'last_name'] ,
+        where: {
+            is_active: true
+        }
+    }
 })) 
 
 @Table
