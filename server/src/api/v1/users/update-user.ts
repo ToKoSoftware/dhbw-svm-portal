@@ -8,6 +8,7 @@ import {User} from '../../../models/user.model';
 import * as EmailValidator from 'email-validator';
 import {currentUserIsAdminOrMatchesId} from '../../../functions/current-user-is-admin-or-matches-id.func';
 import {jwtSign} from '../../../functions/jwt-sign.func';
+import { Op } from 'sequelize';
 
 export async function updateUser(req: Request, res: Response): Promise<Response> {
     let success = true;
@@ -27,7 +28,7 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
         return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));
     }
 
-    const user: User | null = await User.findOne(
+    const user: User | null = await User.unscoped().findOne(
         {
             where: {
                 id: req.params.id
@@ -49,6 +50,51 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
         && validEmail
         && (req.body.is_admin === undefined)
     ) {
+
+        //email should be changed: check if already in use
+        if(user.email !== mappedIncomingData.email && mappedIncomingData.email !== undefined){
+            const emailInUseCount = await User.count({
+                where: {
+                    id: {
+                        [Op.ne]: user.id
+                    },
+                    email: mappedIncomingData.email
+                }
+            })
+                .catch(() => {
+                    success = false;
+                    return 0;
+                });
+            if (!success) {
+                return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
+            }
+            if(emailInUseCount > 0){
+                return res.status(400).send(wrapResponse(false, {error: 'E-Mail already in use'}));
+            }
+        }
+
+        //username should be changed: check if already in use
+        if(user.password !== mappedIncomingData.password && mappedIncomingData.password !== undefined){
+            const usernameInUseCount = await User.count({
+                where: {
+                    id: {
+                        [Op.ne]: user.id
+                    },
+                    username: mappedIncomingData.username
+                }
+            })
+                .catch(() => {
+                    success = false;
+                    return 0;
+                });
+            if (!success) {
+                return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
+            }
+            if(usernameInUseCount > 0){
+                return res.status(400).send(wrapResponse(false, {error: 'Username already in use'}));
+            }
+        }
+
         updateResult = await User.update(mappedIncomingData,
             { 
                 where: {
