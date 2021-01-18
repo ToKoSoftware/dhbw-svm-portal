@@ -28,7 +28,7 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
         return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));
     }
 
-    const user: User | null = await User.unscoped().findOne(
+    const user: User | null = await User.findOne(
         {
             where: {
                 id: req.params.id
@@ -74,7 +74,7 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
         }
 
         //username should be changed: check if already in use
-        if(user.password !== mappedIncomingData.password && mappedIncomingData.password !== undefined){
+        if(user.username !== mappedIncomingData.username && mappedIncomingData.username !== undefined){
             const usernameInUseCount = await User.count({
                 where: {
                     id: {
