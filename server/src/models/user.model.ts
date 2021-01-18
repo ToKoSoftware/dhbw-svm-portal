@@ -1,4 +1,5 @@
-import {BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, HasMany, IsBefore, IsDate, IsEmail, IsIn, Length, Model, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
+import {BeforeCreate, BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, HasMany, IsBefore, IsDate, IsEmail, IsIn, Length, Model, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
+import {v4 as uuidv4} from 'uuid';
 import {genderType, RawUserData} from '../interfaces/users.interface';
 import { Organization } from './organization.model';
 import { EventRegistration } from './event-registration.model';
@@ -84,18 +85,14 @@ export class User extends Model {
     first_name: string;
     @Column
     last_name: string;
-    @IsIn([['M', 'W', 'D']])
     @Column
     gender: genderType;
-    @IsDate
-    @IsBefore(Date())
     @Column
     birthday: Date;
     @Column
     street: string;
     @Column
     street_number: string;
-    @Length({min: 5, max: 5})
     @Column
     post_code: string;
     @Column
@@ -105,6 +102,11 @@ export class User extends Model {
     @ForeignKey(() => Organization)
     @Column
     org_id: string;
+
+    @BeforeCreate
+    static addUuid(instance: User): string {
+        return instance.id = uuidv4();
+    }
 
     @BelongsTo(() => Organization)
     organization: Organization;
@@ -133,10 +135,12 @@ export class User extends Model {
             'first_name',
             'last_name',
             'gender',
+            'birthday',
             'street',
             'street_number',
             'post_code',
-            'city'
+            'city',
+            'org_id'
         ];
     }
 }

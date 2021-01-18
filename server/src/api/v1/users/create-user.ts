@@ -5,12 +5,12 @@ import { mapUser } from '../../../functions/map-users.func';
 import { objectHasRequiredAndNotEmptyKeys } from '../../../functions/check-inputs.func';
 import * as EmailValidator from 'email-validator';
 import { RawUserData } from '../../../interfaces/users.interface';
+import { Vars } from '../../../vars';
 
 export async function createUser(req: Request, res: Response): Promise<Response> {
     let success = true;
     const incomingData: RawUserData = req.body;
     const mappedIncomingData: RawUserData = await mapUser(incomingData);
-
 
     const requiredFields = User.requiredFields();
     if (!objectHasRequiredAndNotEmptyKeys(mappedIncomingData, requiredFields)) {
@@ -43,12 +43,12 @@ export async function createUser(req: Request, res: Response): Promise<Response>
                 success = false;
                 return null;
             });
+        Vars.loggy.log(success);
         if (!success||createdData === null) {
             return res.status(500).send(wrapResponse(false, { error: 'Could not create User' }));
         }
-        //return everything beside password
+
         const user = await User.findOne({
-            attributes: { exclude: ['password'] },
             where: {
                 id: createdData.id
             }
