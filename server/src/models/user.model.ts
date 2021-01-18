@@ -85,14 +85,18 @@ export class User extends Model {
     first_name: string;
     @Column
     last_name: string;
+    @IsIn([['M', 'W', 'D']])
     @Column
     gender: genderType;
+    @IsDate
+    @IsBefore(Date())
     @Column
     birthday: Date;
     @Column
     street: string;
     @Column
     street_number: string;
+    @Length({min: 5, max: 5})
     @Column
     post_code: string;
     @Column
