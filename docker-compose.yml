@@ -18,7 +18,7 @@ services:
     container_name: portal-frontend
     restart: "no"
     image: "node:14"
-    user: "node" # for ubuntu, use root
+    user: "root" # for ubuntu, use root
     working_dir: /home/node/app
     volumes:
       - ./:/home/node/app
@@ -32,7 +32,7 @@ services:
       - db
     expose:
       - "80"
-    user: "node" # for ubuntu, use root
+    user: "root" # for ubuntu, use root
     working_dir: /home/node/app
     volumes:
       - ./:/home/node/app
