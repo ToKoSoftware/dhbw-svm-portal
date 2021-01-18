@@ -1,10 +1,12 @@
 import { Request, Response } from 'express';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import {User} from '../../../models/user.model';
+import {Op} from 'sequelize';
 import { mapUser } from '../../../functions/map-users.func';
 import { objectHasRequiredAndNotEmptyKeys } from '../../../functions/check-inputs.func';
 import * as EmailValidator from 'email-validator';
 import { RawUserData } from '../../../interfaces/users.interface';
+import { Vars } from '../../../vars';
 
 export async function createUser(req: Request, res: Response): Promise<Response> {
     let success = true;
@@ -24,10 +26,19 @@ export async function createUser(req: Request, res: Response): Promise<Response>
     const user = await User.findOne(
         {
             where: {
-                email: mappedIncomingData.email
+                [Op.or]: [
+                    {
+                        email: mappedIncomingData.email
+                    },
+                    {
+                        username: mappedIncomingData.username
+                    }
+                ]
             }
+            
         })
-        .catch(() => {
+        .catch((error) => {
+            Vars.loggy.log(error);
             success = false;
             return null;
         });
@@ -60,7 +71,7 @@ export async function createUser(req: Request, res: Response): Promise<Response>
         }
         return res.status(201).send(wrapResponse(true, user));
     } else {
-        return res.status(400).send(wrapResponse(false, { error: 'Email is already in use' }));
+        return res.status(400).send(wrapResponse(false, { error: 'Email or username is already in use' }));
     }
 
 }
