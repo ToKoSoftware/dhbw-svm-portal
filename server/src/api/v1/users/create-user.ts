@@ -19,7 +19,7 @@ export async function createUser(req: Request, res: Response): Promise<Response>
     const validEmail = EmailValidator.validate(mappedIncomingData.email);
 
     if (!validEmail) {
-        return res.status(400).send(wrapResponse(false, { error: 'E-mail is not valid' }));
+        return res.status(400).send(wrapResponse(false, { error: 'Email is not valid' }));
     }
 
     const validBirthday = mappedIncomingData.birthday instanceof Date;
