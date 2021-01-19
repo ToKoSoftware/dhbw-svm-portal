@@ -6,7 +6,6 @@ import { mapUser } from '../../../functions/map-users.func';
 import { objectHasRequiredAndNotEmptyKeys } from '../../../functions/check-inputs.func';
 import * as EmailValidator from 'email-validator';
 import { RawUserData } from '../../../interfaces/users.interface';
-import { Vars } from '../../../vars';
 
 export async function createUser(req: Request, res: Response): Promise<Response> {
     let success = true;
@@ -23,6 +22,11 @@ export async function createUser(req: Request, res: Response): Promise<Response>
         return res.status(400).send(wrapResponse(false, { error: 'E-mail is not valid' }));
     }
 
+    const validBirthday = mappedIncomingData.birthday instanceof Date;
+    if (!validBirthday) {
+        return res.status(400).send(wrapResponse(false, { error: 'Birthday is not valid' }));
+    }
+
     const user = await User.findOne(
         {
             where: {
@@ -37,8 +41,7 @@ export async function createUser(req: Request, res: Response): Promise<Response>
             }
             
         })
-        .catch((error) => {
-            Vars.loggy.log(error);
+        .catch(() => {
             success = false;
             return null;
         });

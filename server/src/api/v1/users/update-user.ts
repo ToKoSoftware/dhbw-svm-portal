@@ -20,6 +20,11 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
 
     const validEmail = EmailValidator.validate(mappedIncomingData.email) || isBlank(mappedIncomingData.email);
 
+    const validBirthday = mappedIncomingData.birthday instanceof Date || isBlank(mappedIncomingData.email);
+    if (!validBirthday) {
+        return res.status(400).send(wrapResponse(false, { error: 'Birthday is not valid' }));
+    }
+
     if (isBlank(req.body) || req.params.id === null) {
         return res.status(400).send(wrapResponse(false, {error: 'No body or valid param set.'}));
     }
