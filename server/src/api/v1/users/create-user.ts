@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import {User} from '../../../models/user.model';
+import {Op} from 'sequelize';
 import { mapUser } from '../../../functions/map-users.func';
 import { objectHasRequiredAndNotEmptyKeys } from '../../../functions/check-inputs.func';
 import * as EmailValidator from 'email-validator';
@@ -11,7 +12,6 @@ export async function createUser(req: Request, res: Response): Promise<Response>
     const incomingData: RawUserData = req.body;
     const mappedIncomingData: RawUserData = await mapUser(incomingData);
 
-
     const requiredFields = User.requiredFields();
     if (!objectHasRequiredAndNotEmptyKeys(mappedIncomingData, requiredFields)) {
         return res.status(400).send(wrapResponse(false, { error: 'Not all required fields have been set' }));
@@ -19,14 +19,27 @@ export async function createUser(req: Request, res: Response): Promise<Response>
     const validEmail = EmailValidator.validate(mappedIncomingData.email);
 
     if (!validEmail) {
-        return res.status(400).send(wrapResponse(false, { error: 'E-mail is not valid' }));
+        return res.status(400).send(wrapResponse(false, { error: 'Email is not valid' }));
+    }
+
+    const validBirthday = mappedIncomingData.birthday instanceof Date;
+    if (!validBirthday) {
+        return res.status(400).send(wrapResponse(false, { error: 'Birthday is not valid' }));
     }
 
     const user = await User.findOne(
         {
             where: {
-                email: mappedIncomingData.email
+                [Op.or]: [
+                    {
+                        email: mappedIncomingData.email
+                    },
+                    {
+                        username: mappedIncomingData.username
+                    }
+                ]
             }
+            
         })
         .catch(() => {
             success = false;
@@ -46,9 +59,8 @@ export async function createUser(req: Request, res: Response): Promise<Response>
         if (!success||createdData === null) {
             return res.status(500).send(wrapResponse(false, { error: 'Could not create User' }));
         }
-        //return everything beside password
+
         const user = await User.findOne({
-            attributes: { exclude: ['password'] },
             where: {
                 id: createdData.id
             }
@@ -62,7 +74,7 @@ export async function createUser(req: Request, res: Response): Promise<Response>
         }
         return res.status(201).send(wrapResponse(true, user));
     } else {
-        return res.status(400).send(wrapResponse(false, { error: 'Email is already in use' }));
+        return res.status(400).send(wrapResponse(false, { error: 'Email or username is already in use' }));
     }
 
 }

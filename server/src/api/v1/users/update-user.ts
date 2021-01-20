@@ -7,8 +7,8 @@ import {RawUserData} from '../../../interfaces/users.interface';
 import {User} from '../../../models/user.model';
 import * as EmailValidator from 'email-validator';
 import {currentUserIsAdminOrMatchesId} from '../../../functions/current-user-is-admin-or-matches-id.func';
-import {Op} from 'sequelize';
 import {jwtSign} from '../../../functions/jwt-sign.func';
+import { Op } from 'sequelize';
 
 export async function updateUser(req: Request, res: Response): Promise<Response> {
     let success = true;
@@ -19,6 +19,11 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
     const requiredFields = User.requiredFields();
 
     const validEmail = EmailValidator.validate(mappedIncomingData.email) || isBlank(mappedIncomingData.email);
+
+    const validBirthday = mappedIncomingData.birthday instanceof Date || isBlank(mappedIncomingData.email);
+    if (!validBirthday) {
+        return res.status(400).send(wrapResponse(false, { error: 'Birthday is not valid' }));
+    }
 
     if (isBlank(req.body) || req.params.id === null) {
         return res.status(400).send(wrapResponse(false, {error: 'No body or valid param set.'}));
@@ -42,7 +47,7 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
         return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
     }
 
-    //User object from database must not be null, id must not be changed and all set keys mut not be empty.
+    //User object from database must not be null, id must not be changed and all set keys must not be empty.
     if (
         user !== null
         && (req.body.id === undefined || req.params.id === req.body.id)
@@ -50,15 +55,15 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
         && validEmail
         && (req.body.is_admin === undefined)
     ) {
-        let updateQuery;
-        //If mail of found user does not match incoming mail check, if email already in use.
+
+        //email should be changed: check if already in use
         if(user.email !== mappedIncomingData.email && mappedIncomingData.email !== undefined){
             const emailInUseCount = await User.count({
                 where: {
-                    email: mappedIncomingData.email,
                     id: {
                         [Op.ne]: user.id
-                    }
+                    },
+                    email: mappedIncomingData.email
                 }
             })
                 .catch(() => {
@@ -71,14 +76,31 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
             if(emailInUseCount > 0){
                 return res.status(400).send(wrapResponse(false, {error: 'E-Mail already in use'}));
             }
-            // mail can be changed, so change complete user.
-            updateQuery = mappedIncomingData.password === undefined ? {email: mappedIncomingData.email} : mappedIncomingData;
-        } else {
-            // mail should not be changed, so change only password (only changable field)
-            updateQuery = { password: mappedIncomingData.password };
-            
         }
-        updateResult = await User.update(updateQuery,
+
+        //username should be changed: check if already in use
+        if(user.username !== mappedIncomingData.username && mappedIncomingData.username !== undefined){
+            const usernameInUseCount = await User.count({
+                where: {
+                    id: {
+                        [Op.ne]: user.id
+                    },
+                    username: mappedIncomingData.username
+                }
+            })
+                .catch(() => {
+                    success = false;
+                    return 0;
+                });
+            if (!success) {
+                return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
+            }
+            if(usernameInUseCount > 0){
+                return res.status(400).send(wrapResponse(false, {error: 'Username already in use'}));
+            }
+        }
+
+        updateResult = await User.update(mappedIncomingData,
             { 
                 where: {
                     id: req.params.id
@@ -114,11 +136,9 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
     } else {
         return res.status(400).send(wrapResponse(false));
     } 
-    
-    //return everything beside password
+
     const returnedUser = await User.findOne(
         {
-            attributes: { exclude: ['password'] },
             where: {
                 id: req.params.id
             }

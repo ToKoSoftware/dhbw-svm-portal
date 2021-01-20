@@ -1,4 +1,5 @@
-import {BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, HasMany, IsBefore, IsDate, IsEmail, IsIn, Length, Model, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
+import {BeforeCreate, BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, HasMany, IsBefore, IsDate, IsEmail, IsIn, Length, Model, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
+import {v4 as uuidv4} from 'uuid';
 import {genderType, RawUserData} from '../interfaces/users.interface';
 import { Organization } from './organization.model';
 import { EventRegistration } from './event-registration.model';
@@ -106,6 +107,11 @@ export class User extends Model {
     @Column
     org_id: string;
 
+    @BeforeCreate
+    static addUuid(instance: User): string {
+        return instance.id = uuidv4();
+    }
+
     @BelongsTo(() => Organization)
     organization: Organization;
     @BelongsToMany(() => Event, () => EventRegistration)
@@ -133,10 +139,12 @@ export class User extends Model {
             'first_name',
             'last_name',
             'gender',
+            'birthday',
             'street',
             'street_number',
             'post_code',
-            'city'
+            'city',
+            'org_id'
         ];
     }
 }
