@@ -4,11 +4,14 @@
       <select
         [(ngModel)]="selectedFilter[filterIndex]"
         name="filter"
-        class="rounded border appearance-none
-       border-gray-300 py-1
-       focus:outline-none focus:ring-2
-       focus:ring-indigo-200 focus:border-indigo-500
-       text-base pl-3 pr-10">
+        class="border-gray-300
+              dark:bg-gray-900
+              dark:text-white text-base outline-none
+              rounded border appearance-none
+              border-gray-300 py-1
+              focus:outline-none focus:ring-2
+              focus:ring-indigo-200 focus:border-indigo-500
+              text-base pl-3 pr-10">
         <ng-container
           *ngFor="let filter of filters; index as i">
           <option
@@ -38,11 +41,10 @@
     <input
       (keyup.enter)="filter()"
       [(ngModel)]="selectedFilterValue[filterIndex]"
-      class="rounded border w-full
-      border-gray-300 focus:border-indigo-500
-      text-base outline-none px-3
-      leading-8 transition-colors
-      duration-200 ease-in-out">
+      class="w-full rounded border border-gray-300
+            dark:bg-gray-900
+            dark:text-white text-base outline-none
+            px-3 leading-8 transition-colors duration-200 ease-in-out">
   </div>
   <div class="text-right">
     <app-button (click)="removeFilter(filterIndex)" type="transparent" icon="trash" size="small"></app-button>

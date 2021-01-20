@@ -40,10 +40,10 @@ export class UsersComponent implements OnInit, OnDestroy {
     name: "email",
   },{
     title: "Vorname",
-    name: "firstName",
+    name: "first_name",
   },{
     title: "Nachname",
-    name: "lastName",
+    name: "last_name",
   }];
 
   constructor(
