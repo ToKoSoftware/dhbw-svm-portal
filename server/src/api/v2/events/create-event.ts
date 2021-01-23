@@ -11,8 +11,6 @@ export async function createEvent(req: Request, res: Response): Promise<Response
     const incomingData: EventDataSnapshot = req.body;
     const mappedIncomingData: RawEventData = mapEvent(incomingData);
 
-    Vars.loggy.log(mappedIncomingData);
-
     const requiredFields = Event.requiredFields();
     if (!objectHasRequiredAndNotEmptyKeys(mappedIncomingData, requiredFields)) {
         return res.status(400).send(wrapResponse(false, { error: 'Not all required fields have been set' }));

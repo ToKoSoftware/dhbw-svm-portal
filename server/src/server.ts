@@ -19,6 +19,7 @@ import {getMonthlyStats} from './api/v1/admin/get-monthly-stats';
 import path from 'path';
 import { getTeam, getTeams } from './api/v2/teams/get-teams';
 import { createEvent } from './api/v2/events/create-event';
+import { registerForEvent } from './api/v2/events/register-for-event';
 
 
 export default function startServer(): void {
@@ -70,6 +71,7 @@ export default function startServer(): void {
      * Events
      */
     app.post('/api/v2/events', userIsAuthorized, userIsAdmin, (req, res) => createEvent(req, res));
+    app.post('/api/v2/events/:id/register', userIsAuthorized, (req, res) => registerForEvent(req, res));
 
     /**
      * Admin

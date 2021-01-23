@@ -1,4 +1,6 @@
-import {Model, Table, ForeignKey, Column, BelongsTo, PrimaryKey, Scopes} from 'sequelize-typescript';
+import {Model, Table, ForeignKey, Column, BelongsTo, PrimaryKey, Scopes, BeforeCreate} from 'sequelize-typescript';
+import {v4 as uuidv4} from 'uuid';
+import { RawEventRegistrationData } from '../interfaces/event-registration.interface';
 import { Event } from './event.model';
 import { User } from './user.model';
 
@@ -30,4 +32,18 @@ export class EventRegistration extends Model {
     user: User;
     @BelongsTo(() => Event)
     event: Event;
+
+    @BeforeCreate
+    static addUuid(instance: User): string {
+        return instance.id = uuidv4();
+    }
+
+    public static requiredFields(): Array<keyof RawEventRegistrationData> {
+        return [
+            'body',
+            'payment_done',
+            'user_id',
+            'event_id'
+        ];
+    }
 }
