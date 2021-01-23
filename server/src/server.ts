@@ -18,6 +18,7 @@ import {getStats} from './api/v1/admin/get-stats';
 import {getMonthlyStats} from './api/v1/admin/get-monthly-stats';
 import path from 'path';
 import { getTeam, getTeams } from './api/v2/teams/get-teams';
+import { createNews } from './api/v2/news/create-news';
 
 
 export default function startServer(): void {
@@ -65,6 +66,11 @@ export default function startServer(): void {
     app.get('/api/v2/teams', userIsAuthorized, userIsAdmin, (req, res) => getTeams(req, res));
     app.get('/api/v2/teams/:id', userIsAuthorized, (req, res) => getTeam(req, res));
 
+    /**
+     * News
+     */
+
+    app.post('/api/v2/news', userIsAuthorized, userIsAdmin, (req, res) => createNews(req, res));
 
     /**
      * Admin

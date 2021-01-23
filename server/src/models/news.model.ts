@@ -1,4 +1,5 @@
-import {BelongsTo, Column, DefaultScope, ForeignKey, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
+import {BeforeCreate, BelongsTo, Column, DefaultScope, ForeignKey, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
+import {v4 as uuidv4} from 'uuid';
 import {RawNewsData} from '../interfaces/news.interface';
 import { currentOrg } from './current-org.scope';
 import { Organization } from './organization.model';
@@ -54,10 +55,16 @@ export class News extends Model {
     @BelongsTo(() => User)
     author: User;
 
+    @BeforeCreate
+    static addUuid(instance: User): string {
+        return instance.id = uuidv4();
+    }
+
     public static requiredFields(): Array<keyof RawNewsData> {
         return [
             'title',
-            'body'
+            'body',
+            'is_active'
         ];
     }
 }
