@@ -4,7 +4,6 @@ import { mapEventRegistration } from '../../../functions/map-event-registration.
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { EventRegistrationDataSnapshot, RawEventRegistrationData } from '../../../interfaces/event-registration.interface';
 import { EventRegistration } from '../../../models/event-registration.model';
-import { Vars } from '../../../vars';
 
 export async function registerForEvent(req: Request, res: Response): Promise<Response> {
     let success = true;
