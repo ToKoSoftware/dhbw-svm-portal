@@ -4,7 +4,6 @@ import { mapNews } from '../../../functions/map-news.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { NewsDataSnapshot, RawNewsData } from '../../../interfaces/news.interface';
 import { News } from '../../../models/news.model';
-import { Vars } from '../../../vars';
 
 export async function createNews(req: Request, res: Response): Promise<Response> {
     let success = true;
@@ -17,8 +16,7 @@ export async function createNews(req: Request, res: Response): Promise<Response>
     }
 
     const createdData = await News.create(mappedIncomingData)
-        .catch((err) => {
-            Vars.loggy.log(err);
+        .catch(() => {
             success = false;
             return null;
         });
