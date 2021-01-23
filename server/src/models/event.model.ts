@@ -1,4 +1,5 @@
-import {AllowNull, BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, IsDate, IsInt, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
+import {AllowNull, BeforeCreate, BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, IsDate, IsInt, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
+import {v4 as uuidv4} from 'uuid';
 import {RawEventData} from '../interfaces/event.interface';
 import { EventRegistration } from './event-registration.model';
 import { Organization } from './organization.model';
@@ -84,13 +85,21 @@ export class Event extends Model {
     @BelongsToMany(() => User, () => EventRegistration)
     registered_users: Array<User & {event_registrations: EventRegistration}>;
 
+    @BeforeCreate
+    static addUuid(instance: User): string {
+        return instance.id = uuidv4();
+    }
+
     public static requiredFields(): Array<keyof RawEventData> {
         return [
             'title',
             'description',
             'price',
             'date',
-            'max_participants'
+            'max_participants',
+            'is_active',
+            'author_id',
+            'org_id'
         ];
     }
 }
