@@ -13,7 +13,7 @@ export interface PollDataSnapshot{
 export interface RawPollData extends PollDataSnapshot{
     author_id: string;
     org_id: string;
-    answer_team_id: string;
+    answer_team_id: string | null;
 }
 
 export interface PollData extends PollDataSnapshot{

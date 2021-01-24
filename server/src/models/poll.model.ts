@@ -87,7 +87,9 @@ export class Poll extends Model {
         return [
             'title',
             'body',
-            'closes_at'
+            'closes_at',
+            'answer_team_id',
+            'is_active'
         ];
     }
 }
