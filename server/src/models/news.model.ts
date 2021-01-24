@@ -56,7 +56,7 @@ export class News extends Model {
     author: User;
 
     @BeforeCreate
-    static addUuid(instance: User): string {
+    static addUuid(instance: News): string {
         return instance.id = uuidv4();
     }
 
