@@ -34,7 +34,7 @@ export class EventRegistration extends Model {
     event: Event;
 
     @BeforeCreate
-    static addUuid(instance: User): string {
+    static addUuid(instance: EventRegistration): string {
         return instance.id = uuidv4();
     }
 
