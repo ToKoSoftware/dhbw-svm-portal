@@ -17,7 +17,7 @@ export async function getEvent(req: Request, res: Response): Promise<Response> {
         .scope({method: ['onlyCurrentOrg', Vars.currentOrganization.id]})
         .findOne({
             where: {
-                    id: req.params.id   
+                id: req.params.id   
             },
             ... Vars.currentUser.is_admin ? {
                 include: [Organization, {model: User, as: 'author'}, {model: User, as: 'registered_users'}]
