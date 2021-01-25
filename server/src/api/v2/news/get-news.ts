@@ -17,7 +17,7 @@ export async function getNews(req: Request, res: Response): Promise<Response> {
         .scope({method: ['onlyCurrentOrg', Vars.currentOrganization.id]})
         .findOne({
             where: {
-                    id: req.params.id   
+                id: req.params.id   
             },
             ... Vars.currentUser.is_admin ? {
                 include: [Organization, User]
