@@ -56,7 +56,7 @@ export async function getOrganizations(req: Request, res: Response): Promise<Res
     query = buildQuery(queryConfig, req);
 
     let success = true;
-    const data = await News.scope(['full', {method: ['onlyCurrentOrg', Vars.currentOrganization.id]}]).findAll(query)
+    const data = await Organization.scope(['full', {method: ['onlyCurrentOrg', Vars.currentOrganization.id]}]).findAll(query)
         .catch(() => {
             success = false;
             return null;
