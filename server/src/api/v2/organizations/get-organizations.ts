@@ -19,7 +19,7 @@ export async function getOrganization(req: Request, res: Response): Promise<Resp
         .scope([Vars.currentUser.is_admin ? 'full' : 'active']) //  todo permission check
         .findOne({
             where: {
-                    id: req.params.id
+                id: req.params.id
             }, 
             ...!Vars.currentUser.is_admin ? {
                 include: {
