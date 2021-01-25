@@ -16,8 +16,8 @@ export async function getOrganization(req: Request, res: Response): Promise<Resp
 
 
     const organizationData: OrganizationData | null = await Organization
-    .scope([Vars.currentUser.is_admin ? 'full' : 'active']) //  todo permission check
-    .findOne({
+        .scope([Vars.currentUser.is_admin ? 'full' : 'active']) //  todo permission check
+        .findOne({
             where: {
                     id: req.params.id
             }, 
