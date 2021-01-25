@@ -9,7 +9,7 @@ import { User } from '../../../models/user.model';
 import { Organization } from '../../../models/organization.model';
 
 
-export async function getNews(req: Request, res: Response): Promise<Response> {
+export async function getSingleNews(req: Request, res: Response): Promise<Response> {
     let success = true;
 
 

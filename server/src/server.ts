@@ -18,7 +18,7 @@ import {getStats} from './api/v1/admin/get-stats';
 import {getMonthlyStats} from './api/v1/admin/get-monthly-stats';
 import path from 'path';
 import {getTeam, getTeams} from './api/v2/teams/get-teams';
-import {getNews, getAllNews} from './api/v2/news/get-news';
+import {getSingleNews, getAllNews} from './api/v2/news/get-news';
 import {getEvent, getEvents} from './api/v2/events/get-events';
 import {getPoll, getPolls} from './api/v2/polls/get-polls';
 import {getRole, getRoles} from './api/v2/roles/get-roles';
@@ -75,7 +75,7 @@ export default function startServer(): void {
      * News
      */
     app.get('/api/v2/news', userIsAuthorized, userIsAdmin, (req, res) => getAllNews(req, res));
-    app.get('/api/v2/news/:id', userIsAuthorized, (req, res) => getNews(req, res));
+    app.get('/api/v2/news/:id', userIsAuthorized, (req, res) => getSingleNews(req, res));
 
     /** 
      * Event
