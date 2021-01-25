@@ -26,7 +26,8 @@ export async function getOrganization(req: Request, res: Response): Promise<Resp
                     model: User.scope('publicData')
                 }
             }: {}
-    }).catch(() => {
+        })
+        .catch(() => {
             success = false;
             return null;
         });
