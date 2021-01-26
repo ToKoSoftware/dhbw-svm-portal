@@ -101,15 +101,17 @@ export function buildFilter(query: QueryBuilderData, req: Request, allowedFields
     return query;
 }
 
-function mergeQueryBuilderField(query: QueryBuilderData, newQuery: { [s: string]: unknown }, fieldName: keyof QueryBuilderData = 'where'): QueryBuilderData {
-    if (Object.prototype.hasOwnProperty.call(query, fieldName)) {
-        query[fieldName] = {
-            ...query[fieldName],
-            ...newQuery
-        };
+function mergeQueryBuilderField<T extends QueryBuilderData, K extends keyof T>(query: T, additionalFieldData: T[K], fieldName: K = 'where' as K): QueryBuilderData {
+    const currentValue = query[fieldName];
+    if (currentValue !== undefined) {
+        if (typeof currentValue === 'object' && typeof additionalFieldData === 'object' && currentValue !== null && additionalFieldData !== undefined && additionalFieldData !== null) {
+            query[fieldName] = {...(currentValue as any), ...(additionalFieldData as any)};
+        } else {
+            query[fieldName] = additionalFieldData;
+        }
     } else {
         // !Object.keys(search).length is not working here, don't know why
-        query[fieldName] = newQuery;
+        query[fieldName] = additionalFieldData;
     }
     return query;
 }
@@ -120,7 +122,6 @@ export function addRelations(query: QueryBuilderData, models: Includeable): Quer
 }
 
 export interface QueryBuilderData extends FindOptions {
-    where?: any;
     offset?: number;
     limit?: number;
     raw?: boolean;
