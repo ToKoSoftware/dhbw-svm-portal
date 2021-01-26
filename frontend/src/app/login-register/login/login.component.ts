@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
     }
     this.error = false;
     this.loading.showLoading();
-    this.api.post<string>('/login', this.form.value).subscribe(
+    this.api.post<string>(['/login', 1], this.form.value).subscribe(
       data => {
         this.loginService.login(data.data);
         this.loading.hideLoading();

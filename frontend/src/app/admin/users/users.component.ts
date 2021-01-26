@@ -69,7 +69,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   private loadData(filter = {}): void {
     this.loading = true;
-    this.api.get<UserData[]>('/users', filter).subscribe(
+    this.api.get<UserData[]>(['/users', 1], filter).subscribe(
       data => {
         this.loading = false;
         this.results = data.data;
