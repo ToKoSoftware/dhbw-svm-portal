@@ -27,8 +27,7 @@ export async function getEvent(req: Request, res: Response): Promise<Response> {
                 } 
             }
         })
-        .catch((error) => {
-            Vars.loggy.log(error);
+        .catch(() => {
             success = false;
             return null;
         });
