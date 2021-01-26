@@ -23,7 +23,10 @@ export async function getPoll(req: Request, res: Response): Promise<Response> {
             },
             ... Vars.currentUser.is_admin ? {
                 include: [Organization, User, Team, PollAnswer]
-            } : {
+            } : { 
+                where: {
+                    answer_team_id : Vars.currentUser.teams.map(t => t.id)
+                },
                 include: {
                     model: User.scope('publicData')
                 }
@@ -37,7 +40,7 @@ export async function getPoll(req: Request, res: Response): Promise<Response> {
         return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
     if (pollData === null) {
-        return res.status(404).send(wrapResponse(false));
+        return res.status(404).send(wrapResponse(false, [])); //TODO Rechte-Checken #87
     }
     return res.send(wrapResponse(true, pollData));
 }

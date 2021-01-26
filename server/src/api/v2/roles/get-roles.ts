@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { FindOptions } from 'sequelize';
 import { buildQuery, QueryBuilderConfig } from '../../../functions/query-builder.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
-import { News } from '../../../models/news.model';
 import { Vars } from '../../../vars';
 import { RoleData } from '../../../interfaces/role.interface';
 import { User } from '../../../models/user.model';

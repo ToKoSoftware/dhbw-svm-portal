@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { FindOptions } from 'sequelize';
 import { buildQuery, QueryBuilderConfig } from '../../../functions/query-builder.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
-import { News } from '../../../models/news.model';
 import { Vars } from '../../../vars';
 import { OrganizationData } from '../../../interfaces/organization.interface';
 import { User } from '../../../models/user.model';
@@ -16,7 +15,7 @@ export async function getOrganization(req: Request, res: Response): Promise<Resp
 
 
     const organizationData: OrganizationData | null = await Organization
-        .scope([Vars.currentUser.is_admin ? 'full' : 'active']) //  todo permission check
+        .scope([Vars.currentUser.is_admin ? 'full' : 'active']) //  todo permission check in #98
         .findOne({
             where: {
                 id: req.params.id

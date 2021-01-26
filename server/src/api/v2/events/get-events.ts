@@ -23,11 +23,12 @@ export async function getEvent(req: Request, res: Response): Promise<Response> {
                 include: [Organization, {model: User, as: 'author'}, {model: User, as: 'registered_users'}]
             } : {
                 include: {
-                    model: User.scope('publicData')
-                }
+                    model: User.scope('publicData'), as: 'author'
+                } 
             }
         })
-        .catch(() => {
+        .catch((error) => {
+            Vars.loggy.log(error);
             success = false;
             return null;
         });
