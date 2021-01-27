@@ -17,8 +17,14 @@ import {exportUsers} from './api/v1/admin/export-users';
 import {getStats} from './api/v1/admin/get-stats';
 import {getMonthlyStats} from './api/v1/admin/get-monthly-stats';
 import path from 'path';
-import { getTeam, getTeams } from './api/v2/teams/get-teams';
+import {getTeam, getTeams} from './api/v2/teams/get-teams';
+import {getSingleNews, getAllNews} from './api/v2/news/get-news';
+import {getEvent, getEvents} from './api/v2/events/get-events';
+import {getPoll, getPolls} from './api/v2/polls/get-polls';
+import {getRole, getRoles} from './api/v2/roles/get-roles';
+import {getOrganization, getOrganizations} from './api/v2/organizations/get-organizations';
 import { createPoll } from './api/v2/polls/create-poll';
+
 
 
 export default function startServer(): void {
@@ -66,11 +72,36 @@ export default function startServer(): void {
     app.get('/api/v2/teams', userIsAuthorized, userIsAdmin, (req, res) => getTeams(req, res));
     app.get('/api/v2/teams/:id', userIsAuthorized, (req, res) => getTeam(req, res));
 
-    /**
-     * Polls
+    /** 
+     * News
      */
-    app.post('/api/v2/polls', userIsAuthorized, (req, res) => createPoll(req, res));
+    app.get('/api/v2/news', userIsAuthorized, userIsAdmin, (req, res) => getAllNews(req, res));
+    app.get('/api/v2/news/:id', userIsAuthorized, (req, res) => getSingleNews(req, res));
 
+    /** 
+     * Event
+     */
+    app.get('/api/v2/events', userIsAuthorized, userIsAdmin, (req, res) => getEvents(req, res));
+    app.get('/api/v2/events/:id', userIsAuthorized, (req, res) => getEvent(req, res));
+
+    /** 
+     * Poll
+     */
+    app.get('/api/v2/polls', userIsAuthorized, userIsAdmin, (req, res) => getPolls(req, res));
+    app.get('/api/v2/polls/:id', userIsAuthorized, (req, res) => getPoll(req, res));
+    app.post('/api/v2/polls', userIsAuthorized, (req, res) => createPoll(req, res));
+    
+    /** 
+     * Role
+     */
+    app.get('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => getRoles(req, res));
+    app.get('/api/v2/roles/:id', userIsAuthorized, (req, res) => getRole(req, res));
+    
+    /** 
+     * Organization
+     */
+    app.get('/api/v2/organizations', userIsAuthorized, userIsAdmin, (req, res) => getOrganizations(req, res));
+    app.get('/api/v2/organizations/:id', userIsAuthorized, (req, res) => getOrganization(req, res));
     /**
      * Admin
      */
