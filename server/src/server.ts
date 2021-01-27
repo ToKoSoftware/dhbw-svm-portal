@@ -71,7 +71,7 @@ export default function startServer(): void {
      */
     app.get('/api/v2/teams', userIsAuthorized, userIsAdmin, (req, res) => getTeams(req, res));
     app.get('/api/v2/teams/:id', userIsAuthorized, (req, res) => getTeam(req, res));
-    
+
     /** 
      * News
      */
