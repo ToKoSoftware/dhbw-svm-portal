@@ -24,6 +24,7 @@ import {getPoll, getPolls} from './api/v2/polls/get-polls';
 import {getRole, getRoles} from './api/v2/roles/get-roles';
 import {getOrganization, getOrganizations} from './api/v2/organizations/get-organizations';
 import { createPoll } from './api/v2/polls/create-poll';
+import { createPollAnswer } from './api/v2/poll-answer/create-poll-answer';
 
 
 
@@ -90,7 +91,8 @@ export default function startServer(): void {
     app.get('/api/v2/polls', userIsAuthorized, userIsAdmin, (req, res) => getPolls(req, res));
     app.get('/api/v2/polls/:id', userIsAuthorized, (req, res) => getPoll(req, res));
     app.post('/api/v2/polls', userIsAuthorized, (req, res) => createPoll(req, res));
-    
+    app.post('/api/v2/polls/answers', userIsAuthorized, userIsAdmin, (req, res) => createPollAnswer(req, res));
+
     /** 
      * Role
      */

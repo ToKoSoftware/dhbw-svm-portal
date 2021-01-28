@@ -28,7 +28,7 @@ export async function createPoll(req: Request, res: Response): Promise<Response>
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Could not create User' }));
+        return res.status(500).send(wrapResponse(false, { error: 'Could not create Poll' }));
     }
 
     return res.send(wrapResponse(true, createdData));

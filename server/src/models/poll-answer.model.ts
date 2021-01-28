@@ -52,6 +52,8 @@ export class PollAnswer extends Model {
     public static requiredFields(): Array<keyof RawPollAnswerData> {
         return [
             'title',
+            'poll_id',
+            'is_active',
         ];
     }
 }
