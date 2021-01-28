@@ -22,10 +22,10 @@ export async function createMembership(req: Request, res: Response): Promise<Res
             id: mappedIncomingData.team_id
         }
     })
-    .catch(() => {
-        success = false;
-        return null;
-    });
+        .catch(() => {
+            success = false;
+            return null;
+        });
     if (!success) {
         return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
