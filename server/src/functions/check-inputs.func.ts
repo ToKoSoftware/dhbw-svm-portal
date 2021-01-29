@@ -3,7 +3,7 @@ import isBlank from 'is-blank';
 // eslint-disable-next-line
 export function keyIsSetAndNotEmpty<T extends object, U extends keyof T>(obj: T, key: U): boolean {
     if (key in obj) {
-        if (!isBlank(obj[key])) {
+        if (!isBlank(obj[key] || obj[key] === null)) {
             return true;
         }
     }
