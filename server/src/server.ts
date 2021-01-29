@@ -17,6 +17,7 @@ import {exportUsers} from './api/v1/admin/export-users';
 import {getStats} from './api/v1/admin/get-stats';
 import {getMonthlyStats} from './api/v1/admin/get-monthly-stats';
 import path from 'path';
+import {createNews} from './api/v2/news/create-news';
 import {getTeam, getTeams} from './api/v2/teams/get-teams';
 import {getSingleNews, getAllNews} from './api/v2/news/get-news';
 import {getEvent, getEvents} from './api/v2/events/get-events';
@@ -82,6 +83,7 @@ export default function startServer(): void {
      */
     app.get('/api/v2/news', userIsAuthorized, userIsAdmin, (req, res) => getAllNews(req, res));
     app.get('/api/v2/news/:id', userIsAuthorized, (req, res) => getSingleNews(req, res));
+    app.post('/api/v2/news', userIsAuthorized, userIsAdmin, (req, res) => createNews(req, res));
 
     /** 
      * Event
