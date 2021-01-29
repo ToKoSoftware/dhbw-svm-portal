@@ -91,7 +91,8 @@ export default function startServer(): void {
     app.get('/api/v2/polls', userIsAuthorized, userIsAdmin, (req, res) => getPolls(req, res));
     app.get('/api/v2/polls/:id', userIsAuthorized, (req, res) => getPoll(req, res));
     app.post('/api/v2/polls', userIsAuthorized, (req, res) => createPoll(req, res));
-    app.post('/api/v2/polls/answers', userIsAuthorized, userIsAdmin, (req, res) => createPollAnswer(req, res));
+    app.post('/api/v2/polls/:id/answers', userIsAuthorized, userIsAdmin, (req, res) => createPollAnswer(req, res));
+    //app.post('/api/v2/polls/:pollid/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res));
 
     /** 
      * Role
