@@ -1,4 +1,4 @@
-# Website project DHWB Heidenheim
+# Website project DHBW Heidenheim
 ![](https://github.com/ToKoSoftware/dhbw-svm-portal/workflows/CI/badge.svg)
 
 
