@@ -37,6 +37,7 @@ import {UserPickerComponent} from './user-picker/user-picker.component';
 import {RolePickerComponent} from './role-picker/role-picker.component';
 import { CardComponent } from './card/card.component';
 import { ScrollComponent } from './scroll/scroll.component';
+import {MarkdownToHtmlModule} from 'markdown-to-html-pipe';
 
 
 @NgModule({
@@ -74,7 +75,7 @@ import { ScrollComponent } from './scroll/scroll.component';
     UserPickerComponent,
     RolePickerComponent,
     CardComponent,
-    ScrollComponent
+    ScrollComponent,
   ],
   exports: [
     NavbarComponent,
@@ -112,7 +113,8 @@ import { ScrollComponent } from './scroll/scroll.component';
     CommonModule,
     IconsModule,
     RouterModule,
-    FormsModule
+    FormsModule,
+    MarkdownToHtmlModule
   ]
 })
 export class UiModule {
