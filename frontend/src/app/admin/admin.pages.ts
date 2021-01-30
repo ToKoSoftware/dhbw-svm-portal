@@ -37,6 +37,11 @@ export const adminPages: SidebarPageGroup[] = [
     title: 'Inhalte',
     pages: [
       {
+        title: 'News',
+        icon: 'activity',
+        url: '/my-team/news',
+      },
+      {
         title: 'Veranstaltungen',
         icon: 'calendar',
         url: '/my-team/events',

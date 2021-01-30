@@ -10,7 +10,7 @@ import {EventData} from '../../../interfaces/event.interface';
 export class EventsService extends DataService<EventData> implements DataServiceFunctions<EventData> {
 
   reloadData() {
-    this.api.get<EventData[]>(['/users', 1]).subscribe(data => this.data.next(data.data));
+    this.api.get<EventData[]>('/events', {sort: 'date'}).subscribe(data => this.data$.next(data.data));
   }
 
   create(eventData: CreateAndUpdateData<EventData>): Observable<EventData> {

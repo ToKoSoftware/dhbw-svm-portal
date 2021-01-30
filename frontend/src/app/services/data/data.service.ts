@@ -6,7 +6,7 @@ import {ApiService} from '../api/api.service';
   providedIn: 'root'
 })
 export class DataService<Single> {
-  public data: BehaviorSubject<Single[] | null> = new BehaviorSubject(null);
+  public data$: BehaviorSubject<Single[] | null> = new BehaviorSubject(null);
 
   constructor(@Inject(ApiService) public api: ApiService) {
     this.reloadData();

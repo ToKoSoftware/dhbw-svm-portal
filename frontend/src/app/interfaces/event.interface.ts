@@ -11,6 +11,7 @@ export interface EventDataSnapshot{
 }
 
 export interface EventData extends EventDataSnapshot{
+  createdAt: string;
   organization: unknown;
   author: UserData;
   registered_users: Array<UserData>

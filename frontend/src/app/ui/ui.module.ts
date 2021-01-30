@@ -38,6 +38,7 @@ import {RolePickerComponent} from './role-picker/role-picker.component';
 import { CardComponent } from './card/card.component';
 import { ScrollComponent } from './scroll/scroll.component';
 import {MarkdownToHtmlModule} from 'markdown-to-html-pipe';
+import {MomentModule} from 'ngx-moment';
 
 
 @NgModule({
@@ -107,14 +108,16 @@ import {MarkdownToHtmlModule} from 'markdown-to-html-pipe';
     SecondaryNavigationComponent,
     SelectComponent,
     RolePickerComponent,
-    ScrollComponent
+    ScrollComponent,
+    CardComponent
   ],
   imports: [
     CommonModule,
     IconsModule,
     RouterModule,
     FormsModule,
-    MarkdownToHtmlModule
+    MarkdownToHtmlModule,
+    MomentModule
   ]
 })
 export class UiModule {

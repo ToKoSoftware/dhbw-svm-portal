@@ -6,11 +6,16 @@
           <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">
             {{news.author.first_name}} {{news.author.last_name}}
           </h3>
-          <p class="text-sm text-malachite-600">
-            <a href="#">
-              @{{news.author.username}}
-            </a>
-          </p>
+          <div class="flex">
+            <p class="text-sm text-malachite-600 pr-4">
+              <a href="#">
+                @{{news.author.username}}
+              </a>
+            </p>
+            <p class="text-sm text-gray-600">
+              {{ news.createdAt | amLocal | amTimeAgo }}
+            </p>
+          </div>
         </div>
       </div>
     </div>
