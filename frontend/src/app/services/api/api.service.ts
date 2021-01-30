@@ -17,7 +17,6 @@ export class ApiService {
     if (Array.isArray(path)) {
       return `${ApiService.getApiBaseUrl(path[1])}${path[0]}`;
     } else {
-      console.log(233)
       return `${ApiService.getApiBaseUrl()}${path}`;
     }
   }
@@ -33,7 +32,7 @@ export class ApiService {
 
   public get<Data>(
     path: string | [string, number],
-    queryParams?: { [key: string]: string | string[] | number | undefined },
+    queryParams?: { [key: string]: string | string[] | number | null | undefined },
   ): Observable<ApiResponse<Data>> {
     const params = queryParams == null ?
       undefined : new HttpParams({
@@ -51,7 +50,7 @@ export class ApiService {
 
   public post<Data>(
     path: string | [string, number],
-    body?: { [key: string]: string | string[] | number | undefined },
+    body?: { [key: string]: string | string[] | number | null | undefined },
   ): Observable<ApiResponse<Data>> {
     const jwt = ApiService.getJwt();
 
@@ -65,7 +64,7 @@ export class ApiService {
 
   public put<Data>(
     path: string | [string, number],
-    body?: { [key: string]: string | string[] | undefined },
+    body?: { [key: string]: string | string[] | null | undefined },
   ): Observable<ApiResponse<Data>> {
     const jwt = ApiService.getJwt();
 
@@ -79,7 +78,7 @@ export class ApiService {
 
   public delete<Data = boolean>(
     path: string | [string, number],
-    queryParams?: { [key: string]: string | string[] | undefined },
+    queryParams?: { [key: string]: string | string[] | null | undefined },
   ): Observable<ApiResponse<Data>> {
     const params = queryParams == null ?
       undefined : new HttpParams({
@@ -99,10 +98,13 @@ export class ApiService {
 }
 
 function removeBlank(
-  input: { [key: string]: string | string[] | number | undefined }
+  input: { [key: string]: string | string[] | number | null | undefined }
 ): { [key: string]: string | string[] } {
   const result: { [key: string]: string | string[] } = {};
   for (const key in input) {
+    if (input[key] === null) {
+      continue;
+    }
     if (isBlank(input[key])) {
       continue;
     }

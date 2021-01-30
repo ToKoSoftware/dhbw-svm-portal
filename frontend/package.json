@@ -29,6 +29,7 @@
     "chart.js": "^2.9.4",
     "is-blank": "^2.1.0",
     "jwt-decode": "^3.1.2",
+    "markdown-to-html-pipe": "^1.2.5",
     "moment": "^2.29.1",
     "ng2-charts": "^2.4.2",
     "ngx-moment": "^5.0.0",
