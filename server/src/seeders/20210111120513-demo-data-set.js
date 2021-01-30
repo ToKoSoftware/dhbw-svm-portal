@@ -89,8 +89,8 @@ module.exports = {
         queryInterface.bulkDelete('Users', null, {});
         queryInterface.bulkDelete('Organizations', null, {});
         queryInterface.bulkDelete('Roles', null, {});
-        queryInterface.bulkDelete('RoleAssignment', null, {});
+        queryInterface.bulkDelete('RoleAssignments', null, {});
         queryInterface.bulkDelete('Teams', null, {});
-        queryInterface.bulkDelete('Memberschips', null, {});
+        queryInterface.bulkDelete('Memberships', null, {});
     }
 };

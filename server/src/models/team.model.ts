@@ -1,4 +1,5 @@
-import {BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, HasMany, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
+import {BeforeCreate, BelongsTo, Column, DefaultScope, ForeignKey, HasMany, BelongsToMany, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
+import {v4 as uuidv4} from 'uuid';
 import {RawTeamData} from '../interfaces/team.interface';
 import { currentOrg } from './current-org.scope';
 import { Membership } from './membership.model';
@@ -59,6 +60,11 @@ export class Team extends Model {
 
     @HasMany(() => Poll)
     can_answer_polls: Poll[];
+
+    @BeforeCreate
+    static addUuid(instance: Team): string {
+        return instance.id = uuidv4();
+    }
 
     public static requiredFields(): Array<keyof RawTeamData> {
         return [

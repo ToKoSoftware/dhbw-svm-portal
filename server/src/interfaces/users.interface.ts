@@ -7,7 +7,7 @@ import { RoleAssignment } from '../models/role-assignment.model';
 import { Role } from '../models/role.model';
 import { Team } from '../models/team.model';
 
-export interface UserDataSnaphot {
+export interface UserDataSnapshot {
     id?: string;
     email: string;
     username: string;
@@ -24,11 +24,11 @@ export interface UserDataSnaphot {
     is_active?: boolean;
 }
 
-export interface RawUserData extends UserDataSnaphot {
+export interface RawUserData extends UserDataSnapshot {
     org_id: string;
 }
 
-export interface UserData extends UserDataSnaphot {
+export interface UserData extends UserDataSnapshot {
     organization: Organization;
     registered_events: Array<Event & {event_registrations: EventRegistration}>;
     voted_poll_answers: Array<PollAnswer & {poll_vote: PollVote}>;
