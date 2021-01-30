@@ -1,3 +1,3 @@
-export interface Organization {
+export interface OrganizationData {
   title: string;
 }

@@ -35,6 +35,13 @@ export class NotificationService {
 
   public savingFailed(error = ''): void {
     const description = error != '' ? error : 'Ihre Änderungen wurden nicht übernommen';
+    console.log(
+      {
+        id: Math.random().toString(36).substring(7),
+        title: 'Speichern fehlgeschlagen',
+        description,
+        type: 'error'
+      })
     this.createNotification(
       {
         id: Math.random().toString(36).substring(7),

@@ -1,5 +1,5 @@
 import {UserData} from './user.interface';
-import {Organization} from './organization.interface';
+import {OrganizationData} from './organization.interface';
 
 export interface NewsData {
   createdAt: string;
@@ -7,6 +7,6 @@ export interface NewsData {
   title: string;
   body: string;
   is_active?: boolean;
-  organization: Organization;
+  organization: OrganizationData;
   author: UserData;
 }
