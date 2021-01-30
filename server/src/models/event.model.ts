@@ -57,7 +57,7 @@ export class Event extends Model {
     @Column
     title: string;
     @Column
-    description: string;
+    description: string; // 5000 chars long
     @IsInt
     @AllowNull
     @Column
