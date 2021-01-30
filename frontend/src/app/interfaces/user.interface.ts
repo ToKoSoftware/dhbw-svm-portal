@@ -1,6 +1,7 @@
 export interface UserData {
   id: string;
   email: string;
+  username: string;
   password?: string;
   is_admin: boolean;
   first_name: string;

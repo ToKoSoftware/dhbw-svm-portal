@@ -1,0 +1,56 @@
+<app-container>
+  <app-titled-content
+    label="Veranstaltung bearbeiten">
+    <form (ngSubmit)="updateEvent()" [formGroup]="editEventForm">
+      <app-input
+        required="true"
+        formControlName="title"
+        description="Titel Ihrer Veranstaltung, z.B.: Kindertraining"
+        placeholder="Kindertraining"
+        label="Titel">
+      </app-input>
+      <app-input
+        required="true"
+        formControlName="description"
+        label="Beschreibung"
+        placeholder="Adresse: Bahnhofstraße 1, 1234 Musterstadt"
+        description="Die Beschreibung kann genutzt werden, um z.B. den Ort Ihrer Veranstaltung festzulegen.">
+      </app-input>
+      <app-input
+        formControlName="price"
+        label="Teilnahmegebühr"
+        placeholder="420,69"
+        description="Geben Sie die Höhe der Teilnahmegebühr in Euro ein. Sollte die Veranstaltung kostenlos sein, so kann dieses Feld leergelassen werden.">
+      </app-input>
+      <!-- TODO: Datepicker -->
+      <app-input
+        required="true"
+        formControlName="date"
+        label="Datum"
+        pattern="^\d{2}([./.])\d{2}\1\d{4}$"
+        placeholder="01.01.2000"
+        description="Geben Sie das Datum der Veranstaltung in folgendem Format an: DD.MM.YYYY">
+      </app-input>
+      <app-input
+        formControlName="max_participants"
+        placeholder="12"
+        description="Sollte die Veranstaltung keine Begrenzung haben sein, so kann dieses Feld leergelassen werden."
+        label="Maximale Teilnehmerzahl">
+      </app-input>
+      <app-input
+        formControlName="is_active"
+        label="Ist aktiv?">
+      </app-input>
+      <small class="text-gray-500">Technische ID: {{currentEvent.id}}</small>
+      <div class="flex justify-end w-full">
+        <app-button
+          formButtonType="submit"
+          label="Speichern">
+        </app-button>
+      </div>
+    </form>
+  </app-titled-content>
+</app-container>
+
+
+

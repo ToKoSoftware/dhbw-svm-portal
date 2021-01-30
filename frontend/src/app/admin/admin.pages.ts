@@ -34,7 +34,7 @@ export const adminPages: SidebarPageGroup[] = [
       },
     ]
   }, {
-    title: 'Funktionen',
+    title: 'Inhalte',
     pages: [
       {
         title: 'Veranstaltungen',
