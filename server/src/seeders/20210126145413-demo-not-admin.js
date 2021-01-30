@@ -20,6 +20,8 @@ module.exports = {
                         })
                             .then(async function (adminuser) {
                                 const date = new Date();
+                                let end_date = new Date();
+                                end_date.setDate(end_date.getDate() + 1);
                                 const user_id_svm_test = v4();
                                 const role_id_svm_test = v4();
 
@@ -80,7 +82,8 @@ module.exports = {
                                     title: 'MusterEvent',
                                     description: 'Muster',
                                     price: null,
-                                    date: date,
+                                    start_date: date,
+                                    end_date: end_date,
                                     max_participants: null,
                                     is_active: true,
                                     author_id: adminuser[0].id,
@@ -104,9 +107,9 @@ module.exports = {
                                     updatedAt: date
                                 }];
                                 queryInterface.bulkInsert('Polls', polls, {});
-                    })   
-                })
-            })
+                            });   
+                    });
+            });
     },
 
     down: async (queryInterface, Sequelize) => {

@@ -1,6 +1,7 @@
 'use strict';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
+        await queryInterface.bulkDelete('Events', null, {});
         await queryInterface.removeColumn('Events', 'price');
         await queryInterface.addColumn('Events', 'price', {
             allowNull: true,
@@ -24,6 +25,7 @@ module.exports = {
         });
     },
     down: async (queryInterface, Sequelize) => {
+        await queryInterface.bulkDelete('Events', null, {});
         await queryInterface.removeColumn('Events', 'price');
         await queryInterface.addColumn('Events', 'price', {
             allowNull: true,
