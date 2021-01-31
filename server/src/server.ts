@@ -17,6 +17,7 @@ import {exportUsers} from './api/v1/admin/export-users';
 import {getStats} from './api/v1/admin/get-stats';
 import {getMonthlyStats} from './api/v1/admin/get-monthly-stats';
 import path from 'path';
+import {createNews} from './api/v2/news/create-news';
 import {getTeam, getTeams} from './api/v2/teams/get-teams';
 import {getSingleNews, getAllNews} from './api/v2/news/get-news';
 import {getEvent, getEvents} from './api/v2/events/get-events';
@@ -25,6 +26,10 @@ import {getRole, getRoles} from './api/v2/roles/get-roles';
 import {getOrganization, getOrganizations} from './api/v2/organizations/get-organizations';
 import { createPoll } from './api/v2/polls/create-poll';
 import { createPollAnswer } from './api/v2/poll-answer/create-poll-answer';
+import {createEvent} from './api/v2/events/create-event';
+import {registerForEvent} from './api/v2/events/register-for-event';
+import {createTeam} from './api/v2/teams/create-team';
+import {createMembership} from './api/v2/teams/create-membership';
 
 
 
@@ -72,18 +77,23 @@ export default function startServer(): void {
      */
     app.get('/api/v2/teams', userIsAuthorized, userIsAdmin, (req, res) => getTeams(req, res));
     app.get('/api/v2/teams/:id', userIsAuthorized, (req, res) => getTeam(req, res));
-
+    app.post('/api/v2/teams', userIsAuthorized, userIsAdmin, (req, res) => createTeam(req, res));
+    app.post('/api/v2/teams/:id/membership', userIsAuthorized, (req, res) => createMembership(req, res));
+    
     /** 
      * News
      */
     app.get('/api/v2/news', userIsAuthorized, userIsAdmin, (req, res) => getAllNews(req, res));
     app.get('/api/v2/news/:id', userIsAuthorized, (req, res) => getSingleNews(req, res));
+    app.post('/api/v2/news', userIsAuthorized, userIsAdmin, (req, res) => createNews(req, res));
 
     /** 
      * Event
      */
     app.get('/api/v2/events', userIsAuthorized, userIsAdmin, (req, res) => getEvents(req, res));
     app.get('/api/v2/events/:id', userIsAuthorized, (req, res) => getEvent(req, res));
+    app.post('/api/v2/events', userIsAuthorized, userIsAdmin, (req, res) => createEvent(req, res));
+    app.post('/api/v2/events/:id/register', userIsAuthorized, (req, res) => registerForEvent(req, res));
 
     /** 
      * Poll

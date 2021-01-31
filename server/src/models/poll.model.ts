@@ -52,7 +52,7 @@ export class Poll extends Model {
     @Column
     title: string;
     @Column
-    body: string;
+    body: string; // 5000 chars long
     @IsDate
     @Column
     closes_at: Date;
