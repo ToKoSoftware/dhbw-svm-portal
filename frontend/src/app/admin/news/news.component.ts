@@ -24,7 +24,6 @@ export class NewsComponent implements OnInit, OnDestroy {
         this.slideOver.showSlideOver('Nachricht anlegen', this.newsCreate);
       }
     }])
-    this.slideOver.showSlideOver('Nachricht anlegen', this.newsCreate);
   }
 
   ngOnDestroy() {
