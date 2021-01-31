@@ -6,6 +6,7 @@ import {RolesComponent} from "./roles/roles.component";
 import {TeamsComponent} from "./teams/teams.component";
 import {PollsComponent} from "./polls/polls.component";
 import {StatsComponent} from "./stats/stats.component";
+import {NewsComponent} from './news/news.component';
 
 export const adminRoutes = RouterModule.forChild([
   {path: '', pathMatch: 'full', component: OverviewComponent},
@@ -16,6 +17,8 @@ export const adminRoutes = RouterModule.forChild([
   {path: 'events/:id', component: EventsComponent},
   {path: 'teams', component: TeamsComponent},
   {path: 'teams/:id', component: TeamsComponent},
+  {path: 'news', component: NewsComponent},
+  {path: 'news/:id', component: NewsComponent},
   {path: 'polls', component: PollsComponent},
   {path: 'polls/:id', component: PollsComponent},
   {path: 'roles', component: RolesComponent},

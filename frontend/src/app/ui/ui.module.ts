@@ -40,6 +40,7 @@ import { ScrollComponent } from './scroll/scroll.component';
 import {MarkdownToHtmlModule} from 'markdown-to-html-pipe';
 import {MomentModule} from 'ngx-moment';
 import { PollComponent } from './poll/poll.component';
+import {SlideOverComponent} from './slide-over/slide-over.component';
 
 
 @NgModule({
@@ -79,6 +80,7 @@ import { PollComponent } from './poll/poll.component';
     CardComponent,
     ScrollComponent,
     PollComponent,
+    SlideOverComponent
   ],
   exports: [
     NavbarComponent,
@@ -112,7 +114,8 @@ import { PollComponent } from './poll/poll.component';
     RolePickerComponent,
     ScrollComponent,
     CardComponent,
-    PollComponent
+    PollComponent,
+    SlideOverComponent
   ],
   imports: [
     CommonModule,

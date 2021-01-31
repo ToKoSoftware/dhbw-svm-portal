@@ -1,0 +1,13 @@
+<app-layout
+  [sidebarPages]="sidebarPages"
+  heading="Übersicht"
+>
+  <app-container>
+    <div *ngFor="let news of news.data$ | async">
+      {{news.title}}
+    </div>
+  </app-container>
+  <ng-template #newsCreate>
+    Test!
+  </ng-template>
+</app-layout>
