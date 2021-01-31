@@ -40,7 +40,7 @@ export class News extends Model {
     @Column
     title: string;
     @Column
-    body: string;
+    body: string; // 5000 chars long
     @ForeignKey(() => Organization)
     @Column
     org_id: string;
