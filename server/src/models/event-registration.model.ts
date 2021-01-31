@@ -24,7 +24,7 @@ export class EventRegistration extends Model {
     @Column
     event_id: string;
     @Column
-    body: string;
+    body: string; //5000 chars long
     @Column
     payment_done: boolean;
 

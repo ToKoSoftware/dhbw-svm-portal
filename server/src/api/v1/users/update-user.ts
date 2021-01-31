@@ -25,6 +25,11 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
         return res.status(400).send(wrapResponse(false, { error: 'Birthday is not valid' }));
     }
 
+    const validPassword = incomingData.password.length >= 6 || isBlank(mappedIncomingData.password);
+    if (!validPassword) {
+        return res.status(400).send(wrapResponse(false, { error: 'Password not valid! It must contain at least 6 characters!' }));
+    }
+
     if (isBlank(req.body) || req.params.id === null) {
         return res.status(400).send(wrapResponse(false, {error: 'No body or valid param set.'}));
     }

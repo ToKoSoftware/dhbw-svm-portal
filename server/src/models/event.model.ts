@@ -57,14 +57,17 @@ export class Event extends Model {
     @Column
     title: string;
     @Column
-    description: string;
+    description: string; // 5000 chars long
     @IsInt
     @AllowNull
     @Column
     price: number; //In cent
     @IsDate
     @Column
-    date: Date;
+    start_date: Date;
+    @IsDate
+    @Column
+    end_date: Date;
     @IsInt
     @AllowNull
     @Column
@@ -94,9 +97,8 @@ export class Event extends Model {
         return [
             'title',
             'description',
-            'price',
-            'date',
-            'max_participants',
+            'start_date',
+            'end_date',
             'is_active',
             'author_id',
             'org_id'
