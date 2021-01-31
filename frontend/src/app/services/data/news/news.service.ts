@@ -10,7 +10,11 @@ import {NewsData} from '../../../interfaces/news.interface';
 export class NewsService extends DataService<NewsData> implements DataServiceFunctions<NewsData> {
 
   reloadData() {
-    this.api.get<NewsData[]>('/news').subscribe(data => this.data$.next(data.data));
+    this.api.get<NewsData[]>('/news')
+      .subscribe(
+        data => this.data$.next(data.data),
+        error => this.notifications.loadingFailed()
+      );
   }
 
   create(NewsData: CreateAndUpdateData<NewsData>): Observable<NewsData> {

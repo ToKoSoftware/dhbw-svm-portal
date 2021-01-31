@@ -10,7 +10,11 @@ import {EventData} from '../../../interfaces/event.interface';
 export class PollsService extends DataService<EventData> implements DataServiceFunctions<EventData> {
 
   reloadData() {
-    this.api.get<EventData[]>('/polls').subscribe(data => this.data$.next(data.data));
+    this.api.get<EventData[]>('/polls')
+      .subscribe(
+        data => this.data$.next(data.data),
+        error => this.notifications.loadingFailed()
+      );
   }
 
   create(eventData: CreateAndUpdateData<EventData>): Observable<EventData> {

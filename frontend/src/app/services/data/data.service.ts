@@ -1,6 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {ApiService} from '../api/api.service';
+import {NotificationService} from '../notification/notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,8 @@ import {ApiService} from '../api/api.service';
 export class DataService<Single> {
   public data$: BehaviorSubject<Single[] | null> = new BehaviorSubject(null);
 
-  constructor(@Inject(ApiService) public api: ApiService) {
+  constructor(@Inject(ApiService) public api: ApiService,
+              @Inject(NotificationService) protected readonly notifications: NotificationService) {
     this.reloadData();
   }
 

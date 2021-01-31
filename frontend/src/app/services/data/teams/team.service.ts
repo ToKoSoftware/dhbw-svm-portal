@@ -10,7 +10,11 @@ import {TeamData} from '../../../interfaces/team.interface';
 export class TeamService extends DataService<TeamData> implements DataServiceFunctions<TeamData> {
 
   reloadData() {
-    this.api.get<TeamData[]>(['/teams', 1]).subscribe(data => this.data$.next(data.data));
+    this.api.get<TeamData[]>('/teams')
+      .subscribe(
+        data => this.data$.next(data.data),
+        error => this.notifications.loadingFailed()
+      );
   }
 
   create(teamData: CreateAndUpdateData<TeamData>): Observable<TeamData> {
