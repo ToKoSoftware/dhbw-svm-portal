@@ -27,6 +27,12 @@ export class EditNewsComponent implements OnInit, OnChanges {
   }
 
   public loadData() {
+    this.formGroup = this.formBuilder.group(
+      {
+        title: [],
+        body: [],
+      }
+    );
     this.news.read(this.editId)
       .subscribe(
         d => {

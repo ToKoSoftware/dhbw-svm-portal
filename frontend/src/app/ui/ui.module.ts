@@ -41,6 +41,7 @@ import {MarkdownToHtmlModule} from 'markdown-to-html-pipe';
 import {MomentModule} from 'ngx-moment';
 import { PollComponent } from './poll/poll.component';
 import {SlideOverComponent} from './slide-over/slide-over.component';
+import { MarkdownInputComponent } from './markdown-input/markdown-input.component';
 
 
 @NgModule({
@@ -80,7 +81,8 @@ import {SlideOverComponent} from './slide-over/slide-over.component';
     CardComponent,
     ScrollComponent,
     PollComponent,
-    SlideOverComponent
+    SlideOverComponent,
+    MarkdownInputComponent
   ],
   exports: [
     NavbarComponent,
@@ -115,7 +117,8 @@ import {SlideOverComponent} from './slide-over/slide-over.component';
     ScrollComponent,
     CardComponent,
     PollComponent,
-    SlideOverComponent
+    SlideOverComponent,
+    MarkdownInputComponent
   ],
   imports: [
     CommonModule,

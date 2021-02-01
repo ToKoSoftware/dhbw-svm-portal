@@ -23,6 +23,7 @@
     "@swimlane/ngx-charts": "^16.0.0",
     "@tailwindcss/ui": "0.6.2",
     "@types/is-blank": "^2.1.0",
+    "@types/simplemde": "^1.11.7",
     "angular-feather": "^6.1.0",
     "autoprefixer": "^10.2.0",
     "browser-cookies": "^1.2.0",
@@ -34,6 +35,7 @@
     "ng2-charts": "^2.4.2",
     "ngx-moment": "^5.0.0",
     "rxjs": "~6.6.0",
+    "simplemde": "^1.11.2",
     "tailwindcss": "^2.0.2",
     "tslib": "^2.1.0",
     "zone.js": "~0.10.2"

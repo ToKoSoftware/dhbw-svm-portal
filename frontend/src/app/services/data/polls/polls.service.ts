@@ -2,44 +2,44 @@ import {Injectable} from '@angular/core';
 import {CreateAndUpdateData, DataService, DataServiceFunctions} from '../data.service';
 import {Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {EventData} from '../../../interfaces/event.interface';
+import {PollData} from '../../../interfaces/poll.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PollsService extends DataService<EventData> implements DataServiceFunctions<EventData> {
+export class PollsService extends DataService<PollData> implements DataServiceFunctions<PollData> {
 
   reloadData() {
     this.data$.next(null);
-    this.api.get<EventData[]>('/polls')
+    this.api.get<PollData[]>('/polls')
       .subscribe(
         data => this.data$.next(data.data),
         error => this.notifications.loadingFailed()
       );
   }
 
-  create(eventData: CreateAndUpdateData<EventData>): Observable<EventData> {
+  create(PollData: CreateAndUpdateData<PollData>): Observable<PollData> {
     this.reloadData();
-    return this.api.post<EventData>(`/polls`, eventData)
+    return this.api.post<PollData>(`/polls`, PollData)
       .pipe(map(res => {
         return res.data;
       }));
   }
 
-  delete(data: CreateAndUpdateData<EventData>): boolean {
+  delete(data: CreateAndUpdateData<PollData>): boolean {
     return false;
   }
 
-  read(id: string): Observable<EventData> {
-    return this.api.get<EventData>(`/polls/${id}`)
+  read(id: string): Observable<PollData> {
+    return this.api.get<PollData>(`/polls/${id}`)
       .pipe(map(res => {
         return res.data;
       }));
   }
 
-  update(EventData: CreateAndUpdateData<EventData>): Observable<EventData> {
+  update(PollData: CreateAndUpdateData<PollData>): Observable<PollData> {
     this.reloadData();
-    return this.api.put<EventData>(`/polls/${EventData.id}`)
+    return this.api.put<PollData>(`/polls/${PollData.id}`)
       .pipe(map(res => {
         return res.data;
       }));

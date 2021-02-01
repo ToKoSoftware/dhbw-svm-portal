@@ -11,7 +11,7 @@ export class EventsService extends DataService<EventData> implements DataService
 
   reloadData() {
     this.data$.next(null);
-    this.api.get<EventData[]>('/events', {sort: 'date'})
+    this.api.get<EventData[]>('/events')
       .subscribe(
         data => this.data$.next(data.data),
         error => this.notifications.loadingFailed()

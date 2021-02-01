@@ -1,9 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {EventsService} from '../../services/data/events/events.service';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
 import {NotificationService} from '../../services/notification/notification.service';
-import {setEmptyInputToNull} from '../../functions/input-cleaners.func';
 import {NewsData} from '../../interfaces/news.interface';
 import {NewsService} from '../../services/data/news/news.service';
 import {SlideOverService} from '../../services/slide-over/slide-over.service';

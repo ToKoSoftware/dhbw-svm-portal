@@ -18,12 +18,10 @@ export class TopBarComponent implements OnInit {
    * @param {UiButton} button
    */
   public handleButtonClick(button: UiButton): void {
-    console.log(1)
     if (button.type === UiButtonType.disabled) {
       return;
     }
     if (button.function) {
-      console.log(1)
       button?.function();
     }
   }
