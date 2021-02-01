@@ -10,9 +10,9 @@
         label="Titel">
       </app-input>
       <app-markdown-input
-        formControlName="body"
         label="Beschreibung"
         placeholder=""
+        [formControl]="formGroup.controls['body']"
         description="Geben Sie hier Ihre Nachricht ein"></app-markdown-input>
       <div class="flex justify-end w-full">
         <app-button
