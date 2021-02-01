@@ -5,7 +5,8 @@ export interface EventDataSnapshot{
   title: string;
   description: string;
   price: number | null;
-  date: Date;
+  start_date: string;
+  end_date: string;
   max_participants: number | null;
   is_active?: boolean;
 }

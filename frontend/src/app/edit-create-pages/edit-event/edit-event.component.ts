@@ -35,7 +35,7 @@ export class EditEventComponent implements OnInit, OnChanges {
         title: [],
         description: [],
         price: [],
-        date: [],
+        end_date: [],
         max_participants: [],
         is_active: [],
       }
@@ -50,7 +50,7 @@ export class EditEventComponent implements OnInit, OnChanges {
               title: [d.title],
               description: [d.description],
               price: [d.price],
-              date: [d.date],
+              end_date: [d.end_date],
               max_participants: [d.max_participants],
               is_active: [d.is_active],
             }

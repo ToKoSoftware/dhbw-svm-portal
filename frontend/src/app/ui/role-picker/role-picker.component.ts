@@ -1,19 +1,20 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {RoleData} from '../../interfaces/role.interface';
 
 @Component({
   selector: 'app-role-picker',
   templateUrl: './role-picker.component.html'
 })
 export class RolePickerComponent implements OnInit {
-  @Input() availableRoles: Role[] | null = mockData;
-  @Input() selectedRoles: Role[] | null = mockData;
+  @Input() availableRoles: RoleData[] | null = [];
+  @Input() selectedRoles: RoleData[] | null = [];
   @Input() removable = false;
   @Input() editable = false;
   @Input() deletable = false;
-  @Output() roles: Role[] | null = mockData;
-  @Output() editEvent = new EventEmitter<Role>();
-  @Output() removeEvent = new EventEmitter<Role>();
-  @Output() deleteEvent = new EventEmitter<Role>();
+  @Output() roles: RoleData[] | null = [];
+  @Output() editEvent = new EventEmitter<RoleData>();
+  @Output() removeEvent = new EventEmitter<RoleData>();
+  @Output() deleteEvent = new EventEmitter<RoleData>();
 
   constructor() {
   }
@@ -22,31 +23,3 @@ export class RolePickerComponent implements OnInit {
   }
 
 }
-
-export interface Role {
-  id: string;
-  user_deletable?: boolean;
-  title: string;
-}
-
-export const mockData: Role[] = [{
-  title: "Administratoren",
-  id: "1",
-  user_deletable: false
-}, {
-  title: "Nicht angemeldete Benutzer (öffentlich)",
-  id: "2",
-  user_deletable: false
-}, {
-  title: "Angemeldete Benutzer",
-  id: "3",
-  user_deletable: false
-}, {
-  title: "Vorstand",
-  id: "4",
-  user_deletable: true
-}, {
-  title: "Jugend",
-  id: "5",
-  user_deletable: true
-}]

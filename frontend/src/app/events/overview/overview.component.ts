@@ -19,7 +19,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
       if (events) {
         let grouped: { [k: string]: EventData[] } = {};
         events.forEach(event => {
-          const title = new Date(event.date).getFullYear();
+          const title = new Date(event.start_date).getFullYear();
           if (title in grouped) {
             grouped[title].push(event);
           } else {
