@@ -24,7 +24,7 @@ import {CreateRoleComponent} from './create-role/create-role.component';
     EditRoleComponent,
     CreateRoleComponent,
   ],
-  exports: [EditUserComponent, EditEventComponent, CreateNewsComponent, EditNewsComponent, EditPollComponent, CreatePollComponent, CreateEventComponent],
+  exports: [EditUserComponent, EditEventComponent, CreateNewsComponent, EditNewsComponent, EditPollComponent, CreatePollComponent, CreateEventComponent, CreateRoleComponent, EditRoleComponent],
   imports: [
     CommonModule,
     FormsModule,

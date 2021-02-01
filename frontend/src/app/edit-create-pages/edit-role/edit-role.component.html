@@ -1,1 +1,20 @@
-<p>edit-role works!</p>
+<app-container>
+  <app-titled-content
+    label="Rolle bearbeiten">
+    <form (ngSubmit)="create()" [formGroup]="formGroup">
+      <app-input
+        required="true"
+        formControlName="title"
+        description="Titel der Nachricht"
+        placeholder="Neue Trainingskleidung"
+        label="Titel">
+      </app-input>
+      <div class="flex justify-end w-full">
+        <app-button
+          formButtonType="submit"
+          label="Speichern">
+        </app-button>
+      </div>
+    </form>
+  </app-titled-content>
+</app-container>

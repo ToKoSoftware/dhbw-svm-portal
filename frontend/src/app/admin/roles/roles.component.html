@@ -9,3 +9,9 @@
     </app-titled-content>
   </app-container>
 </app-layout>
+<ng-template #create>
+  <app-create-role></app-create-role>
+</ng-template>
+<ng-template #edit>
+  <app-edit-role [editId]="current"></app-edit-role>
+</ng-template>
