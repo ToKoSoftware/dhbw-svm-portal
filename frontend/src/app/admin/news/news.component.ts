@@ -3,6 +3,7 @@ import {adminPages} from '../admin.pages';
 import {NewsService} from '../../services/data/news/news.service';
 import {TitleBarService} from '../../services/title-bar/title-bar.service';
 import {SlideOverService} from '../../services/slide-over/slide-over.service';
+import {NewsData} from '../../interfaces/news.interface';
 
 @Component({
   selector: 'app-news',
@@ -10,7 +11,9 @@ import {SlideOverService} from '../../services/slide-over/slide-over.service';
 })
 export class NewsComponent implements OnInit, OnDestroy {
   public sidebarPages = adminPages;
+  public current: string;
   @ViewChild('newsCreate', {static: true}) newsCreate: TemplateRef<unknown>;
+  @ViewChild('newsEdit', {static: true}) newsEdit: TemplateRef<unknown>;
 
   constructor(public readonly news: NewsService,
               private readonly slideOver: SlideOverService,
@@ -21,9 +24,15 @@ export class NewsComponent implements OnInit, OnDestroy {
       title: 'Neue Nachricht',
       icon: 'plus',
       function: () => {
-        this.slideOver.showSlideOver('Nachricht anlegen', this.newsCreate);
+        this.slideOver.showSlideOver('', this.newsCreate);
       }
     }])
+  }
+
+  public edit(news: NewsData) {
+    this.current = news.id || '';
+    this.slideOver.showSlideOver('', this.newsEdit);
+
   }
 
   ngOnDestroy() {

@@ -3,11 +3,41 @@
   heading="Übersicht"
 >
   <app-container>
-    <div *ngFor="let news of news.data$ | async">
-      {{news.title}}
+    <div class="overflow-hidden pt-3 cursor-pointer md:-ml-2">
+      <ul class="divide-y divide-gray-200">
+        <li *ngFor="let news of news.data$ | async">
+          <div (click)="edit(news)" class="block hover:bg-gray-50">
+            <div class="px-4 py-4 flex items-center sm:px-6">
+              <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
+                <div>
+                  <div class="flex font-medium text-black truncate">
+                    <p>{{news.title}}</p>
+                  </div>
+                  <div class="mt-2 flex">
+                    <div class="flex items-center text-sm text-gray-500">
+                      <p>
+                        Erstellt {{ news.createdAt | amLocal | amTimeAgo }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-4 flex-shrink-0 sm:mt-0">
+                  Bearbeiten
+                </div>
+              </div>
+              <div class="ml-5 flex-shrink-0">
+                <feather-icon name="chevron-right" class="pt-1 text-gray-400"></feather-icon>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
   </app-container>
   <ng-template #newsCreate>
-    Test!
+    <app-create-news></app-create-news>
+  </ng-template>
+  <ng-template #newsEdit>
+    <app-edit-news [editId]="current"></app-edit-news>
   </ng-template>
 </app-layout>

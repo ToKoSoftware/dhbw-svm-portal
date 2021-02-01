@@ -10,6 +10,7 @@ import {EventData} from '../../../interfaces/event.interface';
 export class PollsService extends DataService<EventData> implements DataServiceFunctions<EventData> {
 
   reloadData() {
+    this.data$.next(null);
     this.api.get<EventData[]>('/polls')
       .subscribe(
         data => this.data$.next(data.data),

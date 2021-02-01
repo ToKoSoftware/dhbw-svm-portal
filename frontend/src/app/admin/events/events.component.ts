@@ -1,7 +1,5 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {adminPages} from '../admin.pages';
-import {FormBuilder} from '@angular/forms';
-import {ApiService} from '../../services/api/api.service';
 import {TitleBarService} from '../../services/title-bar/title-bar.service';
 import {SlideOverService} from '../../services/slide-over/slide-over.service';
 
@@ -20,10 +18,10 @@ export class EventsComponent implements OnInit {
 
   ngOnInit(): void {
     this.titleBarService.buttons$.next([{
-      title: 'Neues Event',
+      title: 'Neue Veranstaltung',
       icon: 'plus',
       function: () => {
-        this.slideOver.showSlideOver('Nachricht anlegen', this.create);
+        this.slideOver.showSlideOver('Veranstaltung anlegen', this.create);
       }
     }]);
   }

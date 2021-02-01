@@ -10,6 +10,7 @@ import {TeamData} from '../../../interfaces/team.interface';
 export class TeamService extends DataService<TeamData> implements DataServiceFunctions<TeamData> {
 
   reloadData() {
+    this.data$.next(null);
     this.api.get<TeamData[]>('/teams')
       .subscribe(
         data => this.data$.next(data.data),
