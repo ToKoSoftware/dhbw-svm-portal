@@ -28,6 +28,7 @@ import {createEvent} from './api/v2/events/create-event';
 import {registerForEvent} from './api/v2/events/register-for-event';
 import {createTeam} from './api/v2/teams/create-team';
 import {createMembership} from './api/v2/teams/create-membership';
+import {deleteNews} from './api/v2/news/delete-news';
 
 
 
@@ -84,6 +85,7 @@ export default function startServer(): void {
     app.get('/api/v2/news', userIsAuthorized, userIsAdmin, (req, res) => getAllNews(req, res));
     app.get('/api/v2/news/:id', userIsAuthorized, (req, res) => getSingleNews(req, res));
     app.post('/api/v2/news', userIsAuthorized, userIsAdmin, (req, res) => createNews(req, res));
+    app.delete('/api/v2/news/:id', (req, res) => deleteNews(req, res));
 
     /** 
      * Event
