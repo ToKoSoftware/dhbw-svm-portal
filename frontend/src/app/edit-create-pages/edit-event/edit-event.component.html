@@ -11,7 +11,6 @@
       </app-input>
       <app-markdown-input
         label="Beschreibung"
-        placeholder=""
         formControlName="description"
         description="Die Beschreibung kann genutzt werden, um z.B. den Ort Ihrer Veranstaltung festzulegen."></app-markdown-input>
       <app-input
@@ -20,15 +19,20 @@
         placeholder="420,69"
         description="Geben Sie die Höhe der Teilnahmegebühr in Euro ein. Sollte die Veranstaltung kostenlos sein, so kann dieses Feld leergelassen werden.">
       </app-input>
-      <!-- TODO: Datepicker -->
-      <app-input
-        required="true"
+      <app-datetime-input
+        label="Beginn der Veranstaltung"
         formControlName="end_date"
-        label="Datum"
-        pattern="^\d{2}([./.])\d{2}\1\d{4}$"
-        placeholder="01.01.2000"
-        description="Geben Sie das Datum der Veranstaltung in folgendem Format an: DD.MM.YYYY">
-      </app-input>
+        required="true"
+        type="text"
+        description="Geben Sie das Datum der Veranstaltung in folgendem Format an: DD.MM.YYYY"
+      ></app-datetime-input>
+      <app-datetime-input
+        label="Ende der Veranstaltung"
+        formControlName="start_date"
+        required="true"
+        type="text"
+        description="Geben Sie das Datum der Veranstaltung in folgendem Format an: DD.MM.YYYY"
+      ></app-datetime-input>
       <app-input
         formControlName="max_participants"
         placeholder="12"

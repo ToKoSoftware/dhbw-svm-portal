@@ -35,14 +35,15 @@ import {NotifierComponent} from './notifier/notifier.component';
 import {SelectComponent} from './select/select.component';
 import {UserPickerComponent} from './user-picker/user-picker.component';
 import {RolePickerComponent} from './role-picker/role-picker.component';
-import { CardComponent } from './card/card.component';
-import { ScrollComponent } from './scroll/scroll.component';
+import {CardComponent} from './card/card.component';
+import {ScrollComponent} from './scroll/scroll.component';
 import {MarkdownToHtmlModule} from 'markdown-to-html-pipe';
 import {MomentModule} from 'ngx-moment';
-import { PollComponent } from './poll/poll.component';
+import {PollComponent} from './poll/poll.component';
 import {SlideOverComponent} from './slide-over/slide-over.component';
-import { MarkdownInputComponent } from './markdown-input/markdown-input.component';
-import { DatetimeInputComponent } from './datetime-input/datetime-input.component';
+import {MarkdownInputComponent} from './markdown-input/markdown-input.component';
+import {DatetimeInputComponent} from './datetime-input/datetime-input.component';
+import {Ng2FlatpickrModule} from 'ng2-flatpickr';
 
 
 @NgModule({
@@ -120,7 +121,8 @@ import { DatetimeInputComponent } from './datetime-input/datetime-input.componen
     CardComponent,
     PollComponent,
     SlideOverComponent,
-    MarkdownInputComponent
+    MarkdownInputComponent,
+    DatetimeInputComponent
   ],
   imports: [
     CommonModule,
@@ -128,7 +130,8 @@ import { DatetimeInputComponent } from './datetime-input/datetime-input.componen
     RouterModule,
     FormsModule,
     MarkdownToHtmlModule,
-    MomentModule
+    MomentModule,
+    Ng2FlatpickrModule
   ]
 })
 export class UiModule {
