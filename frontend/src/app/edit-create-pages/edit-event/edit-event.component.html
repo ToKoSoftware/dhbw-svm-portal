@@ -9,13 +9,11 @@
         placeholder="Kindertraining"
         label="Titel">
       </app-input>
-      <app-input
-        required="true"
-        formControlName="description"
+      <app-markdown-input
         label="Beschreibung"
-        placeholder="Adresse: Bahnhofstraße 1, 1234 Musterstadt"
-        description="Die Beschreibung kann genutzt werden, um z.B. den Ort Ihrer Veranstaltung festzulegen.">
-      </app-input>
+        placeholder=""
+        formControlName="description"
+        description="Die Beschreibung kann genutzt werden, um z.B. den Ort Ihrer Veranstaltung festzulegen."></app-markdown-input>
       <app-input
         formControlName="price"
         label="Teilnahmegebühr"
@@ -34,7 +32,7 @@
       <app-input
         formControlName="max_participants"
         placeholder="12"
-        description="Sollte die Veranstaltung keine Begrenzung haben sein, so kann dieses Feld leergelassen werden."
+        description="Sollte die Veranstaltung keine Teilnehmerbegrenzung haben, so kann dieses Feld leergelassen werden."
         label="Maximale Teilnehmerzahl">
       </app-input>
       <app-input
