@@ -2,7 +2,7 @@ import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Optio
 import {loadStyleSheets} from '../../functions/style-loader-async.func';
 import {FlatpickrOptions} from 'ng2-flatpickr';
 import {German} from 'flatpickr/dist/l10n/de';
-import {ControlValueAccessor, FormGroup, NgControl} from '@angular/forms';
+import {ControlValueAccessor, NgControl} from '@angular/forms';
 
 @Component({
   selector: 'app-datetime-input',
@@ -35,10 +35,9 @@ export class DatetimeInputComponent implements AfterViewInit, OnInit, ControlVal
       this.onTouched();
     },
     onReady: (selectedDates: Date[]) => {
-      this.onChange(selectedDates[0].toISOString())
+      this.onChange(selectedDates[0].toISOString());
     },
   };
-  form: FormGroup;
 
 
   constructor(

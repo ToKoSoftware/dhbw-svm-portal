@@ -40,7 +40,19 @@ export class EditCreatePollAnswerComponent implements OnChanges {
     this.customModalService.close();
     this.loadingModalService.showLoading();
     if (this.pollAnswer && this.poll) {
-      this.polls.createAnswer(this.poll, this.formGroup.value).subscribe(
+      const updateData = {...this.pollAnswer, ...this.formGroup.value};
+      this.polls.updateAnswer(this.poll, updateData).subscribe(
+        data => {
+          this.loadingModalService.hideLoading();
+          this.customModalService.close();
+        },
+        error => {
+          this.loadingModalService.hideLoading();
+          this.customModalService.open();
+        },
+      );
+    } else if (this.poll) {
+      this.polls.createAnswer(this.poll, {...this.formGroup.value, is_active: true}).subscribe(
         data => {
           this.loadingModalService.hideLoading();
           this.customModalService.close();

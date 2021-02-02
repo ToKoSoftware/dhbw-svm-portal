@@ -9,6 +9,11 @@
         placeholder="Wie zufrieden seid Ihr mit der neuen Webseite?"
         label="Titel">
       </app-input>
+      <app-markdown-input
+        label="Beschreibung"
+        formControlName="body"
+        description="Die Beschreibung kann genutzt werden, um die Umfrage genauer zu beschreiben.">
+      </app-markdown-input>
       <div class="flex justify-end w-full">
         <app-button
           formButtonType="submit"
@@ -48,6 +53,14 @@
           </div>
         </li>
       </ul>
+    </div>
+    <div class="flex justify-end w-full">
+      <app-button
+        size="small"
+        type="blank"
+        (click)="currentAnswer = null; customModalService.showModal('Antwort hinzufügen', editPoll)"
+        label="Neue Antwort">
+      </app-button>
     </div>
   </app-titled-content>
 </app-container>

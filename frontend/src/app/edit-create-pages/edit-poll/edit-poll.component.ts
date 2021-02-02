@@ -1,21 +1,23 @@
-import {Component, Input, OnInit, SimpleChanges, TemplateRef, ViewChild} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, SimpleChanges, TemplateRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
 import {NotificationService} from '../../services/notification/notification.service';
 import {PollAnswerData, PollData} from '../../interfaces/poll.interface';
 import {PollsService} from '../../services/data/polls/polls.service';
 import {ModalService} from '../../services/modal/modal.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-edit-poll',
   templateUrl: './edit-poll.component.html'
 })
-export class EditPollComponent implements OnInit {
+export class EditPollComponent implements OnInit, OnDestroy {
+  @Input() editId: string = '';
+  @ViewChild('editCreatePollAnswer', {static: true}) editPoll: TemplateRef<unknown>;
+  private pollSubscription: Subscription;
   public formGroup: FormGroup;
   public current: PollData;
   public currentAnswer: PollAnswerData | null = null;
-  @Input() editId: string = '';
-  @ViewChild('editCreatePollAnswer', {static: true}) editPoll: TemplateRef<unknown>;
 
   constructor(
     public readonly polls: PollsService,
@@ -33,9 +35,11 @@ export class EditPollComponent implements OnInit {
       }
     );
     this.loadData();
+    this.pollSubscription = this.polls.data$.subscribe(d => this.loadData());
   }
 
   public loadData() {
+    this.loadingModalService.showLoading();
     this.polls.read(this.editId)
       .subscribe(
         d => {
@@ -72,5 +76,9 @@ export class EditPollComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     if (this.editId !== this.current?.id)
       this.loadData();
+  }
+
+  ngOnDestroy(): void {
+      this.pollSubscription.unsubscribe();
   }
 }

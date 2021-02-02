@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {CreateAndUpdateData, DataService, DataServiceFunctions} from '../data.service';
-import {Observable, of} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
 import {PollAnswerData, PollData} from '../../../interfaces/poll.interface';
 
 @Injectable({
@@ -40,15 +40,26 @@ export class PollsService extends DataService<PollData> implements DataServiceFu
   update(PollData: CreateAndUpdateData<PollData>): Observable<PollData> {
     return this.api.put<PollData>(`/polls/${PollData.id}`)
       .pipe(map(res => {
+        this.notifications.savedSuccessfully();
         this.reloadData();
         return res.data;
       }));
   }
 
   createAnswer(poll: PollData, pollAnswerData: CreateAndUpdateData<PollAnswerData>) {
-    this.reloadData();
-    return this.api.post<PollData>(`/polls/${poll.id}/answer`, pollAnswerData)
+    return this.api.post<PollData>(`/polls/${poll.id}/answers`, pollAnswerData)
       .pipe(map(res => {
+        this.notifications.savedSuccessfully();
+        this.reloadData();
+        return res.data;
+      }));
+  }
+
+  updateAnswer(poll: PollData, pollAnswerData: CreateAndUpdateData<PollAnswerData>) {
+    return this.api.put<PollData>(`/polls/${poll.id}/${pollAnswerData.id}`, pollAnswerData)
+      .pipe(map(res => {
+        this.notifications.savedSuccessfully();
+        this.reloadData();
         return res.data;
       }));
   }
