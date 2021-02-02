@@ -31,30 +31,30 @@ export async function deleteNews(req: Request, res: Response): Promise<Response>
 
     if(news_to_delete !== null) {
         if (news_to_delete.author_id !== null) {
-                if (!currentUserIsAdminOrMatchesId(news_to_delete.author_id)) {
-                    if (!Vars.currentUser.is_admin) {
-                        return res.status(403).send(wrapResponse(false, {error: 'Unauthorized!'}));
-                    }
+            if (!currentUserIsAdminOrMatchesId(news_to_delete.author_id)) {
+                if (!Vars.currentUser.is_admin) {
+                    return res.status(403).send(wrapResponse(false, {error: 'Unauthorized!'}));
                 }
+            }
         }
     }
  
     await News.update(
-    {
-        is_active: false,
-    },
-    {
-        where: {
-            id: req.params.id,
-            is_active: true
-        }
-    })
-    .catch(() => {
-        success = false;
-    });
-if (!success) {
-    return res.status(500).send(wrapResponse(false, {error: 'Could not delete News with id ' + req.params.id}));
-}
+        {
+            is_active: false,
+        },
+        {
+            where: {
+                id: req.params.id,
+                is_active: true
+            }
+        })
+        .catch(() => {
+            success = false;
+        });
+    if (!success) {
+        return res.status(500).send(wrapResponse(false, {error: 'Could not delete News with id ' + req.params.id}));
+    }
 
     return res.status(204).send(wrapResponse(true));
     
