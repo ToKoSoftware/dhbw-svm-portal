@@ -1,4 +1,5 @@
-import {Model, Table, ForeignKey, Column, BelongsTo, AllowNull, PrimaryKey, Scopes} from 'sequelize-typescript';
+import {Model, Table, ForeignKey, Column, BelongsTo, AllowNull, PrimaryKey, Scopes, BeforeCreate} from 'sequelize-typescript';
+import {v4 as uuidv4} from 'uuid';
 import { PollAnswer } from './poll-answer.model';
 import { User } from './user.model';
 
@@ -29,5 +30,10 @@ export class PollVote extends Model {
     user: User;
     @BelongsTo(() => PollAnswer)
     poll_answer: PollAnswer;
+
+    @BeforeCreate
+    static addUuid(instance: PollVote): string {
+        return instance.id = uuidv4();
+    }
 
 }

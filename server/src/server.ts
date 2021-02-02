@@ -24,11 +24,15 @@ import {getEvent, getEvents} from './api/v2/events/get-events';
 import {getPoll, getPolls} from './api/v2/polls/get-polls';
 import {getRole, getRoles} from './api/v2/roles/get-roles';
 import {getOrganization, getOrganizations} from './api/v2/organizations/get-organizations';
+import { createPoll } from './api/v2/polls/create-poll';
+import { createPollAnswer } from './api/v2/poll-answer/create-poll-answer';
 import {createEvent} from './api/v2/events/create-event';
 import {registerForEvent} from './api/v2/events/register-for-event';
 import {createTeam} from './api/v2/teams/create-team';
 import {createMembership} from './api/v2/teams/create-membership';
 import {deleteNews} from './api/v2/news/delete-news';
+import { voteForPollAnswer } from './api/v2/poll-vote/create-poll-vote';
+
 
 
 
@@ -100,7 +104,10 @@ export default function startServer(): void {
      */
     app.get('/api/v2/polls', userIsAuthorized, userIsAdmin, (req, res) => getPolls(req, res));
     app.get('/api/v2/polls/:id', userIsAuthorized, (req, res) => getPoll(req, res));
-    
+    app.post('/api/v2/polls', userIsAuthorized, (req, res) => createPoll(req, res));
+    app.post('/api/v2/polls/:id/answers', userIsAuthorized, userIsAdmin, (req, res) => createPollAnswer(req, res));
+    app.post('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res));
+
     /** 
      * Role
      */
