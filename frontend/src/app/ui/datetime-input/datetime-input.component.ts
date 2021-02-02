@@ -1,26 +1,14 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnInit,
-  Optional,
-  Output,
-  Self,
-  ViewChild,
-  ViewEncapsulation
-} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Optional, Output, Self, ViewChild} from '@angular/core';
 import {loadStyleSheets} from '../../functions/style-loader-async.func';
 import {FlatpickrOptions} from 'ng2-flatpickr';
 import {German} from 'flatpickr/dist/l10n/de';
-import {ControlValueAccessor, FormBuilder, FormGroup, NgControl} from '@angular/forms';
+import {ControlValueAccessor, FormGroup, NgControl} from '@angular/forms';
 
 @Component({
   selector: 'app-datetime-input',
   templateUrl: 'datetime-input.component.html',
 })
-export class DatetimeInputComponent implements AfterViewInit, OnInit, ControlValueAccessor  {
+export class DatetimeInputComponent implements AfterViewInit, OnInit, ControlValueAccessor {
   @Input() disabled: boolean;
   @Input() required: boolean;
   @Input() label: string;
@@ -37,8 +25,18 @@ export class DatetimeInputComponent implements AfterViewInit, OnInit, ControlVal
   startOptions: FlatpickrOptions = {
     locale: German,
     mode: 'single',
-    dateFormat: 'd.m.Y',
+    // different output for user and server
+    // see https://flatpickr.js.org/formatting/ and https://flatpickr.js.org/options/
+    altInput: true,
+    altFormat: 'd.m.Y',
+    dateFormat: 'Z',
     defaultDate: new Date(Date.now()),
+    onOpen: () => {
+      this.onTouched();
+    },
+    onReady: (selectedDates: Date[]) => {
+      this.onChange(selectedDates[0].toISOString())
+    },
   };
   form: FormGroup;
 
@@ -56,6 +54,7 @@ export class DatetimeInputComponent implements AfterViewInit, OnInit, ControlVal
       this.ngControl.valueAccessor = this;
     }
   }
+
   async ngAfterViewInit() {
     // Import calendar styles
     await loadStyleSheets([
@@ -101,7 +100,7 @@ export class DatetimeInputComponent implements AfterViewInit, OnInit, ControlVal
     this.onTouched = fn;
   }
 
-  public onChange(event: Event): void {
+  public onChange(event: Event | string): void {
     this.valueChange.emit(event);
   }
 

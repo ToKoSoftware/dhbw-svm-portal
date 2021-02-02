@@ -68,11 +68,8 @@ export class EditEventComponent implements OnInit, OnChanges {
     if (this.editEventForm.dirty && !this.editEventForm.valid) {
       return;
     }
-    const dateSplit = this.editEventForm.value.date.split('.');
-    const date = new Date(dateSplit[2], dateSplit[1] - 1, dateSplit[0], 12, 0);
     let eventData = {
       ...this.editEventForm.value,
-      ...{date: date.toISOString()}
     };
     eventData = setEmptyInputToNull(eventData);
     this.events.create(eventData).subscribe(
