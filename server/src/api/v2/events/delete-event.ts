@@ -62,9 +62,10 @@ export async function deleteEvent(req: Request, res: Response): Promise<Response
         if (end !== null){
             return res.send(wrapResponse(true,
                 {
-                    ​​​​​message: 'Event sucessful deactivated. The following persons should be informed',
+                    message: 'Event sucessful deactivated. The following persons should be informed',
                     data: end.registered_users
-                }​​​​​));
+                }​​​​​
+                ));
         }
     }
 
