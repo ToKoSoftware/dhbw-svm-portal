@@ -24,32 +24,40 @@ export async function deleteNews(req: Request, res: Response): Promise<Response>
         }
 
     //check if currentUser is admin oder author of news
-    const news = await News.findOne({
+    const news_to_delete = await News.findOne({
         where: {
             id: req.params.id,
-            is_active: true
+            is_active: false
         }
     })
-        .catch(() => {
+        .catch((error) => {
             success = false;
+            Vars.loggy.log(error);
             return null;
         });
+    
+
     if (!success) {
         return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
-    if (news === null) {
+    
+    if (news_to_delete === null) {
         return res.status(404).send(wrapResponse(false, { error: 'No active News with given id' }));
     }
-
+/*
     //authorisation check
-    if (news.author_id !== undefined) {
-        if (!currentUserIsAdminOrMatchesId(news.author_id)) {
-            if (!Vars.currentUser.is_admin) {
-                return res.status(403).send(wrapResponse(false, {error: 'Unauthorized!'}));
+    if(news_to_delete !== null) {
+        if (news_to_delete.author_id !== null) {
+            if(Vars.currentUser.is_admin !== null) {
+                if (!currentUserIsAdminOrMatchesId(news_to_delete.author_id)) {
+                    if (!Vars.currentUser.is_admin) {
+                        return res.status(403).send(wrapResponse(false, {error: 'Unauthorized!'}));
+                    }
+                }
             }
         }
     }
-    
+ */ 
     return res.status(204).send(wrapResponse(true));
     
     
