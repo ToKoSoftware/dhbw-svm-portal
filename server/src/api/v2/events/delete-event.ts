@@ -42,14 +42,14 @@ export async function deleteEvent(req: Request, res: Response): Promise<Response
 
     const today = new Date();
     const end: EventData | null = await Event
-    .scope([{method: ['not_expired', today]}])
-    .findOne(
-        {
-            where: {
-                id: req.params.id   
-            },
-            include: {model: User.scope('publicData'), as: 'registered_users'}
-        })
+        .scope([{method: ['not_expired', today]}])
+        .findOne(
+            {
+                where: {
+                    id: req.params.id   
+                },
+                include: {model: User.scope('publicData'), as: 'registered_users'}
+            })
         .catch(() => {
             success = false;
             return null;
@@ -60,8 +60,11 @@ export async function deleteEvent(req: Request, res: Response): Promise<Response
     
     if (count > 0) {
         if (end !== null){
-        return res.send(wrapResponse(true, {​​​​​message: 'Event sucessful deactivated. The following persons should be informed',
-            data: end.registered_users}​​​​​));
+            return res.send(wrapResponse(true,
+                {
+                    ​​​​​message: 'Event sucessful deactivated. The following persons should be informed',
+                    data: end.registered_users
+                }​​​​​));
         }
     }
 
