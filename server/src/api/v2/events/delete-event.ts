@@ -59,9 +59,12 @@ export async function deleteEvent(req: Request, res: Response): Promise<Response
     }
     
     if (count > 0) {
-        if (end !== null){
-            return res.send(wrapResponse(true,
-                {message: 'Event sucessful deactivated. The following persons should be informed', data: end.registered_users}​​​​​
+        if (end !== null) {
+            return res.send(wrapResponse(true, 
+                {
+                    message: 'Event sucessful deactivated. The following persons should be informed',
+                    data: end.registered_users
+                }
             ));
         }
     }
