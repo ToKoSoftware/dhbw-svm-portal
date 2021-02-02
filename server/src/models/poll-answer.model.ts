@@ -50,7 +50,7 @@ export class PollAnswer extends Model {
     voted_users: Array<User & {poll_vote: PollVote}>;
 
     @BeforeCreate
-    static addUuid(instance: Poll): string {
+    static addUuid(instance: PollAnswer): string {
         return instance.id = uuidv4();
     }
 

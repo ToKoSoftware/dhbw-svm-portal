@@ -30,6 +30,7 @@ import {createEvent} from './api/v2/events/create-event';
 import {registerForEvent} from './api/v2/events/register-for-event';
 import {createTeam} from './api/v2/teams/create-team';
 import {createMembership} from './api/v2/teams/create-membership';
+import { voteForPollAnswer } from './api/v2/poll-vote/create-poll-vote';
 
 
 
@@ -102,7 +103,7 @@ export default function startServer(): void {
     app.get('/api/v2/polls/:id', userIsAuthorized, (req, res) => getPoll(req, res));
     app.post('/api/v2/polls', userIsAuthorized, (req, res) => createPoll(req, res));
     app.post('/api/v2/polls/:id/answers', userIsAuthorized, userIsAdmin, (req, res) => createPollAnswer(req, res));
-    //app.post('/api/v2/polls/:pollid/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res));
+    app.post('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res));
 
     /** 
      * Role
