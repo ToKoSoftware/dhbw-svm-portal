@@ -1,4 +1,5 @@
-import {Model, Table, Column, ForeignKey, BelongsTo, BelongsToMany, PrimaryKey, NotEmpty, DefaultScope, Scopes} from 'sequelize-typescript';
+import {Model, Table, Column, ForeignKey, BelongsTo, BelongsToMany, PrimaryKey, NotEmpty, DefaultScope, Scopes, BeforeCreate} from 'sequelize-typescript';
+import {v4 as uuidv4} from 'uuid';
 import { RawPollAnswerData } from '../interfaces/poll-answer.interface';
 import { PollVote } from './poll-vote.model';
 import { Poll } from './poll.model';
@@ -48,10 +49,16 @@ export class PollAnswer extends Model {
     @BelongsToMany(() => User, () => PollVote)
     voted_users: Array<User & {poll_vote: PollVote}>;
 
+    @BeforeCreate
+    static addUuid(instance: PollAnswer): string {
+        return instance.id = uuidv4();
+    }
 
     public static requiredFields(): Array<keyof RawPollAnswerData> {
         return [
             'title',
+            'poll_id',
+            'is_active',
         ];
     }
 }
