@@ -15,8 +15,7 @@ export async function createPoll(req: Request, res: Response): Promise<Response>
         return res.status(400).send(wrapResponse(false, { error: 'Not all required fields have been set' }));
     }
 
-    const validDate = mappedIncomingData.closes_at instanceof Date;
-    if (!validDate) {
+    if (mappedIncomingData.closes_at.toString() === 'Invalid Date') {
         return res.status(400).send(wrapResponse(false, { error: 'Closes_at is not valid' }));
     }
 
