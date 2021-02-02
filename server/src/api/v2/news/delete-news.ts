@@ -7,43 +7,43 @@ import { Vars } from '../../../vars';
 export async function deleteNews(req: Request, res: Response): Promise<Response> {
     let success = true;
     await News.update(
-            {
-                is_active: false,
-            },
-            {
-                where: {
-                    id: req.params.id,
-                    is_active: true
-                }
-            })
-            .catch(() => {
-                success = false;
-            });
-        if (!success) {
-            return res.status(500).send(wrapResponse(false, {error: 'Could not delete News with id ' + req.params.id}));
-        }
-
-    //check if currentUser is admin oder author of news
-    const news_to_delete = await News.findOne({
+    {
+        is_active: false,
+    },
+    {
         where: {
             id: req.params.id,
-            is_active: false
+            is_active: true
         }
     })
-        .catch((error) => {
-            success = false;
-            Vars.loggy.log(error);
-            return null;
-        });
-    
+    .catch(() => {
+        success = false;
+    });
+if (!success) {
+    return res.status(500).send(wrapResponse(false, {error: 'Could not delete News with id ' + req.params.id}));
+}
 
-    if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+//check if currentUser is admin oder author of news
+const news_to_delete = await News.findOne({
+    where: {
+        id: req.params.id,
+        is_active: false
     }
-    
-    if (news_to_delete === null) {
-        return res.status(404).send(wrapResponse(false, { error: 'No active News with given id' }));
-    }
+})
+    .catch((error) => {
+        success = false;
+        Vars.loggy.log(error);
+        return null;
+    });
+
+
+if (!success) {
+    return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+}
+
+if (news_to_delete === null) {
+    return res.status(404).send(wrapResponse(false, { error: 'No active News with given id' }));
+}
 /*
     //authorisation check
     if(news_to_delete !== null) {
@@ -57,8 +57,8 @@ export async function deleteNews(req: Request, res: Response): Promise<Response>
             }
         }
     }
- */ 
-    return res.status(204).send(wrapResponse(true));
+*/ 
+return res.status(204).send(wrapResponse(true));
     
     
 }
