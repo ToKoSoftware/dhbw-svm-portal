@@ -2,7 +2,7 @@ import {User} from '../models/user.model';
 import {Vars} from '../vars';
 import jwt from 'jsonwebtoken';
 
-export function jwtSign(user: User, expiration = 3600): string{
+export function jwtSign(user: User, expiration = 864000): string{
     const token = jwt.sign(
         {
             id: user.id,
@@ -14,7 +14,7 @@ export function jwtSign(user: User, expiration = 3600): string{
         },
         Vars.config.database.jwtSalt,
         {
-            // standard expiration after 1h = 3600s
+            // standard expiration after 10d = 864000s
             expiresIn: expiration
         }
     );
