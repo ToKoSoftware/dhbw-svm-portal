@@ -41,7 +41,7 @@ export class CreatePollComponent implements OnInit, OnDestroy {
         closes_at: [],
       }
     );
-    this.teams.data$.subscribe(teams => {
+    this.teamSubscription = this.teams.data$.subscribe(teams => {
       if (teams) {
         this.teamSelectData = teams.map(t => [t.id || '', t.title]);
       }
@@ -58,6 +58,12 @@ export class CreatePollComponent implements OnInit, OnDestroy {
         this.current = data;
         this.loadingModalService.hideLoading();
         this.notificationService.savedSuccessfully();
+        this.notificationService.createNotification({
+          id: Math.random().toString(36).substring(7),
+          title: `Umfrage ${this.formGroup.value.title} angelegt`,
+          description: 'Bearbeiten Sie die Umfrage, um Antwortmöglichkeiten hinzuzufügen',
+          type: 'warning'
+        }, null);
         this.slideOverService.close();
       },
       error => {

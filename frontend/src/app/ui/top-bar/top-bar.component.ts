@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {TitleBarService} from "../../services/title-bar/title-bar.service";
+import {Component, OnInit} from '@angular/core';
+import {TitleBarService} from '../../services/title-bar/title-bar.service';
 import {UiButton, UiButtonType} from '../ui.interface';
 
 @Component({
@@ -7,8 +7,8 @@ import {UiButton, UiButtonType} from '../ui.interface';
   templateUrl: './top-bar.component.html'
 })
 export class TopBarComponent implements OnInit {
-
-  constructor(public readonly titleBar: TitleBarService) { }
+  constructor(public readonly titleBar: TitleBarService) {
+  }
 
   ngOnInit(): void {
   }

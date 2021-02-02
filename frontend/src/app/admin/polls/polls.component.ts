@@ -30,8 +30,8 @@ export class PollsComponent implements OnInit, OnDestroy {
     }]);
   }
 
-  public editSlide(polls: PollData) {
-    this.current = polls.id || '';
+  public editSlide(poll: PollData) {
+    this.current = poll.id || '';
     this.slideOver.showSlideOver('', this.edit);
   }
 
