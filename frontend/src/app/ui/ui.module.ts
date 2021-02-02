@@ -42,6 +42,7 @@ import {MomentModule} from 'ngx-moment';
 import { PollComponent } from './poll/poll.component';
 import {SlideOverComponent} from './slide-over/slide-over.component';
 import { MarkdownInputComponent } from './markdown-input/markdown-input.component';
+import { DatetimeInputComponent } from './datetime-input/datetime-input.component';
 
 
 @NgModule({
@@ -82,7 +83,8 @@ import { MarkdownInputComponent } from './markdown-input/markdown-input.componen
     ScrollComponent,
     PollComponent,
     SlideOverComponent,
-    MarkdownInputComponent
+    MarkdownInputComponent,
+    DatetimeInputComponent
   ],
   exports: [
     NavbarComponent,
