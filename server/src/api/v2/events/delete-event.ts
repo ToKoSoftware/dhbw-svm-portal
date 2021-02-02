@@ -65,7 +65,7 @@ export async function deleteEvent(req: Request, res: Response): Promise<Response
                     message: 'Event sucessful deactivated. The following persons should be informed',
                     data: end.registered_users
                 }​​​​​
-                ));
+            ));
         }
     }
 
