@@ -6,7 +6,8 @@ import {Vars} from '../../../vars';
 
 export async function deleteNews(req: Request, res: Response): Promise<Response> {
     let success = true;
-
+    
+    //TODO check necessary?
     //check if currentUser is admin oder author of news
     const news_to_delete = await News.findOne({
         where: {
