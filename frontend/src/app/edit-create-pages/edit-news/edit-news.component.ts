@@ -2,7 +2,6 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
 import {NotificationService} from '../../services/notification/notification.service';
-import {setEmptyInputToNull} from '../../functions/input-cleaners.func';
 import {NewsService} from '../../services/data/news/news.service';
 import {NewsData} from '../../interfaces/news.interface';
 
@@ -38,7 +37,6 @@ export class EditNewsComponent implements OnInit, OnChanges {
         d => {
           this.loadingModalService.hideLoading();
           this.current = d;
-          console.log(1)
           this.formGroup = this.formBuilder.group(
             {
               title: [d.title],
@@ -69,7 +67,8 @@ export class EditNewsComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.loadData();
+    if (this.editId !== this.current?.id)
+      this.loadData();
   }
 
 }

@@ -65,7 +65,8 @@ export class EditRoleComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.loadData();
+    if (this.editId !== this.current?.id)
+      this.loadData();
   }
 
 }

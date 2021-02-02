@@ -16,6 +16,7 @@ export interface PollData {
 }
 
 export interface PollAnswerData {
+  createdAt: string;
   id?: string;
   title: string;
   is_active?: boolean;

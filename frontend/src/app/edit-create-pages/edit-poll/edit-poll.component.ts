@@ -1,9 +1,10 @@
-import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnInit, SimpleChanges, TemplateRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
 import {NotificationService} from '../../services/notification/notification.service';
-import {PollData} from '../../interfaces/poll.interface';
+import {PollAnswerData, PollData} from '../../interfaces/poll.interface';
 import {PollsService} from '../../services/data/polls/polls.service';
+import {ModalService} from '../../services/modal/modal.service';
 
 @Component({
   selector: 'app-edit-poll',
@@ -12,10 +13,13 @@ import {PollsService} from '../../services/data/polls/polls.service';
 export class EditPollComponent implements OnInit {
   public formGroup: FormGroup;
   public current: PollData;
+  public currentAnswer: PollAnswerData | null = null;
   @Input() editId: string = '';
+  @ViewChild('editCreatePollAnswer', {static: true}) editPoll: TemplateRef<unknown>;
 
   constructor(
     public readonly polls: PollsService,
+    public customModalService: ModalService,
     private formBuilder: FormBuilder,
     private loadingModalService: LoadingModalService,
     private notificationService: NotificationService) {
@@ -66,6 +70,7 @@ export class EditPollComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.loadData();
+    if (this.editId !== this.current?.id)
+      this.loadData();
   }
 }
