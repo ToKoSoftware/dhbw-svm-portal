@@ -33,8 +33,16 @@ import { currentOrg } from './current-org.scope';
     expired: (date: Date) => ({
         required: false,
         where: {
-            date: {
+            end_date: {
                 [Op.lte]: date
+            }
+        }
+    }),
+    not_expired: (date: Date) => ({
+        required: false,
+        where: {
+            end_date: {
+                [Op.gt]: date
             }
         }
     }),

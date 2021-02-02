@@ -53,7 +53,7 @@ export async function deleteNews(req: Request, res: Response): Promise<Response>
             success = false;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, {error: 'Could not delete News with id ' + req.params.id}));
+        return res.status(500).send(wrapResponse(false, {error: 'Could not deactivate News with id ' + req.params.id}));
     }
 
     return res.status(204).send(wrapResponse(true));
