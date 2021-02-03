@@ -38,7 +38,6 @@ export class CreateEventComponent implements OnInit {
   }
 
   public create(): void {
-    console.log(this.formGroup.value)
     if (this.formGroup.dirty && !this.formGroup.valid) {
       return;
     }

@@ -61,7 +61,7 @@ export class SelectComponent implements OnChanges {
     this.onTouched = fn;
   }
 
-  public onChange(event: Event): void {
+  public onChange(event: Event | string): void {
     this.valueChange.emit(this.value);
   }
 
@@ -74,6 +74,8 @@ export class SelectComponent implements OnChanges {
     if(!this.value){
       // set default value if not already set
       this.value = this.items != null && this.items.length != 0 ? this.items[0][0] : ''
+      // force value change event to be created
+      this.onChange(this.value as string)
     }
   }
 
