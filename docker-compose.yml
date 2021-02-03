@@ -30,9 +30,9 @@ services:
     image: "node:14"
     depends_on:
       - db
-    ports:
-      - "80:80"
-    user: "root" # for ubuntu, use root
+    expose:
+      - "80"
+    user: "node" # for ubuntu, use root
     working_dir: /home/node/app
     volumes:
       - ./:/home/node/app
