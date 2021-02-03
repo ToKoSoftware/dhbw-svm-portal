@@ -101,7 +101,7 @@ export default function startServer(): void {
     app.post('/api/v2/events', userIsAuthorized, userIsAdmin, (req, res) => createEvent(req, res));
     app.post('/api/v2/events/:id/register', userIsAuthorized, (req, res) => registerForEvent(req, res));
     app.delete('/api/v2/events/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteEvent(req, res));
-    app.delete('/api/v2/events/register/:id', userIsAuthorized, (req, res) => deleteEventRegistration(req, res));
+    app.delete('/api/v2/events/:event_id/eventregistration/:id', userIsAuthorized, (req, res) => deleteEventRegistration(req, res));
 
     /** 
      * Poll
