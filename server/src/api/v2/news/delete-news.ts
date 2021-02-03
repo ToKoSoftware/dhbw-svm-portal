@@ -15,9 +15,8 @@ export async function deleteNews(req: Request, res: Response): Promise<Response>
             is_active: true
         }
     })
-        .catch((error) => {
+        .catch(() => {
             success = false;
-            Vars.loggy.log(error);
             return null;
         });
 
