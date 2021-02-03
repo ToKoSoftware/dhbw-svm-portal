@@ -32,6 +32,7 @@ import {createTeam} from './api/v2/teams/create-team';
 import {createMembership} from './api/v2/teams/create-membership';
 import { voteForPollAnswer } from './api/v2/poll-vote/create-poll-vote';
 import { updateEvent } from './api/v2/events/update-event';
+import { updateNews } from './api/v2/news/update-news';
 
 
 
@@ -88,6 +89,8 @@ export default function startServer(): void {
     app.get('/api/v2/news', userIsAuthorized, userIsAdmin, (req, res) => getAllNews(req, res));
     app.get('/api/v2/news/:id', userIsAuthorized, (req, res) => getSingleNews(req, res));
     app.post('/api/v2/news', userIsAuthorized, userIsAdmin, (req, res) => createNews(req, res));
+
+    app.put('/api/v2/news/:id', userIsAuthorized, userIsAdmin, (req, res) => updateNews(req, res));
 
     /** 
      * Event
