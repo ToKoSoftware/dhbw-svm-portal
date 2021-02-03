@@ -33,7 +33,7 @@ export class MyCredentialsComponent implements OnInit {
   private loadUser(): void {
     this.loading = true;
     const id = this.login.decodedJwt$.value?.id || '';
-    this.api.get<UserData>(`/users/${id}`).subscribe(
+    this.api.get<UserData>([`/users/${id}`, 1]).subscribe(
       (data) => {
         this.loading = false;
         this.currentUser = data.data;
@@ -53,7 +53,7 @@ export class MyCredentialsComponent implements OnInit {
     const id = this.login.decodedJwt$.value?.id || '';
     const password = this.editUserForm.value.password;
     this.api.put<UserData>(
-      `/users/${id}`,
+      [`/users/${id}`, 1],
       {password}).subscribe(
       data => {
         this.notifications.savedSuccessfully();
@@ -72,7 +72,7 @@ export class MyCredentialsComponent implements OnInit {
     const id = this.login.decodedJwt$.value?.id || '';
     const email = this.editUserForm.value.email;
     this.api.put<{ user: UserData, jwt: string }>(
-      `/users/${id}`,
+      [`/users/${id}`, 1],
       {email})
       .subscribe(
         data => {
@@ -82,8 +82,8 @@ export class MyCredentialsComponent implements OnInit {
           this.login.login(data.data.jwt);
         },
         error => {
+          this.notifications.savingFailed(error.error?.data.error);
           this.loading = false;
-          this.notifications.savingFailed(error.data.error);
         }
       );
   }

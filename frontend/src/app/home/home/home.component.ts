@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
+import {NewsService} from '../../services/data/news/news.service';
 
 @Component({
   selector: 'app-home',
@@ -7,7 +8,7 @@ import {Router} from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private router: Router) {
+  constructor(public news: NewsService) {
   }
 
   ngOnInit(): void {

@@ -10,6 +10,7 @@ import {AvailableFilter, FilterValue} from '../../ui/filter/filter.component';
 import {LoginService} from '../../services/login/login.service';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
+import {UsersService} from '../../services/data/users/users.service';
 
 @Component({
   selector: 'app-users',
@@ -20,7 +21,6 @@ export class UsersComponent implements OnInit, OnDestroy {
   public sidebarPages = adminPages;
   public breadcrumb = adminBreadcrumb;
   @ViewChild('relatedCustomersModal', {static: true}) relatedCustomersModal: TemplateRef<unknown>;
-  public results: UserData[] = [];
   public loading = false;
   public currentEditUserId: string = '';
   public buttonGroup: UiButtonGroup = {
@@ -47,6 +47,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   }];
 
   constructor(
+    public users: UsersService,
     private confirmService: ConfirmModalService,
     private loadingService: LoadingModalService,
     private modalService: ModalService,
@@ -57,7 +58,6 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loadData();
     this.routeSubscription = this.route.params.subscribe(params => {
       this.currentEditUserId = params['id'] || '';
     });
@@ -67,22 +67,12 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.routeSubscription.unsubscribe();
   }
 
-  private loadData(filter = {}): void {
-    this.loading = true;
-    this.api.get<UserData[]>('/users', filter).subscribe(
-      data => {
-        this.loading = false;
-        this.results = data.data;
-      }
-    );
-  }
-
   public applyFilter(filterValue: FilterValue[]): void {
     let f: { [k: string]: string } = {};
     filterValue.forEach(val => {
       f[val.name] = val.value;
     })
-    this.loadData(f);
+    // todo reload data with filters
   }
 
   public async showDeleteModalForUser(user: UserData): Promise<void> {
@@ -94,7 +84,7 @@ export class UsersComponent implements OnInit, OnDestroy {
       this.loadingService.showLoading();
       this.api.delete<{ success: boolean } | { success: boolean, error: string }>(`/users/${user.id}`).subscribe(
         data => {
-          this.loadData();
+          this.users.reloadData();
           this.loadingService.hideLoading();
         },
         error => {

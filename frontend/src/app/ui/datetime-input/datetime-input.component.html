@@ -1,0 +1,22 @@
+<div class="relative">
+  <label [for]="name" class="leading-7 text-md text-gray-600 dark:text-white">
+    {{label}}<span class="text-red-500 px-0.5" *ngIf="required">*</span>
+  </label>
+  <p class="text-sm text-gray-500 mb-3" *ngIf="description">
+    {{description}}
+  </p>
+
+  <ng2-flatpickr
+    (input)="onChange($event.target.value); value = $event.target.value"
+    (blur)="onTouched()"
+    [setDate]="value"
+    [id]="name"
+    [placeholder]="placeholder"
+    addClass="mb-4 border-malachite-600 w-full rounded border border-gray-300
+    dark:bg-gray-900 bg-gray-100
+    dark:text-white text-base outline-none
+    pt-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+    [config]="startOptions" #startPicker>
+  </ng2-flatpickr>
+</div>
+

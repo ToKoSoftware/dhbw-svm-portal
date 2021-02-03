@@ -1,0 +1,10 @@
+<app-scroll>
+  <app-container [center]="true" class="bg-gray-100 dark:bg-gray-800">
+    <div *ngIf="(polls.data$ | async) !== null">
+      <div class="mt-5"></div>
+      <app-poll [poll]="poll" *ngFor="let poll of polls.data$ | async">
+      </app-poll>
+    </div>
+    <app-loading *ngIf="(polls.data$ | async) === null"></app-loading>
+  </app-container>
+</app-scroll>

@@ -1,0 +1,17 @@
+<app-container>
+  <form class="-mx-4" (ngSubmit)="createOrUpdate()" [formGroup]="formGroup">
+    <app-input
+      required="true"
+      formControlName="title"
+      placeholder="Sehr zufrieden"
+      description="Dies erscheint als Option zu Ihrer Umfrage"
+      label="Antwort">
+    </app-input>
+    <div class="flex justify-end w-full">
+      <app-button
+        formButtonType="submit"
+        label="Speichern">
+      </app-button>
+    </div>
+  </form>
+</app-container>

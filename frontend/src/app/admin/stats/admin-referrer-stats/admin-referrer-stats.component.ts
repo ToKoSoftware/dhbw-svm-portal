@@ -39,7 +39,7 @@ export class AdminReferrerStatsComponent implements OnInit {
       first.getMonth() === second.getMonth() &&
       first.getDate() === second.getDate();
 
-    this.api.get<StatsResponse[]>('/admin/stats/referrer/monthly').subscribe(data => {
+    this.api.get<StatsResponse[]>(['/admin/stats/referrer/monthly', 1]).subscribe(data => {
       this.loading = false;
       data.data.forEach((value: StatsResponse, index: number) => {
         const color = this.lineChartColors[index < this.lineChartColors.length - 1 ? index : 0];

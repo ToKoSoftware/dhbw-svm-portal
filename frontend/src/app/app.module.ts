@@ -12,11 +12,11 @@ import {ErrorModule} from './error/error.module';
 import {MomentModule} from 'ngx-moment';
 import 'moment/locale/de';
 import {ChartsModule} from 'ng2-charts';
-import {EditCreatePagesModule} from "./edit-create-pages/edit-create-pages.module";
+import {EditCreatePagesModule} from './edit-create-pages/edit-create-pages.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
