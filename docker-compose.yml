@@ -18,7 +18,7 @@ services:
     container_name: portal-frontend
     restart: "no"
     image: "node:14"
-    user: "node" # for ubuntu, use root
+    user: "root"
     working_dir: /home/node/app
     volumes:
       - ./:/home/node/app
@@ -30,9 +30,9 @@ services:
     image: "node:14"
     depends_on:
       - db
-    expose:
-      - "80"
-    user: "node" # for ubuntu, use root
+    ports:
+      - "80:80"
+    user: "root"
     working_dir: /home/node/app
     volumes:
       - ./:/home/node/app
@@ -41,7 +41,6 @@ services:
     env_file:
       - .env
     environment:
-      #NODE_ENV: production
       DATABASE_URL: "db"
       DATABASE_PASSWORD: $POSTGRES_PASSWORD
       DATABASE_USER: $POSTGRES_USER
