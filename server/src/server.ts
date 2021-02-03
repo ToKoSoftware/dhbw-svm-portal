@@ -31,6 +31,7 @@ import {registerForEvent} from './api/v2/events/register-for-event';
 import {createTeam} from './api/v2/teams/create-team';
 import {createMembership} from './api/v2/teams/create-membership';
 import { voteForPollAnswer } from './api/v2/poll-vote/create-poll-vote';
+import { updateEvent } from './api/v2/events/update-event';
 
 
 
@@ -95,6 +96,8 @@ export default function startServer(): void {
     app.get('/api/v2/events/:id', userIsAuthorized, (req, res) => getEvent(req, res));
     app.post('/api/v2/events', userIsAuthorized, userIsAdmin, (req, res) => createEvent(req, res));
     app.post('/api/v2/events/:id/register', userIsAuthorized, (req, res) => registerForEvent(req, res));
+
+    app.put('/api/v2/events/:id', userIsAuthorized, userIsAdmin, (req, res) => updateEvent(req, res));
 
     /** 
      * Poll
