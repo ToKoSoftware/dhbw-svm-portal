@@ -1,14 +1,15 @@
 import {Request, Response} from 'express';
 import {wrapResponse} from '../../../functions/response-wrapper';
-import {Event} from '../../../models/event.model';
-import {EventRegistration} from '../../../models/event-registration.model';
 import {User} from '../../../models/user.model';
-import { EventData } from '../../../interfaces/event.interface';
+import {Team} from '../../../models/team.model';
+import {Membership} from '../../../models/membership.model';
+import {TeamData} from '../../../interfaces/team.interface';
+import {Vars} from '../../../vars';
 
-export async function deleteEvent(req: Request, res: Response): Promise<Response> {
+export async function deleteTeam(req: Request, res: Response): Promise<Response> {
     let success = true;
-    //TODO Authoriaztion check, if events can get created by no-admins
-    await Event.update(
+    //TODO Authoriaztion check, if teams can get created by no-admins
+    await Team.update(
         {
             is_active: false,
         },
@@ -23,14 +24,14 @@ export async function deleteEvent(req: Request, res: Response): Promise<Response
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, {error: 'Could not deactivate Event with id ' + req.params.id}));
+        return res.status(500).send(wrapResponse(false, {error: 'Could not deactivate Team with id ' + req.params.id}));
     }
 
-    // if  Users are registrated and the end_Date < today, you can only set Event to inactive with information about registred_users 
-    const count: number = await EventRegistration.count(
+    // if  Users are members, you can only set Teams to inactive with information about members
+    const count: number = await Membership.count(
         {
             where: {
-                event_id: req.params.id,
+                team_id: req.params.id
             }
         })
         .catch(() => {
@@ -41,15 +42,15 @@ export async function deleteEvent(req: Request, res: Response): Promise<Response
         return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
     }
 
-    const today = new Date();
-    const end: EventData | null = await Event
-        .scope([{method: ['not_expired', today]}])
+    //finding the members of the team which is to delete
+    const end: TeamData | null = await Team
         .findOne(
             {
                 where: {
-                    id: req.params.id   
+                    id: req.params.id,
+                    is_active: false
                 },
-                include: {model: User.scope('publicData'), as: 'registered_users'}
+                include: {model: User.scope('publicData')}
             })
         .catch(() => {
             success = false;
@@ -64,7 +65,7 @@ export async function deleteEvent(req: Request, res: Response): Promise<Response
             return res.send(wrapResponse(true, 
                 {
                     message: 'Event sucessful deactivated. The following persons should be informed',
-                    data: end.registered_users
+                    data: end.users
                 }
             ));
         }
