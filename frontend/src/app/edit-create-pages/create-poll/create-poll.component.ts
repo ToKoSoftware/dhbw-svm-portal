@@ -37,7 +37,7 @@ export class CreatePollComponent implements OnInit, OnDestroy {
       {
         title: [],
         body: [],
-        answer_team_id: ['bbbbbbbb-ed27-4c69-8e45-77416965091f'],
+        answer_team_id: [],
         closes_at: [],
       }
     );

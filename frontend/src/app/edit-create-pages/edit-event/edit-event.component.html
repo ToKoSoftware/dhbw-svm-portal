@@ -22,17 +22,17 @@
       </app-input>
       <app-datetime-input
         label="Beginn der Veranstaltung"
-        formControlName="end_date"
-        required="true"
-        type="text"
-        description="Geben Sie das Datum der Veranstaltung in folgendem Format an: DD.MM.YYYY"
-      ></app-datetime-input>
-      <app-datetime-input
-        label="Ende der Veranstaltung"
         formControlName="start_date"
         required="true"
         type="text"
-        description="Geben Sie das Datum der Veranstaltung in folgendem Format an: DD.MM.YYYY"
+        description="Geben Sie das Datum des Beginns der Veranstaltung an"
+      ></app-datetime-input>
+      <app-datetime-input
+        label="Ende der Veranstaltung"
+        formControlName="end_date"
+        required="true"
+        type="text"
+        description="Geben Sie das Datum des Endes der Veranstaltung an"
       ></app-datetime-input>
       <app-input
         formControlName="max_participants"
