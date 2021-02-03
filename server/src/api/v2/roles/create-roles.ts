@@ -3,7 +3,7 @@ import { objectHasRequiredAndNotEmptyKeys } from '../../../functions/check-input
 import { mapRole } from '../../../functions/map-roles.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { RoleDataSnapshot, RawRoleData } from '../../../interfaces/role.interface';
-import { Role } from '../../../models/role.model';
+import {Role} from '../../../models/role.model';
 
 export async function createRole(req: Request, res: Response): Promise<Response> {
     let success = true;
