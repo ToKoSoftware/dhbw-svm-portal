@@ -1,10 +1,11 @@
-import {Model, Table, Column, ForeignKey, BelongsTo, HasOne, HasMany, BelongsToMany, PrimaryKey, NotEmpty, DefaultScope, Scopes} from 'sequelize-typescript';
+import {BeforeCreate, Model, Table, Column, ForeignKey, BelongsTo, HasOne, HasMany, BelongsToMany, PrimaryKey, NotEmpty, DefaultScope, Scopes} from 'sequelize-typescript';
 import {RawRoleData} from '../interfaces/role.interface';
 import { currentOrg } from './current-org.scope';
 import { Organization } from './organization.model';
 import { RoleAssignment } from './role-assignment.model';
 import { Team } from './team.model';
 import { User } from './user.model';
+import {v4 as uuidv4} from 'uuid';
 
 @DefaultScope(() => ({
     required: false,
@@ -58,6 +59,10 @@ export class Role extends Model {
     @BelongsToMany(() => User, () => RoleAssignment)
     users: Array<User & {role_assignment: RoleAssignment}>;
 
+    @BeforeCreate
+    static addUuid(instance: Role): string {
+        return instance.id = uuidv4();
+    }
 
     public static requiredFields(): Array<keyof RawRoleData> {
         return [

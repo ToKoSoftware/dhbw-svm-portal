@@ -1,4 +1,4 @@
-import { TeamDataSnapshot, RawTeamData } from '../interfaces/team.interface';
+import { RawTeamData } from '../interfaces/team.interface';
 import { Vars } from '../vars';
 
 export function mapTeam(incomingData: RawTeamData): RawTeamData {
