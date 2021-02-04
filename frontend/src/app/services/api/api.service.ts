@@ -9,6 +9,11 @@ import {environment} from '../../../environments/environment';
 })
 export class ApiService {
 
+  constructor(
+    private readonly http: HttpClient,
+  ) {
+  }
+
   public static getApiBaseUrl(version = 2): string {
     return `${environment.apiUrl}/v${version}`;
   }
@@ -23,11 +28,6 @@ export class ApiService {
 
   public static getJwt(): string | null {
     return localStorage.getItem('jwt');
-  }
-
-  constructor(
-    private readonly http: HttpClient,
-  ) {
   }
 
   public get<Data>(

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {CreateAndUpdateData, DataService, DataServiceFunctions} from '../data.service';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {TeamData} from '../../../interfaces/team.interface';
 

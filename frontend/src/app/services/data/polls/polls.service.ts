@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {CreateAndUpdateData, DataService, DataServiceFunctions} from '../data.service';
 import {Observable} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {PollAnswerData, PollData} from '../../../interfaces/poll.interface';
 
 @Injectable({

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {CreateAndUpdateData, DataService, DataServiceFunctions} from '../data.service';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {EventData} from '../../../interfaces/event.interface';
 
@@ -15,7 +15,7 @@ export class EventsService extends DataService<EventData> implements DataService
       .subscribe(
         data => this.data$.next(data.data),
         error => this.notifications.loadingFailed()
-        );
+      );
   }
 
   create(eventData: CreateAndUpdateData<EventData>): Observable<EventData> {
