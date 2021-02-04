@@ -24,19 +24,20 @@ import {getEvent, getEvents} from './api/v2/events/get-events';
 import {getPoll, getPolls} from './api/v2/polls/get-polls';
 import {getRole, getRoles} from './api/v2/roles/get-roles';
 import {getOrganization, getOrganizations} from './api/v2/organizations/get-organizations';
-import { createPoll } from './api/v2/polls/create-poll';
-import { createPollAnswer } from './api/v2/poll-answer/create-poll-answer';
+import {createPoll} from './api/v2/polls/create-poll';
+import {createPollAnswer} from './api/v2/poll-answer/create-poll-answer';
 import {createEvent} from './api/v2/events/create-event';
 import {registerForEvent} from './api/v2/events/register-for-event';
 import {createTeam} from './api/v2/teams/create-team';
 import {createMembership} from './api/v2/teams/create-membership';
 import {deleteNews} from './api/v2/news/delete-news';
 import {voteForPollAnswer} from './api/v2/poll-vote/create-poll-vote';
-import { deleteEvent } from './api/v2/events/delete-event';
-import { deleteEventRegistration } from './api/v2/events/delete-event-registration';
-import { deleteTeam } from './api/v2/teams/delete-team';
-import { deleteMembership } from './api/v2/teams/delete-membership';
-import { createRole } from './api/v2/roles/create-roles';
+import {deleteEvent} from './api/v2/events/delete-event';
+import {deleteEventRegistration} from './api/v2/events/delete-event-registration';
+import {deleteTeam} from './api/v2/teams/delete-team';
+import {deleteMembership} from './api/v2/teams/delete-membership';
+import {createRole} from './api/v2/roles/create-roles';
+import {createRoleAssignmnet} from './api/v2/roles/create-roll-assignment';
 
 
 
@@ -123,6 +124,7 @@ export default function startServer(): void {
     app.get('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => getRoles(req, res));
     app.get('/api/v2/roles/:id', userIsAuthorized, (req, res) => getRole(req, res));
     app.post('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => createRole(req, res));
+    app.post('/api/v2/roles/:id/assignment', userIsAuthorized, userIsAdmin, (req, res) => createRoleAssignmnet(req, res));
 
     /** 
      * Organization
