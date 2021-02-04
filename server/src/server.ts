@@ -37,6 +37,7 @@ import { updatePoll } from './api/v2/polls/update-poll';
 import { updatePollAnswer } from './api/v2/poll-answers/update-poll-answer';
 import { updateTeam } from './api/v2/teams/update-team';
 import { updateRole } from './api/v2/roles/update-role';
+import { updateOrganization } from './api/v2/organizations/update-organization';
 
 
 
@@ -134,6 +135,8 @@ export default function startServer(): void {
      */
     app.get('/api/v2/organizations', userIsAuthorized, userIsAdmin, (req, res) => getOrganizations(req, res));
     app.get('/api/v2/organizations/:id', userIsAuthorized, (req, res) => getOrganization(req, res));
+    app.put('/api/v2/organizations/:id', userIsAuthorized, userIsAdmin, (req, res) => updateOrganization(req, res));
+    
     /**
      * Admin
      */
