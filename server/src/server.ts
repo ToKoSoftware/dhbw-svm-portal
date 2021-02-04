@@ -38,8 +38,9 @@ import {deleteTeam} from './api/v2/teams/delete-team';
 import {deleteMembership} from './api/v2/teams/delete-membership';
 import {createRole} from './api/v2/roles/create-roles';
 import {createRoleAssignmnet} from './api/v2/roles/create-roll-assignment';
-import { deleteRole } from './api/v2/roles/delete-role';
-import { deleteRoleAssignment } from './api/v2/roles/delete-role-assignment';
+import {deleteRole} from './api/v2/roles/delete-role';
+import {deleteRoleAssignment} from './api/v2/roles/delete-role-assignment';
+import {deletePoll} from './api/v2/polls/delete-poll';
 
 
 
@@ -116,9 +117,10 @@ export default function startServer(): void {
      */
     app.get('/api/v2/polls', userIsAuthorized, userIsAdmin, (req, res) => getPolls(req, res));
     app.get('/api/v2/polls/:id', userIsAuthorized, (req, res) => getPoll(req, res));
-    app.post('/api/v2/polls', userIsAuthorized, (req, res) => createPoll(req, res));
+    app.post('/api/v2/polls', userIsAuthorized, userIsAdmin, (req, res) => createPoll(req, res));
     app.post('/api/v2/polls/:id/answers', userIsAuthorized, userIsAdmin, (req, res) => createPollAnswer(req, res));
     app.post('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res));
+    app.delete('/api/v2/polls/:id', userIsAuthorized, userIsAdmin, (req, res) => deletePoll(req, res));
 
     /** 
      * Role
