@@ -25,7 +25,7 @@
                       </div>
                     </div>
                     <div class="mt-4 flex-shrink-0 sm:mt-0">
-                      <app-button label="Anmelden" size="small"></app-button>
+                        <app-button label="Mehr" size="small"></app-button>
                     </div>
                   </div>
                   <div class="ml-5 flex-shrink-0">
@@ -40,14 +40,16 @@
   </div>
 </app-scroll>
 <ng-template #details>
-  <ng-container *ngIf="current != null" class="break-all test">
+  <ng-container *ngIf="current != null">
     <h1 class="text-3xl mb-3">{{current.title}}</h1>
     <div class="prose prose-sm dark:text-white flex font-medium text-black truncate text-gray-600 mb-3 justify-between">
       <p class="pt-2">
         {{ current.start_date | amFromUtc | amDateFormat: 'DD.MM. H:mm' }}
         - {{ current.end_date | amFromUtc | amDateFormat: 'DD.MM. H:mm' }}
       </p>
-      <app-button label="Anmelden"></app-button>
+      <a [routerLink]="'/join/' + current.id">
+        <app-button label="Anmelden"></app-button>
+      </a>
     </div>
     <div class="prose prose-sm dark:text-white flex-shrink mt-10 divide-y divide-gray-200">
       <div [innerHTML]="current.description | MarkdownToHtml"></div>

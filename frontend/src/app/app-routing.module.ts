@@ -20,8 +20,6 @@ const routes: Routes = [
   },
   {
     path: 'join',
-    canActivate: [IsLoggedInGuard],
-    canActivateChild: [IsLoggedInGuard],
     loadChildren: () => import('./join/join.module').then(m => m.JoinModule)
   },
   {
