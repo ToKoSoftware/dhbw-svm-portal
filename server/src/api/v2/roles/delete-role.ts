@@ -1,14 +1,13 @@
 import {Request, Response} from 'express';
 import {wrapResponse} from '../../../functions/response-wrapper';
 import {User} from '../../../models/user.model';
-import {Team} from '../../../models/team.model';
-import {Membership} from '../../../models/membership.model';
-import {TeamData} from '../../../interfaces/team.interface';
+import {Role} from '../../../models/role.model';
+import { RoleAssignment } from '../../../models/role-assignment.model';
+import { RoleData } from '../../../interfaces/role.interface';
 
-export async function deleteTeam(req: Request, res: Response): Promise<Response> {
+export async function deleteRole(req: Request, res: Response): Promise<Response> {
     let success = true;
-    //TODO Authoriaztion check, if teams can get created by no-admins
-    await Team.update(
+    await Role.update(
         {
             is_active: false,
         },
@@ -23,14 +22,14 @@ export async function deleteTeam(req: Request, res: Response): Promise<Response>
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, {error: 'Could not deactivate team with id ' + req.params.id}));
+        return res.status(500).send(wrapResponse(false, {error: 'Could not deactivate role with id ' + req.params.id}));
     }
 
-    // if  Users are members, you can only set Teams to inactive with information about members
-    const count: number = await Membership.count(
+    // if  Users are assigned, you can only set roles to inactive with information about assignments
+    const count: number = await RoleAssignment.count(
         {
             where: {
-                team_id: req.params.id
+                role_id: req.params.id
             }
         })
         .catch(() => {
@@ -41,8 +40,8 @@ export async function deleteTeam(req: Request, res: Response): Promise<Response>
         return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
     }
 
-    //finding the members of the team which is to delete
-    const members: TeamData | null = await Team
+    //finding the assigned users of the role which is to delete
+    const assignments: RoleData | null = await Role
         .findOne(
             {
                 where: {
@@ -60,11 +59,11 @@ export async function deleteTeam(req: Request, res: Response): Promise<Response>
     }
     
     if (count > 0) {
-        if (members !== null) {
+        if (assignments !== null) {
             return res.send(wrapResponse(true, 
                 {
                     message: 'Event sucessful deactivated. The following persons should be informed',
-                    data: members.users
+                    data: assignments.users
                 }
             ));
         }
