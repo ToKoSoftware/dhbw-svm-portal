@@ -34,6 +34,7 @@ import { voteForPollAnswer } from './api/v2/poll-votes/create-poll-vote';
 import { updateEvent } from './api/v2/events/update-event';
 import { updateNews } from './api/v2/news/update-news';
 import { updatePoll } from './api/v2/polls/update-poll';
+import { updatePollAnswer } from './api/v2/poll-answers/update-poll-answer';
 
 
 
@@ -109,9 +110,14 @@ export default function startServer(): void {
     app.get('/api/v2/polls', userIsAuthorized, userIsAdmin, (req, res) => getPolls(req, res));
     app.get('/api/v2/polls/:id', userIsAuthorized, (req, res) => getPoll(req, res));
     app.post('/api/v2/polls', userIsAuthorized, (req, res) => createPoll(req, res));
+    app.put('/api/v2/polls/:id', userIsAuthorized, userIsAdmin, (req, res) => updatePoll(req, res));
+
+    /**
+     * PollAnswer
+     */
     app.post('/api/v2/polls/:id/answers', userIsAuthorized, userIsAdmin, (req, res) => createPollAnswer(req, res));
     app.post('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res));
-    app.put('/api/v2/polls/:id', userIsAuthorized, userIsAdmin, (req, res) => updatePoll(req, res));
+    app.put('/api/v2/pollAnswers/:id', userIsAuthorized, userIsAdmin, (req, res) => updatePollAnswer(req, res));
 
     /** 
      * Role

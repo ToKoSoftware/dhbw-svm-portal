@@ -1,18 +1,18 @@
 import { Request, Response } from 'express';
 import { checkKeysAreNotEmptyOrNotSet } from '../../../functions/check-inputs.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
-import { RawPollData } from '../../../interfaces/poll.interface';
-import { Poll } from '../../../models/poll.model';
+import { RawPollAnswerData } from '../../../interfaces/poll-answer.interface';
+import { PollAnswer } from '../../../models/poll-answer.model';
 
-export async function updatePoll(req: Request, res: Response): Promise<Response> {
+export async function updatePollAnswer(req: Request, res: Response): Promise<Response> {
     let success = true;
-    const incomingData: RawPollData = req.body;
-    const pollId = req.params.id;
+    const incomingData: RawPollAnswerData = req.body;
+    const pollAnswerId = req.params.id;
 
-    const pollData: RawPollData | null = await Poll.findOne(
+    const pollAnswerData: RawPollAnswerData | null = await PollAnswer.findOne(
         {
             where: {
-                id: pollId
+                id: pollAnswerId
             }
         })
         .catch(() => {
@@ -22,27 +22,20 @@ export async function updatePoll(req: Request, res: Response): Promise<Response>
     if (!success) {
         return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
-    if (pollData === null) {
-        return res.status(400).send(wrapResponse(false, { error: 'No Poll with given id found' }));
+    if (pollAnswerData === null) {
+        return res.status(400).send(wrapResponse(false, { error: 'No PollAnswer with given id found' }));
     }
 
-    // Author_id and org_id must not be changed
-    if (incomingData.author_id !== pollData.author_id || incomingData.org_id !== pollData.org_id) {
-        if (incomingData.author_id !== undefined || incomingData.org_id !== undefined) {
-            return res.status(400).send(wrapResponse(false, { error: 'Author_id and org_id must not be changed!' }));
-        }
-    }
-
-    const requiredFields = Poll.requiredFields();
+    const requiredFields = PollAnswer.requiredFields();
     if (!checkKeysAreNotEmptyOrNotSet(incomingData, requiredFields)) {
         return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty'}));
     }
     
-    const updatedData: [number, Poll[]] = await Poll.update(
+    const updatedData: [number, PollAnswer[]] = await PollAnswer.update(
         incomingData, 
         { 
             where: {
-                id: pollId
+                id: pollAnswerId
             },
             returning: true
         })
