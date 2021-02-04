@@ -36,6 +36,7 @@ import { updateNews } from './api/v2/news/update-news';
 import { updatePoll } from './api/v2/polls/update-poll';
 import { updatePollAnswer } from './api/v2/poll-answers/update-poll-answer';
 import { updateTeam } from './api/v2/teams/update-team';
+import { updateRole } from './api/v2/roles/update-role';
 
 
 
@@ -86,7 +87,7 @@ export default function startServer(): void {
     app.post('/api/v2/teams', userIsAuthorized, userIsAdmin, (req, res) => createTeam(req, res));
     app.post('/api/v2/teams/:id/membership', userIsAuthorized, (req, res) => createMembership(req, res));
     app.put('/api/v2/teams/:id', userIsAuthorized, userIsAdmin, (req, res) => updateTeam(req, res));
-    
+
     /** 
      * News
      */
@@ -126,6 +127,7 @@ export default function startServer(): void {
      */
     app.get('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => getRoles(req, res));
     app.get('/api/v2/roles/:id', userIsAuthorized, (req, res) => getRole(req, res));
+    app.put('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => updateRole(req, res));
     
     /** 
      * Organization

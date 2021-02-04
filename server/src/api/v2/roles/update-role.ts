@@ -1,18 +1,18 @@
 import { Request, Response } from 'express';
 import { checkKeysAreNotEmptyOrNotSet } from '../../../functions/check-inputs.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
-import { RawTeamData } from '../../../interfaces/team.interface';
-import { Team } from '../../../models/team.model';
+import { RawRoleData } from '../../../interfaces/role.interface';
+import { Role } from '../../../models/role.model';
 
-export async function updateTeam(req: Request, res: Response): Promise<Response> {
+export async function updateRole(req: Request, res: Response): Promise<Response> {
     let success = true;
-    const incomingData: RawTeamData = req.body;
-    const teamId = req.params.id;
+    const incomingData: RawRoleData = req.body;
+    const roleId = req.params.id;
 
-    const teamData: RawTeamData | null = await Team.findOne(
+    const roleData: RawRoleData | null = await Role.findOne(
         {
             where: {
-                id: teamId
+                id: roleId
             }
         })
         .catch(() => {
@@ -22,27 +22,27 @@ export async function updateTeam(req: Request, res: Response): Promise<Response>
     if (!success) {
         return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
-    if (teamData === null) {
-        return res.status(400).send(wrapResponse(false, { error: 'No Team with given id found' }));
+    if (roleData === null) {
+        return res.status(400).send(wrapResponse(false, { error: 'No Role with given id found' }));
     }
 
-    // Maintain_role_id and org_id must not be changed
-    if (incomingData.maintain_role_id !== teamData.maintain_role_id || incomingData.org_id !== teamData.org_id) {
-        if (incomingData.maintain_role_id !== undefined || incomingData.org_id !== undefined) {
-            return res.status(400).send(wrapResponse(false, { error: 'Maintain_role_id and org_id must not be changed!' }));
+    // Org_id must not be changed
+    if (incomingData.org_id !== roleData.org_id) {
+        if (incomingData.org_id !== undefined) {
+            return res.status(400).send(wrapResponse(false, { error: 'Org_id must not be changed!' }));
         }
     }
 
-    const requiredFields = Team.requiredFields();
+    const requiredFields = Role.requiredFields();
     if (!checkKeysAreNotEmptyOrNotSet(incomingData, requiredFields)) {
         return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty'}));
     }
     
-    const updatedData: [number, Team[]] = await Team.update(
+    const updatedData: [number, Role[]] = await Role.update(
         incomingData, 
         { 
             where: {
-                id: teamId
+                id: roleId
             },
             returning: true
         })
