@@ -39,6 +39,7 @@ import {deleteMembership} from './api/v2/teams/delete-membership';
 import {createRole} from './api/v2/roles/create-roles';
 import {createRoleAssignmnet} from './api/v2/roles/create-roll-assignment';
 import { deleteRole } from './api/v2/roles/delete-role';
+import { deleteRoleAssignment } from './api/v2/roles/delete-role-assignment';
 
 
 
@@ -127,7 +128,8 @@ export default function startServer(): void {
     app.post('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => createRole(req, res));
     app.post('/api/v2/roles/:id/assignment', userIsAuthorized, userIsAdmin, (req, res) => createRoleAssignmnet(req, res));
     app.delete('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteRole(req, res));
-
+    app.delete('/api/v2/roles/:role_id/assignments/:id', userIsAuthorized, userIsAdmin,(req, res) => deleteRoleAssignment(req, res));
+    
     /** 
      * Organization
      */
