@@ -15,7 +15,7 @@ export class EventsComponent implements OnInit {
   @ViewChild('create', {static: true}) create: TemplateRef<unknown>;
   @ViewChild('edit', {static: true}) edit: TemplateRef<unknown>;
 
-  constructor(public readonly news: EventsService,
+  constructor(public readonly data: EventsService,
               private readonly slideOver: SlideOverService,
               private readonly titleBarService: TitleBarService) { }
 

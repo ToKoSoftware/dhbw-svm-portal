@@ -4,25 +4,53 @@
       <div class="mt-5"></div>
       <app-card *ngFor="let group of (data$ | async)">
         <h1 class="text-3xl mb-3">{{group.title}}</h1>
-        <div *ngFor="let event of group.events">
-          <div class="flex justify-between items-center flex-wrap sm:flex-nowrap border-t-2 md:space-x-4 mt-3">
-            <div class="flex-1 text-2xl">
-              {{ event.date | amFromUtc | amDateFormat: 'DD.MM.' }}<br>
-              <span class="text-gray-600">{{ event.date | amFromUtc | amDateFormat: 'H:mm' }}</span>
-            </div>
-            <div class="prose prose-sm dark:text-white flex-shrink">
-              <h2 class="dark:text-white text-2xl pt-2">
-                {{event.title}}
-              </h2>
-              <div [innerHTML]="event.description | MarkdownToHtml">
+        <div class="overflow-hidden cursor-pointer">
+          <ul class="divide-y divide-gray-200">
+            <li *ngFor="let event of group.events">
+              <div (click)="current = event; slideOver.showSlideOver('Details - ' + event.title, details)"
+                   class="block hover:bg-gray-50">
+                <div class="py-4 flex items-center">
+                  <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
+                    <div>
+                      <div class="flex font-medium text-black truncate">
+                        <p>{{ event.start_date | amFromUtc | amDateFormat: 'DD.MM. H:mm' }} - <span
+                          class="text-gray-800">{{event.title}}</span></p>
+                      </div>
+                      <div class="mt-2 flex">
+                        <div class="flex items-center text-sm text-gray-500">
+                          <p>
+                            Erstellt {{ event.createdAt | amLocal | amTimeAgo }}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mt-4 flex-shrink-0 sm:mt-0">
+                      <app-button label="Anmelden" size="small"></app-button>
+                    </div>
+                  </div>
+                  <div class="ml-5 flex-shrink-0">
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="flex-grow w-1/3 justify-end flex">
-              <app-button label="Anmelden" size="small"></app-button>
-            </div>
-          </div>
+            </li>
+          </ul>
         </div>
       </app-card>
     </app-container>
   </div>
 </app-scroll>
+<ng-template #details>
+  <ng-container *ngIf="current != null" class="break-all test">
+    <h1 class="text-3xl mb-3">{{current.title}}</h1>
+    <div class="prose prose-sm dark:text-white flex font-medium text-black truncate text-gray-600 mb-3 justify-between">
+      <p class="pt-2">
+        {{ current.start_date | amFromUtc | amDateFormat: 'DD.MM. H:mm' }}
+        - {{ current.end_date | amFromUtc | amDateFormat: 'DD.MM. H:mm' }}
+      </p>
+      <app-button label="Anmelden"></app-button>
+    </div>
+    <div class="prose prose-sm dark:text-white flex-shrink mt-10 divide-y divide-gray-200">
+      <div [innerHTML]="current.description | MarkdownToHtml"></div>
+    </div>
+  </ng-container>
+</ng-template>
