@@ -42,6 +42,7 @@ import {deleteRole} from './api/v2/roles/delete-role';
 import {deleteRoleAssignment} from './api/v2/roles/delete-role-assignment';
 import {deletePoll} from './api/v2/polls/delete-poll';
 import {deletePollAnswer} from './api/v2/poll-answer/delete-poll-answer';
+import {deletePollVote} from './api/v2/poll-vote/delete-poll-vote';
 
 
 
@@ -123,7 +124,8 @@ export default function startServer(): void {
     app.post('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res));
     app.delete('/api/v2/polls/:id', userIsAuthorized, userIsAdmin, (req, res) => deletePoll(req, res));
     app.delete('/api/v2/polls/:pollId/answers/:id', userIsAuthorized, userIsAdmin, (req, res) => deletePollAnswer(req, res));
-    
+    app.delete('/api/v2/polls/:pollId/:pollAnswerId/votes/:id', userIsAuthorized, (req, res) => deletePollVote(req, res));
+
     /** 
      * Role
      */
