@@ -9,7 +9,6 @@ import {UserData} from '../../interfaces/user.interface';
 export class LoginService {
   public isLoggedIn$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public isAdmin$: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  public currentUser$: ReplaySubject<UserData | null> = new ReplaySubject();
   public jwt$: BehaviorSubject<string | null> = new BehaviorSubject(null);
   public decodedJwt$: BehaviorSubject<JWT | null> = new BehaviorSubject(null);
 
@@ -28,7 +27,6 @@ export class LoginService {
   }
 
   private reloadJWT(): void {
-    this.currentUser$.next(null);
     const jwt: string | null = localStorage.getItem('jwt');
     try {
       const decodedJWT = jwt_decode<JWT>(jwt || '');

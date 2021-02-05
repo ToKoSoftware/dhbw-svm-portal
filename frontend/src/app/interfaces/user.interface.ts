@@ -1,3 +1,5 @@
+import {OrganizationData} from './organization.interface';
+
 export interface UserData {
   id: string;
   email: string;
@@ -13,4 +15,5 @@ export interface UserData {
   is_active: boolean
   createdAt: string;
   updatedAt: string;
+  organization?: OrganizationData
 }
