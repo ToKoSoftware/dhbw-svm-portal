@@ -37,10 +37,10 @@ export class RolesService extends DataService<RoleData> implements DataServiceFu
       }));
   }
 
-  update(RoleData: CreateAndUpdateData<RoleData>): Observable<RoleData> {
-    this.reloadData();
-    return this.api.put<RoleData>(`/users/${RoleData.id}`)
+  update(updateData: CreateAndUpdateData<RoleData>): Observable<RoleData> {
+    return this.api.put<RoleData>(`/users/${updateData.id}`, updateData)
       .pipe(map(res => {
+        this.reloadData();
         return res.data;
       }));
   }

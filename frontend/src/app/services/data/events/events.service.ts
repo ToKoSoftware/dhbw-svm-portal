@@ -37,10 +37,10 @@ export class EventsService extends DataService<EventData> implements DataService
       }));
   }
 
-  update(EventData: CreateAndUpdateData<EventData>): Observable<EventData> {
-    this.reloadData();
-    return this.api.put<EventData>(`/events/${EventData.id}`)
+  update(updateData: CreateAndUpdateData<EventData>): Observable<EventData> {
+    return this.api.put<EventData>(`/events/${updateData.id}`, updateData)
       .pipe(map(res => {
+        this.reloadData();
         return res.data;
       }));
   }

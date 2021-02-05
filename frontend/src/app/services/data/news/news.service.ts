@@ -37,10 +37,10 @@ export class NewsService extends DataService<NewsData> implements DataServiceFun
       }));
   }
 
-  update(NewsData: CreateAndUpdateData<NewsData>): Observable<NewsData> {
-    this.reloadData();
-    return this.api.put<NewsData>(`/news/${NewsData.id}`)
+  update(updateData: CreateAndUpdateData<NewsData>): Observable<NewsData> {
+    return this.api.put<NewsData>(`/news/${updateData.id}`, updateData)
       .pipe(map(res => {
+        this.reloadData();
         return res.data;
       }));
   }

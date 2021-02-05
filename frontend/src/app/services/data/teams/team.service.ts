@@ -38,10 +38,10 @@ export class TeamService extends DataService<TeamData> implements DataServiceFun
       }));
   }
 
-  update(teamData: CreateAndUpdateData<TeamData>): Observable<TeamData> {
-    this.reloadData();
-    return this.api.put<TeamData>(`/teams/${teamData.id}`)
+  update(updateData: CreateAndUpdateData<TeamData>): Observable<TeamData> {
+    return this.api.put<TeamData>(`/teams/${updateData.id}`, updateData)
       .pipe(map(res => {
+        this.reloadData();
         return res.data;
       }));
   }

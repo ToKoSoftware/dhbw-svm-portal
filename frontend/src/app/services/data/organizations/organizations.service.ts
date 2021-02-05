@@ -37,10 +37,10 @@ export class OrganizationsService extends DataService<UserData> implements DataS
       }));
   }
 
-  update(UserData: CreateAndUpdateData<UserData>): Observable<UserData> {
-    this.reloadData();
-    return this.api.put<UserData>([`/users/${UserData.id}`, 1])
+  update(updateData: CreateAndUpdateData<UserData>): Observable<UserData> {
+    return this.api.put<UserData>([`/users/${updateData.id}`, 1], updateData)
       .pipe(map(res => {
+        this.reloadData();
         return res.data;
       }));
   }

@@ -58,14 +58,13 @@ export class EditPollComponent implements OnInit, OnDestroy {
       );
   }
 
-  public create(): void {
+  public update(): void {
     if (this.formGroup.dirty && !this.formGroup.valid) {
       return;
     }
     this.polls.update({...this.current, ...this.formGroup.value, is_active: true}).subscribe(
       data => {
         this.current = data;
-        this.notificationService.savedSuccessfully();
       },
       error => {
         this.notificationService.savingFailed(error.error.data.error);

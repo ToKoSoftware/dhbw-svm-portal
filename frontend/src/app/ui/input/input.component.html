@@ -11,7 +11,7 @@
     [placeholder]="placeholder"
     [value]="value"
     [disabled]="disabled"
-    (input)="onChange($event.target.value); value = $event.target.value"
+    (input)="onChange($event.target.value)"
     (blur)="onTouched()"
     [class.text-black]="disabled"
     [class.cursor-not-allowed]="disabled"
