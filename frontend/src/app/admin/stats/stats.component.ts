@@ -23,7 +23,7 @@ export class StatsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.api.get<AdminCountStats>('/admin/stats').subscribe(
+    this.api.get<AdminCountStats>(['/admin/stats', 1]).subscribe(
       data => {
         const stats = data.data;
         this.tiles[0].count = stats.users;
@@ -39,7 +39,7 @@ export class StatsComponent implements OnInit {
 
       }
     );
-    this.api.get<StatsResponse>('/admin/stats/monthly').subscribe(monthlyData => this.monthlyData = monthlyData.data);
+    this.api.get<StatsResponse>(['/admin/stats/monthly', 1]).subscribe(monthlyData => this.monthlyData = monthlyData.data);
   }
 }
 

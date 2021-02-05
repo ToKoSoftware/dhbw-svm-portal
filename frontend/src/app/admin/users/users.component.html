@@ -12,7 +12,7 @@
             focus:outline-none focus:bg-gray-200 transition
             dark:hover:bg-gray-700 ease-in-out duration-150"
            [routerLink]="'/my-team/users/' + user.id"
-           *ngFor="let user of results"
+           *ngFor="let user of users.data$ | async"
            [routerLinkActive]="['bg-gray-200', 'dark:bg-gray-900',
             'dark:hover:bg-gray-700', 'text-malachite-600', 'hover:text-malachite-600']">
           <div class="text-md font-medium w-full">

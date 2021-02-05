@@ -4,24 +4,27 @@
       <div class="flex items-center mb-3 space-x-2">
         <div>
           <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">
-            Johne Doe
+            {{news.author.first_name}} {{news.author.last_name}}
           </h3>
-          <p class="text-sm text-malachite-600">
-            <a href="#">
-              @john.doe
-            </a>
-          </p>
+          <div class="flex">
+            <p class="text-sm text-malachite-600 pr-4">
+              <a href="#">
+                @{{news.author.username}}
+              </a>
+            </p>
+            <p class="text-sm text-gray-600">
+              {{ news.createdAt | amLocal | amTimeAgo }}
+            </p>
+          </div>
         </div>
       </div>
     </div>
     <div class="prose prose-sm py-1 mt-3 dark:text-white">
       <h2 class="dark:text-white">
-        Title
+        {{news.title}}
       </h2>
-      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-      sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor
-      sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed
-      diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+      <div [innerHTML]="news.body | MarkdownToHtml">
+      </div>
     </div>
   </app-card>
 </div>

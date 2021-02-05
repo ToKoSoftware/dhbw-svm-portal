@@ -1,0 +1,69 @@
+<app-container>
+  <app-titled-content
+    label="Umfrage bearbeiten">
+    <form (ngSubmit)="create()" [formGroup]="formGroup">
+      <app-input
+        required="true"
+        formControlName="title"
+        description="Stellen Sie Ihre Frage, welche Entschieden werden soll"
+        placeholder="Wie zufrieden seid Ihr mit der neuen Webseite?"
+        label="Titel">
+      </app-input>
+      <app-markdown-input
+        label="Beschreibung"
+        formControlName="body"
+        description="Die Beschreibung kann genutzt werden, um die Umfrage genauer zu beschreiben.">
+      </app-markdown-input>
+      <div class="flex justify-end w-full">
+        <app-button
+          formButtonType="submit"
+          label="Speichern">
+        </app-button>
+      </div>
+    </form>
+  </app-titled-content>
+  <app-titled-content
+    label="Antwortmöglichkeiten" *ngIf="current">
+    <div class="overflow-hidden cursor-pointer">
+      <ul class="divide-y divide-gray-200">
+        <li *ngFor="let answer of current.poll_answers">
+          <div (click)="currentAnswer = answer; customModalService.showModal('Antwort bearbeiten', editPoll)" class="block hover:bg-gray-50">
+            <div class="px-2 py-4 flex items-center">
+              <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
+                <div>
+                  <div class="flex font-medium text-black truncate">
+                    <p>{{answer.title}}</p>
+                  </div>
+                  <div class="mt-2 flex">
+                    <div class="flex items-center text-sm text-gray-500">
+                      <p>
+                        Erstellt {{ answer.createdAt | amLocal | amTimeAgo }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-4 flex-shrink-0 sm:mt-0">
+                  answer?.voted_users.length Stimmen <!-- todo -->
+                </div>
+              </div>
+              <div class="ml-5 flex-shrink-0">
+                <feather-icon name="chevron-right" class="pt-1 text-gray-400"></feather-icon>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="flex justify-end w-full">
+      <app-button
+        size="small"
+        type="blank"
+        (click)="currentAnswer = null; customModalService.showModal('Antwort hinzufügen', editPoll)"
+        label="Neue Antwort">
+      </app-button>
+    </div>
+  </app-titled-content>
+</app-container>
+<ng-template #editCreatePollAnswer>
+  <app-edit-create-poll-answer [poll]="current" [pollAnswer]="currentAnswer"></app-edit-create-poll-answer>
+</ng-template>

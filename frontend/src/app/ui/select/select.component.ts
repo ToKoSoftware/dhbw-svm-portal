@@ -1,17 +1,17 @@
-import {Component, EventEmitter, Input, OnInit, Optional, Output, Self} from '@angular/core';
-import {NgControl} from "@angular/forms";
+import {Component, EventEmitter, Input, OnChanges, Optional, Output, Self, SimpleChanges} from '@angular/core';
+import {NgControl} from '@angular/forms';
 
 @Component({
   selector: 'app-select',
   templateUrl: './select.component.html'
 })
-export class SelectComponent implements OnInit {
+export class SelectComponent implements OnChanges {
   @Input() disabled: boolean;
   @Input() label: string;
   @Input() description: string;
   @Input() name: string;
   @Input() selected = '';
-  @Input() items: Array<string | number>[] = [];
+  @Input() items: [string | number, string | number][] = [];
   @Output() enter = new EventEmitter<unknown>();
   @Output() valueChange = new EventEmitter<unknown>();
 
@@ -29,9 +29,6 @@ export class SelectComponent implements OnInit {
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
     }
-  }
-
-  ngOnInit(): void {
   }
 
   /**
@@ -65,7 +62,19 @@ export class SelectComponent implements OnInit {
   }
 
   public onChange(event: Event): void {
-    this.valueChange.emit(event);
+    this.valueChange.emit(this.value);
+  }
+
+  public updateValue(event: Event): void {
+    this.value = event;
+    this.onChange(event);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(!this.value){
+      // set default value if not already set
+      this.value = this.items != null && this.items.length != 0 ? this.items[0][0] : ''
+    }
   }
 
   public onTouched(): void {

@@ -45,6 +45,18 @@ export class NotificationService {
     );
   }
 
+  public loadingFailed(error = ''): void {
+    const description = error != '' ? error : 'Ein Fehler ist beim Laden der Daten aufgetreten';
+    this.createNotification(
+      {
+        id: Math.random().toString(36).substring(7),
+        title: 'Laden fehlgeschlagen',
+        description,
+        type: 'error'
+      }
+    );
+  }
+
 }
 
 export interface Notification {

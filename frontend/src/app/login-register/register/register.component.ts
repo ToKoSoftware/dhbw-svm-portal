@@ -33,7 +33,7 @@ export class RegisterComponent {
   }
 
   public createUser(): void {
-    this.api.post<UserData>('/users',
+    this.api.post<UserData>(['/users', 1],
       this.createUserData
     ).subscribe(
       (data) => {
@@ -53,7 +53,7 @@ export class RegisterComponent {
 
   private login(): void {
     this.loading.showLoading();
-    this.api.post<string>('/login', {
+    this.api.post<string>(['/login', 1], {
       email: this.createUserData.email,
       password: this.createUserData.password,
     }).subscribe(
