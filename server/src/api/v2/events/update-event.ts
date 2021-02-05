@@ -9,7 +9,7 @@ export async function updateEvent(req: Request, res: Response): Promise<Response
     const incomingData: RawEventData = req.body;
     const eventId = req.params.id;
 
-    const eventData: RawEventData | null = await Event.findOne(
+    const eventData: Event | null = await Event.findOne(
         {
             where: {
                 id: eventId
@@ -38,24 +38,17 @@ export async function updateEvent(req: Request, res: Response): Promise<Response
         return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty'}));
     }
     
-    const updatedData: [number, Event[]] = await Event.update(
-        incomingData, 
-        { 
-            where: {
-                id: eventId
-            },
-            returning: true
-        })
+    eventData.update(incomingData)
         .catch(() => {
             success = false;
-            return [0, []];
+            return null;
         });
     if (!success) {
         return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
-    if (updatedData[0] === 0 || updatedData[1] === []) {
+    if (eventData === null) {
         return res.send(wrapResponse(true, { info: 'Nothing updated' }));
     }
 
-    return res.send(wrapResponse(true, updatedData[1]));
+    return res.send(wrapResponse(true, eventData));
 }

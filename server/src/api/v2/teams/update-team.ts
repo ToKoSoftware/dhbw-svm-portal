@@ -9,7 +9,7 @@ export async function updateTeam(req: Request, res: Response): Promise<Response>
     const incomingData: RawTeamData = req.body;
     const teamId = req.params.id;
 
-    const teamData: RawTeamData | null = await Team.findOne(
+    const teamData: Team | null = await Team.findOne(
         {
             where: {
                 id: teamId
@@ -38,24 +38,17 @@ export async function updateTeam(req: Request, res: Response): Promise<Response>
         return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty'}));
     }
     
-    const updatedData: [number, Team[]] = await Team.update(
-        incomingData, 
-        { 
-            where: {
-                id: teamId
-            },
-            returning: true
-        })
+    teamData.update(incomingData)
         .catch(() => {
             success = false;
-            return [0, []];
+            return null;
         });
     if (!success) {
         return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
-    if (updatedData[0] === 0 || updatedData[1] === []) {
+    if (teamData === null) {
         return res.send(wrapResponse(true, { info: 'Nothing updated' }));
     }
 
-    return res.send(wrapResponse(true, updatedData[1]));
+    return res.send(wrapResponse(true, teamData));
 }

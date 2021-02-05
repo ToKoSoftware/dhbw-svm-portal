@@ -9,7 +9,7 @@ export async function updateOrganization(req: Request, res: Response): Promise<R
     const incomingData: RawOrganizationData = req.body;
     const organizationId = req.params.id;
 
-    const organizationData: RawOrganizationData | null = await Organization.findOne(
+    const organizationData: Organization | null = await Organization.findOne(
         {
             where: {
                 id: organizationId
@@ -31,24 +31,17 @@ export async function updateOrganization(req: Request, res: Response): Promise<R
         return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty'}));
     }
     
-    const updatedData: [number, Organization[]] = await Organization.update(
-        incomingData, 
-        { 
-            where: {
-                id: organizationId
-            },
-            returning: true
-        })
+    organizationData.update(incomingData)
         .catch(() => {
             success = false;
-            return [0, []];
+            return null;
         });
     if (!success) {
         return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
-    if (updatedData[0] === 0 || updatedData[1] === []) {
+    if (organizationData === null) {
         return res.send(wrapResponse(true, { info: 'Nothing updated' }));
     }
 
-    return res.send(wrapResponse(true, updatedData[1]));
+    return res.send(wrapResponse(true, organizationData));
 }

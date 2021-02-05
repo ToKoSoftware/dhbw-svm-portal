@@ -9,7 +9,7 @@ export async function updateNews(req: Request, res: Response): Promise<Response>
     const incomingData: RawNewsData = req.body;
     const newsId = req.params.id;
 
-    const newsData: RawNewsData | null = await News.findOne(
+    const newsData: News | null = await News.findOne(
         {
             where: {
                 id: newsId
@@ -38,24 +38,17 @@ export async function updateNews(req: Request, res: Response): Promise<Response>
         return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty'}));
     }
     
-    const updatedData: [number, News[]] = await News.update(
-        incomingData, 
-        { 
-            where: {
-                id: newsId
-            },
-            returning: true
-        })
+    newsData.update(incomingData)
         .catch(() => {
             success = false;
-            return [0, []];
+            return null;
         });
     if (!success) {
         return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
-    if (updatedData[0] === 0 || updatedData[1] === []) {
+    if (newsData === null) {
         return res.send(wrapResponse(true, { info: 'Nothing updated' }));
     }
 
-    return res.send(wrapResponse(true, updatedData[1]));
+    return res.send(wrapResponse(true, newsData));
 }

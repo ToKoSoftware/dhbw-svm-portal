@@ -9,7 +9,7 @@ export async function updatePollAnswer(req: Request, res: Response): Promise<Res
     const incomingData: RawPollAnswerData = req.body;
     const pollAnswerId = req.params.id;
 
-    const pollAnswerData: RawPollAnswerData | null = await PollAnswer.findOne(
+    const pollAnswerData: PollAnswer | null = await PollAnswer.findOne(
         {
             where: {
                 id: pollAnswerId
@@ -31,14 +31,7 @@ export async function updatePollAnswer(req: Request, res: Response): Promise<Res
         return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty'}));
     }
     
-    const updatedData: [number, PollAnswer[]] = await PollAnswer.update(
-        incomingData, 
-        { 
-            where: {
-                id: pollAnswerId
-            },
-            returning: true
-        })
+    pollAnswerData.update(incomingData)
         .catch(() => {
             success = false;
             return [0, []];
@@ -46,9 +39,9 @@ export async function updatePollAnswer(req: Request, res: Response): Promise<Res
     if (!success) {
         return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
-    if (updatedData[0] === 0 || updatedData[1] === []) {
+    if (pollAnswerData === null) {
         return res.send(wrapResponse(true, { info: 'Nothing updated' }));
     }
 
-    return res.send(wrapResponse(true, updatedData[1]));
+    return res.send(wrapResponse(true, pollAnswerData));
 }
