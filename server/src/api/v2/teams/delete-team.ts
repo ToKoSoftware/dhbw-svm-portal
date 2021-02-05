@@ -1,20 +1,45 @@
 import {Request, Response} from 'express';
 import {wrapResponse} from '../../../functions/response-wrapper';
-import {User} from '../../../models/user.model';
 import {Team} from '../../../models/team.model';
 import {Membership} from '../../../models/membership.model';
-import {TeamData} from '../../../interfaces/team.interface';
+import { PollAnswer } from '../../../models/poll-answer.model';
+import { Poll } from '../../../models/poll.model';
 
 export async function deleteTeam(req: Request, res: Response): Promise<Response> {
     let success = true;
     //TODO Authoriaztion check, if teams can get created by no-admins
-    await Team.update(
-        {
-            is_active: false,
-        },
+    await Team.destroy(
         {
             where: {
-                id: req.params.id,
+                id: req.params.id
+            }
+        })
+        .catch(() => {
+            success = false;
+            return null;
+        });
+    if (!success) {
+        return res.status(500).send(wrapResponse(false, {error: 'Could not delete team with id ' + req.params.id}));
+    }
+
+    await Membership.destroy(
+        {
+            where: {
+                id: req.params.id
+            }
+        })
+        .catch(() => {
+            success = false;
+            return null;
+        });
+    if (!success) {
+        return res.status(500).send(wrapResponse(false, {error: 'Could not delete membership with id ' + req.params.id}));
+    }
+
+    const deletePoll = await Poll.findOne(
+        {
+            where: {
+                answer_team_id: req.params.id,
                 is_active: true
             }
         })
@@ -23,53 +48,42 @@ export async function deleteTeam(req: Request, res: Response): Promise<Response>
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, {error: 'Could not deactivate team with id ' + req.params.id}));
+        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+    }
+    if (deletePoll === null) {
+        return res.status(404).send(wrapResponse(false, { error: 'No poll with given id' }));
     }
 
-    // if  Users are members, you can only set Teams to inactive with information about members
-    const count: number = await Membership.count(
+    await deletePoll.update(
         {
-            where: {
-                team_id: req.params.id
-            }
+            is_active: false,
         })
-        .catch(() => {
-            success = false;
-            return 0;
-        });
-    if (!success) {
-        return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
-    }
-
-    //finding the members of the team which is to delete
-    const members: TeamData | null = await Team
-        .findOne(
-            {
-                where: {
-                    id: req.params.id,
-                    is_active: false
-                },
-                include: {model: User.scope('publicData')}
-            })
         .catch(() => {
             success = false;
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
-    }
-    
-    if (count > 0) {
-        if (members !== null) {
-            return res.send(wrapResponse(true, 
-                {
-                    message: 'Event sucessful deactivated. The following persons should be informed',
-                    data: members.users
-                }
-            ));
-        }
+        return res.status(500).send(wrapResponse(false, {error: 'Could not deactivate poll with id ' + req.params.id}));
     }
 
+    await PollAnswer.update(
+        {
+            is_active: false,
+        },
+        {
+            where: {
+                poll_id: deletePoll.id,
+                is_active: true
+            }
+        })
+        .catch(() => {
+            success = false;
+            return null;
+        });
+    if (!success) {
+        return res.status(500).send(wrapResponse(false, {error: 'Could not deactivate pollanswer with id ' + req.params.id}));
+    }
+    
     return res.status(204).send(wrapResponse(true));
     
     

@@ -30,12 +30,7 @@ export async function deleteEventRegistration(req: Request, res: Response): Prom
     }
 
     //Hard delete
-    const destroyedRows = await EventRegistration.destroy( // await evtm_.destroy{}
-        {
-            where: {
-                id: req.params.id
-            }
-        })
+    	await eventRegistrationToDelete.destroy()
         .catch(() => {
             success = false;
             return null;
@@ -43,8 +38,6 @@ export async function deleteEventRegistration(req: Request, res: Response): Prom
     if (!success) {
         return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
     }
-    if (destroyedRows == 0) {
-        return res.status(404).send(wrapResponse(false, {error: 'There is no event-registration to delete with this id'})); //weg
-    }
+    
     return res.status(204).send(wrapResponse(true));
 }
