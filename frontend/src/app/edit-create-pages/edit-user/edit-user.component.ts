@@ -36,7 +36,7 @@ export class EditUserComponent implements OnInit, OnChanges {
 
   private loadUser(): void {
     this.loading = true;
-    this.api.get<UserData>(`/users/${this.userId}`).subscribe(
+    this.api.get<UserData>([`/users/${this.userId}`, 1]).subscribe(
       (data) => {
         this.loading = false;
         this.currentUser = data.data;

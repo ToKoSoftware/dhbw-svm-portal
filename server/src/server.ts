@@ -43,7 +43,13 @@ import {deleteRoleAssignment} from './api/v2/roles/delete-role-assignment';
 import {deletePoll} from './api/v2/polls/delete-poll';
 import {deletePollAnswer} from './api/v2/poll-answer/delete-poll-answer';
 import {deletePollVote} from './api/v2/poll-vote/delete-poll-vote';
-
+import { updateEvent } from './api/v2/events/update-event';
+import { updateNews } from './api/v2/news/update-news';
+import { updatePoll } from './api/v2/polls/update-poll';
+import { updatePollAnswer } from './api/v2/poll-answers/update-poll-answer';
+import { updateTeam } from './api/v2/teams/update-team';
+import { updateRole } from './api/v2/roles/update-role';
+import { updateOrganization } from './api/v2/organizations/update-organization';
 
 
 
@@ -95,7 +101,8 @@ export default function startServer(): void {
     app.post('/api/v2/teams/:id/membership', userIsAuthorized, (req, res) => createMembership(req, res));
     app.delete('/api/v2/teams/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteTeam(req, res));
     app.delete('/api/v2/teams/:team_id/memberships/:id', userIsAuthorized, (req, res) => deleteMembership(req, res));
-    
+    app.put('/api/v2/teams/:id', userIsAuthorized, userIsAdmin, (req, res) => updateTeam(req, res));
+
     /** 
      * News
      */
@@ -103,6 +110,8 @@ export default function startServer(): void {
     app.get('/api/v2/news/:id', userIsAuthorized, (req, res) => getSingleNews(req, res));
     app.post('/api/v2/news', userIsAuthorized, userIsAdmin, (req, res) => createNews(req, res));
     app.delete('/api/v2/news/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteNews(req, res));
+
+    app.put('/api/v2/news/:id', userIsAuthorized, userIsAdmin, (req, res) => updateNews(req, res));
 
     /** 
      * Event
@@ -113,6 +122,8 @@ export default function startServer(): void {
     app.post('/api/v2/events/:id/register', userIsAuthorized, (req, res) => registerForEvent(req, res));
     app.delete('/api/v2/events/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteEvent(req, res));
     app.delete('/api/v2/events/:event_id/eventregistrations/:id', userIsAuthorized, (req, res) => deleteEventRegistration(req, res));
+
+    app.put('/api/v2/events/:id', userIsAuthorized, userIsAdmin, (req, res) => updateEvent(req, res));
 
     /** 
      * Poll
@@ -125,6 +136,14 @@ export default function startServer(): void {
     app.delete('/api/v2/polls/:id', userIsAuthorized, userIsAdmin, (req, res) => deletePoll(req, res));
     app.delete('/api/v2/polls/:pollId/answers/:id', userIsAuthorized, userIsAdmin, (req, res) => deletePollAnswer(req, res));
     app.delete('/api/v2/polls/:pollId/:pollAnswerId/votes/:id', userIsAuthorized, (req, res) => deletePollVote(req, res));
+    app.put('/api/v2/polls/:id', userIsAuthorized, userIsAdmin, (req, res) => updatePoll(req, res));
+
+    /**
+     * PollAnswer
+     */
+    app.post('/api/v2/polls/:id/answers', userIsAuthorized, userIsAdmin, (req, res) => createPollAnswer(req, res));
+    app.post('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res));
+    app.put('/api/v2/pollAnswers/:id', userIsAuthorized, userIsAdmin, (req, res) => updatePollAnswer(req, res));
 
     /** 
      * Role
@@ -135,12 +154,15 @@ export default function startServer(): void {
     app.post('/api/v2/roles/:id/assignment', userIsAuthorized, userIsAdmin, (req, res) => createRoleAssignmnet(req, res));
     app.delete('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteRole(req, res));
     app.delete('/api/v2/roles/:role_id/assignments/:id', userIsAuthorized, userIsAdmin,(req, res) => deleteRoleAssignment(req, res));
+    app.put('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => updateRole(req, res));
     
     /** 
      * Organization
      */
     app.get('/api/v2/organizations', userIsAuthorized, userIsAdmin, (req, res) => getOrganizations(req, res));
     app.get('/api/v2/organizations/:id', userIsAuthorized, (req, res) => getOrganization(req, res));
+    app.put('/api/v2/organizations/:id', userIsAuthorized, userIsAdmin, (req, res) => updateOrganization(req, res));
+    
     /**
      * Admin
      */

@@ -23,5 +23,9 @@ export class OverviewComponent implements OnInit {
       }
     );
   }
+
+  public save(): void {
+    console.log(this.editOrgForm.value)
+  }
 }
 

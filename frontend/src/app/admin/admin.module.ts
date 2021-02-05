@@ -17,6 +17,7 @@ import { TeamsComponent } from './teams/teams.component';
 import {EditCreatePagesModule} from "../edit-create-pages/edit-create-pages.module";
 import { PollsComponent } from './polls/polls.component';
 import { StatsComponent } from './stats/stats.component';
+import { NewsComponent } from './news/news.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { StatsComponent } from './stats/stats.component';
     RolesComponent,
     TeamsComponent,
     PollsComponent,
-    StatsComponent
+    StatsComponent,
+    NewsComponent
   ],
   imports: [
     adminRoutes,

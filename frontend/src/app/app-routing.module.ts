@@ -35,6 +35,12 @@ const routes: Routes = [
     loadChildren: () => import('./login-register/login-register.module').then(m => m.LoginRegisterModule)
   },
   {
+    path: 'polls',
+    canActivate: [IsLoggedInGuard],
+    canActivateChild: [IsLoggedInGuard],
+    loadChildren: () => import('./polls/polls.module').then(m => m.PollsModule)
+  },
+  {
     path: 'my-team',
     canActivate: [IsLoggedInGuard, IsAdminGuard],
     canActivateChild: [IsLoggedInGuard, IsAdminGuard],

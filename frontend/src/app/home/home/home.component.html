@@ -1,15 +1,9 @@
 <app-scroll>
-  <app-container [center]="true">
-    <div class="mt-5"></div>
-    <app-news></app-news>
-    <app-news></app-news>
-    <app-news></app-news>
-    <app-news></app-news>
-    <app-news></app-news>
-    <app-news></app-news>
-    <app-news></app-news>
-    <app-news></app-news>
-    <app-news></app-news>
-    <app-news></app-news>
+  <app-container [center]="true" class="bg-gray-100 dark:bg-gray-800">
+    <div *ngIf="(news.data$ | async) !== null">
+      <div class="mt-5"></div>
+      <app-news *ngFor="let news of (news.data$ | async)" [news]="news"></app-news>
+    </div>
+    <app-loading *ngIf="(news.data$ | async) === null"></app-loading>
   </app-container>
 </app-scroll>

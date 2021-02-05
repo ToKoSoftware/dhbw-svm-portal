@@ -28,7 +28,10 @@
   <i class="-ml-1 pt-1 text-sm"
      [class.mr-0]="label"
      *ngIf="icon !== null">
-    <i-feather [style.height]="'1.25rem'" [style.width]="'1.25rem'" [name]="icon"></i-feather>
+    <i-feather
+      [style.height]="size === 'small' ? '0.9rem': '1.25rem'"
+      [style.width]="size === 'small' ? '0.9rem': '1.25rem'"
+      [name]="icon"></i-feather>
   </i>
   <span>
   {{label}}
