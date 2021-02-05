@@ -7,7 +7,6 @@ export interface RoleDataSnapshot{
     id?: string;
     title: string;
     user_deletable: boolean
-    is_active?: boolean;
 }
 
 export interface RawRoleData extends RoleDataSnapshot{
