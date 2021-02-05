@@ -30,7 +30,7 @@ export async function deleteEventRegistration(req: Request, res: Response): Prom
     }
 
     //Hard delete
-    	await eventRegistrationToDelete.destroy()
+    await eventRegistrationToDelete.destroy()
         .catch(() => {
             success = false;
             return null;
