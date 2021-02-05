@@ -58,15 +58,13 @@ export async function deleteRole(req: Request, res: Response): Promise<Response>
         return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
     }
     
-    if (count > 0) {
-        if (assignments !== null) {
-            return res.send(wrapResponse(true, 
-                {
-                    message: 'Role sucessful deactivated. The following persons should be informed',
-                    data: assignments.users
-                }
-            ));
-        }
+    if (count > 0 && assignments !== null ) {
+        return res.send(wrapResponse(true, 
+            {
+                message: 'Role sucessful deactivated. The following persons should be informed',
+                data: assignments.users
+            }
+        ));
     }
 
     return res.status(204).send(wrapResponse(true));

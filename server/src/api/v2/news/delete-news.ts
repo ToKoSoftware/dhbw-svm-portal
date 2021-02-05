@@ -31,15 +31,9 @@ export async function deleteNews(req: Request, res: Response): Promise<Response>
         return res.status(403).send(wrapResponse(false, {error: 'Unauthorized!'}));
     }
  
-    await News.update(
+    await newsToDelete.update(
         {
             is_active: false,
-        },
-        {
-            where: {
-                id: req.params.id,
-                is_active: true
-            }
         })
         .catch(() => {
             success = false;
