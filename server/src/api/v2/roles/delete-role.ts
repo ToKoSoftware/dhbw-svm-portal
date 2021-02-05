@@ -62,7 +62,7 @@ export async function deleteRole(req: Request, res: Response): Promise<Response>
         if (assignments !== null) {
             return res.send(wrapResponse(true, 
                 {
-                    message: 'Event sucessful deactivated. The following persons should be informed',
+                    message: 'Role sucessful deactivated. The following persons should be informed',
                     data: assignments.users
                 }
             ));

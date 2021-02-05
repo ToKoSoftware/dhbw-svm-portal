@@ -9,7 +9,7 @@ export async function deleteNews(req: Request, res: Response): Promise<Response>
     
     //TODO check necessary?
     //check if currentUser is admin oder author of news
-    const news_to_delete = await News.findOne({
+    const newsToDelete = await News.findOne({
         where: {
             id: req.params.id,
             is_active: true
@@ -25,13 +25,13 @@ export async function deleteNews(req: Request, res: Response): Promise<Response>
         return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
 
-    if (news_to_delete === null) {
+    if (newsToDelete === null) {
         return res.status(404).send(wrapResponse(false, { error: 'No active News with given id' }));
     }
 
-    if(news_to_delete !== null) {
-        if (news_to_delete.author_id !== null) {
-            if (!currentUserIsAdminOrMatchesId(news_to_delete.author_id)) {
+    if(newsToDelete !== null) {
+        if (newsToDelete.author_id !== null) {
+            if (!currentUserIsAdminOrMatchesId(newsToDelete.author_id)) {
                 if (!Vars.currentUser.is_admin) {
                     return res.status(403).send(wrapResponse(false, {error: 'Unauthorized!'}));
                 }

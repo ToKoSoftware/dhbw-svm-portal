@@ -8,7 +8,7 @@ export async function deleteEventRegistration(req: Request, res: Response): Prom
     let success = true;
     
     //check if currentUser is admin oder registeredUser
-    const eventRegistration_to_delete = await EventRegistration.findOne({
+    const eventRegistrationToDelete = await EventRegistration.findOne({
         where: {
             id: req.params.id
         }
@@ -23,22 +23,14 @@ export async function deleteEventRegistration(req: Request, res: Response): Prom
         return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
 
-    if (eventRegistration_to_delete === null) {
+    if (eventRegistrationToDelete === null) {
         return res.status(404).send(wrapResponse(false, { error: 'No event-registration with given id' }));
+    } else if (eventRegistrationToDelete.user_id !== null && !currentUserIsAdminOrMatchesId(eventRegistrationToDelete.user_id)  && !Vars.currentUser.is_admin) { //elseif (zeile 31,32,33)
+        return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));
     }
 
-    if(eventRegistration_to_delete !== null) {
-        if (eventRegistration_to_delete.user_id !== null) {
-            if (!currentUserIsAdminOrMatchesId(eventRegistration_to_delete.user_id)) {
-                if (!Vars.currentUser.is_admin) {
-                    return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));
-                }
-            }
-        }
-    }
-
-    //Harddelete
-    const destroyedRows = await EventRegistration.destroy(
+    //Hard delete
+    const destroyedRows = await EventRegistration.destroy( // await evtm_.destroy{}
         {
             where: {
                 id: req.params.id
@@ -52,7 +44,7 @@ export async function deleteEventRegistration(req: Request, res: Response): Prom
         return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
     }
     if (destroyedRows == 0) {
-        return res.status(404).send(wrapResponse(false, {error: 'There is no event-registration to delete with this id'}));
+        return res.status(404).send(wrapResponse(false, {error: 'There is no event-registration to delete with this id'})); //weg
     }
     return res.status(204).send(wrapResponse(true));
 }

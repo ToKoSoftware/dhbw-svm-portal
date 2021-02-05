@@ -8,7 +8,7 @@ export async function deletePollVote(req: Request, res: Response): Promise<Respo
     let success = true;
     
     //check if currentUser is admin oder voted User
-    const pollVote_to_delete = await PollVote.findOne({
+    const pollVoteToDelete = await PollVote.findOne({
         where: {
             id: req.params.id
         }
@@ -23,13 +23,13 @@ export async function deletePollVote(req: Request, res: Response): Promise<Respo
         return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
 
-    if (pollVote_to_delete === null) {
+    if (pollVoteToDelete === null) {
         return res.status(404).send(wrapResponse(false, { error: 'No poll-vote with given id' }));
     }
 
-    if(pollVote_to_delete !== null) {
-        if (pollVote_to_delete.user_id !== null) {
-            if (!currentUserIsAdminOrMatchesId(pollVote_to_delete.user_id)) {
+    if(pollVoteToDelete !== null) {
+        if (pollVoteToDelete.user_id !== null) {
+            if (!currentUserIsAdminOrMatchesId(pollVoteToDelete.user_id)) {
                 if (!Vars.currentUser.is_admin) {
                     return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));
                 }
