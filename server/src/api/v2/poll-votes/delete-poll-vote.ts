@@ -25,19 +25,11 @@ export async function deletePollVote(req: Request, res: Response): Promise<Respo
 
     if (pollVoteToDelete === null) {
         return res.status(404).send(wrapResponse(false, { error: 'No poll-vote with given id' }));
+    } else if (pollVoteToDelete.user_id !== null && !currentUserIsAdminOrMatchesId(pollVoteToDelete.user_id) && !Vars.currentUser.is_admin ){
+        return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));
     }
-
-    if(pollVoteToDelete !== null) {
-        if (pollVoteToDelete.user_id !== null) {
-            if (!currentUserIsAdminOrMatchesId(pollVoteToDelete.user_id)) {
-                if (!Vars.currentUser.is_admin) {
-                    return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));
-                }
-            }
-        }
-    }
-
-    //Harddelete
+           
+    //Hard delete
     const destroyedRows = await PollVote.destroy(
         {
             where: {

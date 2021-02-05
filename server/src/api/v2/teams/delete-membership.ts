@@ -25,19 +25,12 @@ export async function deleteMembership(req: Request, res: Response): Promise<Res
 
     if (memberhsipToDelete === null) {
         return res.status(404).send(wrapResponse(false, { error: 'No membership with given id' }));
+    } else if (memberhsipToDelete.user_id !== null && !currentUserIsAdminOrMatchesId(memberhsipToDelete.user_id) && !Vars.currentUser.is_admin ){
+        return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));
     }
+    
 
-    if(memberhsipToDelete !== null) {
-        if (memberhsipToDelete.user_id !== null) {
-            if (!currentUserIsAdminOrMatchesId(memberhsipToDelete.user_id)) {
-                if (!Vars.currentUser.is_admin) {
-                    return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));
-                }
-            }
-        }
-    }
-
-    //Harddelete
+    //Hard delete
     const destroyedRows = await Membership.destroy(
         {
             where: {
