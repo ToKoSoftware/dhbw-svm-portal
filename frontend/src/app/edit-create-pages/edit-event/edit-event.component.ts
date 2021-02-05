@@ -71,6 +71,7 @@ export class EditEventComponent implements OnInit, OnChanges {
     let eventData = {
       ...this.current,
       ...this.editEventForm.value,
+      is_active: true
     };
     eventData = setEmptyInputToNull(eventData);
     this.events.update(eventData).subscribe(

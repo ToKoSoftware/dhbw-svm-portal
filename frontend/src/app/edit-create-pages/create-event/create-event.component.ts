@@ -43,6 +43,7 @@ export class CreateEventComponent implements OnInit {
     }
     let eventData = {
       ...this.formGroup.value,
+      is_active: true
     };
     eventData = setEmptyInputToNull(eventData);
     this.events.create(eventData).subscribe(

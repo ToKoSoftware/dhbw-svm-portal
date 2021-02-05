@@ -50,7 +50,7 @@ export class EditNewsComponent implements OnInit, OnChanges {
       );
   }
 
-  public create(): void {
+  public update(): void {
     if (this.formGroup.dirty && !this.formGroup.valid) {
       return;
     }
