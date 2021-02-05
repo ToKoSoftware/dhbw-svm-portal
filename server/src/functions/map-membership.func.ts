@@ -1,4 +1,4 @@
-import { MembershipDataSnapshot, RawMembershipData } from '../interfaces/membership.interface';
+import { RawMembershipData } from '../interfaces/membership.interface';
 
 export function mapMembership(incomingData: RawMembershipData, team_id: string): RawMembershipData {
     return {
