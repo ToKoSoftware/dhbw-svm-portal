@@ -24,6 +24,10 @@ export function verifyToken(res: Response, token: string, next: NextFunction): v
             if (user === null) {
                 return res.status(403).send(wrapResponse(false, {error: 'Unauthorized!'}));
             }
+
+            
+
+            Vars.currentUserIsAdmin = ;
             Vars.currentUser = user;
             Vars.currentOrganization = user.organization;
             next();
