@@ -37,7 +37,7 @@ export async function deleteEventRegistration(req: Request, res: Response): Prom
         }
     }
 
-    //Harddelete
+    // Hard delete
     const destroyedRows = await EventRegistration.destroy(
         {
             where: {
