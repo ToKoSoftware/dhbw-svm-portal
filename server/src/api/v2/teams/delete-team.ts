@@ -4,9 +4,13 @@ import { Team } from '../../../models/team.model';
 import { Membership } from '../../../models/membership.model';
 import { PollAnswer } from '../../../models/poll-answer.model';
 import { Poll } from '../../../models/poll.model';
+//import { Transaction } from 'sequelize';
+//import { Vars } from '../../../vars';
 
 export async function deleteTeam(req: Request, res: Response): Promise<Response> {
     let success = true;
+    // const transaction = new Transaction(Vars.db, {});
+    // try {
     await Team.destroy(
         {
             where: {
@@ -24,7 +28,7 @@ export async function deleteTeam(req: Request, res: Response): Promise<Response>
     await Membership.destroy(
         {
             where: {
-                id: req.params.id
+                team_id: req.params.id
             }
         })
         .catch(() => {
@@ -83,6 +87,10 @@ export async function deleteTeam(req: Request, res: Response): Promise<Response>
     if (!success) {
         return res.status(500).send(wrapResponse(false, { error: 'Could not deactivate pollanswers belonging to team with id ' + req.params.id }));
     }
-
+    // await transaction.commit();
     return res.status(204).send(wrapResponse(true));
+    //} catch (error) {
+    // await transaction.rollback();
+    // return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+    //}
 }
