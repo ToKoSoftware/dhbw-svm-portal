@@ -37,9 +37,9 @@ export class UsersService extends DataService<UserData> implements DataServiceFu
       }));
   }
 
-  update(UserData: CreateAndUpdateData<UserData>): Observable<UserData> {
+  update(updateDate: CreateAndUpdateData<UserData>): Observable<UserData> {
     this.reloadData();
-    return this.api.put<UserData>([`/users/${UserData.id}`, 1])
+    return this.api.put<UserData>([`/users/${updateDate.id}`, 1], updateDate)
       .pipe(map(res => {
         return res.data;
       }));

@@ -1,6 +1,7 @@
 import {OrganizationData} from './organization.interface';
 
 export interface UserData {
+  birthday: string;
   id: string;
   email: string;
   username: string;
