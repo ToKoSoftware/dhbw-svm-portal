@@ -19,9 +19,9 @@ export class RolesService extends DataService<RoleData> implements DataServiceFu
   }
 
   create(RoleData: CreateAndUpdateData<RoleData>): Observable<RoleData> {
-    this.reloadData();
     return this.api.post<RoleData>('/roles', RoleData)
       .pipe(map(res => {
+        this.reloadData();
         return res.data;
       }));
   }

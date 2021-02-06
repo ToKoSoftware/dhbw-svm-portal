@@ -19,9 +19,9 @@ export class OrganizationsService extends DataService<OrganizationData> implemen
   }
 
   create(OrganizationData: CreateAndUpdateData<OrganizationData>): Observable<OrganizationData> {
-    this.reloadData();
     return this.api.post<OrganizationData>('/organizations', OrganizationData)
       .pipe(map(res => {
+        this.reloadData();
         return res.data;
       }));
   }

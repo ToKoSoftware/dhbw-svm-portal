@@ -19,9 +19,9 @@ export class UsersService extends DataService<UserData> implements DataServiceFu
   }
 
   create(UserData: CreateAndUpdateData<UserData>): Observable<UserData> {
-    this.reloadData();
     return this.api.post<UserData>(['/users', 1], UserData)
       .pipe(map(res => {
+        this.reloadData();
         return res.data;
       }));
   }

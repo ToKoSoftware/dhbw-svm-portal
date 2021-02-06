@@ -19,9 +19,9 @@ export class TeamService extends DataService<TeamData> implements DataServiceFun
   }
 
   create(teamData: CreateAndUpdateData<TeamData>): Observable<TeamData> {
-    this.reloadData();
-    return this.api.get<TeamData>(`/teams/${teamData.id}`)
+    return this.api.post<TeamData>(`/teams/`, teamData)
       .pipe(map(res => {
+        this.reloadData();
         return res.data;
       }));
   }

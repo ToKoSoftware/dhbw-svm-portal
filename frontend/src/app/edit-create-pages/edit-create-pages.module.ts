@@ -14,6 +14,8 @@ import {CreateRoleComponent} from './create-role/create-role.component';
 import {MomentModule} from 'ngx-moment';
 import {IconsModule} from '../icons/icons.module';
 import { EditCreatePollAnswerComponent } from './edit-poll/edit-create-poll-answer/edit-create-poll-answer.component';
+import { CreateTeamComponent } from './create-team/create-team.component';
+import { EditTeamComponent } from './edit-team/edit-team.component';
 
 @NgModule({
   declarations: [
@@ -27,8 +29,10 @@ import { EditCreatePollAnswerComponent } from './edit-poll/edit-create-poll-answ
     EditRoleComponent,
     CreateRoleComponent,
     EditCreatePollAnswerComponent,
+    CreateTeamComponent,
+    EditTeamComponent,
   ],
-  exports: [EditUserComponent, EditEventComponent, CreateNewsComponent, EditNewsComponent, EditPollComponent, CreatePollComponent, CreateEventComponent, CreateRoleComponent, EditRoleComponent],
+  exports: [EditUserComponent, EditEventComponent, CreateNewsComponent, EditNewsComponent, EditPollComponent, CreatePollComponent, CreateEventComponent, CreateRoleComponent, EditRoleComponent, EditTeamComponent, CreateTeamComponent],
   imports: [
     CommonModule,
     FormsModule,

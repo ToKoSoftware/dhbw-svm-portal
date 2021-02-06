@@ -32,7 +32,6 @@ export class EventsComponent implements OnInit {
   public editSlide(event: EventData) {
     this.current = event.id || '';
     this.slideOver.showSlideOver('', this.edit);
-
   }
 
   ngOnDestroy() {
