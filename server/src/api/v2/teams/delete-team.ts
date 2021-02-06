@@ -1,13 +1,12 @@
-import {Request, Response} from 'express';
-import {wrapResponse} from '../../../functions/response-wrapper';
-import {Team} from '../../../models/team.model';
-import {Membership} from '../../../models/membership.model';
+import { Request, Response } from 'express';
+import { wrapResponse } from '../../../functions/response-wrapper';
+import { Team } from '../../../models/team.model';
+import { Membership } from '../../../models/membership.model';
 import { PollAnswer } from '../../../models/poll-answer.model';
 import { Poll } from '../../../models/poll.model';
 
 export async function deleteTeam(req: Request, res: Response): Promise<Response> {
     let success = true;
-    //TODO Authoriaztion check, if teams can get created by no-admins
     await Team.destroy(
         {
             where: {
@@ -19,7 +18,7 @@ export async function deleteTeam(req: Request, res: Response): Promise<Response>
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, {error: 'Could not delete team with id ' + req.params.id}));
+        return res.status(500).send(wrapResponse(false, { error: 'Could not delete team with id ' + req.params.id }));
     }
 
     await Membership.destroy(
@@ -33,11 +32,10 @@ export async function deleteTeam(req: Request, res: Response): Promise<Response>
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, {error: 'Could not delete membership with id ' + req.params.id}));
+        return res.status(500).send(wrapResponse(false, { error: 'Could not delete membership with id ' + req.params.id }));
     }
 
-    // TODO Dominik : findAll!
-    const deletePoll = await Poll.findOne(
+    const deletePoll: Poll[] = await Poll.findAll(
         {
             where: {
                 answer_team_id: req.params.id,
@@ -46,25 +44,26 @@ export async function deleteTeam(req: Request, res: Response): Promise<Response>
         })
         .catch(() => {
             success = false;
-            return null;
+            return [];
         });
     if (!success) {
         return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
-    if (deletePoll === null) {
+    if (deletePoll === []) {
         return res.status(404).send(wrapResponse(false, { error: 'No poll with given id' }));
     }
 
-    await deletePoll.update(
+    deletePoll.forEach(async el => await el.update(
         {
             is_active: false,
         })
         .catch(() => {
             success = false;
             return null;
-        });
+        })
+    );
     if (!success) {
-        return res.status(500).send(wrapResponse(false, {error: 'Could not deactivate poll with id ' + req.params.id}));
+        return res.status(500).send(wrapResponse(false, { error: 'Could not deactivate polls belonging to team with id ' + req.params.id }));
     }
 
     await PollAnswer.update(
@@ -73,7 +72,7 @@ export async function deleteTeam(req: Request, res: Response): Promise<Response>
         },
         {
             where: {
-                poll_id: deletePoll.id,
+                poll_id: deletePoll.map(t => t.id),
                 is_active: true
             }
         })
@@ -82,10 +81,8 @@ export async function deleteTeam(req: Request, res: Response): Promise<Response>
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, {error: 'Could not deactivate pollanswer with id ' + req.params.id}));
+        return res.status(500).send(wrapResponse(false, { error: 'Could not deactivate pollanswers belonging to team with id ' + req.params.id }));
     }
-    
+
     return res.status(204).send(wrapResponse(true));
-    
-    
 }
