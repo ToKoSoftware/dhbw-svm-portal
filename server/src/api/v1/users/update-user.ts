@@ -12,7 +12,6 @@ import { Op } from 'sequelize';
 
 export async function updateUser(req: Request, res: Response): Promise<Response> {
     let success = true;
-    let updateResult: [number, User[]] | null;
     const incomingData: RawUserData = req.body;
     const mappedIncomingData: RawUserData = await mapUser(incomingData);
 
@@ -20,14 +19,15 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
 
     const validEmail = EmailValidator.validate(mappedIncomingData.email) || isBlank(mappedIncomingData.email);
 
-    const validBirthday = mappedIncomingData.birthday instanceof Date || isBlank(mappedIncomingData.email);
+    const validBirthday = mappedIncomingData.birthday instanceof Date || isBlank(mappedIncomingData.birthday);
     if (!validBirthday) {
         return res.status(400).send(wrapResponse(false, { error: 'Birthday is not valid' }));
     }
 
-    const validPassword = incomingData.password.length >= 6 || isBlank(mappedIncomingData.password);
-    if (!validPassword) {
-        return res.status(400).send(wrapResponse(false, { error: 'Password not valid! It must contain at least 6 characters!' }));
+    if (mappedIncomingData.password !== undefined) {
+        if (mappedIncomingData.password.length <= 5) {
+            return res.status(400).send(wrapResponse(false, { error: 'Password not valid! It must contain at least 6 characters!' }));
+        }   
     }
 
     if (isBlank(req.body) || req.params.id === null) {
@@ -38,12 +38,7 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
         return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));
     }
 
-    const user: User | null = await User.findOne(
-        {
-            where: {
-                id: req.params.id
-            }
-        })
+    const user: User | null = await User.findByPk(req.params.id)
         .catch(() => {
             success = false;
             return null;
@@ -105,13 +100,7 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
             }
         }
 
-        updateResult = await User.update(mappedIncomingData,
-            { 
-                where: {
-                    id: req.params.id
-                },
-                returning: true,
-            })
+        user.update(mappedIncomingData)
             .catch(() => {
                 success = false;
                 return null;
@@ -119,7 +108,7 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
         if (!success) {
             return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
         }
-        if (updateResult === null || updateResult[0] == 0) {
+        if (user === null) {
             return res.send(wrapResponse(true, {info: 'No user updated'}));
         }
 
@@ -142,23 +131,7 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
         return res.status(400).send(wrapResponse(false));
     } 
 
-    const returnedUser = await User.findOne(
-        {
-            where: {
-                id: req.params.id
-            }
-        })
-        .catch(() => {
-            success = false;
-            return null;
-        });
- 
-    if (!success || returnedUser === null) {
-        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
-    }
+    const token = jwtSign(user);
 
-    const token = jwtSign(returnedUser);
-
-    return res.send(wrapResponse(true, {user: returnedUser, jwt: token}));
-
+    return res.send(wrapResponse(true, {user: user, jwt: token}));
 }
