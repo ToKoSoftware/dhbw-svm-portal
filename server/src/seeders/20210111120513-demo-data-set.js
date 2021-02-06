@@ -25,7 +25,6 @@ module.exports = {
             id: role_id_svm_admin,
             title: 'Alle Administratoren',
             user_deletable: false,
-            is_active: true,
             org_id: org_id_svm,
             createdAt: date,
             updatedAt: date
@@ -35,7 +34,6 @@ module.exports = {
         const teams = [{
             id: team_id_svm_outdoor,
             title: 'SVM Outdoor',
-            is_active: true,
             org_id: org_id_svm,
             maintain_role_id: role_id_svm_admin,
             createdAt: date,
