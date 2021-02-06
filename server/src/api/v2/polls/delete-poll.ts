@@ -5,7 +5,6 @@ import { PollAnswer } from '../../../models/poll-answer.model';
 
 export async function deletePoll(req: Request, res: Response): Promise<Response> {
     let success = true;
-    //TODO Authoriaztion check, if polls can get created by no-admins
     const pollId: string = req.params.id;
 
     const pollData: Poll | null = await Poll.scope('active').findByPk(pollId)
