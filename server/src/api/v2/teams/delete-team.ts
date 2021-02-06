@@ -36,6 +36,7 @@ export async function deleteTeam(req: Request, res: Response): Promise<Response>
         return res.status(500).send(wrapResponse(false, {error: 'Could not delete membership with id ' + req.params.id}));
     }
 
+    // TODO Dominik : findAll!
     const deletePoll = await Poll.findOne(
         {
             where: {

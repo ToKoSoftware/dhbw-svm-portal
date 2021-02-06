@@ -11,17 +11,13 @@ export async function createMembership(req: Request, res: Response): Promise<Res
     let success = true;
     const incomingData: RawMembershipData = req.body;
     const mappedIncomingData: RawMembershipData = mapMembership(incomingData, req.params.id);
-    
+
     const requiredFields = Membership.requiredFields();
     if (!objectHasRequiredAndNotEmptyKeys(mappedIncomingData, requiredFields)) {
         return res.status(400).send(wrapResponse(false, { error: 'Not all required fields have been set' }));
     }
- 
-    const team = await Team.findOne({
-        where: {
-            id: mappedIncomingData.team_id
-        }
-    })
+
+    const team = await Team.findByPk(mappedIncomingData.team_id)
         .catch(() => {
             success = false;
             return null;
@@ -32,9 +28,9 @@ export async function createMembership(req: Request, res: Response): Promise<Res
     if (team === null) {
         return res.status(404).send(wrapResponse(false, { error: 'No Team with given id' }));
     }
-   
+
     const role_ids: string[] = Vars.currentUser.assigned_roles.map(t => t.id);
-    if (!role_ids.includes(team.maintain_role_id)){
+    if (!role_ids.includes(team.maintain_role_id)) {
         return res.status(401).send(wrapResponse(false, { error: 'Unauthorized! You are not maintainer of this team.' }));
     }
 

@@ -9,12 +9,7 @@ export async function updateEvent(req: Request, res: Response): Promise<Response
     const incomingData: RawEventData = req.body;
     const eventId = req.params.id;
 
-    const eventData: Event | null = await Event.findOne(
-        {
-            where: {
-                id: eventId
-            }
-        })
+    const eventData: Event | null = await Event.findByPk(eventId)
         .catch(() => {
             success = false;
             return null;
@@ -35,9 +30,9 @@ export async function updateEvent(req: Request, res: Response): Promise<Response
 
     const requiredFields = Event.requiredFields();
     if (!checkKeysAreNotEmptyOrNotSet(incomingData, requiredFields)) {
-        return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty'}));
+        return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty' }));
     }
-    
+
     eventData.update(incomingData)
         .catch(() => {
             success = false;

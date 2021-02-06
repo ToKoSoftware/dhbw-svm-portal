@@ -9,12 +9,7 @@ export async function updatePollAnswer(req: Request, res: Response): Promise<Res
     const incomingData: RawPollAnswerData = req.body;
     const pollAnswerId = req.params.id;
 
-    const pollAnswerData: PollAnswer | null = await PollAnswer.findOne(
-        {
-            where: {
-                id: pollAnswerId
-            }
-        })
+    const pollAnswerData: PollAnswer | null = await PollAnswer.findByPk(pollAnswerId)
         .catch(() => {
             success = false;
             return null;
@@ -28,9 +23,9 @@ export async function updatePollAnswer(req: Request, res: Response): Promise<Res
 
     const requiredFields = PollAnswer.requiredFields();
     if (!checkKeysAreNotEmptyOrNotSet(incomingData, requiredFields)) {
-        return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty'}));
+        return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty' }));
     }
-    
+
     pollAnswerData.update(incomingData)
         .catch(() => {
             success = false;

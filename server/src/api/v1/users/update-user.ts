@@ -1,13 +1,13 @@
-import {Request, Response} from 'express';
+import { Request, Response } from 'express';
 import isBlank from 'is-blank';
-import {checkKeysAreNotEmptyOrNotSet} from '../../../functions/check-inputs.func';
-import {mapUser} from '../../../functions/map-users.func';
-import {wrapResponse} from '../../../functions/response-wrapper';
-import {RawUserData} from '../../../interfaces/users.interface';
-import {User} from '../../../models/user.model';
+import { checkKeysAreNotEmptyOrNotSet } from '../../../functions/check-inputs.func';
+import { mapUser } from '../../../functions/map-users.func';
+import { wrapResponse } from '../../../functions/response-wrapper';
+import { RawUserData } from '../../../interfaces/users.interface';
+import { User } from '../../../models/user.model';
 import * as EmailValidator from 'email-validator';
-import {currentUserIsAdminOrMatchesId} from '../../../functions/current-user-is-admin-or-matches-id.func';
-import {jwtSign} from '../../../functions/jwt-sign.func';
+import { currentUserIsAdminOrMatchesId } from '../../../functions/current-user-is-admin-or-matches-id.func';
+import { jwtSign } from '../../../functions/jwt-sign.func';
 import { Op } from 'sequelize';
 
 export async function updateUser(req: Request, res: Response): Promise<Response> {
@@ -27,11 +27,11 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
     if (mappedIncomingData.password !== undefined) {
         if (mappedIncomingData.password.length <= 5) {
             return res.status(400).send(wrapResponse(false, { error: 'Password not valid! It must contain at least 6 characters!' }));
-        }   
+        }
     }
 
     if (isBlank(req.body) || req.params.id === null) {
-        return res.status(400).send(wrapResponse(false, {error: 'No body or valid param set.'}));
+        return res.status(400).send(wrapResponse(false, { error: 'No body or valid param set.' }));
     }
 
     if (!currentUserIsAdminOrMatchesId(req.params.id)) {
@@ -44,7 +44,7 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
+        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
 
     //User object from database must not be null, id must not be changed and all set keys must not be empty.
@@ -57,7 +57,7 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
     ) {
 
         //email should be changed: check if already in use
-        if(user.email !== mappedIncomingData.email && mappedIncomingData.email !== undefined){
+        if (user.email !== mappedIncomingData.email && mappedIncomingData.email !== undefined) {
             const emailInUseCount = await User.count({
                 where: {
                     id: {
@@ -71,15 +71,15 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
                     return 0;
                 });
             if (!success) {
-                return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
+                return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
             }
-            if(emailInUseCount > 0){
-                return res.status(400).send(wrapResponse(false, {error: 'E-Mail already in use'}));
+            if (emailInUseCount > 0) {
+                return res.status(400).send(wrapResponse(false, { error: 'E-Mail already in use' }));
             }
         }
 
         //username should be changed: check if already in use
-        if(user.username !== mappedIncomingData.username && mappedIncomingData.username !== undefined){
+        if (user.username !== mappedIncomingData.username && mappedIncomingData.username !== undefined) {
             const usernameInUseCount = await User.count({
                 where: {
                     id: {
@@ -93,10 +93,10 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
                     return 0;
                 });
             if (!success) {
-                return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
+                return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
             }
-            if(usernameInUseCount > 0){
-                return res.status(400).send(wrapResponse(false, {error: 'Username already in use'}));
+            if (usernameInUseCount > 0) {
+                return res.status(400).send(wrapResponse(false, { error: 'Username already in use' }));
             }
         }
 
@@ -106,32 +106,32 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
                 return null;
             });
         if (!success) {
-            return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
+            return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
         }
         if (user === null) {
-            return res.send(wrapResponse(true, {info: 'No user updated'}));
+            return res.send(wrapResponse(true, { info: 'No user updated' }));
         }
 
     } else if (user === null) {
-        return res.status(404).send(wrapResponse(false, {error: 'No user with given id found'}));
+        return res.status(404).send(wrapResponse(false, { error: 'No user with given id found' }));
 
     } else if (checkKeysAreNotEmptyOrNotSet(mappedIncomingData, requiredFields) === false) {
-        return res.status(400).send(wrapResponse(false, {error: 'Fields must not be empty'}));
+        return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty' }));
 
     } else if (!(req.body.id === undefined || req.params.id === req.body.id)) {
-        return res.status(400).send(wrapResponse(false, {error: 'ID must not be changed'}));
+        return res.status(400).send(wrapResponse(false, { error: 'ID must not be changed' }));
 
     } else if (validEmail === false) {
-        return res.status(400).send(wrapResponse(false, {error: 'E-mail is not valid'}));
+        return res.status(400).send(wrapResponse(false, { error: 'E-mail is not valid' }));
 
     } else if (req.body.is_admin !== undefined) {
-        return res.status(400).send(wrapResponse(false, {error: 'is_admin can not be changed'}));
+        return res.status(400).send(wrapResponse(false, { error: 'is_admin can not be changed' }));
 
     } else {
         return res.status(400).send(wrapResponse(false));
-    } 
+    }
 
     const token = jwtSign(user);
 
-    return res.send(wrapResponse(true, {user: user, jwt: token}));
+    return res.send(wrapResponse(true, { user: user, jwt: token }));
 }

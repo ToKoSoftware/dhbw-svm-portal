@@ -9,12 +9,7 @@ export async function updateNews(req: Request, res: Response): Promise<Response>
     const incomingData: RawNewsData = req.body;
     const newsId = req.params.id;
 
-    const newsData: News | null = await News.findOne(
-        {
-            where: {
-                id: newsId
-            }
-        })
+    const newsData: News | null = await News.findByPk(newsId)
         .catch(() => {
             success = false;
             return null;
@@ -35,9 +30,9 @@ export async function updateNews(req: Request, res: Response): Promise<Response>
 
     const requiredFields = News.requiredFields();
     if (!checkKeysAreNotEmptyOrNotSet(incomingData, requiredFields)) {
-        return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty'}));
+        return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty' }));
     }
-    
+
     newsData.update(incomingData)
         .catch(() => {
             success = false;
