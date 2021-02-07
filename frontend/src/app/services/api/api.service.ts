@@ -78,21 +78,17 @@ export class ApiService {
 
   public delete<Data = boolean>(
     path: string | [string, number],
-    queryParams?: { [key: string]: string | string[] | null | undefined },
+    body?: { [key: string]: string | string[] | number | null | undefined },
   ): Observable<ApiResponse<Data>> {
-    const params = queryParams == null ?
-      undefined : new HttpParams({
-        fromObject: removeBlank(queryParams) as { [key: string]: string | string[] }
-      });
-
     const jwt = ApiService.getJwt();
-    return this.http.delete(ApiService.getPath(path), {
+    const options = {
       headers: {
         Authorization: jwt == null ? '' : `Bearer ${jwt}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
       },
-      params,
-    }) as Observable<ApiResponse<Data>>;
+      body,
+    };
+    return this.http.delete(ApiService.getPath(path), options) as Observable<ApiResponse<Data>>;
   }
 
 }
