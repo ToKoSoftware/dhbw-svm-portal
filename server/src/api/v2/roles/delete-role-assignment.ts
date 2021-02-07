@@ -9,7 +9,6 @@ export async function deleteRoleAssignment(req: Request, res: Response): Promise
     let success = true;
     const incomingData: RawRoleAssignmentData = req.body;
     const mappedIncomingData: RawRoleAssignmentData = mapRoleAssignment(incomingData, req.params.id);
-    console.log(incomingData, mappedIncomingData, incomingData, req.params);
     const requiredFields = RoleAssignment.requiredFields();
     if (!objectHasRequiredAndNotEmptyKeys(mappedIncomingData, requiredFields)) {
         return res.status(400).send(wrapResponse(false, {error: 'Not all required fields have been set'}));

@@ -3,6 +3,7 @@ import {CreateAndUpdateData, DataService, DataServiceFunctions} from '../data.se
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {TeamData} from '../../../interfaces/team.interface';
+import {RoleData} from '../../../interfaces/role.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +41,22 @@ export class TeamService extends DataService<TeamData> implements DataServiceFun
 
   update(updateData: CreateAndUpdateData<TeamData>): Observable<TeamData> {
     return this.api.put<TeamData>(`/teams/${updateData.id}`, updateData)
+      .pipe(map(res => {
+        this.reloadData();
+        return res.data;
+      }));
+  }
+
+  assignUserToTeam(updateData: { role_id: string, user_id: string }) {
+    return this.api.post<RoleData>(`/roles/${updateData.role_id}/assignment`, updateData)
+      .pipe(map(res => {
+        this.reloadData();
+        return res.data;
+      }));
+  }
+
+  removeUserFromTeam(updateData: { role_id: string, user_id: string }) {
+    return this.api.post<RoleData>(`/roles/${updateData.role_id}/assignment`, updateData)
       .pipe(map(res => {
         this.reloadData();
         return res.data;

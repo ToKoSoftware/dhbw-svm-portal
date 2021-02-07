@@ -21,7 +21,7 @@
                   </div>
                 </div>
                 <div class="mt-4 flex-shrink-0 sm:mt-0">
-                  Bearbeiten
+                <feather-icon (click)="updateUsersSlide(team)" name="users" class="pt-1 text-gray-400"></feather-icon>
                 </div>
               </div>
               <div class="ml-5 flex-shrink-0">
@@ -38,5 +38,8 @@
   </ng-template>
   <ng-template #edit>
     <app-edit-team [editId]="current"></app-edit-team>
+  </ng-template>
+  <ng-template #updateUsers>
+    <app-edit-team-memberships [editId]="current"></app-edit-team-memberships>
   </ng-template>
 </app-layout>

@@ -9,5 +9,5 @@ export interface TeamData {
   is_active?: boolean;
   organization: unknown;
   maintain_role: unknown;
-  users: UserData;
+  users: UserData[];
 }

@@ -17,6 +17,7 @@ import { EditCreatePollAnswerComponent } from './edit-poll/edit-create-poll-answ
 import { CreateTeamComponent } from './create-team/create-team.component';
 import { EditTeamComponent } from './edit-team/edit-team.component';
 import { EditRoleMembershipsComponent } from './edit-role-memberships/edit-role-memberships.component';
+import {EditTeamMembershipsComponent} from './edit-team-memberships/edit-team-memberships.component';
 
 @NgModule({
   declarations: [
@@ -33,8 +34,9 @@ import { EditRoleMembershipsComponent } from './edit-role-memberships/edit-role-
     CreateTeamComponent,
     EditTeamComponent,
     EditRoleMembershipsComponent,
+    EditTeamMembershipsComponent
   ],
-  exports: [EditUserComponent, EditEventComponent, CreateNewsComponent, EditNewsComponent, EditPollComponent, CreatePollComponent, CreateEventComponent, CreateRoleComponent, EditRoleComponent, EditTeamComponent, CreateTeamComponent, EditRoleMembershipsComponent],
+  exports: [EditUserComponent, EditEventComponent, CreateNewsComponent, EditNewsComponent, EditPollComponent, CreatePollComponent, CreateEventComponent, CreateRoleComponent, EditRoleComponent, EditTeamComponent, CreateTeamComponent, EditRoleMembershipsComponent, EditTeamMembershipsComponent],
   imports: [
     CommonModule,
     FormsModule,

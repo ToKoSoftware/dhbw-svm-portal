@@ -5,6 +5,7 @@ import {TitleBarService} from '../../services/title-bar/title-bar.service';
 import {TeamService} from '../../services/data/teams/team.service';
 import {TeamData} from '../../interfaces/team.interface';
 import {SlideOverService} from '../../services/slide-over/slide-over.service';
+import {RoleData} from '../../interfaces/role.interface';
 
 @Component({
   selector: 'app-teams',
@@ -16,6 +17,7 @@ export class TeamsComponent implements OnInit {
   public current: string;
   @ViewChild('create', {static: true}) create: TemplateRef<unknown>;
   @ViewChild('edit', {static: true}) edit: TemplateRef<unknown>;
+  @ViewChild('updateUsers', {static: true}) updateUsers: TemplateRef<unknown>;
 
   constructor(
     public teams: TeamService,
@@ -36,6 +38,11 @@ export class TeamsComponent implements OnInit {
   public editSlide(event: TeamData) {
     this.current = event.id || '';
     this.slideOver.showSlideOver('', this.edit);
+  }
+
+  public updateUsersSlide(teams: TeamData) {
+    this.current = teams.id || '';
+    this.slideOver.showSlideOver('', this.updateUsers);
   }
 
   ngOnDestroy(): void {
