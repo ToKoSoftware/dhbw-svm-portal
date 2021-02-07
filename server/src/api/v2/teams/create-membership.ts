@@ -34,27 +34,14 @@ export async function createMembership(req: Request, res: Response): Promise<Res
         return res.status(401).send(wrapResponse(false, { error: 'Unauthorized! You are not maintainer of this team.' }));
     }
 
-    // Check if user is already registered for team
-    const membershipCount = await Membership.count(
+    // Check if user is already member of team. If not, create entry.
+    const createdData = await Membership.scope('full').findOrCreate(
         {
             where: {
                 user_id: mappedIncomingData.user_id,
-                team_id: mappedIncomingData.team_id
+                role_id: mappedIncomingData.team_id
             }
         })
-        .catch(() => {
-            success = false;
-            return 0;
-        });
-    if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
-    }
-    if (membershipCount !== 0) {
-        return res.status(400).send(wrapResponse(false, { error: 'User is already in this Team' }));
-    }
-
-
-    const createdData = await Membership.scope('full').create(mappedIncomingData)
         .catch(() => {
             success = false;
             return null;

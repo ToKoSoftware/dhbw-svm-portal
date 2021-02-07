@@ -15,27 +15,14 @@ export async function createRoleAssignmnet(req: Request, res: Response): Promise
         return res.status(400).send(wrapResponse(false, { error: 'Not all required fields have been set' }));
     }
 
-    // Check if user is already assigned to role
-    const roleAssignmentCount = await RoleAssignment.count(
+    // Check if user is already registered to role. If not, create entry.
+    const createdData = await RoleAssignment.scope('full').findOrCreate(
         {
             where: {
                 user_id: mappedIncomingData.user_id,
                 role_id: mappedIncomingData.role_id
             }
         })
-        .catch(() => {
-            success = false;
-            return 0;
-        });
-    if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
-    }
-    if (roleAssignmentCount !== 0) {
-        return res.status(400).send(wrapResponse(false, { error: 'User is already assigned to this role' }));
-    }
-
-
-    const createdData = await RoleAssignment.scope('full').create(mappedIncomingData)
         .catch(() => {
             success = false;
             return null;
