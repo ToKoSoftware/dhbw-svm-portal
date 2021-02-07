@@ -10,10 +10,12 @@ export class RolePickerComponent implements OnInit {
   @Input() selectedRoles: RoleData[] | null = [];
   @Input() removable = false;
   @Input() editable = false;
+  @Input() usersUpdatable = false;
   @Input() deletable = false;
   @Output() roles: RoleData[] | null = [];
   @Output() editEvent = new EventEmitter<RoleData>();
   @Output() removeEvent = new EventEmitter<RoleData>();
+  @Output() updateUsersEvent = new EventEmitter<RoleData>();
   @Output() deleteEvent = new EventEmitter<RoleData>();
 
   constructor() {

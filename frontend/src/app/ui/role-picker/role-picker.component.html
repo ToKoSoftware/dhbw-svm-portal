@@ -1,5 +1,5 @@
 <ul *ngFor="let role of availableRoles">
-  <li class="py-3 bg-gray-200 dark:bg-gray-900 dark:text-white px-3 my-3 flex space-x-2 items-center w-full">
+  <li class="py-3 bg-malachite-600 dark:bg-gray-900 text-white px-3 my-3 flex space-x-2 items-center w-full">
     <i-feather [style.height]="'1rem'" [style.width]="'1rem'" name="users">
     </i-feather>
     <div>
@@ -21,7 +21,14 @@
         type="transparent"
         icon="edit"></app-button>
       <app-button
-        *ngIf="deletable"
+        *ngIf="usersUpdatable"
+        (click)="updateUsersEvent.emit(role)"
+        class="justify-self-end"
+        size="small"
+        type="transparent"
+        icon="users"></app-button>
+      <app-button
+        *ngIf="deletable && role.user_deletable"
         (click)="deleteEvent.emit(role)"
         class="justify-self-end"
         size="small"
@@ -29,8 +36,4 @@
         icon="trash"></app-button>
     </div>
   </li>
-
 </ul>
-<div class="flex-grow flex justify-end">
-  <app-button icon="plus" label="Rolle wählen"></app-button>
-</div>

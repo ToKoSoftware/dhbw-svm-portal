@@ -4,6 +4,7 @@ import {LoadingModalService} from '../../services/loading-modal/loading-modal.se
 import {NotificationService} from '../../services/notification/notification.service';
 import {RoleData} from '../../interfaces/role.interface';
 import {RolesService} from '../../services/data/roles/roles.service';
+import {SlideOverService} from '../../services/slide-over/slide-over.service';
 
 @Component({
   selector: 'app-edit-role',
@@ -16,9 +17,10 @@ export class EditRoleComponent implements OnInit {
 
   constructor(
     public readonly roles: RolesService,
-    private formBuilder: FormBuilder,
-    private loadingModalService: LoadingModalService,
-    private notificationService: NotificationService) {
+    private readonly formBuilder: FormBuilder,
+    private readonly slideOver: SlideOverService,
+    private readonly loadingModalService: LoadingModalService,
+    private readonly notificationService: NotificationService) {
   }
 
   ngOnInit(): void {
@@ -49,13 +51,15 @@ export class EditRoleComponent implements OnInit {
       );
   }
 
-  public create(): void {
+  public update(): void {
     if (this.formGroup.dirty && !this.formGroup.valid) {
       return;
     }
-    this.roles.update({...this.current, ...this.formGroup.value, is_active: true}).subscribe(
+    console.log({...this.current, ...this.formGroup.value, is_active: true});
+    this.roles.update({id: this.current.id, ...this.formGroup.value, is_active: true}).subscribe(
       data => {
         this.current = data;
+        this.slideOver.close();
         this.notificationService.savedSuccessfully();
       },
       error => {

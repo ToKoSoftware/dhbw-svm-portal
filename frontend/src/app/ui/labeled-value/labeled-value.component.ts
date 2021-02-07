@@ -6,6 +6,4 @@ import {Component, Input} from '@angular/core';
 })
 export class LabeledValueComponent {
   @Input() label: string;
-  @Input() value: string | number;
-
 }

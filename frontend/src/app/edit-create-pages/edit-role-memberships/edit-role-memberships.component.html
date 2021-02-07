@@ -1,0 +1,45 @@
+<app-titled-content
+  label="Benutzer mit Rolle verwalten">
+  <ul class="-my-4 divide-y divide-gray-200">
+    <li *ngFor="let user of selectedUsers" class="flex items-center py-4 space-x-3">
+      <div class="min-w-0 flex-1">
+        <p class="text-sm font-medium text-gray-900">{{user.first_name}} {{user.last_name}}
+        </p>
+        <p class="text-sm text-gray-500">
+          <a href="#">@{{user.username}}</a>
+        </p>
+      </div>
+      <div class="flex-shrink-0">
+        <button type="button"
+                class="inline-flex items-center px-3 py-0.5 rounded-full bg-red-600 text-white text-sm font-medium text-rose-700 hover:bg-rose-100">
+          <feather-icon [style.height]="'0.9rem'"
+                        [style.width]="'0.9rem'" name="minus"></feather-icon>
+          <span>Entfernen</span>
+        </button>
+      </div>
+    </li>
+  </ul>
+</app-titled-content>
+<app-titled-content
+  label="Weiteren Benutzer hinzufügen">
+<ul class="-my-4 divide-y divide-gray-200">
+  <li *ngFor="let user of availableUsers" class="flex items-center py-4 space-x-3">
+    <div class="min-w-0 flex-1">
+      <p class="text-sm font-medium text-gray-900">
+        {{user.first_name}} {{user.last_name}}
+      </p>
+      <p class="text-sm text-gray-500">@{{user.username}}
+      </p>
+    </div>
+    <div class="flex-shrink-0">
+      <button type="button"
+              (click)="addToRole(user)"
+              class="inline-flex items-center px-3 py-0.5 rounded-full bg-malachite-600 text-white text-sm font-medium text-rose-700 hover:bg-rose-100">
+        <feather-icon [style.height]="'0.9rem'"
+                      [style.width]="'0.9rem'" name="plus"></feather-icon>
+        <span>Hinzufügen</span>
+      </button>
+    </div>
+  </li>
+</ul>
+</app-titled-content>
