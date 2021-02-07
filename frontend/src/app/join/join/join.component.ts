@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {EventsService} from '../../services/data/events/events.service';
 import {EventData} from '../../interfaces/event.interface';
 import {NotificationService} from '../../services/notification/notification.service';
@@ -21,6 +21,7 @@ export class JoinComponent implements OnInit, OnDestroy {
   private eventId: string;
 
   constructor(
+    private readonly router: Router,
     private readonly loginService: LoginService,
     private readonly eventRegistrations: EventRegistrationService,
     private readonly activatedRoute: ActivatedRoute,
@@ -65,6 +66,7 @@ export class JoinComponent implements OnInit, OnDestroy {
         );
         // force reload of current user state -> reload current user's event registrations
         this.loginService.decodedJwt$.next(this.loginService.decodedJwt$.value);
+        this.router.navigate(['/join']);
       }, error => {
         this.loading.hideLoading();
         this.notifications.savingFailed();
