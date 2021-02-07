@@ -40,7 +40,8 @@ export class TeamsComponent implements OnInit {
     this.slideOver.showSlideOver('', this.edit);
   }
 
-  public updateUsersSlide(teams: TeamData) {
+  public updateUsersSlide(event: Event, teams: TeamData) {
+    event.stopPropagation();
     this.current = teams.id || '';
     this.slideOver.showSlideOver('', this.updateUsers);
   }

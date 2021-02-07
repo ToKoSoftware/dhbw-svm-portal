@@ -58,7 +58,7 @@ export class EditTeamMembershipsComponent implements OnInit, OnDestroy {
 
   public addToRole(user: UserData): void {
     this.loading.showLoading();
-    this.teams.assignUserToTeam({role_id: this.editId, user_id: user.id})
+    this.teams.assignUserToTeam({team_id: this.editId, user_id: user.id})
       .subscribe(data => {
         this.loading.hideLoading();
         this.loadData();
@@ -70,7 +70,7 @@ export class EditTeamMembershipsComponent implements OnInit, OnDestroy {
 
   public removeFromRole(user: UserData): void {
     this.loading.showLoading();
-    this.teams.removeUserFromTeam({role_id: this.editId, user_id: user.id})
+    this.teams.removeUserFromTeam({team_id: this.editId, user_id: user.id})
       .subscribe(data => {
         this.loading.hideLoading();
         this.notification.savedSuccessfully();

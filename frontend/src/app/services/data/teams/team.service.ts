@@ -47,19 +47,19 @@ export class TeamService extends DataService<TeamData> implements DataServiceFun
       }));
   }
 
-  assignUserToTeam(updateData: { role_id: string, user_id: string }) {
-    return this.api.post<RoleData>(`/roles/${updateData.role_id}/assignment`, updateData)
+  assignUserToTeam(updateData: { team_id: string, user_id: string }) {
+    return this.api.post<RoleData>(`/teams/${updateData.team_id}/membership`, updateData)
       .pipe(map(res => {
         this.reloadData();
         return res.data;
       }));
   }
 
-  removeUserFromTeam(updateData: { role_id: string, user_id: string }) {
-    return this.api.post<RoleData>(`/roles/${updateData.role_id}/assignment`, updateData)
+  removeUserFromTeam(updateData: { team_id: string, user_id: string }) {
+    return this.api.delete<RoleData>(`/teams/${updateData.team_id}/membership`, updateData)
       .pipe(map(res => {
         this.reloadData();
-        return res.data;
+        return res;
       }));
   }
 }

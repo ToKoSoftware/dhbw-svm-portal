@@ -25,6 +25,7 @@ import {
   UploadCloud,
   User,
   UserCheck,
+  UserPlus,
   Users,
   X
 } from 'angular-feather/icons';
@@ -45,6 +46,7 @@ const icons = {
   File,
   LogOut,
   LogIn,
+  UserPlus,
   Tool, Activity, Calendar, UserCheck, Info, Lock, Edit, X, PieChart, Plus, ChevronRight, Minus
 };
 

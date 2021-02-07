@@ -21,7 +21,11 @@
                   </div>
                 </div>
                 <div class="mt-4 flex-shrink-0 sm:mt-0">
-                <feather-icon (click)="updateUsersSlide(team)" name="users" class="pt-1 text-gray-400"></feather-icon>
+                <app-button (click)="updateUsersSlide($event, team)"
+                            icon="user-plus"
+                            size="small"
+                            label="Mitglieder"
+                            class="pt-1 text-gray-400"></app-button>
                 </div>
               </div>
               <div class="ml-5 flex-shrink-0">
