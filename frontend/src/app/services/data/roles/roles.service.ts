@@ -45,11 +45,19 @@ export class RolesService extends DataService<RoleData> implements DataServiceFu
       }));
   }
 
-  assignUserToRole(updateData: {roleId: string, userId: string}) {
-    return this.api.post<RoleData>(`/roles/${updateData.roleId}/assignment`, updateData)
+  assignUserToRole(updateData: {role_id: string, user_id: string}) {
+    return this.api.post<RoleData>(`/roles/${updateData.role_id}/assignment`, updateData)
       .pipe(map(res => {
         this.reloadData();
         return res.data;
+      }));
+  }
+
+  removeRoleFromUser(updateData: {role_id: string, user_id: string}) {
+    return this.api.delete<RoleData>(`/roles/${updateData.role_id}/assignment`, updateData)
+      .pipe(map(res => {
+        this.reloadData();
+        return res;
       }));
   }
 

@@ -153,7 +153,7 @@ export default function startServer(): void {
     app.post('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => createRole(req, res));
     app.post('/api/v2/roles/:id/assignment', userIsAuthorized, userIsAdmin, (req, res) => createRoleAssignmnet(req, res));
     app.delete('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteRole(req, res));
-    app.delete('/api/v2/roles/:role_id/assignments/:id', userIsAuthorized, userIsAdmin,(req, res) => deleteRoleAssignment(req, res));
+    app.delete('/api/v2/roles/:id/assignment', userIsAuthorized, userIsAdmin,(req, res) => deleteRoleAssignment(req, res));
     app.put('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => updateRole(req, res));
     
     /** 

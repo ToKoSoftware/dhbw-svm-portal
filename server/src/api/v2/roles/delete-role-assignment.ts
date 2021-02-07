@@ -1,15 +1,26 @@
 import {Request, Response} from 'express';
 import {wrapResponse} from '../../../functions/response-wrapper';
 import {RoleAssignment} from '../../../models/role-assignment.model';
+import {RawRoleAssignmentData} from '../../../interfaces/role-assignment.interface';
+import {mapRoleAssignment} from '../../../functions/map-role-assignment.func';
+import {objectHasRequiredAndNotEmptyKeys} from '../../../functions/check-inputs.func';
 
 export async function deleteRoleAssignment(req: Request, res: Response): Promise<Response> {
     let success = true;
-
-    //Harddelete
-    const destroyedRows = await RoleAssignment.destroy(
+    const incomingData: RawRoleAssignmentData = req.body;
+    const mappedIncomingData: RawRoleAssignmentData = mapRoleAssignment(incomingData, req.params.id);
+    console.log(incomingData, mappedIncomingData, incomingData, req.params);
+    const requiredFields = RoleAssignment.requiredFields();
+    if (!objectHasRequiredAndNotEmptyKeys(mappedIncomingData, requiredFields)) {
+        return res.status(400).send(wrapResponse(false, {error: 'Not all required fields have been set'}));
+    }
+    // todo current org
+    // todo check if admin org and count users (min 1)
+    await RoleAssignment.destroy(
         {
             where: {
-                id: req.params.id
+                user_id: mappedIncomingData.user_id,
+                role_id: mappedIncomingData.role_id
             }
         })
         .catch(() => {
@@ -18,9 +29,6 @@ export async function deleteRoleAssignment(req: Request, res: Response): Promise
         });
     if (!success) {
         return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
-    }
-    if (destroyedRows == 0) {
-        return res.status(404).send(wrapResponse(false, {error: 'There is no assignmet to delete with this id'}));
     }
     return res.status(204).send(wrapResponse(true));
 }

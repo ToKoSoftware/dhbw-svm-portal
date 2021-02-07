@@ -25,6 +25,10 @@ export class EditRoleMembershipsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadData();
+  }
+
+  private loadData(): void {
     this.loading.showLoading();
     this.roles.read(this.editId).subscribe(
       role => {
@@ -44,6 +48,7 @@ export class EditRoleMembershipsComponent implements OnInit, OnDestroy {
         this.loading.hideLoading();
       }
     );
+
   }
 
   ngOnDestroy(): void {
@@ -52,10 +57,25 @@ export class EditRoleMembershipsComponent implements OnInit, OnDestroy {
 
   public addToRole(user: UserData): void {
     this.loading.showLoading();
-    this.roles.assignUserToRole({roleId: this.editId, userId: user.id})
+    this.roles.assignUserToRole({role_id: this.editId, user_id: user.id})
       .subscribe(data => {
-        this.loading.showLoading();
+        this.loading.hideLoading();
+        this.loadData();
       }, error => {
+        this.loading.hideLoading();
+        this.notification.savingFailed();
+      });
+  }
+
+  public removeFromRole(user: UserData): void {
+    this.loading.showLoading();
+    this.roles.removeRoleFromUser({role_id: this.editId, user_id: user.id})
+      .subscribe(data => {
+        this.loading.hideLoading();
+        this.notification.savedSuccessfully();
+        this.loadData();
+      }, error => {
+        console.log(error)
         this.loading.hideLoading();
         this.notification.savingFailed();
       });
