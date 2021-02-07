@@ -7,6 +7,8 @@ import {NotificationService} from '../../services/notification/notification.serv
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {EventRegistrationService} from '../../services/data/event-registration/event-registration.service';
 import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
+import {CurrentOrgService} from '../../services/current-org/current-org.service';
+import {LoginService} from '../../services/login/login.service';
 
 @Component({
   selector: 'app-join',
@@ -19,6 +21,7 @@ export class JoinComponent implements OnInit, OnDestroy {
   private eventId: string;
 
   constructor(
+    private readonly loginService: LoginService,
     private readonly eventRegistrations: EventRegistrationService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly events: EventsService,
@@ -60,6 +63,11 @@ export class JoinComponent implements OnInit, OnDestroy {
             type: 'info'
           }
         );
+        // force reload of current user state -> reload current user's event registrations
+        this.loginService.decodedJwt$.next(this.loginService.decodedJwt$.value);
+      }, error => {
+        this.loading.hideLoading();
+        this.notifications.savingFailed();
       }
     );
   }
