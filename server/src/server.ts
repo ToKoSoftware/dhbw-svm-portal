@@ -37,7 +37,7 @@ import {deleteEventRegistration} from './api/v2/events/delete-event-registration
 import {deleteTeam} from './api/v2/teams/delete-team';
 import {deleteMembership} from './api/v2/teams/delete-membership';
 import {createRole} from './api/v2/roles/create-roles';
-import {createRoleAssignmnet} from './api/v2/roles/create-roll-assignment';
+import {createRoleAssignmnet} from './api/v2/roles/create-role-assignment';
 import {deleteRole} from './api/v2/roles/delete-role';
 import {deleteRoleAssignment} from './api/v2/roles/delete-role-assignment';
 import {deletePoll} from './api/v2/polls/delete-poll';
