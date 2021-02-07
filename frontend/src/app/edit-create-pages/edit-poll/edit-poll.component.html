@@ -14,6 +14,19 @@
         formControlName="body"
         description="Die Beschreibung kann genutzt werden, um die Umfrage genauer zu beschreiben.">
       </app-markdown-input>
+      <app-select
+        label="Antwort-Team wählen"
+        formControlName="answer_team_id"
+        description="Benutzer dieses Teams dürfen diese Umfrage sehen und Stimmen abgeben."
+        [items]="teamSelectData">
+      </app-select>
+      <app-datetime-input
+        label="Ablaufdatum"
+        formControlName="closes_at"
+        required="true"
+        type="text"
+        description="Diese Umfrage bleibt bis zum Ablaufdatum freigeschaltet und es kann abgestimmt werden."
+      ></app-datetime-input>
       <div class="flex justify-end w-full">
         <app-button
           formButtonType="submit"
