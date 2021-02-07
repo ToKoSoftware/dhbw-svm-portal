@@ -29,7 +29,6 @@ module.exports = {
                                     id: role_id_svm_test,
                                     title: 'Alle Test-User',
                                     user_deletable: true,
-                                    is_active: true,
                                     org_id: organizations[0].id,
                                     createdAt: date,
                                     updatedAt: date

@@ -1,4 +1,4 @@
-import {BeforeCreate, BelongsTo, Column, DefaultScope, ForeignKey, HasMany, BelongsToMany, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
+import {BeforeCreate, BelongsTo, Column, ForeignKey, HasMany, BelongsToMany, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
 import {v4 as uuidv4} from 'uuid';
 import {RawTeamData} from '../interfaces/team.interface';
 import { currentOrg } from './current-org.scope';
@@ -8,27 +8,9 @@ import { Poll } from './poll.model';
 import { Role } from './role.model';
 import { User } from './user.model';
 
-@DefaultScope(() => ({
-    required: false,
-    where: {
-        is_active: true
-    }
-}))
 @Scopes(() => ({
     full: {
         include: [Organization, Role, User]
-    },
-    active: {
-        required: false,
-        where: {
-            is_active: true
-        }
-    },
-    inactive: {
-        required: false,
-        where: {
-            is_active: false
-        }
     },
     onlyCurrentOrg: (org_id: string) => currentOrg(org_id)
 }))
@@ -42,8 +24,6 @@ export class Team extends Model {
     @NotEmpty
     @Column
     title: string;
-    @Column
-    is_active: boolean;
     @ForeignKey(() => Organization)
     @Column
     org_id: string;

@@ -1,32 +1,15 @@
-import {Model, Table, Column, ForeignKey, BelongsTo, HasOne, HasMany, BelongsToMany, PrimaryKey, NotEmpty, DefaultScope, Scopes} from 'sequelize-typescript';
-import {RawRoleData} from '../interfaces/role.interface';
+import { BeforeCreate, Model, Table, Column, ForeignKey, BelongsTo, HasOne, HasMany, BelongsToMany, PrimaryKey, NotEmpty, Scopes } from 'sequelize-typescript';
+import { RawRoleData } from '../interfaces/role.interface';
 import { currentOrg } from './current-org.scope';
 import { Organization } from './organization.model';
 import { RoleAssignment } from './role-assignment.model';
 import { Team } from './team.model';
 import { User } from './user.model';
+import { v4 as uuidv4 } from 'uuid';
 
-@DefaultScope(() => ({
-    required: false,
-    where: {
-        is_active: true
-    }
-}))
 @Scopes(() => ({
     full: {
-        include: [{model: Organization, as: 'organization'},{model: Organization, as: 'admin_of_organization'}, Team, User]
-    },
-    active: {
-        required: false,
-        where: {
-            is_active: true
-        }
-    },
-    inactive: {
-        required: false,
-        where: {
-            is_active: false
-        }
+        include: [{ model: Organization, as: 'organization' }, { model: Organization, as: 'admin_of_organization' }, Team, User]
     },
     onlyCurrentOrg: (org_id: string) => currentOrg(org_id)
 }))
@@ -42,8 +25,6 @@ export class Role extends Model {
     title: string;
     @Column
     user_deletable: boolean;
-    @Column
-    is_active: boolean;
     @ForeignKey(() => Organization)
     @Column
     org_id: string;
@@ -56,8 +37,12 @@ export class Role extends Model {
     maintained_teams: Team[];
 
     @BelongsToMany(() => User, () => RoleAssignment)
-    users: Array<User & {role_assignment: RoleAssignment}>;
+    users: Array<User & { role_assignment: RoleAssignment }>;
 
+    @BeforeCreate
+    static addUuid(instance: Role): string {
+        return instance.id = uuidv4();
+    }
 
     public static requiredFields(): Array<keyof RawRoleData> {
         return [

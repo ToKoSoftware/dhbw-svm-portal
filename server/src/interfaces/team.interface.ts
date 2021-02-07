@@ -6,7 +6,6 @@ import { User } from '../models/user.model';
 export interface TeamDataSnapshot {
     id?: string;
     title: string;
-    is_active?: boolean;
 }
 
 export interface RawTeamData extends TeamDataSnapshot {
