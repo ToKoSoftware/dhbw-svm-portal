@@ -10,3 +10,8 @@ export interface EventRegistrationData {
   user: UserData;
   event: EventData;
 }
+
+export interface EventRegistrationCreationData {
+  event_id: string;
+  body: string;
+}

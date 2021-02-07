@@ -18,19 +18,19 @@
         </div>
       </app-card>
       <app-card>
-            <form [formGroup]="formGroup">
-                <app-markdown-input
-                  formControlName="body"
-                  description="Geben Sie eine Bemerkung zu Ihrer Anmeldung ein. Dieses Feld kann verwendet werden, um für die Anmeldung notwendige Daten einzugeben."
-                  label="Bemerkung">
-                </app-markdown-input>
-                <div class="flex justify-end w-full">
-                  <app-button
-                    formButtonType="submit"
-                    label="Verbindlich Anmelden">
-                  </app-button>
-                </div>
-            </form>
+        <form [formGroup]="formGroup" (ngSubmit)="signUp()">
+          <app-markdown-input
+            formControlName="body"
+            description="Geben Sie eine Bemerkung zu Ihrer Anmeldung ein. Dieses Feld kann verwendet werden, um für die Anmeldung notwendige Daten einzugeben."
+            label="Bemerkung">
+          </app-markdown-input>
+          <div class="flex justify-end w-full">
+            <app-button
+              formButtonType="submit"
+              label="Verbindlich Anmelden">
+            </app-button>
+          </div>
+        </form>
       </app-card>
       <app-card *ngIf="currentEvent === null">
         <app-loading></app-loading>

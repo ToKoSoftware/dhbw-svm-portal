@@ -5,6 +5,8 @@ import {EventsService} from '../../services/data/events/events.service';
 import {EventData} from '../../interfaces/event.interface';
 import {NotificationService} from '../../services/notification/notification.service';
 import {FormBuilder, FormGroup} from '@angular/forms';
+import {EventRegistrationService} from '../../services/data/event-registration/event-registration.service';
+import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
 
 @Component({
   selector: 'app-join',
@@ -14,18 +16,21 @@ export class JoinComponent implements OnInit, OnDestroy {
   public formGroup: FormGroup;
   public currentEvent: EventData | null = null;
   private routeSubscription: Subscription;
+  private eventId: string;
 
   constructor(
+    private readonly eventRegistrations: EventRegistrationService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly events: EventsService,
     private readonly notifications: NotificationService,
+    private readonly loading: LoadingModalService,
     private readonly formBuilder: FormBuilder) {
   }
 
   ngOnInit(): void {
     this.routeSubscription = this.activatedRoute.paramMap.subscribe(params => {
-      const id = params.get('id') || '';
-      this.events.read(id).subscribe(event => this.currentEvent = event, () => this.notifications.loadingFailed());
+      this.eventId = params.get('id') || '';
+      this.events.read(this.eventId).subscribe(event => this.currentEvent = event, () => this.notifications.loadingFailed());
     });
     this.formGroup = this.formBuilder.group(
       {
@@ -36,6 +41,27 @@ export class JoinComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.routeSubscription.unsubscribe();
+  }
+
+  public signUp(): void {
+    this.loading.showLoading();
+    const data = {
+      event_id: this.eventId,
+      body: this.formGroup.value.body
+    };
+    this.eventRegistrations.create(data).subscribe(
+      data => {
+        this.loading.hideLoading();
+        this.notifications.createNotification(
+          {
+            id: Math.random().toString(36).substring(7),
+            title: 'Erfolgreich angemeldet',
+            description: 'Der Veranstalter wird sich in Kürze bei Ihnen melden!',
+            type: 'info'
+          }
+        );
+      }
+    );
   }
 
 

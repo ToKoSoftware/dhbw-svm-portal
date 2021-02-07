@@ -1,4 +1,5 @@
 import {OrganizationData} from './organization.interface';
+import {EventData} from './event.interface';
 
 export interface UserData {
   birthday: string;
@@ -16,5 +17,6 @@ export interface UserData {
   is_active: boolean
   createdAt: string;
   updatedAt: string;
-  organization?: OrganizationData
+  organization?: OrganizationData;
+  registered_events: EventData[];
 }

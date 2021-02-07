@@ -79,7 +79,7 @@ export default function startServer(): void {
     app.get('/api/v1', (req, res) => res.send(wrapResponse(true)));
 
     /**
-     * Authing
+     * Authentication
      */
     app.post('/api/v1/login', (req, res) => loginUser(req, res));
 

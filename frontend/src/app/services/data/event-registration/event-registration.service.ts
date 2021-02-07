@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {CreateAndUpdateData, DataService, DataServiceFunctions} from '../data.service';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {EventRegistrationData} from '../../../interfaces/event-registration.interface';
+import {EventRegistrationCreationData, EventRegistrationData} from '../../../interfaces/event-registration.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +18,8 @@ export class EventRegistrationService extends DataService<EventRegistrationData>
       );
   }
 
-  create(EventRegistrationData: CreateAndUpdateData<EventRegistrationData>): Observable<EventRegistrationData> {
-    return this.api.post<EventRegistrationData>(`/events`, EventRegistrationData)
+  create(eventRegistrationData: CreateAndUpdateData<EventRegistrationCreationData>): Observable<EventRegistrationData> {
+    return this.api.post<EventRegistrationData>(`/events/${eventRegistrationData.event_id}/register`, eventRegistrationData)
       .pipe(map(res => {
         this.reloadData();
         return res.data;
