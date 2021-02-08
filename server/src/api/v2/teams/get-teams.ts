@@ -4,38 +4,44 @@ import { buildQuery, QueryBuilderConfig } from '../../../functions/query-builder
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { Team } from '../../../models/team.model';
 import { Vars } from '../../../vars';
-import { TeamData } from '../../../interfaces/team.interface';
 import { User } from '../../../models/user.model';
 import { Organization } from '../../../models/organization.model';
 import { Role } from '../../../models/role.model';
 
 export async function getTeam(req: Request, res: Response): Promise<Response> {
     let success = true;
+    let query;
 
+    // TODO: prüfen nach maintain_role_id. Wenn User in der Rolle, dann darf auch diese sehen
 
-    const teamData: TeamData | null = await Team
-        .scope({method: ['onlyCurrentOrg', Vars.currentOrganization.id]})
-        .findOne({
+    if (Vars.currentUserIsAdmin) {
+        query = {
             where: {
-                ... Vars.currentUserIsAdmin ? { id: req.params.id } : {
-                    [Op.and]: [
-                        { id: req.params.id },
-                        { id: Vars.currentUser.teams.map(t => t.id)}
-                    ]
-                }
+                id: req.params.id
             },
-            ... Vars.currentUserIsAdmin ? {
-                include: [Organization, Role, User]
-            } : {
-                include: {
-                    model: User.scope('publicData')
-                }
+            include: [Organization, Role, User]
+        };
+    } else {
+        query = {
+            where: {
+                [Op.and]: [
+                    { id: req.params.id },
+                    { id: Vars.currentUser.teams.map(t => t.id) }
+                ]
+            },
+            include: {
+                model: User.scope('publicData')
             }
-        })
+        };
+    }
+
+    const teamData: Team | null = await Team.scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] })
+        .findOne(query)
         .catch(() => {
             success = false;
             return null;
         });
+
     if (!success) {
         return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
@@ -59,7 +65,7 @@ export async function getTeams(req: Request, res: Response): Promise<Response> {
     query = buildQuery(queryConfig, req);
 
     let success = true;
-    const data = await Team.scope(['full', {method: ['onlyCurrentOrg', Vars.currentOrganization.id]}, 'ordered']).findAll(query)
+    const data = await Team.scope(['full', { method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, 'ordered']).findAll(query)
         .catch(() => {
             success = false;
             return null;
