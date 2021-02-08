@@ -25,10 +25,10 @@ export class EditPollComponent implements OnInit, OnDestroy {
   constructor(
     public readonly polls: PollsService,
     public customModalService: ModalService,
-    private formBuilder: FormBuilder,
-    private teams: TeamService,
-    private loadingModalService: LoadingModalService,
-    private notificationService: NotificationService) {
+    private readonly formBuilder: FormBuilder,
+    private readonly teams: TeamService,
+    private readonly loadingModalService: LoadingModalService,
+    private readonly notificationService: NotificationService) {
   }
 
   ngOnInit(): void {
