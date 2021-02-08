@@ -3,7 +3,9 @@ import { objectHasRequiredAndNotEmptyKeys } from '../../../functions/check-input
 import { mapTeam } from '../../../functions/map-teams.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { RawTeamData } from '../../../interfaces/team.interface';
+import { Role } from '../../../models/role.model';
 import { Team } from '../../../models/team.model';
+import { Vars } from '../../../vars';
 
 export async function createTeam(req: Request, res: Response): Promise<Response> {
     let success = true;
@@ -13,6 +15,19 @@ export async function createTeam(req: Request, res: Response): Promise<Response>
     const requiredFields = Team.requiredFields();
     if (!objectHasRequiredAndNotEmptyKeys(mappedIncomingData, requiredFields)) {
         return res.status(400).send(wrapResponse(false, { error: 'Not all required fields have been set' }));
+    }
+
+    const role: Role | null = await Role.scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }).findByPk(mappedIncomingData.maintain_role_id)
+        .catch(() => {
+            success = false;
+            return null;
+        });
+    if (!success) {
+        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+    }
+
+    if (role === null) {
+        return res.status(400).send(wrapResponse(false, { error: 'There is no role in your organization with given maintain_role_id' }));
     }
 
     const createdData = await Team.create(mappedIncomingData)
