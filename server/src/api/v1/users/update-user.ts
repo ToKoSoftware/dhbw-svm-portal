@@ -50,7 +50,6 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
     //User object from database must not be null, id must not be changed and all set keys must not be empty.
     if (
         user !== null
-        && (req.body.id === undefined || req.params.id === req.body.id)
         && checkKeysAreNotEmptyOrNotSet(mappedIncomingData, requiredFields) !== false
         && validEmail
     ) {
@@ -116,9 +115,6 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
 
     } else if (checkKeysAreNotEmptyOrNotSet(mappedIncomingData, requiredFields) === false) {
         return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty' }));
-
-    } else if (!(req.body.id === undefined || req.params.id === req.body.id)) {
-        return res.status(400).send(wrapResponse(false, { error: 'ID must not be changed' }));
 
     } else if (validEmail === false) {
         return res.status(400).send(wrapResponse(false, { error: 'E-mail is not valid' }));

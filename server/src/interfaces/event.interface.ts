@@ -14,8 +14,8 @@ export interface EventDataSnapshot{
 }
 
 export interface RawEventData extends EventDataSnapshot{
-    author_id: string;
-    org_id: string;
+    author_id?: string;
+    org_id?: string;
 }
 
 export interface EventData extends EventDataSnapshot{

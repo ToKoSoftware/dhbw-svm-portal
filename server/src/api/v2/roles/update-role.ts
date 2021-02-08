@@ -22,11 +22,8 @@ export async function updateRole(req: Request, res: Response): Promise<Response>
     }
 
     // Org_id must not be changed
-    if (incomingData.org_id !== roleData.org_id) {
-        if (incomingData.org_id !== undefined) {
-            return res.status(400).send(wrapResponse(false, { error: 'Org_id must not be changed!' }));
-        }
-    }
+    delete incomingData.org_id;
+    delete incomingData.id;
 
     const requiredFields = Role.requiredFields();
     if (!checkKeysAreNotEmptyOrNotSet(incomingData, requiredFields)) {

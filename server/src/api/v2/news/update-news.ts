@@ -22,11 +22,9 @@ export async function updateNews(req: Request, res: Response): Promise<Response>
     }
 
     // Author_id and org_id must not be changed
-    if (incomingData.author_id !== newsData.author_id || incomingData.org_id !== newsData.org_id) {
-        if (incomingData.author_id !== undefined || incomingData.org_id !== undefined) {
-            return res.status(400).send(wrapResponse(false, { error: 'Author_id and org_id must not be changed!' }));
-        }
-    }
+    delete incomingData.author_id;
+    delete incomingData.org_id;
+    delete incomingData.id;
 
     const requiredFields = News.requiredFields();
     if (!checkKeysAreNotEmptyOrNotSet(incomingData, requiredFields)) {
