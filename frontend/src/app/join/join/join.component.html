@@ -1,0 +1,40 @@
+<app-scroll>
+  <div class="bg-gray-100 dark:bg-gray-800 h-auto w-full">
+    <app-container center="true">
+      <div class="mt-5"></div>
+      <app-card *ngIf="currentEvent !== null">
+        <div class="border-b w-full">
+          <h1 class="text-3xl mb-3">Anmelden für Veranstaltung "{{currentEvent.title}}"</h1>
+          <div class="prose prose-sm dark:text-white
+          font-medium text-black truncate text-gray-600 mb-3 justify-between">
+            <p class="pt-2">
+              {{ currentEvent.start_date | amFromUtc | amDateFormat: 'DD.MM. H:mm' }}
+              - {{ currentEvent.end_date | amFromUtc | amDateFormat: 'DD.MM. H:mm' }}
+            </p>
+          </div>
+        </div>
+        <div class="prose prose-sm dark:text-white flex-shrink mt-10 divide-y divide-gray-200">
+          <div [innerHTML]="currentEvent.description | MarkdownToHtml"></div>
+        </div>
+      </app-card>
+      <app-card>
+        <form [formGroup]="formGroup" (ngSubmit)="signUp()">
+          <app-markdown-input
+            formControlName="body"
+            description="Geben Sie eine Bemerkung zu Ihrer Anmeldung ein. Dieses Feld kann verwendet werden, um für die Anmeldung notwendige Daten einzugeben."
+            label="Bemerkung">
+          </app-markdown-input>
+          <div class="flex justify-end w-full">
+            <app-button
+              formButtonType="submit"
+              label="Verbindlich Anmelden">
+            </app-button>
+          </div>
+        </form>
+      </app-card>
+      <app-card *ngIf="currentEvent === null">
+        <app-loading></app-loading>
+      </app-card>
+    </app-container>
+  </div>
+</app-scroll>

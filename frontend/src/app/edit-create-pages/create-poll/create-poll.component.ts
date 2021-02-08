@@ -49,6 +49,7 @@ export class CreatePollComponent implements OnInit, OnDestroy {
   }
 
   public create(): void {
+    console.log(this.formGroup.value);
     if (this.formGroup.dirty && !this.formGroup.valid) {
       return;
     }

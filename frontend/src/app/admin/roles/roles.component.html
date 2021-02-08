@@ -4,7 +4,12 @@
     <app-titled-content
       label="Rollen"
       description="Hier können Sie Rollen bearbeiten.">
-      <app-role-picker [availableRoles]="roles.data$ | async" [editable]="true"
+      <app-role-picker (deleteEvent)="editSlide($event)"
+                       (editEvent)="editSlide($event)"
+                       (updateUsersEvent)="updateUsersSlide($event)"
+                       [availableRoles]="roles.data$ | async"
+                       [editable]="true"
+                       [usersUpdatable]="true"
                        [deletable]="true"></app-role-picker>
     </app-titled-content>
   </app-container>
@@ -14,4 +19,7 @@
 </ng-template>
 <ng-template #edit>
   <app-edit-role [editId]="current"></app-edit-role>
+</ng-template>
+<ng-template #updateUsers>
+  <app-edit-role-memberships [editId]="current"></app-edit-role-memberships>
 </ng-template>

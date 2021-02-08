@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { LoadingModalService } from './loading-modal.service';
+import {LoadingModalService} from './loading-modal.service';
 
 describe('ConfirmService', () => {
   let service: LoadingModalService;

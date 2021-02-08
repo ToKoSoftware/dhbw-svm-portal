@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -53,7 +53,7 @@ export class NotificationService {
         title: 'Laden fehlgeschlagen',
         description,
         type: 'error'
-      }
+      }, null
     );
   }
 
