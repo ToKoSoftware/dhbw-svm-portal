@@ -27,7 +27,8 @@ import {
   UserCheck,
   UserPlus,
   Users,
-  X
+  X,
+  Check
 } from 'angular-feather/icons';
 import {CommonModule} from '@angular/common';
 
@@ -47,7 +48,7 @@ const icons = {
   LogOut,
   LogIn,
   UserPlus,
-  Tool, Activity, Calendar, UserCheck, Info, Lock, Edit, X, PieChart, Plus, ChevronRight, Minus
+  Tool, Activity, Calendar, UserCheck, Info, Lock, Edit, X, PieChart, Plus, ChevronRight, Minus, Check
 };
 
 @NgModule({
