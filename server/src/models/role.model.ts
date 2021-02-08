@@ -1,4 +1,4 @@
-import { BeforeCreate, Model, Table, Column, ForeignKey, BelongsTo, HasOne, HasMany, BelongsToMany, PrimaryKey, NotEmpty, Scopes } from 'sequelize-typescript';
+import { BeforeCreate, Model, Table, Column, ForeignKey, BelongsTo, HasOne, HasMany, BelongsToMany, PrimaryKey, NotEmpty, Scopes, DefaultScope } from 'sequelize-typescript';
 import { RawRoleData } from '../interfaces/role.interface';
 import { currentOrg } from './current-org.scope';
 import { Organization } from './organization.model';
@@ -7,9 +7,18 @@ import { Team } from './team.model';
 import { User } from './user.model';
 import { v4 as uuidv4 } from 'uuid';
 
+@DefaultScope(() => ({
+    required: false,
+    order: [['title', 'ASC']]
+}))
+
 @Scopes(() => ({
     full: {
         include: [{ model: Organization, as: 'organization' }, { model: Organization, as: 'admin_of_organization' }, Team, User]
+    },
+    ordered: {
+        required: false,
+        order: [['title', 'ASC']]
     },
     onlyCurrentOrg: (org_id: string) => currentOrg(org_id)
 }))

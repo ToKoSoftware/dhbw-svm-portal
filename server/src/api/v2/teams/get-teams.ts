@@ -59,7 +59,7 @@ export async function getTeams(req: Request, res: Response): Promise<Response> {
     query = buildQuery(queryConfig, req);
 
     let success = true;
-    const data = await Team.scope(['full', {method: ['onlyCurrentOrg', Vars.currentOrganization.id]}]).findAll(query)
+    const data = await Team.scope(['full', {method: ['onlyCurrentOrg', Vars.currentOrganization.id]}, 'ordered']).findAll(query)
         .catch(() => {
             success = false;
             return null;
