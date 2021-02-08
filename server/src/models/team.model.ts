@@ -1,4 +1,4 @@
-import {BeforeCreate, BelongsTo, Column, ForeignKey, HasMany, BelongsToMany, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
+import {BeforeCreate, BelongsTo, Column, ForeignKey, HasMany, BelongsToMany, Model, NotEmpty, PrimaryKey, Scopes, Table, DefaultScope} from 'sequelize-typescript';
 import {v4 as uuidv4} from 'uuid';
 import {RawTeamData} from '../interfaces/team.interface';
 import { currentOrg } from './current-org.scope';
@@ -8,9 +8,18 @@ import { Poll } from './poll.model';
 import { Role } from './role.model';
 import { User } from './user.model';
 
+@DefaultScope(() => ({
+    required: false,
+    order: [['title', 'ASC']]
+}))
+
 @Scopes(() => ({
     full: {
         include: [Organization, Role, User]
+    },
+    ordered: {
+        required: false,
+        order: [['title', 'ASC']]
     },
     onlyCurrentOrg: (org_id: string) => currentOrg(org_id)
 }))
