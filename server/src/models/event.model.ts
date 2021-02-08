@@ -11,8 +11,8 @@ import { currentOrg } from './current-org.scope';
     required: false,
     where: {
         is_active: true
-
-    }
+    },
+    order: [['start_date', 'ASC']]
 }))
 @Scopes(() => ({
     full: {
@@ -38,7 +38,7 @@ import { currentOrg } from './current-org.scope';
             }
         }
     }),
-    not_expired: (date: Date) => ({
+    notExpired: (date: Date) => ({
         required: false,
         where: {
             end_date: {
@@ -46,6 +46,10 @@ import { currentOrg } from './current-org.scope';
             }
         }
     }),
+    ordered: {
+        required: false,
+        order: [['start_date', 'ASC']]
+    },
     free: {
         required: false,
         where: {
