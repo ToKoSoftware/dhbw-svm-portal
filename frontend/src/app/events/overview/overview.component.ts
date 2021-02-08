@@ -1,17 +1,26 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {EventsService} from '../../services/data/events/events.service';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {EventData} from '../../interfaces/event.interface';
+import {SlideOverService} from '../../services/slide-over/slide-over.service';
 
 @Component({
   selector: 'app-overview',
-  templateUrl: './overview.component.html'
+  templateUrl: './overview.component.html',
+  styles: [`
+  .test * {
+    word-break: break-all;
+  }
+  `]
 })
 export class OverviewComponent implements OnInit, OnDestroy {
   private eventSubscription: Subscription;
+  public current: EventData | null = null;
   public data$: BehaviorSubject<GroupedEventData[] | null> = new BehaviorSubject([]);
+  @ViewChild('details', {static: true}) details: TemplateRef<unknown>;
 
-  constructor(private events: EventsService) {
+  constructor(private readonly events: EventsService,
+              public readonly slideOver: SlideOverService,) {
   }
 
   ngOnInit(): void {

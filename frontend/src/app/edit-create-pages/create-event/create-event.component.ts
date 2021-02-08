@@ -1,10 +1,9 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {EventData} from '../../interfaces/event.interface';
 import {EventsService} from '../../services/data/events/events.service';
 import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
 import {NotificationService} from '../../services/notification/notification.service';
-import {ConfirmModalService} from '../../services/confirm-modal/confirm-modal.service';
 import {setEmptyInputToNull} from '../../functions/input-cleaners.func';
 
 @Component({
@@ -38,12 +37,12 @@ export class CreateEventComponent implements OnInit {
   }
 
   public create(): void {
-    console.log(this.formGroup.value)
     if (this.formGroup.dirty && !this.formGroup.valid) {
       return;
     }
     let eventData = {
       ...this.formGroup.value,
+      is_active: true
     };
     eventData = setEmptyInputToNull(eventData);
     this.events.create(eventData).subscribe(

@@ -1,7 +1,7 @@
 <app-container>
   <app-titled-content
     label="Rolle bearbeiten">
-    <form (ngSubmit)="create()" [formGroup]="formGroup">
+    <form (ngSubmit)="update()" [formGroup]="formGroup">
       <app-input
         required="true"
         formControlName="title"
@@ -9,6 +9,7 @@
         placeholder="Umfrage-Administratoren"
         label="Titel">
       </app-input>
+      <small class="text-gray-500">Technische ID: {{current?.id}}</small>
       <div class="flex justify-end w-full">
         <app-button
           formButtonType="submit"
@@ -16,5 +17,30 @@
         </app-button>
       </div>
     </form>
+  </app-titled-content>
+  <app-titled-content
+    label="Verwendung der Rolle"
+    description="Diese Rolle wird für nachfolgenden Funktionen auf der Webseite verwendet."
+  >
+    <ng-container *ngIf="current">
+      <app-labeled-value label="Teams verwalten">
+        <ng-container *ngIf="current.maintained_teams.length">
+          <span *ngFor="let team of current.maintained_teams; let i = index">
+            {{team.title}}<ng-container *ngIf="i !== current.maintained_teams.length - 1">,</ng-container>
+          </span>
+        </ng-container>
+        <ng-container *ngIf="!current.maintained_teams.length">
+          -
+        </ng-container>
+      </app-labeled-value>
+      <app-labeled-value label="Administrator der aktuellen Organisation">
+        <ng-container *ngIf="current.admin_of_organization !== null">
+          Ja
+        </ng-container>
+        <ng-container *ngIf="current.admin_of_organization === null">
+          Nein
+        </ng-container>
+      </app-labeled-value>
+    </ng-container>
   </app-titled-content>
 </app-container>

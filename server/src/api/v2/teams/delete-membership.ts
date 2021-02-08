@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
-import { wrapResponse } from '../../../functions/response-wrapper';
-import { currentUserIsAdminOrMatchesId } from '../../../functions/current-user-is-admin-or-matches-id.func';
-import { Vars } from '../../../vars';
-import { Membership } from '../../../models/membership.model';
+import {Request, Response} from 'express';
+import {wrapResponse} from '../../../functions/response-wrapper';
+import {currentUserIsAdminOrMatchesId} from '../../../functions/current-user-is-admin-or-matches-id.func';
+import {Vars} from '../../../vars';
+import {Membership} from '../../../models/membership.model';
 import { RawMembershipData } from '../../../interfaces/membership.interface';
 
 export async function deleteMembership(req: Request, res: Response): Promise<Response> {
@@ -23,7 +23,7 @@ export async function deleteMembership(req: Request, res: Response): Promise<Res
 
     if (memberhsipToDelete === null) {
         return res.status(404).send(wrapResponse(false, { error: 'No membership with given ids' }));
-    } else if (memberhsipToDelete.user_id !== null && !currentUserIsAdminOrMatchesId(memberhsipToDelete.user_id) && !Vars.currentUser.is_admin) {
+    } else if (memberhsipToDelete.user_id !== null && !currentUserIsAdminOrMatchesId(memberhsipToDelete.user_id) && !Vars.currentUser.is_admin ){
         return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));
     }
 

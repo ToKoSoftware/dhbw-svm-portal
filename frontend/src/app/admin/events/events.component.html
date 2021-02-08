@@ -5,18 +5,18 @@
   <app-container>
     <div class="overflow-hidden pt-3 cursor-pointer md:-ml-2">
       <ul class="divide-y divide-gray-200">
-        <li *ngFor="let news of news.data$ | async">
-          <div (click)="editSlide(news)" class="block hover:bg-gray-50">
+        <li *ngFor="let event of data.data$ | async">
+          <div (click)="editSlide(event)" class="block hover:bg-gray-50">
             <div class="px-4 py-4 flex items-center sm:px-6">
               <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
                 <div>
                   <div class="flex font-medium text-black truncate">
-                    <p>{{news.title}}</p>
+                    <p>{{event.title}}</p>
                   </div>
                   <div class="mt-2 flex">
                     <div class="flex items-center text-sm text-gray-500">
                       <p>
-                        Erstellt {{ news.createdAt | amLocal | amTimeAgo }}
+                        Erstellt {{ event.createdAt | amLocal | amTimeAgo }}
                       </p>
                     </div>
                   </div>

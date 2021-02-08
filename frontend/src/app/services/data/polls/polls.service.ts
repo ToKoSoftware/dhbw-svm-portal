@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {CreateAndUpdateData, DataService, DataServiceFunctions} from '../data.service';
 import {Observable} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {PollAnswerData, PollData} from '../../../interfaces/poll.interface';
 
 @Injectable({
@@ -37,8 +37,8 @@ export class PollsService extends DataService<PollData> implements DataServiceFu
       }));
   }
 
-  update(PollData: CreateAndUpdateData<PollData>): Observable<PollData> {
-    return this.api.put<PollData>(`/polls/${PollData.id}`)
+  update(updateData: CreateAndUpdateData<PollData>): Observable<PollData> {
+    return this.api.put<PollData>(`/polls/${updateData.id}`, updateData)
       .pipe(map(res => {
         this.notifications.savedSuccessfully();
         this.reloadData();
