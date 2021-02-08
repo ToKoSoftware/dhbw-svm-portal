@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import {User} from '../models/user.model';
 import {Vars} from '../vars';
 import {wrapResponse} from './response-wrapper';
+import { userIsAdminCheck } from './user-is-admin-check.func';
 
 export function verifyToken(res: Response, token: string, next: NextFunction): void {
     jwt.verify(token, Vars.config.database.jwtSalt, async (err: unknown) => {
@@ -24,7 +25,8 @@ export function verifyToken(res: Response, token: string, next: NextFunction): v
             if (user === null) {
                 return res.status(403).send(wrapResponse(false, {error: 'Unauthorized!'}));
             }
-            Vars.currentUserIsAdmin = !!(user.assigned_roles.findIndex(el => el.id === user.organization.admin_role_id)+1);
+            // check if any of the user's roles are the current user's organisation's admin role
+            Vars.currentUserIsAdmin = userIsAdminCheck(user);
             Vars.currentUser = user;
             Vars.currentOrganization = user.organization;
             next();

@@ -6,6 +6,7 @@ import * as bcrypt from 'bcryptjs';
 import {jwtSign} from '../../../functions/jwt-sign.func';
 import { checkKeysAreNotEmptyOrNotSet } from '../../../functions/check-inputs.func';
 import { Vars } from '../../../vars';
+import { userIsAdminCheck } from '../../../functions/user-is-admin-check.func';
 
 export async function loginUser(req: Request, res: Response): Promise<Response> {
 
@@ -41,8 +42,8 @@ export async function loginUser(req: Request, res: Response): Promise<Response> 
         const passwordMatches = await bcrypt.compare(incomingData.password, user.password)
             .catch(() => false);
         if (passwordMatches) {
-            const userHasAdminRole = user.assigned_roles.findIndex(el => el.id === user.organization.admin_role_id)+1;
-            Vars.currentUserIsAdmin = !!userHasAdminRole;
+            // check if any of the user's roles are the current user's organisation's admin role
+            Vars.currentUserIsAdmin = userIsAdminCheck(user);
             const token = jwtSign(user);
             return res.send(wrapResponse(true, token));
         }
