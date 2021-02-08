@@ -40,7 +40,7 @@ export async function getPoll(req: Request, res: Response): Promise<Response> {
         return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
     if (pollData === null) {
-        return res.status(404).send(wrapResponse(false, [])); //TODO Rechte-Checken #87
+        return res.status(404).send(wrapResponse(false)); //TODO Rechte-Checken #87
     }
     return res.send(wrapResponse(true, pollData));
 }
@@ -59,7 +59,8 @@ export async function getPolls(req: Request, res: Response): Promise<Response> {
     query = buildQuery(queryConfig, req);
 
     let success = true;
-    const data = await Poll.scope(['full', {method: ['onlyCurrentOrg', Vars.currentOrganization.id]}]).findAll(query)
+    const currentDate = new Date();
+    const data = await Poll.scope(['full', {method: ['onlyCurrentOrg', Vars.currentOrganization.id]}, 'active', {method: ['notExpired', currentDate]}, 'ordered']).findAll(query)
         .catch(() => {
             success = false;
             return null;
