@@ -22,7 +22,7 @@ export async function getTeam(req: Request, res: Response): Promise<Response> {
                     { id: Vars.currentUser.teams.map(t => t.id)}
                 ]
             },
-            ... Vars.currentUser.is_admin ? {
+            ... Vars.currentUserIsAdmin ? {
                 include: [Organization, Role, User]
             } : {
                 include: {

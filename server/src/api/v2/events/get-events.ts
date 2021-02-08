@@ -19,7 +19,7 @@ export async function getEvent(req: Request, res: Response): Promise<Response> {
             where: {
                 id: req.params.id   
             },
-            ... Vars.currentUser.is_admin ? {
+            ... Vars.currentUserIsAdmin ? {
                 include: [Organization, {model: User, as: 'author'}, {model: User, as: 'registered_users'}]
             } : {
                 include: {

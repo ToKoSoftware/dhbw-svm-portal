@@ -58,7 +58,6 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
         && (req.body.id === undefined || req.params.id === req.body.id)
         && checkKeysAreNotEmptyOrNotSet(mappedIncomingData, requiredFields) !== false
         && validEmail
-        && (req.body.is_admin === undefined)
     ) {
 
         //email should be changed: check if already in use
@@ -134,9 +133,6 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
 
     } else if (validEmail === false) {
         return res.status(400).send(wrapResponse(false, {error: 'E-mail is not valid'}));
-
-    } else if (req.body.is_admin !== undefined) {
-        return res.status(400).send(wrapResponse(false, {error: 'is_admin can not be changed'}));
 
     } else {
         return res.status(400).send(wrapResponse(false));
