@@ -1,18 +1,19 @@
 import {Sequelize} from 'sequelize-typescript';
 import {Vars} from '../vars';
 import {User} from '../models/user.model';
-import { Organization } from '../models/organization.model';
-import { EventRegistration } from '../models/event-registration.model';
-import { Membership } from '../models/membership.model';
-import { News } from '../models/news.model';
-import { PollAnswer } from '../models/poll-answer.model';
-import { PollVote } from '../models/poll-vote.model';
-import { Poll } from '../models/poll.model';
-import { RoleAssignment } from '../models/role-assignment.model';
-import { Role } from '../models/role.model';
-import { Team } from '../models/team.model';
-import { Event } from '../models/event.model';
+import {Organization} from '../models/organization.model';
+import {EventRegistration} from '../models/event-registration.model';
+import {Membership} from '../models/membership.model';
+import {News} from '../models/news.model';
+import {PollAnswer} from '../models/poll-answer.model';
+import {PollVote} from '../models/poll-vote.model';
+import {Poll} from '../models/poll.model';
+import {RoleAssignment} from '../models/role-assignment.model';
+import {Role} from '../models/role.model';
+import {Team} from '../models/team.model';
+import {Event} from '../models/event.model';
 import {Op} from 'sequelize';
+import {SingleSignOnRequest} from '../models/single-sign-on-request.model';
 
 
 export function connectToDatabase(): void {
@@ -24,7 +25,9 @@ export function connectToDatabase(): void {
             host: Vars.config.database.url,
             port: Number(Vars.config.database.port),
             dialect: 'postgres',
-            models: [User, Organization, EventRegistration, Membership, News, Poll, PollAnswer, PollVote, RoleAssignment, Role, Team, Event]
+            models: [User, Organization, EventRegistration,
+                Membership, News, Poll, PollAnswer, PollVote,
+                RoleAssignment, Role, Team, Event, SingleSignOnRequest]
         });
         Vars.db = sequelize;
         Vars.op = Op;
