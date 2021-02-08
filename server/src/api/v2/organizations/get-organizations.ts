@@ -1,9 +1,6 @@
 import { Request, Response } from 'express';
-import { FindOptions } from 'sequelize';
-import { buildQuery, QueryBuilderConfig } from '../../../functions/query-builder.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { Vars } from '../../../vars';
-import { OrganizationData } from '../../../interfaces/organization.interface';
 import { User } from '../../../models/user.model';
 import { Organization } from '../../../models/organization.model';
 
@@ -14,7 +11,7 @@ export async function getOrganization(req: Request, res: Response): Promise<Resp
     let success = true;
 
 
-    const organizationData: OrganizationData | null = await Organization
+    const organizationData: Organization | null = await Organization
         .scope([Vars.currentUserIsAdmin ? 'full' : 'active']) //  todo permission check in #98
         .findOne({
             where: {
@@ -40,24 +37,21 @@ export async function getOrganization(req: Request, res: Response): Promise<Resp
 }
 
 export async function getOrganizations(req: Request, res: Response): Promise<Response> {
-    let query: FindOptions = {};
-    const allowedSearchFilterAndOrderFields = ['title'];
-    const queryConfig: QueryBuilderConfig = {
-        query: query,
-        searchString: req.query.search as string || '',
-        allowLimitAndOffset: true,
-        allowedFilterFields: allowedSearchFilterAndOrderFields,
-        allowedSearchFields: allowedSearchFilterAndOrderFields,
-        allowedOrderFields: allowedSearchFilterAndOrderFields
-    };
-    query = buildQuery(queryConfig, req);
-
     let success = true;
-    const data = await Organization.scope(['full', {method: ['onlyCurrentOrg', Vars.currentOrganization.id]}]).findAll(query)
-        .catch(() => {
-            success = false;
-            return null;
-        });
+    let data: Organization | null;
+    if (Vars.currentUserIsAdmin) {
+        data = await Organization.scope('full').findByPk(Vars.currentOrganization.id)
+            .catch(() => {
+                success = false;
+                return null;
+            });
+    } else {
+        data = await Organization.findByPk(Vars.currentOrganization.id)
+            .catch(() => {
+                success = false;
+                return null;
+            });
+    }
     if (!success) {
         return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
