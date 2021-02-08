@@ -1,9 +1,33 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 
-import { FeatherModule } from 'angular-feather';
-import { User, ShoppingCart, BarChart2, Map, Users,
-  UploadCloud, DownloadCloud, Trash, Key, MousePointer,
-  AlertCircle, File, LogOut, LogIn, Tool, Activity, Calendar, UserCheck, Info, Lock, Edit, X, PieChart, Plus, ChevronRight
+import {FeatherModule} from 'angular-feather';
+import {
+  Activity,
+  AlertCircle,
+  BarChart2,
+  Calendar,
+  ChevronRight,
+  DownloadCloud,
+  Edit,
+  File,
+  Info,
+  Key,
+  Lock,
+  LogIn,
+  LogOut,
+  Map,
+  Minus,
+  MousePointer,
+  PieChart,
+  Plus,
+  Tool,
+  Trash,
+  UploadCloud,
+  User,
+  UserCheck,
+  UserPlus,
+  Users,
+  X
 } from 'angular-feather/icons';
 import {CommonModule} from '@angular/common';
 
@@ -22,7 +46,8 @@ const icons = {
   File,
   LogOut,
   LogIn,
-  Tool, Activity, Calendar, UserCheck, Info, Lock, Edit, X, PieChart, Plus, ChevronRight
+  UserPlus,
+  Tool, Activity, Calendar, UserCheck, Info, Lock, Edit, X, PieChart, Plus, ChevronRight, Minus
 };
 
 @NgModule({
@@ -34,4 +59,5 @@ const icons = {
     FeatherModule
   ]
 })
-export class IconsModule { }
+export class IconsModule {
+}

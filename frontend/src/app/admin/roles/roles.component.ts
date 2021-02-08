@@ -16,6 +16,7 @@ export class RolesComponent implements OnInit, OnDestroy {
   public current: string;
   @ViewChild('create', {static: true}) create: TemplateRef<unknown>;
   @ViewChild('edit', {static: true}) edit: TemplateRef<unknown>;
+  @ViewChild('updateUsers', {static: true}) updateUsers: TemplateRef<unknown>;
 
   constructor(
     public readonly titleBar: TitleBarService,
@@ -38,6 +39,10 @@ export class RolesComponent implements OnInit, OnDestroy {
     this.slideOver.showSlideOver('', this.edit);
   }
 
+  public updateUsersSlide(roles: RoleData) {
+    this.current = roles.id || '';
+    this.slideOver.showSlideOver('', this.updateUsers);
+  }
 
   ngOnDestroy(): void {
     this.titleBar.buttons$.next([]);

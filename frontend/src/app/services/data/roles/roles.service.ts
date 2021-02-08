@@ -19,9 +19,9 @@ export class RolesService extends DataService<RoleData> implements DataServiceFu
   }
 
   create(RoleData: CreateAndUpdateData<RoleData>): Observable<RoleData> {
-    this.reloadData();
     return this.api.post<RoleData>('/roles', RoleData)
       .pipe(map(res => {
+        this.reloadData();
         return res.data;
       }));
   }
@@ -37,11 +37,27 @@ export class RolesService extends DataService<RoleData> implements DataServiceFu
       }));
   }
 
-  update(RoleData: CreateAndUpdateData<RoleData>): Observable<RoleData> {
-    this.reloadData();
-    return this.api.put<RoleData>(`/users/${RoleData.id}`)
+  update(updateData: CreateAndUpdateData<RoleData>): Observable<RoleData> {
+    return this.api.put<RoleData>(`/roles/${updateData.id}`, updateData)
       .pipe(map(res => {
+        this.reloadData();
         return res.data;
+      }));
+  }
+
+  assignUserToRole(updateData: {role_id: string, user_id: string}) {
+    return this.api.post<RoleData>(`/roles/${updateData.role_id}/assignment`, updateData)
+      .pipe(map(res => {
+        this.reloadData();
+        return res.data;
+      }));
+  }
+
+  removeRoleFromUser(updateData: {role_id: string, user_id: string}) {
+    return this.api.delete<RoleData>(`/roles/${updateData.role_id}/assignment`, updateData)
+      .pipe(map(res => {
+        this.reloadData();
+        return res;
       }));
   }
 

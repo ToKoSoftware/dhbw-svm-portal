@@ -3,14 +3,17 @@ import {wrapResponse} from '../../../functions/response-wrapper';
 import {currentUserIsAdminOrMatchesId} from '../../../functions/current-user-is-admin-or-matches-id.func';
 import {Vars} from '../../../vars';
 import {Membership} from '../../../models/membership.model';
+import { RawMembershipData } from '../../../interfaces/membership.interface';
 
 export async function deleteMembership(req: Request, res: Response): Promise<Response> {
     let success = true;
-    
+    const incomingData: RawMembershipData = req.body;
+
     //check if currentUser is admin oder member
     const memberhsipToDelete = await Membership.findOne({
         where: {
-            id: req.params.id
+            user_id: incomingData.user_id,
+            team_id: req.params.team_id
         }
     })
         .catch(() => {

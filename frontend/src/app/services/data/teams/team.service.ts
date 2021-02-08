@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {CreateAndUpdateData, DataService, DataServiceFunctions} from '../data.service';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {TeamData} from '../../../interfaces/team.interface';
+import {RoleData} from '../../../interfaces/role.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +20,9 @@ export class TeamService extends DataService<TeamData> implements DataServiceFun
   }
 
   create(teamData: CreateAndUpdateData<TeamData>): Observable<TeamData> {
-    this.reloadData();
-    return this.api.get<TeamData>(`/teams/${teamData.id}`)
+    return this.api.post<TeamData>(`/teams/`, teamData)
       .pipe(map(res => {
+        this.reloadData();
         return res.data;
       }));
   }
@@ -38,11 +39,27 @@ export class TeamService extends DataService<TeamData> implements DataServiceFun
       }));
   }
 
-  update(teamData: CreateAndUpdateData<TeamData>): Observable<TeamData> {
-    this.reloadData();
-    return this.api.put<TeamData>(`/teams/${teamData.id}`)
+  update(updateData: CreateAndUpdateData<TeamData>): Observable<TeamData> {
+    return this.api.put<TeamData>(`/teams/${updateData.id}`, updateData)
       .pipe(map(res => {
+        this.reloadData();
         return res.data;
+      }));
+  }
+
+  assignUserToTeam(updateData: { team_id: string, user_id: string }) {
+    return this.api.post<RoleData>(`/teams/${updateData.team_id}/membership`, updateData)
+      .pipe(map(res => {
+        this.reloadData();
+        return res.data;
+      }));
+  }
+
+  removeUserFromTeam(updateData: { team_id: string, user_id: string }) {
+    return this.api.delete<RoleData>(`/teams/${updateData.team_id}/membership`, updateData)
+      .pipe(map(res => {
+        this.reloadData();
+        return res;
       }));
   }
 }

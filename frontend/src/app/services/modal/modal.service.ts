@@ -1,4 +1,4 @@
-import {ElementRef, Injectable, OnDestroy, TemplateRef} from '@angular/core';
+import {Injectable, OnDestroy, TemplateRef} from '@angular/core';
 import {fromEvent, ReplaySubject, Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {filter} from 'rxjs/operators';

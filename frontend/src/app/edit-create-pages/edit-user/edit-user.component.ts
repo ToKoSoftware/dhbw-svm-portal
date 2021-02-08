@@ -5,6 +5,8 @@ import {ApiService} from '../../services/api/api.service';
 import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
 import {LoginService} from '../../services/login/login.service';
 import {myProfileBreadcrumb, myProfilePages} from '../../my-profile/my-profile.pages';
+import {UsersService} from '../../services/data/users/users.service';
+import {NotificationService} from '../../services/notification/notification.service';
 
 @Component({
   selector: 'app-edit-user',
@@ -19,10 +21,12 @@ export class EditUserComponent implements OnInit, OnChanges {
   @Input() userId: string = '';
 
   constructor(
-    private formBuilder: FormBuilder,
-    private api: ApiService,
-    private loadingModalService: LoadingModalService,
-    private login: LoginService) {
+    private readonly users: UsersService,
+    private readonly formBuilder: FormBuilder,
+    private readonly notifications: NotificationService,
+    private readonly api: ApiService,
+    private readonly loadingModalService: LoadingModalService,
+    private readonly login: LoginService) {
   }
 
   ngOnInit(): void {
@@ -36,23 +40,23 @@ export class EditUserComponent implements OnInit, OnChanges {
 
   private loadUser(): void {
     this.loading = true;
-    this.api.get<UserData>([`/users/${this.userId}`, 1]).subscribe(
-      (data) => {
+    this.users.read(this.userId).subscribe(
+      (user) => {
         this.loading = false;
-        this.currentUser = data.data;
+        this.currentUser = user;
         this.editUserForm = this.formBuilder.group(
           {
-            email: [data.data.email],
-            firstName: [data.data.first_name],
-            lastName: [data.data.last_name],
-            city: [data.data.city],
-            postcode: [data.data.post_code, Validators.minLength(5)],
-            street: [data.data.street],
-            streetNumber: [data.data.street_number],
+            email: [user.email],
+            firstName: [user.first_name],
+            lastName: [user.last_name],
+            city: [user.city],
+            birthday: [user.birthday],
+            postcode: [user.post_code, Validators.minLength(5)],
+            street: [user.street],
+            streetNumber: [user.street_number],
           }
         );
-      }
-    );
+      });
   }
 
   public updateUser(): void {
@@ -60,17 +64,15 @@ export class EditUserComponent implements OnInit, OnChanges {
       return;
     }
     this.loading = true;
-    const id = this.login.decodedJwt$.value?.id || '';
-    const password = this.editUserForm.value.password;
-    this.api.put<UserData>(
-      `/users/${id}`,
-      this.editUserForm.value
-    ).subscribe(
+    const data = {id: this.currentUser.id, ...this.editUserForm.value};
+    this.users.update(data).subscribe(
       data => {
-        this.currentUser = data.data;
+        this.currentUser = data;
+        this.notifications.savedSuccessfully();
         this.loading = false;
       },
       error => {
+        this.notifications.savingFailed();
         this.loading = false;
       }
     );

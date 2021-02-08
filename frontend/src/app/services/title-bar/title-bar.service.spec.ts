@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { TitleBarService } from './title-bar.service';
+import {TitleBarService} from './title-bar.service';
 
 describe('TitleBarService', () => {
   let service: TitleBarService;

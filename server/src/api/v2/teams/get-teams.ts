@@ -17,10 +17,12 @@ export async function getTeam(req: Request, res: Response): Promise<Response> {
         .scope({method: ['onlyCurrentOrg', Vars.currentOrganization.id]})
         .findOne({
             where: {
-                [Op.and]: [
-                    { id: req.params.id },
-                    { id: Vars.currentUser.teams.map(t => t.id)}
-                ]
+                ... Vars.currentUser.is_admin ? { id: req.params.id } : {
+                    [Op.and]: [
+                        { id: req.params.id },
+                        { id: Vars.currentUser.teams.map(t => t.id)}
+                    ]
+                }
             },
             ... Vars.currentUserIsAdmin ? {
                 include: [Organization, Role, User]

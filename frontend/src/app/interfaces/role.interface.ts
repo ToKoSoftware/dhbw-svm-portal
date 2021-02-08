@@ -1,5 +1,6 @@
 import {OrganizationData} from './organization.interface';
 import {TeamData} from './team.interface';
+import {UserData} from './user.interface';
 
 export interface RoleData{
   id?: string;
@@ -8,5 +9,6 @@ export interface RoleData{
   is_active?: boolean;
   organization: OrganizationData;
   admin_of_organization: OrganizationData;
+  users: UserData[];
   maintained_teams: TeamData[];
 }

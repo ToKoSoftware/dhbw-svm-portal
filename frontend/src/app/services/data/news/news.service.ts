@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {CreateAndUpdateData, DataService, DataServiceFunctions} from '../data.service';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {NewsData} from '../../../interfaces/news.interface';
 
@@ -37,10 +37,10 @@ export class NewsService extends DataService<NewsData> implements DataServiceFun
       }));
   }
 
-  update(NewsData: CreateAndUpdateData<NewsData>): Observable<NewsData> {
-    this.reloadData();
-    return this.api.put<NewsData>(`/news/${NewsData.id}`)
+  update(updateData: CreateAndUpdateData<NewsData>): Observable<NewsData> {
+    return this.api.put<NewsData>(`/news/${updateData.id}`, updateData)
       .pipe(map(res => {
+        this.reloadData();
         return res.data;
       }));
   }

@@ -54,7 +54,7 @@ export class CreateRoleComponent implements OnInit {
     if (this.formGroup.dirty && !this.formGroup.valid) {
       return;
     }
-    this.roles.update({...this.current, ...this.formGroup.value, is_active: true}).subscribe(
+    this.roles.create({...this.formGroup.value}).subscribe(
       data => {
         this.current = data;
         this.notificationService.savedSuccessfully();
