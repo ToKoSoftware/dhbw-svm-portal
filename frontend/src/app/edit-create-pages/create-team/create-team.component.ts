@@ -23,7 +23,7 @@ export class CreateTeamComponent implements OnInit {
     public readonly teams: TeamService,
     public readonly roles: RolesService,
     private readonly formBuilder: FormBuilder,
-    private slideOverService: SlideOverService,
+    private readonly slideOverService: SlideOverService,
     private readonly loadingModalService: LoadingModalService,
     private readonly notificationService: NotificationService,
   ) {
