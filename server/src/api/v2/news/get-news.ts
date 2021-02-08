@@ -19,7 +19,7 @@ export async function getSingleNews(req: Request, res: Response): Promise<Respon
             where: {
                 id: req.params.id   
             },
-            ... Vars.currentUser.is_admin ? {
+            ... Vars.currentUserIsAdmin ? {
                 include: [Organization, User]
             } : {
                 include: {

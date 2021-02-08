@@ -30,6 +30,10 @@ import { RoleAssignment } from './role-assignment.model';
         },
         include: [Organization, {model: Event, as: 'registered_events'}, {model: Event, as: 'created_events'}, PollAnswer, Team, Role, News, Poll]
     },
+    verification: {
+        required: false,
+        include: [Organization, {model: Event, as: 'registered_events'}, {model: Event, as: 'created_events'}, PollAnswer, Team, Role, News, Poll]
+    },
     active: {
         required: false,
         attributes: { 
@@ -79,8 +83,6 @@ export class User extends Model {
     username: string;
     @Column
     password: string;
-    @Column
-    is_admin: boolean;
     @Column
     first_name: string;
     @Column

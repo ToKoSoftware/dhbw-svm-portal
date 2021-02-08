@@ -15,12 +15,12 @@ export async function getOrganization(req: Request, res: Response): Promise<Resp
 
 
     const organizationData: OrganizationData | null = await Organization
-        .scope([Vars.currentUser.is_admin ? 'full' : 'active']) //  todo permission check in #98
+        .scope([Vars.currentUserIsAdmin ? 'full' : 'active']) //  todo permission check in #98
         .findOne({
             where: {
                 id: req.params.id
             }, 
-            ...!Vars.currentUser.is_admin ? {
+            ...!Vars.currentUserIsAdmin ? {
                 include: {
                     model: User.scope('publicData')
                 }

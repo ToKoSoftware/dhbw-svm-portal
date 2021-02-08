@@ -7,7 +7,7 @@ export function jwtSign(user: User, expiration = 864000): string{
         {
             id: user.id,
             email: user.email,
-            is_admin: user.is_admin,
+            is_admin: Vars.currentUserIsAdmin,
             first_name: user.first_name,
             last_name: user.last_name,
             org_id: user.org_id

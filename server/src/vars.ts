@@ -12,5 +12,6 @@ export abstract class Vars {
     public static op: typeof Op;
     public static currentUser: User;
     public static currentOrganization: Organization;
+    public static currentUserIsAdmin: boolean;
     public static currentJWT: string;
 }
