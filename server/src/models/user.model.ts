@@ -84,8 +84,6 @@ export class User extends Model {
     @Column
     password: string;
     @Column
-    is_admin: boolean;
-    @Column
     first_name: string;
     @Column
     last_name: string;
