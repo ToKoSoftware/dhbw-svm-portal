@@ -24,10 +24,7 @@ export function verifyToken(res: Response, token: string, next: NextFunction): v
             if (user === null) {
                 return res.status(403).send(wrapResponse(false, {error: 'Unauthorized!'}));
             }
-
-            
-
-            Vars.currentUserIsAdmin = ;
+            Vars.currentUserIsAdmin = !!(user.assigned_roles.findIndex(el => el.id === user.organization.admin_role_id)+1);
             Vars.currentUser = user;
             Vars.currentOrganization = user.organization;
             next();

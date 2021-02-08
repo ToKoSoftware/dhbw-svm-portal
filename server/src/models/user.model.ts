@@ -30,6 +30,10 @@ import { RoleAssignment } from './role-assignment.model';
         },
         include: [Organization, {model: Event, as: 'registered_events'}, {model: Event, as: 'created_events'}, PollAnswer, Team, Role, News, Poll]
     },
+    verification: {
+        required: false,
+        include: [Organization, {model: Event, as: 'registered_events'}, {model: Event, as: 'created_events'}, PollAnswer, Team, Role, News, Poll]
+    },
     active: {
         required: false,
         attributes: { 

@@ -5,6 +5,7 @@ import {User} from '../../../models/user.model';
 import * as bcrypt from 'bcryptjs';
 import {jwtSign} from '../../../functions/jwt-sign.func';
 import { checkKeysAreNotEmptyOrNotSet } from '../../../functions/check-inputs.func';
+import { Vars } from '../../../vars';
 
 export async function loginUser(req: Request, res: Response): Promise<Response> {
 
@@ -23,8 +24,9 @@ export async function loginUser(req: Request, res: Response): Promise<Response> 
         }
     };
     
-    const user = await User.unscoped().findOne(selectStatement)
-        .catch(() => {
+    const user = await User.scope('verification').findOne(selectStatement)
+        .catch((error) => {
+            Vars.loggy.log(error);
             success = false;
             return null;
         });
@@ -39,6 +41,8 @@ export async function loginUser(req: Request, res: Response): Promise<Response> 
         const passwordMatches = await bcrypt.compare(incomingData.password, user.password)
             .catch(() => false);
         if (passwordMatches) {
+            const userHasAdminRole = user.assigned_roles.findIndex(el => el.id === user.organization.admin_role_id)+1;
+            Vars.currentUserIsAdmin = !!userHasAdminRole;
             const token = jwtSign(user);
             return res.send(wrapResponse(true, token));
         }
