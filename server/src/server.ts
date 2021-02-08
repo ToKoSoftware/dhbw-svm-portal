@@ -24,13 +24,32 @@ import {getEvent, getEvents} from './api/v2/events/get-events';
 import {getPoll, getPolls} from './api/v2/polls/get-polls';
 import {getRole, getRoles} from './api/v2/roles/get-roles';
 import {getOrganization, getOrganizations} from './api/v2/organizations/get-organizations';
-import { createPoll } from './api/v2/polls/create-poll';
-import { createPollAnswer } from './api/v2/poll-answer/create-poll-answer';
+import {createPoll} from './api/v2/polls/create-poll';
+import {createPollAnswer} from './api/v2/poll-answers/create-poll-answer';
 import {createEvent} from './api/v2/events/create-event';
 import {registerForEvent} from './api/v2/events/register-for-event';
 import {createTeam} from './api/v2/teams/create-team';
 import {createMembership} from './api/v2/teams/create-membership';
-import { voteForPollAnswer } from './api/v2/poll-vote/create-poll-vote';
+import {deleteNews} from './api/v2/news/delete-news';
+import {voteForPollAnswer} from './api/v2/poll-votes/create-poll-vote';
+import {deleteEvent} from './api/v2/events/delete-event';
+import {deleteEventRegistration} from './api/v2/events/delete-event-registration';
+import {deleteTeam} from './api/v2/teams/delete-team';
+import {deleteMembership} from './api/v2/teams/delete-membership';
+import {createRole} from './api/v2/roles/create-roles';
+import {createRoleAssignmnet} from './api/v2/roles/create-roll-assignment';
+import {deleteRole} from './api/v2/roles/delete-role';
+import {deleteRoleAssignment} from './api/v2/roles/delete-role-assignment';
+import {deletePoll} from './api/v2/polls/delete-poll';
+import {deletePollAnswer} from './api/v2/poll-answers/delete-poll-answer';
+import {deletePollVote} from './api/v2/poll-votes/delete-poll-vote';
+import { updateEvent } from './api/v2/events/update-event';
+import { updateNews } from './api/v2/news/update-news';
+import { updatePoll } from './api/v2/polls/update-poll';
+import { updatePollAnswer } from './api/v2/poll-answers/update-poll-answer';
+import { updateTeam } from './api/v2/teams/update-team';
+import { updateRole } from './api/v2/roles/update-role';
+import { updateOrganization } from './api/v2/organizations/update-organization';
 
 
 
@@ -80,13 +99,19 @@ export default function startServer(): void {
     app.get('/api/v2/teams/:id', userIsAuthorized, (req, res) => getTeam(req, res));
     app.post('/api/v2/teams', userIsAuthorized, userIsAdmin, (req, res) => createTeam(req, res));
     app.post('/api/v2/teams/:id/membership', userIsAuthorized, (req, res) => createMembership(req, res));
-    
+    app.delete('/api/v2/teams/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteTeam(req, res));
+    app.delete('/api/v2/teams/:team_id/memberships/:id', userIsAuthorized, (req, res) => deleteMembership(req, res));
+    app.put('/api/v2/teams/:id', userIsAuthorized, userIsAdmin, (req, res) => updateTeam(req, res));
+
     /** 
      * News
      */
     app.get('/api/v2/news', userIsAuthorized, userIsAdmin, (req, res) => getAllNews(req, res));
     app.get('/api/v2/news/:id', userIsAuthorized, (req, res) => getSingleNews(req, res));
     app.post('/api/v2/news', userIsAuthorized, userIsAdmin, (req, res) => createNews(req, res));
+    app.delete('/api/v2/news/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteNews(req, res));
+
+    app.put('/api/v2/news/:id', userIsAuthorized, userIsAdmin, (req, res) => updateNews(req, res));
 
     /** 
      * Event
@@ -95,27 +120,49 @@ export default function startServer(): void {
     app.get('/api/v2/events/:id', userIsAuthorized, (req, res) => getEvent(req, res));
     app.post('/api/v2/events', userIsAuthorized, userIsAdmin, (req, res) => createEvent(req, res));
     app.post('/api/v2/events/:id/register', userIsAuthorized, (req, res) => registerForEvent(req, res));
+    app.delete('/api/v2/events/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteEvent(req, res));
+    app.delete('/api/v2/events/:event_id/eventregistrations/:id', userIsAuthorized, (req, res) => deleteEventRegistration(req, res));
+
+    app.put('/api/v2/events/:id', userIsAuthorized, userIsAdmin, (req, res) => updateEvent(req, res));
 
     /** 
      * Poll
      */
     app.get('/api/v2/polls', userIsAuthorized, userIsAdmin, (req, res) => getPolls(req, res));
     app.get('/api/v2/polls/:id', userIsAuthorized, (req, res) => getPoll(req, res));
-    app.post('/api/v2/polls', userIsAuthorized, (req, res) => createPoll(req, res));
+    app.post('/api/v2/polls', userIsAuthorized, userIsAdmin, (req, res) => createPoll(req, res));
     app.post('/api/v2/polls/:id/answers', userIsAuthorized, userIsAdmin, (req, res) => createPollAnswer(req, res));
     app.post('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res));
+    app.delete('/api/v2/polls/:id', userIsAuthorized, userIsAdmin, (req, res) => deletePoll(req, res));
+    app.delete('/api/v2/polls/:pollId/answers/:id', userIsAuthorized, userIsAdmin, (req, res) => deletePollAnswer(req, res));
+    app.delete('/api/v2/polls/:pollId/:pollAnswerId/votes/:id', userIsAuthorized, (req, res) => deletePollVote(req, res));
+    app.put('/api/v2/polls/:id', userIsAuthorized, userIsAdmin, (req, res) => updatePoll(req, res));
+
+    /**
+     * PollAnswer
+     */
+    app.post('/api/v2/polls/:id/answers', userIsAuthorized, userIsAdmin, (req, res) => createPollAnswer(req, res));
+    app.post('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res));
+    app.put('/api/v2/pollAnswers/:id', userIsAuthorized, userIsAdmin, (req, res) => updatePollAnswer(req, res));
 
     /** 
      * Role
      */
     app.get('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => getRoles(req, res));
     app.get('/api/v2/roles/:id', userIsAuthorized, (req, res) => getRole(req, res));
+    app.post('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => createRole(req, res));
+    app.post('/api/v2/roles/:id/assignment', userIsAuthorized, userIsAdmin, (req, res) => createRoleAssignmnet(req, res));
+    app.delete('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteRole(req, res));
+    app.delete('/api/v2/roles/:role_id/assignments/:id', userIsAuthorized, userIsAdmin,(req, res) => deleteRoleAssignment(req, res));
+    app.put('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => updateRole(req, res));
     
     /** 
      * Organization
      */
     app.get('/api/v2/organizations', userIsAuthorized, userIsAdmin, (req, res) => getOrganizations(req, res));
     app.get('/api/v2/organizations/:id', userIsAuthorized, (req, res) => getOrganization(req, res));
+    app.put('/api/v2/organizations/:id', userIsAuthorized, userIsAdmin, (req, res) => updateOrganization(req, res));
+    
     /**
      * Admin
      */
