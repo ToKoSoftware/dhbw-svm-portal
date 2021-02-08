@@ -50,7 +50,7 @@ import {updatePollAnswer} from './api/v2/poll-answers/update-poll-answer';
 import {updateTeam} from './api/v2/teams/update-team';
 import {updateRole} from './api/v2/roles/update-role';
 import {updateOrganization} from './api/v2/organizations/update-organization';
-import {oauth2Authentication, oauth2Token, oauth2User} from './api/saml/authenticate';
+import {oauth2Authentication, oauth2Token, oauth2User} from './api/oauth2/authenticate';
 
 export default function startServer(): void {
 

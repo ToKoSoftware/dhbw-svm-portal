@@ -2,7 +2,7 @@ import {Request, Response} from 'express';
 import jwt from 'jsonwebtoken';
 import {Vars} from '../../vars';
 import {SingleSignOnRequest} from '../../models/single-sign-on-request.model';
-import {SSORequestData} from '../../interfaces/sso.interface';
+import {loadOrgSetting, saveOrgSetting} from '../../functions/settings.func';
 
 export async function oauth2Authentication(req: Request, res: Response): Promise<void> {
     // destroy all open sign-in requests for current user
@@ -30,6 +30,19 @@ export async function oauth2Token(req: Request, res: Response): Promise<Response
     const encodedSecret = (req.headers['authorization'] || '').replace('Basic ', '');
     // decode token
     const clientSecret = Buffer.from(encodedSecret, 'base64').toString('utf-8');
+    const oauth2config = await loadOrgSetting<OAuth2ClientConfiguration>('oauth2');
+    if (!oauth2config) {
+        return res.status(500).send({
+            error: 'No OAuth2 config found.'
+        });
+    }
+    const splitSecret = clientSecret.split(':');
+    if (oauth2config.data.application_name !== splitSecret[0] || oauth2config.data.client_secret !== splitSecret[1]){
+        return res.status(403).send({
+            error: 'Invalid client secret.'
+        });
+    }
+
     // make it impossible to get a random id
     const id = req.body.code || 'null';
     // check if a request exists with id
@@ -62,4 +75,9 @@ export async function oauth2User(req: Request, res: Response): Promise<Response>
      */
     Vars.loggy.log('User call', {...req.params, ...req.query});
     return res.send({email: 'user@example.com', user: 'user'});
+}
+
+interface OAuth2ClientConfiguration {
+    client_secret: string;
+    application_name: string;
 }
