@@ -24,7 +24,7 @@ export class EditPollComponent implements OnInit, OnDestroy {
 
   constructor(
     public readonly polls: PollsService,
-    public customModalService: ModalService,
+    public readonly customModalService: ModalService,
     private readonly formBuilder: FormBuilder,
     private readonly teams: TeamService,
     private readonly loadingModalService: LoadingModalService,
