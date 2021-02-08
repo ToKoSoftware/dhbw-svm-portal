@@ -21,7 +21,7 @@ export async function getPoll(req: Request, res: Response): Promise<Response> {
             where: {
                 id: req.params.id   
             },
-            ... Vars.currentUser.is_admin ? {
+            ... Vars.currentUserIsAdmin? {
                 include: [Organization, User, Team, PollAnswer]
             } : { 
                 where: {

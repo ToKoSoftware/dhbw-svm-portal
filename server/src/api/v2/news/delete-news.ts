@@ -22,8 +22,8 @@ export async function deleteNews(req: Request, res: Response): Promise<Response>
 
     if (newsToDelete === null) {
         return res.status(404).send(wrapResponse(false, { error: 'No active News with given id' }));
-    } else if (newsToDelete.author_id !== null && !currentUserIsAdminOrMatchesId(newsToDelete.author_id) && !Vars.currentUser.is_admin) {
-        return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));
+    } else if (newsToDelete.author_id !== null &&!currentUserIsAdminOrMatchesId(newsToDelete.author_id) && !Vars.currentUserIsAdmin ) {
+        return res.status(403).send(wrapResponse(false, {error: 'Unauthorized!'}));
     }
 
     await newsToDelete.update(

@@ -21,7 +21,7 @@ export async function deletePollVote(req: Request, res: Response): Promise<Respo
 
     if (pollVoteToDelete === null) {
         return res.status(404).send(wrapResponse(false, { error: 'No poll-vote with given id' }));
-    } else if (pollVoteToDelete.user_id !== null && !currentUserIsAdminOrMatchesId(pollVoteToDelete.user_id) && !Vars.currentUser.is_admin) {
+    } else if (pollVoteToDelete.user_id !== null && !currentUserIsAdminOrMatchesId(pollVoteToDelete.user_id) && !Vars.currentUserIsAdmin ){
         return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));
     }
 
