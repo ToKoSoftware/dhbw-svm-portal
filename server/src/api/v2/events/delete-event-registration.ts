@@ -1,18 +1,14 @@
-import {Request, Response} from 'express';
-import {wrapResponse} from '../../../functions/response-wrapper';
-import {EventRegistration} from '../../../models/event-registration.model';
-import {currentUserIsAdminOrMatchesId} from '../../../functions/current-user-is-admin-or-matches-id.func';
-import {Vars} from '../../../vars';
+import { Request, Response } from 'express';
+import { wrapResponse } from '../../../functions/response-wrapper';
+import { EventRegistration } from '../../../models/event-registration.model';
+import { currentUserIsAdminOrMatchesId } from '../../../functions/current-user-is-admin-or-matches-id.func';
+import { Vars } from '../../../vars';
 
 export async function deleteEventRegistration(req: Request, res: Response): Promise<Response> {
     let success = true;
-    
+
     //check if currentUser is admin oder registeredUser
-    const eventRegistrationToDelete = await EventRegistration.findOne({
-        where: {
-            id: req.params.id
-        }
-    })
+    const eventRegistrationToDelete = await EventRegistration.findByPk(req.params.id)
         .catch(() => {
             success = false;
             return null;
@@ -36,8 +32,8 @@ export async function deleteEventRegistration(req: Request, res: Response): Prom
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
+        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
-    
+
     return res.status(204).send(wrapResponse(true));
 }

@@ -9,8 +9,8 @@ export interface NewsDataSnapshot{
 }
 
 export interface RawNewsData extends NewsDataSnapshot{
-    org_id: string;
-    author_id: string;
+    org_id?: string;
+    author_id?: string;
 }
 
 export interface NewsData extends NewsDataSnapshot{

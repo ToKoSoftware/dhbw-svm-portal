@@ -1,20 +1,15 @@
-import {Request, Response} from 'express';
-import {wrapResponse} from '../../../functions/response-wrapper';
-import {News} from '../../../models/news.model';
-import {currentUserIsAdminOrMatchesId} from '../../../functions/current-user-is-admin-or-matches-id.func';
-import {Vars} from '../../../vars';
+import { Request, Response } from 'express';
+import { wrapResponse } from '../../../functions/response-wrapper';
+import { News } from '../../../models/news.model';
+import { currentUserIsAdminOrMatchesId } from '../../../functions/current-user-is-admin-or-matches-id.func';
+import { Vars } from '../../../vars';
 
 export async function deleteNews(req: Request, res: Response): Promise<Response> {
     let success = true;
-    
+
     //TODO check necessary?
     //check if currentUser is admin oder author of news
-    const newsToDelete = await News.findOne({
-        where: {
-            id: req.params.id,
-            is_active: true
-        }
-    })
+    const newsToDelete = await News.scope('active').findByPk(req.params.id)
         .catch(() => {
             success = false;
             return null;
@@ -30,7 +25,7 @@ export async function deleteNews(req: Request, res: Response): Promise<Response>
     } else if (newsToDelete.author_id !== null &&!currentUserIsAdminOrMatchesId(newsToDelete.author_id) && !Vars.currentUserIsAdmin ) {
         return res.status(403).send(wrapResponse(false, {error: 'Unauthorized!'}));
     }
- 
+
     await newsToDelete.update(
         {
             is_active: false,
@@ -39,10 +34,10 @@ export async function deleteNews(req: Request, res: Response): Promise<Response>
             success = false;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, {error: 'Could not deactivate News with id ' + req.params.id}));
+        return res.status(500).send(wrapResponse(false, { error: 'Could not deactivate News with id ' + req.params.id }));
     }
 
     return res.status(204).send(wrapResponse(true));
-    
-    
+
+
 }

@@ -15,12 +15,7 @@ export async function deleteMembership(req: Request, res: Response): Promise<Res
             user_id: incomingData.user_id,
             team_id: req.params.team_id
         }
-    })
-        .catch(() => {
-            success = false;
-            return null;
-        });
-
+    });
 
     if (!success) {
         return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
@@ -31,7 +26,7 @@ export async function deleteMembership(req: Request, res: Response): Promise<Res
     } else if (memberhsipToDelete.user_id !== null && !currentUserIsAdminOrMatchesId(memberhsipToDelete.user_id) && !Vars.currentUserIsAdmin ){
         return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));
     }
-    
+
 
     //Hard delete
     await memberhsipToDelete.destroy()
@@ -40,7 +35,7 @@ export async function deleteMembership(req: Request, res: Response): Promise<Res
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
+        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
     return res.status(204).send(wrapResponse(true));
 }

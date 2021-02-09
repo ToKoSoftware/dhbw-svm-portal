@@ -1,18 +1,14 @@
-import {Request, Response} from 'express';
-import {wrapResponse} from '../../../functions/response-wrapper';
-import {currentUserIsAdminOrMatchesId} from '../../../functions/current-user-is-admin-or-matches-id.func';
-import {Vars} from '../../../vars';
-import {PollVote} from '../../../models/poll-vote.model';
+import { Request, Response } from 'express';
+import { wrapResponse } from '../../../functions/response-wrapper';
+import { currentUserIsAdminOrMatchesId } from '../../../functions/current-user-is-admin-or-matches-id.func';
+import { Vars } from '../../../vars';
+import { PollVote } from '../../../models/poll-vote.model';
 
 export async function deletePollVote(req: Request, res: Response): Promise<Response> {
     let success = true;
-    
+
     //check if currentUser is admin oder voted User
-    const pollVoteToDelete = await PollVote.findOne({
-        where: {
-            id: req.params.id
-        }
-    })
+    const pollVoteToDelete = await PollVote.findByPk(req.params.id)
         .catch(() => {
             success = false;
             return null;
@@ -28,7 +24,7 @@ export async function deletePollVote(req: Request, res: Response): Promise<Respo
     } else if (pollVoteToDelete.user_id !== null && !currentUserIsAdminOrMatchesId(pollVoteToDelete.user_id) && !Vars.currentUserIsAdmin ){
         return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));
     }
-           
+
     //Hard delete
     await pollVoteToDelete.destroy()
         .catch(() => {
@@ -36,7 +32,7 @@ export async function deletePollVote(req: Request, res: Response): Promise<Respo
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
+        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
     return res.status(204).send(wrapResponse(true));
 }

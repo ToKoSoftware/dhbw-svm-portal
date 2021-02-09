@@ -16,11 +16,7 @@ export function verifyToken(res: Response, token: string, next: NextFunction): v
             if (!(userData instanceof Object) || userData === null) {
                 return res.status(403).send(wrapResponse(false, { error: 'Error occured during authorization!' }));
             }
-            const user = await User.scope('full').findOne({
-                where: {
-                    id: userData.id
-                }
-            });
+            const user = await User.scope('full').findByPk(userData.id);
 
             if (user === null) {
                 return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));

@@ -106,29 +106,27 @@ export default function startServer(): void {
     /** 
      * News
      */
-    app.get('/api/v2/news', userIsAuthorized, userIsAdmin, (req, res) => getAllNews(req, res));
+    app.get('/api/v2/news', userIsAuthorized, (req, res) => getAllNews(req, res));
     app.get('/api/v2/news/:id', userIsAuthorized, (req, res) => getSingleNews(req, res));
     app.post('/api/v2/news', userIsAuthorized, userIsAdmin, (req, res) => createNews(req, res));
     app.delete('/api/v2/news/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteNews(req, res));
-
     app.put('/api/v2/news/:id', userIsAuthorized, userIsAdmin, (req, res) => updateNews(req, res));
 
     /** 
      * Event
      */
-    app.get('/api/v2/events', userIsAuthorized, userIsAdmin, (req, res) => getEvents(req, res));
+    app.get('/api/v2/events', userIsAuthorized, (req, res) => getEvents(req, res));
     app.get('/api/v2/events/:id', userIsAuthorized, (req, res) => getEvent(req, res));
     app.post('/api/v2/events', userIsAuthorized, userIsAdmin, (req, res) => createEvent(req, res));
     app.post('/api/v2/events/:id/register', userIsAuthorized, (req, res) => registerForEvent(req, res));
     app.delete('/api/v2/events/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteEvent(req, res));
     app.delete('/api/v2/events/:event_id/eventregistrations/:id', userIsAuthorized, (req, res) => deleteEventRegistration(req, res));
-
     app.put('/api/v2/events/:id', userIsAuthorized, userIsAdmin, (req, res) => updateEvent(req, res));
 
     /** 
      * Poll
      */
-    app.get('/api/v2/polls', userIsAuthorized, userIsAdmin, (req, res) => getPolls(req, res));
+    app.get('/api/v2/polls', userIsAuthorized, (req, res) => getPolls(req, res));
     app.get('/api/v2/polls/:id', userIsAuthorized, (req, res) => getPoll(req, res));
     app.post('/api/v2/polls', userIsAuthorized, userIsAdmin, (req, res) => createPoll(req, res));
     app.post('/api/v2/polls/:id/answers', userIsAuthorized, userIsAdmin, (req, res) => createPollAnswer(req, res));
@@ -159,7 +157,7 @@ export default function startServer(): void {
     /** 
      * Organization
      */
-    app.get('/api/v2/organizations', userIsAuthorized, userIsAdmin, (req, res) => getOrganizations(req, res));
+    app.get('/api/v2/organizations', userIsAuthorized, (req, res) => getOrganizations(req, res));
     app.get('/api/v2/organizations/:id', userIsAuthorized, (req, res) => getOrganization(req, res));
     app.put('/api/v2/organizations/:id', userIsAuthorized, userIsAdmin, (req, res) => updateOrganization(req, res));
     

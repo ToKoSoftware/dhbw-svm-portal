@@ -54,7 +54,9 @@ export async function getEvents(req: Request, res: Response): Promise<Response> 
     query = buildQuery(queryConfig, req);
 
     let success = true;
-    const data = await Event.scope(['full', {method: ['onlyCurrentOrg', Vars.currentOrganization.id]}]).findAll(query)
+    const currentDate = new Date();
+    // Only events, that have an end_date in the future, that are active. Ordered by start_date ASC
+    const data = await Event.scope(['full', {method: ['onlyCurrentOrg', Vars.currentOrganization.id]}, 'active', {method: ['notExpired', currentDate]}, 'ordered']).findAll(query)
         .catch(() => {
             success = false;
             return null;

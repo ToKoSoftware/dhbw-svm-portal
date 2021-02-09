@@ -10,7 +10,7 @@ import { User } from './user.model';
 @DefaultScope(() => ({
     required: false,
     attributes: { 
-        exclude: ['access_code'] 
+        exclude: ['access_code', 'config'] 
     },
     where: {
         is_active: true
@@ -18,9 +18,6 @@ import { User } from './user.model';
 }))
 @Scopes(() => ({
     full: {
-        attributes: { 
-            exclude: ['access_code'] 
-        },
         include: [{model: Role, as: 'admin_role'},{model: Role, as: 'roles'}, User, Team, News, Poll, Event]
     },
     active: {

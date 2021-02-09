@@ -12,7 +12,8 @@ import { currentOrg } from './current-org.scope';
     required: false,
     where: {
         is_active: true
-    }
+    },
+    order: [['closes_at', 'ASC']]
 }))
 @Scopes(() => ({
     full: {
@@ -38,6 +39,18 @@ import { currentOrg } from './current-org.scope';
             }
         }
     }),
+    notExpired: (date: Date) => ({
+        required: false,
+        where: {
+            closes_at: {
+                [Op.gte]: date
+            }
+        }
+    }),
+    ordered: {
+        required: false,
+        order: [['start_date', 'ASC']]
+    },
     onlyCurrentOrg: (org_id: string) => currentOrg(org_id)
 })) 
 

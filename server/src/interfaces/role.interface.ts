@@ -10,7 +10,7 @@ export interface RoleDataSnapshot{
 }
 
 export interface RawRoleData extends RoleDataSnapshot{
-    org_id: string;
+    org_id?: string;
 }
 
 export interface RoleData extends RoleDataSnapshot{

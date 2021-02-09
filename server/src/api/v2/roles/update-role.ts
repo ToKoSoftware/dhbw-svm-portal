@@ -9,12 +9,7 @@ export async function updateRole(req: Request, res: Response): Promise<Response>
     const incomingData: RawRoleData = req.body;
     const roleId = req.params.id;
 
-    const roleData: Role | null = await Role.findOne(
-        {
-            where: {
-                id: roleId
-            }
-        })
+    const roleData: Role | null = await Role.findByPk(roleId)
         .catch(() => {
             success = false;
             return null;
@@ -27,17 +22,14 @@ export async function updateRole(req: Request, res: Response): Promise<Response>
     }
 
     // Org_id must not be changed
-    if (incomingData.org_id !== roleData.org_id) {
-        if (incomingData.org_id !== undefined) {
-            return res.status(400).send(wrapResponse(false, { error: 'Org_id must not be changed!' }));
-        }
-    }
+    delete incomingData.org_id;
+    delete incomingData.id;
 
     const requiredFields = Role.requiredFields();
     if (!checkKeysAreNotEmptyOrNotSet(incomingData, requiredFields)) {
-        return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty'}));
+        return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty' }));
     }
-    
+
     roleData.update(incomingData)
         .catch(() => {
             success = false;

@@ -4,6 +4,8 @@ import { mapPoll } from '../../../functions/map-polls.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { RawPollData } from '../../../interfaces/poll.interface';
 import { Poll } from '../../../models/poll.model';
+import { Team } from '../../../models/team.model';
+import { Vars } from '../../../vars';
 
 export async function createPoll(req: Request, res: Response): Promise<Response> {
     let success = true;
@@ -19,7 +21,21 @@ export async function createPoll(req: Request, res: Response): Promise<Response>
         return res.status(400).send(wrapResponse(false, { error: 'Closes_at is not valid' }));
     }
 
-    // TODO: input checker, ob team_id zu org gehört
+    const team: Team | null = await Team.scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }).findOne({
+        where: {
+            id: mappedIncomingData.answer_team_id
+        } 
+    })
+        .catch(() => {
+            success = false;
+            return null;
+        });
+    if (!success) {
+        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+    }
+    if (team === null) {
+        return res.status(400).send(wrapResponse(false, { error: 'There is no team in your organization with given answer_team_id' }));
+    }
 
     const createdData = await Poll.create(mappedIncomingData)
         .catch(() => {

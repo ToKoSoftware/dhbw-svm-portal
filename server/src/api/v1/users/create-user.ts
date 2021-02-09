@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { wrapResponse } from '../../../functions/response-wrapper';
-import {User} from '../../../models/user.model';
-import {Op} from 'sequelize';
+import { User } from '../../../models/user.model';
+import { Op } from 'sequelize';
 import { mapUser } from '../../../functions/map-users.func';
 import { objectHasRequiredAndNotEmptyKeys } from '../../../functions/check-inputs.func';
 import * as EmailValidator from 'email-validator';
@@ -44,7 +44,7 @@ export async function createUser(req: Request, res: Response): Promise<Response>
                     }
                 ]
             }
-            
+
         })
         .catch(() => {
             success = false;
@@ -61,15 +61,11 @@ export async function createUser(req: Request, res: Response): Promise<Response>
                 success = false;
                 return null;
             });
-        if (!success||createdData === null) {
+        if (!success || createdData === null) {
             return res.status(500).send(wrapResponse(false, { error: 'Could not create User' }));
         }
 
-        const user = await User.findOne({
-            where: {
-                id: createdData.id
-            }
-        })
+        const user = await User.findByPk(createdData.id)
             .catch(() => {
                 success = false;
                 return null;

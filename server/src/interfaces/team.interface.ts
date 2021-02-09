@@ -9,7 +9,7 @@ export interface TeamDataSnapshot {
 }
 
 export interface RawTeamData extends TeamDataSnapshot {
-    org_id: string;
+    org_id?: string;
     maintain_role_id: string;
 }
 

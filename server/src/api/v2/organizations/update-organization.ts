@@ -9,12 +9,7 @@ export async function updateOrganization(req: Request, res: Response): Promise<R
     const incomingData: RawOrganizationData = req.body;
     const organizationId = req.params.id;
 
-    const organizationData: Organization | null = await Organization.findOne(
-        {
-            where: {
-                id: organizationId
-            }
-        })
+    const organizationData: Organization | null = await Organization.findByPk(organizationId)
         .catch(() => {
             success = false;
             return null;
@@ -28,9 +23,9 @@ export async function updateOrganization(req: Request, res: Response): Promise<R
 
     const requiredFields = Organization.requiredFields();
     if (!checkKeysAreNotEmptyOrNotSet(incomingData, requiredFields)) {
-        return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty'}));
+        return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty' }));
     }
-    
+
     organizationData.update(incomingData)
         .catch(() => {
             success = false;

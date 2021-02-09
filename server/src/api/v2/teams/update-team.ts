@@ -9,12 +9,7 @@ export async function updateTeam(req: Request, res: Response): Promise<Response>
     const incomingData: RawTeamData = req.body;
     const teamId = req.params.id;
 
-    const teamData: Team | null = await Team.findOne(
-        {
-            where: {
-                id: teamId
-            }
-        })
+    const teamData: Team | null = await Team.findByPk(teamId)
         .catch(() => {
             success = false;
             return null;
@@ -26,18 +21,15 @@ export async function updateTeam(req: Request, res: Response): Promise<Response>
         return res.status(400).send(wrapResponse(false, { error: 'No Team with given id found' }));
     }
 
-    // Maintain_role_id and org_id must not be changed
-    if (incomingData.maintain_role_id !== teamData.maintain_role_id || incomingData.org_id !== teamData.org_id) {
-        if (incomingData.maintain_role_id !== undefined || incomingData.org_id !== undefined) {
-            return res.status(400).send(wrapResponse(false, { error: 'Maintain_role_id and org_id must not be changed!' }));
-        }
-    }
+    // Org_id must not be changed
+    delete incomingData.org_id;
+    delete incomingData.id;
 
     const requiredFields = Team.requiredFields();
     if (!checkKeysAreNotEmptyOrNotSet(incomingData, requiredFields)) {
-        return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty'}));
+        return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty' }));
     }
-    
+
     teamData.update(incomingData)
         .catch(() => {
             success = false;
