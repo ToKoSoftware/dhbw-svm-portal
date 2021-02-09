@@ -7,12 +7,12 @@
       </div>
       <div class="mt-10">
         <p *ngIf="error" class="text-red-700">E-Mail oder Passwort falsch!</p>
-        <form (ngSubmit)="createUser()">
+        <form [formGroup]="formGroup" (ngSubmit)="createUser()">
           <p class="py-3 text-xs leading-4 font-semibold text-gray-500 uppercase tracking-wider">
             Zugangscode
           </p>
           <app-input
-            (valueChange)="createUserData.accessCode = $event"
+            formControlName="access_code"
             required="true"
             label="Zugangscode">
           </app-input>
@@ -22,13 +22,13 @@
           <div class="flex space-x-2">
             <app-input
               class="flex-1"
-              (valueChange)="createUserData.firstName = $event"
+              formControlName="first_name"
               required="true"
               label="Vorname">
             </app-input>
             <app-input
               class="flex-1"
-              (valueChange)="createUserData.lastName = $event"
+              formControlName="last_name"
               required="true"
               label="Nachname">
             </app-input>
@@ -36,13 +36,13 @@
           <div class="flex space-x-2">
             <app-input
               class="flex-grow"
-              (valueChange)="createUserData.street = $event"
+              formControlName="street"
               required="true"
               label="Straße">
             </app-input>
             <app-input
               class="w-16"
-              (valueChange)="createUserData.streetNumber = $event"
+              formControlName="street_number"
               required="true"
               label="Hausnr.">
             </app-input>
@@ -50,13 +50,13 @@
           <div class="flex space-x-2">
             <app-input
               class="flex-1"
-              (valueChange)="createUserData.postcode = $event"
+              formControlName="postcode"
               required="true"
               label="Postleitzahl">
             </app-input>
             <app-input
               class="flex-1"
-              (valueChange)="createUserData.city = $event"
+              formControlName="city"
               required="true"
               label="Stadt">
             </app-input>
@@ -65,13 +65,13 @@
             Ihre Zugangsdaten
           </p>
           <app-input
-            (valueChange)="createUserData.email = $event"
+            formControlName="email"
             required="true"
             type="email"
             label="E-Mail">
           </app-input>
           <app-input
-            (valueChange)="createUserData.password = $event"
+            formControlName="password"
             required="true"
             type="password"
             label="Passwort">

@@ -5,12 +5,14 @@ import {LoadingModalService} from '../../services/loading-modal/loading-modal.se
 import {LoginService} from '../../services/login/login.service';
 import {Router} from '@angular/router';
 import {ConfirmModalService} from '../../services/confirm-modal/confirm-modal.service';
+import {UsersService} from '../../services/data/users/users.service';
+import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html'
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit{
   public createUserData: CreateUserData = {
     email: '',
     accessCode: '',
@@ -23,19 +25,36 @@ export class RegisterComponent {
     city: '',
   };
   public error: false;
+  public formGroup: FormGroup;
 
   constructor(
-    private router: Router,
+    private readonly router: Router,
     private readonly api: ApiService,
+    private readonly users: UsersService,
+    private readonly formBuilder: FormBuilder,
     private readonly loginService: LoginService,
     private readonly confirm: ConfirmModalService,
     private readonly loading: LoadingModalService) {
   }
 
+  ngOnInit(): void {
+    this.formGroup = this.formBuilder.group(
+      {
+        email: [],
+        access_code: [],
+        password: [],
+        first_name: [],
+        last_name: [],
+        street: [],
+        street_number: [],
+        postcode: [],
+        city: [],
+      }
+    );
+  }
+
   public createUser(): void {
-    this.api.post<UserData>(['/users', 1],
-      this.createUserData
-    ).subscribe(
+    this.users.create(this.formGroup.value).subscribe(
       (data) => {
         this.loading.hideLoading();
         this.login();
