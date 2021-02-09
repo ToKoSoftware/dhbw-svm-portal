@@ -5,12 +5,20 @@ import { Op } from 'sequelize';
 import { mapUser } from '../../../functions/map-users.func';
 import { objectHasRequiredAndNotEmptyKeys } from '../../../functions/check-inputs.func';
 import * as EmailValidator from 'email-validator';
-import { RawUserData } from '../../../interfaces/users.interface';
+import { UserDataSnapshot, UserRegistrationData } from '../../../interfaces/users.interface';
+import { Organization } from '../../../models/organization.model';
+import { Vars } from '../../../vars';
 
 export async function createUser(req: Request, res: Response): Promise<Response> {
     let success = true;
-    const incomingData: RawUserData = req.body;
-    const mappedIncomingData: RawUserData = await mapUser(incomingData);
+    const incomingData: UserRegistrationData = req.body;
+    let access_code = '';
+    if (incomingData.access_code !== undefined) {
+        access_code = incomingData.access_code;
+        delete incomingData.access_code;
+    }
+    const incomingDataWithoutAccessCode: UserDataSnapshot = incomingData;
+    const mappedIncomingData: UserDataSnapshot = await mapUser(incomingDataWithoutAccessCode);
 
     const requiredFields = User.requiredFields();
     if (!objectHasRequiredAndNotEmptyKeys(mappedIncomingData, requiredFields)) {
@@ -56,8 +64,25 @@ export async function createUser(req: Request, res: Response): Promise<Response>
 
     if (user === null) {
 
-        const createdData = await User.create(mappedIncomingData)
-            .catch(() => {
+        const org: Organization | null = await Organization.findOne(
+            {
+                where: {
+                    access_code: access_code
+                }
+            });
+        if (!success) {
+            return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+        }
+        
+        const org_id = org === null ? null : org.id;
+
+        const createdData = await User.create(
+            {
+                ...mappedIncomingData,
+                org_id: org_id
+            })
+            .catch((error) => {
+                Vars.loggy.log(error);
                 success = false;
                 return null;
             });

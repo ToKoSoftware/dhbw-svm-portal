@@ -1,6 +1,6 @@
 import {BeforeCreate, BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, HasMany, IsBefore, IsDate, IsEmail, IsIn, Length, Model, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
 import {v4 as uuidv4} from 'uuid';
-import {genderType, RawUserData} from '../interfaces/users.interface';
+import {genderType, UserDataSnapshot} from '../interfaces/users.interface';
 import { Organization } from './organization.model';
 import { EventRegistration } from './event-registration.model';
 import { Event } from './event.model';
@@ -133,7 +133,7 @@ export class User extends Model {
     created_polls: Poll[];
 
 
-    public static requiredFields(): Array<keyof RawUserData> {
+    public static requiredFields(): Array<keyof UserDataSnapshot> {
         return [
             'email',
             'username',
@@ -145,8 +145,7 @@ export class User extends Model {
             'street',
             'street_number',
             'post_code',
-            'city',
-            'org_id'
+            'city'
         ];
     }
 }
