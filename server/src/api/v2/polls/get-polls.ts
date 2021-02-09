@@ -74,8 +74,7 @@ export async function getPolls(req: Request, res: Response): Promise<Response> {
     let success = true;
     const currentDate = new Date();
     const data = await Poll.scope(['full', {method: ['onlyCurrentOrg', Vars.currentOrganization.id]}, 'active', {method: ['notExpired', currentDate]}, 'ordered']).findAll(query)
-        .catch((error) => {
-            Vars.loggy.log(error);
+        .catch(() => {
             success = false;
             return null;
         });
