@@ -40,7 +40,13 @@ export class LoginComponent implements OnInit {
       data => {
         this.loginService.login(data.data);
         this.loading.hideLoading();
-        this.router.navigate(['/']);
+        const redirect = window.localStorage.getItem('redirect_uri');
+        if (!redirect) {
+          this.router.navigate(['/']);
+        } else {
+          this.router.navigateByUrl(redirect);
+          window.localStorage.removeItem('redirect_uri');
+        }
       }, error => {
         this.loading.hideLoading();
         this.error = true;

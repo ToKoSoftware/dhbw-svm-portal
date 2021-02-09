@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {LoginService} from '../../services/login/login.service';
 import {NotificationService} from '../../services/notification/notification.service';
@@ -10,6 +10,7 @@ import {NotificationService} from '../../services/notification/notification.serv
 })
 export class LoginComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
+  private loginSubscription: Subscription;
   public ssoData: SSOData = {
     client_id: '',
     redirect_uri: '',
@@ -20,6 +21,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
+    private readonly router: Router,
     private readonly session: LoginService,
     private readonly notification: NotificationService
   ) {
@@ -32,22 +34,35 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.ssoData.state = params.state || '';
       this.ssoData.scope = params.scope || '';
       this.ssoData.response_type = params.response_type || '';
+      this.session.isLoggedIn$.subscribe(status => {
+        if (!status) {
+          this.notification.createNotification({
+            id: Math.random().toString(36).substring(7),
+            title: `Bitte loggen Sie sich ein.`,
+            description: 'Sie werden anschließend weitergeleitet.',
+            type: 'info'
+          }, 3000);
+          window.localStorage.setItem('redirect_uri', '/sso?' + this.params)
+          this.router.navigate(['/login']);
+        }
+      });
     });
-    if (!this.session.isLoggedIn$) {
-      this.notification.createNotification({
-        id: Math.random().toString(36).substring(7),
-        title: `Bitte loggen Sie sich ein.`,
-        description: 'Sie werden anschließend weitergeleitet.',
-        type: 'info'
-      }, 3000);
-    }
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    if (this.loginSubscription) {
+      this.loginSubscription.unsubscribe();
+    }
   }
 
   public redirect(): void {
+    window.location.assign(`/api/v2/oauth2?${this.params}`);
+  }
+
+  get params(): string {
     const urlParams = new URLSearchParams();
     urlParams.append('client_id', this.ssoData.client_id);
     urlParams.append('redirect_uri', this.ssoData.redirect_uri);
@@ -55,8 +70,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     urlParams.append('state', this.ssoData.state);
     urlParams.append('response_type', this.ssoData.response_type);
     urlParams.append('token', this.session.jwt$.value || '');
-    console.log(this.session.jwt$.value);
-    window.location.assign(`/api/v2/oauth2?${urlParams}`);
+    return urlParams.toString();
   }
 }
 
