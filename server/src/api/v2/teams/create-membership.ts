@@ -42,8 +42,7 @@ export async function createMembership(req: Request, res: Response): Promise<Res
                 team_id: mappedIncomingData.team_id
             }
         })
-        .catch((error) => {
-            Vars.loggy.log(error);
+        .catch(() => {
             success = false;
             return null;
         });
