@@ -7,6 +7,7 @@ import {Component, HostBinding, Input, OnInit} from '@angular/core';
 export class ContainerComponent implements OnInit {
   @HostBinding('class') classes = 'w-full';
   @Input() public large = false;
+  @Input() public small = false;
   @Input() public center = false;
 
   constructor() {

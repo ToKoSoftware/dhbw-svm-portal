@@ -1,0 +1,52 @@
+<div class="bg-gray-100 dark:bg-black w-full h-full absolute top-0 left-0 block overflow-y-auto pt-10">
+  <app-container [small]="true" [large]="false" class="mt-10" center="true">
+    <app-card>
+      <h1 class="text-2xl">
+        Diese Webseite möchte Zugriff auf Ihre Daten
+      </h1>
+      <p class="pt-3 text-malachite-600">
+        <a target="_blank" [href]="ssoData.redirect_uri">
+          {{ssoData.redirect_uri.replace('http://', '').replace('https://', '')}}
+        </a>
+      </p>
+      <app-titled-content
+        [spacing]="false"
+        label="Lesezugriff"
+        description="Der Anbieter kann dadurch">
+        <ul>
+          <li>
+            <feather-icon [style.padding-top]="'6px'" class="mr-3" name="check"></feather-icon>
+            Ihren Benutzernamen lesen,
+          </li>
+          <li>
+            <feather-icon [style.padding-top]="'6px'" class="mr-3" name="check"></feather-icon>
+            Ihre E-Mail Adresse lesen,
+          </li>
+          <li>
+            <feather-icon [style.padding-top]="'6px'" class="mr-3" name="x"></feather-icon>
+            Ihr Passwort <b>nicht</b> lesen.
+          </li>
+        </ul>
+      </app-titled-content>
+      <app-titled-content
+        [spacing]="false"
+        label="Schreibzugriff"
+        description="Der Anbieter kann dadurch">
+        <ul>
+          <li>
+            <feather-icon [style.padding-top]="'6px'" class="mr-3" name="x"></feather-icon>
+            keine Daten verändern.
+          </li>
+        </ul>
+      </app-titled-content>
+      <div class="flex justify-between mb-5 space-x-4">
+        <app-button (click)="redirect()" class="flex-grow" size="full" label="Zugriff erlauben"></app-button>
+        <a [routerLink]="'/'" class="flex-grow">
+          <app-button size="full" label="Abbrechen" type="blank"></app-button>
+        </a>
+      </div>
+      <small class="text-gray-500 pt-3">Sie werden anschließend auf <b>{{ssoData.redirect_uri}}</b>
+        weitergeleitet.</small>
+    </app-card>
+  </app-container>
+</div>

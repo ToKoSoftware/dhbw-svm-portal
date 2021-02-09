@@ -1,5 +1,6 @@
 <div [class.max-w-7xl]="large"
-     [class.max-w-3xl]="!large"
+     [class.max-w-3xl]="!large && !small"
+     [class.max-w-md]="small"
      [class.mx-auto]="center"
      class="px-3 mb-5">
     <ng-content></ng-content>

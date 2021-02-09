@@ -12,6 +12,7 @@ import { Team } from './team.model';
 import { Membership } from './membership.model';
 import { Role } from './role.model';
 import { RoleAssignment } from './role-assignment.model';
+import {SingleSignOnRequest} from './single-sign-on-request.model';
 
 @DefaultScope(() => ({
     required: false,
@@ -131,6 +132,8 @@ export class User extends Model {
     created_news: News[];
     @HasMany(() => Poll)
     created_polls: Poll[];
+    @HasMany(() => SingleSignOnRequest)
+    sso: SingleSignOnRequest[];
 
 
     public static requiredFields(): Array<keyof RawUserData> {

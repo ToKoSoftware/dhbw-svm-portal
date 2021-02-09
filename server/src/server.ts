@@ -19,7 +19,7 @@ import {getMonthlyStats} from './api/v1/admin/get-monthly-stats';
 import path from 'path';
 import {createNews} from './api/v2/news/create-news';
 import {getTeam, getTeams} from './api/v2/teams/get-teams';
-import {getSingleNews, getAllNews} from './api/v2/news/get-news';
+import {getAllNews, getSingleNews} from './api/v2/news/get-news';
 import {getEvent, getEvents} from './api/v2/events/get-events';
 import {getPoll, getPolls} from './api/v2/polls/get-polls';
 import {getRole, getRoles} from './api/v2/roles/get-roles';
@@ -43,15 +43,15 @@ import {deleteRoleAssignment} from './api/v2/roles/delete-role-assignment';
 import {deletePoll} from './api/v2/polls/delete-poll';
 import {deletePollAnswer} from './api/v2/poll-answers/delete-poll-answer';
 import {deletePollVote} from './api/v2/poll-votes/delete-poll-vote';
-import { updateEvent } from './api/v2/events/update-event';
-import { updateNews } from './api/v2/news/update-news';
-import { updatePoll } from './api/v2/polls/update-poll';
-import { updatePollAnswer } from './api/v2/poll-answers/update-poll-answer';
-import { updateTeam } from './api/v2/teams/update-team';
-import { updateRole } from './api/v2/roles/update-role';
-import { updateOrganization } from './api/v2/organizations/update-organization';
-
-
+import {updateEvent} from './api/v2/events/update-event';
+import {updateNews} from './api/v2/news/update-news';
+import {updatePoll} from './api/v2/polls/update-poll';
+import {updatePollAnswer} from './api/v2/poll-answers/update-poll-answer';
+import {updateTeam} from './api/v2/teams/update-team';
+import {updateRole} from './api/v2/roles/update-role';
+import {updateOrganization} from './api/v2/organizations/update-organization';
+import {oauth2Authentication, oauth2Token, oauth2User} from './api/oauth2/authenticate';
+import {getOauth2Configuration, updateOauth2Configuration} from './api/oauth2/configure';
 
 export default function startServer(): void {
 
@@ -60,6 +60,7 @@ export default function startServer(): void {
      */
     const app = express();
     app.use(cors());
+    app.use(bodyParser.urlencoded());
     app.use(bodyParser.json());
     const PORT: string | number = process.env.PORT || 5000;
     const router = express.Router();
@@ -83,6 +84,13 @@ export default function startServer(): void {
      */
     app.post('/api/v1/login', (req, res) => loginUser(req, res));
 
+    // OAuth2
+    app.get('/api/v2/oauth2', userIsAuthorizedByParam, (req, res) => oauth2Authentication(req, res));
+    app.post('/api/v2/oauth2/token', (req, res) => oauth2Token(req, res));
+    app.post('/api/v2/oauth2/user', (req, res) => oauth2User(req, res));
+    app.get('/api/v2/oauth2/configuration', userIsAuthorized, userIsAdmin, (req, res) => getOauth2Configuration(req, res));
+    app.put('/api/v2/oauth2/configuration', userIsAuthorized, userIsAdmin, (req, res) => updateOauth2Configuration(req, res));
+
     /**
      * User
      */
@@ -92,7 +100,7 @@ export default function startServer(): void {
     app.put('/api/v1/users/:id', userIsAuthorized, (req, res) => updateUser(req, res));
     app.delete('/api/v1/users/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteUser(req, res));
 
-    /** 
+    /**
      * Team
      */
     app.get('/api/v2/teams', userIsAuthorized, userIsAdmin, (req, res) => getTeams(req, res));
@@ -103,7 +111,7 @@ export default function startServer(): void {
     app.delete('/api/v2/teams/:team_id/membership', userIsAuthorized, (req, res) => deleteMembership(req, res));
     app.put('/api/v2/teams/:id', userIsAuthorized, userIsAdmin, (req, res) => updateTeam(req, res));
 
-    /** 
+    /**
      * News
      */
     app.get('/api/v2/news', userIsAuthorized, (req, res) => getAllNews(req, res));
@@ -112,7 +120,7 @@ export default function startServer(): void {
     app.delete('/api/v2/news/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteNews(req, res));
     app.put('/api/v2/news/:id', userIsAuthorized, userIsAdmin, (req, res) => updateNews(req, res));
 
-    /** 
+    /**
      * Event
      */
     app.get('/api/v2/events', userIsAuthorized, (req, res) => getEvents(req, res));
@@ -123,7 +131,7 @@ export default function startServer(): void {
     app.delete('/api/v2/events/:event_id/eventregistrations/:id', userIsAuthorized, (req, res) => deleteEventRegistration(req, res));
     app.put('/api/v2/events/:id', userIsAuthorized, userIsAdmin, (req, res) => updateEvent(req, res));
 
-    /** 
+    /**
      * Poll
      */
     app.get('/api/v2/polls', userIsAuthorized, (req, res) => getPolls(req, res));
@@ -143,7 +151,7 @@ export default function startServer(): void {
     app.post('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res));
     app.put('/api/v2/pollAnswers/:id', userIsAuthorized, userIsAdmin, (req, res) => updatePollAnswer(req, res));
 
-    /** 
+    /**
      * Role
      */
     app.get('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => getRoles(req, res));
@@ -151,16 +159,16 @@ export default function startServer(): void {
     app.post('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => createRole(req, res));
     app.post('/api/v2/roles/:id/assignment', userIsAuthorized, userIsAdmin, (req, res) => createRoleAssignmnet(req, res));
     app.delete('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteRole(req, res));
-    app.delete('/api/v2/roles/:id/assignment', userIsAuthorized, userIsAdmin,(req, res) => deleteRoleAssignment(req, res));
+    app.delete('/api/v2/roles/:id/assignment', userIsAuthorized, userIsAdmin, (req, res) => deleteRoleAssignment(req, res));
     app.put('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => updateRole(req, res));
-    
-    /** 
+
+    /**
      * Organization
      */
     app.get('/api/v2/organizations', userIsAuthorized, (req, res) => getOrganizations(req, res));
     app.get('/api/v2/organizations/:id', userIsAuthorized, (req, res) => getOrganization(req, res));
     app.put('/api/v2/organizations/:id', userIsAuthorized, userIsAdmin, (req, res) => updateOrganization(req, res));
-    
+
     /**
      * Admin
      */
@@ -174,8 +182,6 @@ export default function startServer(): void {
     app.get('*', function(request, response) {
         response.sendFile(path.resolve(__dirname, '../dist/index.html'));
     });
-
-
     /**
      * Server
      */
