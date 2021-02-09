@@ -1,0 +1,52 @@
+<app-titled-content
+  label="Entwickler-Einstellungen"
+  description="Diese Einstellungen werden zur Konfiguration dieses Systems als OAuth2 Identity Provider verwendet. Ändern Sie diese Werte nur, wenn Sie wissen, was sie tun.">
+  <form [formGroup]="editDevSettingsForm">
+    <app-labeled-value label="SingleSignOn Url">
+      <div class="flex justify-between">
+        <p class="pt-1">
+          {{hostname}}/<b>sso</b>
+        </p>
+        <app-button icon="copy" (click)="copyToClipboard('sso_url')" type="transparent" label="Kopieren"
+                    size="small"></app-button>
+      </div>
+    </app-labeled-value>
+    <app-labeled-value label="Access-Token Endpoint Url">
+      <div class="flex justify-between">
+        <p class="pt-1">
+          {{hostname}}/<b>api/v2/oauth2/token</b>
+        </p>
+        <app-button icon="copy" (click)="copyToClipboard('oauth2_token_url')" type="transparent" label="Kopieren"
+                    size="small"></app-button>
+      </div>
+    </app-labeled-value>
+    <app-input
+      required="true"
+      type="text"
+      formControlName="application_name"
+      placeholder="MeineWebsite"
+      label="Application Name"
+      description="Geben Sie nur Buchstaben a-z, A-Z und Zahlen 0-9 ein. Verwenden Sie keine Leerzeichen, nur - und _"
+    >
+    </app-input>
+    <app-labeled-value label="Client Secret">
+      <div class="flex justify-between">
+        <p>
+          {{editDevSettingsForm.value.client_secret}}
+        </p>
+        <div>
+          <app-button (click)="createRandomClientSecret()" icon="shuffle" type="transparent" label="Generieren"
+                      size="small"></app-button>
+          <app-button icon="copy" (click)="copyToClipboard('client_secret')" type="transparent" label="Kopieren"
+                      size="small"></app-button>
+        </div>
+      </div>
+    </app-labeled-value>
+    <div class="flex justify-end w-full">
+      <app-button
+        formButtonType="submit"
+        label="Speichern">
+      </app-button>
+    </div>
+  </form>
+</app-titled-content>

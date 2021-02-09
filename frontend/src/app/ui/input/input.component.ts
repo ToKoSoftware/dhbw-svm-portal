@@ -101,6 +101,8 @@ export class InputComponent implements OnInit, ControlValueAccessor {
       case 'minlength':
         const missing = error.minlength.requiredLength - error.minlength.actualLength;
         return `Geben Sie bitte ${missing} weitere${missing === 1? 's' : ''} Zeichen ein`;
+      case 'pattern':
+        return `Geben Sie bitte keine ungültigen Zeichen ein`;
     }
     return 'Fehlerhafte Eingabe.';
   }

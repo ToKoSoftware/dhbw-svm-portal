@@ -18,6 +18,8 @@ import { CreateTeamComponent } from './create-team/create-team.component';
 import { EditTeamComponent } from './edit-team/edit-team.component';
 import { EditRoleMembershipsComponent } from './edit-role-memberships/edit-role-memberships.component';
 import {EditTeamMembershipsComponent} from './edit-team-memberships/edit-team-memberships.component';
+import { EditDeveloperSettingsComponent } from './edit-developer-settings/edit-developer-settings.component';
+import {ClipboardModule} from 'ngx-clipboard';
 
 @NgModule({
   declarations: [
@@ -34,11 +36,13 @@ import {EditTeamMembershipsComponent} from './edit-team-memberships/edit-team-me
     CreateTeamComponent,
     EditTeamComponent,
     EditRoleMembershipsComponent,
-    EditTeamMembershipsComponent
+    EditTeamMembershipsComponent,
+    EditDeveloperSettingsComponent
   ],
-  exports: [EditUserComponent, EditEventComponent, CreateNewsComponent, EditNewsComponent, EditPollComponent, CreatePollComponent, CreateEventComponent, CreateRoleComponent, EditRoleComponent, EditTeamComponent, CreateTeamComponent, EditRoleMembershipsComponent, EditTeamMembershipsComponent],
+  exports: [EditUserComponent, EditEventComponent, CreateNewsComponent, EditNewsComponent, EditPollComponent, CreatePollComponent, CreateEventComponent, CreateRoleComponent, EditRoleComponent, EditTeamComponent, CreateTeamComponent, EditRoleMembershipsComponent, EditTeamMembershipsComponent, EditDeveloperSettingsComponent],
   imports: [
     CommonModule,
+    ClipboardModule,
     FormsModule,
     ReactiveFormsModule,
     MomentModule,
