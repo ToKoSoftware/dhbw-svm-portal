@@ -76,7 +76,6 @@ module.exports = {
             city: 'Heidenheim',
             org_id: org_id_svm,
             is_active: true,
-            is_admin: true,
             createdAt: date,
             updatedAt: date
         }];
