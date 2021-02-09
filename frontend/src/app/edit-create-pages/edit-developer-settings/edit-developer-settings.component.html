@@ -1,7 +1,7 @@
 <app-titled-content
   label="Entwickler-Einstellungen"
   description="Diese Einstellungen werden zur Konfiguration dieses Systems als OAuth2 Identity Provider verwendet. Ändern Sie diese Werte nur, wenn Sie wissen, was sie tun.">
-  <form [formGroup]="editDevSettingsForm">
+  <form [formGroup]="editDevSettingsForm" (ngSubmit)="saveData()">
     <app-labeled-value label="SingleSignOn Url">
       <div class="flex justify-between">
         <p class="pt-1">
@@ -25,7 +25,7 @@
       type="text"
       formControlName="application_name"
       placeholder="MeineWebsite"
-      label="Application Name"
+      label="Application Name (Identifier)"
       description="Geben Sie nur Buchstaben a-z, A-Z und Zahlen 0-9 ein. Verwenden Sie keine Leerzeichen, nur - und _"
     >
     </app-input>

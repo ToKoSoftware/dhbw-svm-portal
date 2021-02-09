@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ClipboardService} from 'ngx-clipboard';
+import {ApiService} from '../../services/api/api.service';
+import {NotificationService} from '../../services/notification/notification.service';
+import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
 
 @Component({
   selector: 'app-edit-developer-settings',
@@ -9,11 +12,16 @@ import {ClipboardService} from 'ngx-clipboard';
 export class EditDeveloperSettingsComponent implements OnInit {
   public editDevSettingsForm: FormGroup;
 
-  constructor(private clipboardService: ClipboardService,
-    private readonly formBuilder: FormBuilder) {
+  constructor(
+    private readonly clipboardService: ClipboardService,
+    private readonly formBuilder: FormBuilder,
+    private readonly notifications: NotificationService,
+    private readonly loading: LoadingModalService,
+    private readonly api: ApiService) {
   }
 
   ngOnInit(): void {
+    this.loadData();
     this.editDevSettingsForm = this.formBuilder.group(
       {
         client_secret: [],
@@ -44,5 +52,28 @@ export class EditDeveloperSettingsComponent implements OnInit {
 
   get hostname(): string {
     return window.location.hostname;
+  }
+
+  public saveData(): void {
+    this.api.put('/oauth2/configuration', this.editDevSettingsForm.value).subscribe(
+      () => this.notifications.savedSuccessfully(),
+      () => this.notifications.savingFailed()
+    );
+  }
+
+  private loadData(): void {
+    this.loading.showLoading();
+    this.api.get<{ client_secret: string, application_name: string }>('/oauth2/configuration').subscribe(
+      (data) => {
+        this.loading.hideLoading();
+        this.editDevSettingsForm = this.formBuilder.group(
+          {
+            client_secret: [data.data.client_secret],
+            application_name: [data.data.application_name, [Validators.pattern('([A-Za-z0-9\\-\\_]+)')]],
+          }
+        );
+      },
+      () => this.notifications.savingFailed()
+    );
   }
 }

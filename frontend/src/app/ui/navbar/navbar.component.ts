@@ -24,7 +24,7 @@ export class NavbarComponent implements OnInit {
       url: '/events'
     }, {
       icon: 'user-check',
-      title: 'Anmeldungen',
+      title: 'Meine Anmeldungen',
       url: '/join'
     }, {
       icon: 'pie-chart',
