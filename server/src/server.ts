@@ -51,6 +51,7 @@ import {updateTeam} from './api/v2/teams/update-team';
 import {updateRole} from './api/v2/roles/update-role';
 import {updateOrganization} from './api/v2/organizations/update-organization';
 import {oauth2Authentication, oauth2Token, oauth2User} from './api/oauth2/authenticate';
+import {getOauth2Configuration, updateOauth2Configuration} from './api/oauth2/configure';
 
 export default function startServer(): void {
 
@@ -87,6 +88,8 @@ export default function startServer(): void {
     app.get('/api/v2/oauth2', userIsAuthorizedByParam, (req, res) => oauth2Authentication(req, res));
     app.post('/api/v2/oauth2/token', (req, res) => oauth2Token(req, res));
     app.post('/api/v2/oauth2/user', (req, res) => oauth2User(req, res));
+    app.get('/api/v2/oauth2/configuration', userIsAuthorized, userIsAdmin, (req, res) => getOauth2Configuration(req, res));
+    app.put('/api/v2/oauth2/configuration', userIsAuthorized, userIsAdmin, (req, res) => updateOauth2Configuration(req, res));
 
     /**
      * User
@@ -181,8 +184,6 @@ export default function startServer(): void {
     app.get('*', function(request, response) {
         response.sendFile(path.resolve(__dirname, '../dist/index.html'));
     });
-
-
     /**
      * Server
      */

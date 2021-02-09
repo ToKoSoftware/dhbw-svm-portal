@@ -4,7 +4,7 @@ import {User} from './user.model';
 
 @DefaultScope(() => ({
     required: false,
-    include: [User]
+    include: [User.scope('full')]
 }))
 @Table
 export class SingleSignOnRequest extends Model {

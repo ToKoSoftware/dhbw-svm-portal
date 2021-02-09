@@ -2,7 +2,7 @@ import {Request, Response} from 'express';
 import jwt from 'jsonwebtoken';
 import {Vars} from '../../vars';
 import {SingleSignOnRequest} from '../../models/single-sign-on-request.model';
-import {loadOrgSetting, saveOrgSetting} from '../../functions/settings.func';
+import {loadOrgSetting} from '../../functions/settings.func';
 
 export async function oauth2Authentication(req: Request, res: Response): Promise<void> {
     // destroy all open sign-in requests for current user
@@ -26,6 +26,17 @@ export async function oauth2Authentication(req: Request, res: Response): Promise
 }
 
 export async function oauth2Token(req: Request, res: Response): Promise<Response> {
+    // make it impossible to get a random id
+    const id = req.body.code || 'null';
+    // check if a request exists with id
+    const ssoRequest: SingleSignOnRequest | null = await SingleSignOnRequest.findByPk(id).then(ssoRequest => ssoRequest).catch(() => null);
+    if (!ssoRequest) {
+        return res.status(403).send({
+            error: 'Could not perform single-sign-on.'
+        });
+    }
+    // load new current organization
+    Vars.currentOrganization = ssoRequest.user.organization;
     // get and clean-up basic auth token
     const encodedSecret = (req.headers['authorization'] || '').replace('Basic ', '');
     // decode token
@@ -36,20 +47,12 @@ export async function oauth2Token(req: Request, res: Response): Promise<Response
             error: 'No OAuth2 config found.'
         });
     }
+    // secret is provided as application_name:client_secret
     const splitSecret = clientSecret.split(':');
+    // verify if secret matches configuration
     if (oauth2config.data.application_name !== splitSecret[0] || oauth2config.data.client_secret !== splitSecret[1]){
         return res.status(403).send({
             error: 'Invalid client secret.'
-        });
-    }
-
-    // make it impossible to get a random id
-    const id = req.body.code || 'null';
-    // check if a request exists with id
-    const ssoRequest: SingleSignOnRequest | null = await SingleSignOnRequest.findByPk(id).then(ssoRequest => ssoRequest).catch(() => null);
-    if (!ssoRequest) {
-        return res.status(403).send({
-            error: 'Could not perform single-sign-on.'
         });
     }
     const response = res.send({
@@ -77,7 +80,7 @@ export async function oauth2User(req: Request, res: Response): Promise<Response>
     return res.send({email: 'user@example.com', user: 'user'});
 }
 
-interface OAuth2ClientConfiguration {
+export interface OAuth2ClientConfiguration {
     client_secret: string;
     application_name: string;
 }

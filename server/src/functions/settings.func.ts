@@ -1,20 +1,19 @@
 import {Vars} from '../vars';
 import {Organization} from '../models/organization.model';
 
-export async function saveOrgSetting(key: string): Promise<OrganizationConfiguration | null> {
+export async function updateOrgSetting<T>(key: string, value: SingleConfiguration<T>): Promise<OrganizationConfiguration | null> {
     const currentOrg: Organization | null = await Organization.scope('full').findByPk(Vars.currentOrganization.id)
         .then(org => org)
         .catch(() => null);
     if (!currentOrg) {
         return null;
     }
-    let config: SingleConfiguration<unknown>[] = [];
-    const decodedConfig = JSON.parse(currentOrg.config);
-    if (Array.isArray(decodedConfig)) {
-        config = decodedConfig;
-    }
-    return await currentOrg.update({config: config})
-        .then(co => JSON.parse(co.config) as OrganizationConfiguration).catch(() => null);
+    const configData: OrganizationConfiguration = currentOrg.config as unknown as OrganizationConfiguration;
+    configData[key] = value;
+    currentOrg.config = JSON.stringify(configData);
+    return await currentOrg.save()
+        .then(() => configData)
+        .catch(() => null);
 }
 
 export async function loadOrgSetting<T>(key: string): Promise<SingleConfiguration<T> | null> {
