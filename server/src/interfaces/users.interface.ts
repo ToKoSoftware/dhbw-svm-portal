@@ -11,8 +11,7 @@ export interface UserDataSnapshot {
     id?: string;
     email: string;
     username: string;
-    password: string;
-    is_admin: boolean;
+    password?: string;
     first_name: string;
     last_name: string;
     gender: genderType;

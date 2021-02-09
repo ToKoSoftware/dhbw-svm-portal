@@ -26,9 +26,10 @@ export async function createUser(req: Request, res: Response): Promise<Response>
         return res.status(400).send(wrapResponse(false, { error: 'Birthday is not valid' }));
     }
 
-    const validPassword = incomingData.password.length >= 6;
-    if (!validPassword) {
-        return res.status(400).send(wrapResponse(false, { error: 'Password not valid! It must contain at least 6 characters!' }));
+    if (mappedIncomingData.password !== undefined) {
+        if (mappedIncomingData.password.length <= 5) {
+            return res.status(400).send(wrapResponse(false, { error: 'Password not valid! It must contain at least 6 characters!' }));
+        }
     }
 
     const user = await User.findOne(

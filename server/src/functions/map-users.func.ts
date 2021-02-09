@@ -10,7 +10,6 @@ export async function mapUser(incomingData: RawUserData): Promise<RawUserData> {
     return {
         ...incomingData,
         birthday: birthday,
-        password: hashedPassword,
-        is_admin: false,
+        password: hashedPassword
     };
 }
