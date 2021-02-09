@@ -1,5 +1,4 @@
 import { User } from '../models/user.model';
-import { Vars } from '../vars';
 
 export function userIsAdminCheck(user: User): boolean {
     if (user.org_id === null) {
