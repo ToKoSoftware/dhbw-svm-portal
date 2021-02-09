@@ -74,15 +74,14 @@ export async function createUser(req: Request, res: Response): Promise<Response>
             return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
         }
         
-        const org_id = org === null ? null : org.id;
+        const org_id = org ? org.id : null;
 
         const createdData = await User.create(
             {
                 ...mappedIncomingData,
                 org_id: org_id
             })
-            .catch((error) => {
-                Vars.loggy.log(error);
+            .catch(() => {
                 success = false;
                 return null;
             });
