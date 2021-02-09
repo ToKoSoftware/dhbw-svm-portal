@@ -39,7 +39,7 @@ export async function createMembership(req: Request, res: Response): Promise<Res
         {
             where: {
                 user_id: mappedIncomingData.user_id,
-                role_id: mappedIncomingData.team_id
+                team_id: mappedIncomingData.team_id
             }
         })
         .catch(() => {
