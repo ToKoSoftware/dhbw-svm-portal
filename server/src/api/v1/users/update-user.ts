@@ -19,8 +19,7 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
 
     const validEmail = EmailValidator.validate(mappedIncomingData.email) || isBlank(mappedIncomingData.email);
 
-    const validBirthday = mappedIncomingData.birthday instanceof Date || isBlank(mappedIncomingData.birthday);
-    if (!validBirthday) {
+    if (mappedIncomingData.birthday.toString() === 'Invalid Date' && incomingData.birthday !== undefined) {
         return res.status(400).send(wrapResponse(false, { error: 'Birthday is not valid' }));
     }
 

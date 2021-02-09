@@ -22,8 +22,7 @@ export async function createUser(req: Request, res: Response): Promise<Response>
         return res.status(400).send(wrapResponse(false, { error: 'Email is not valid' }));
     }
 
-    const validBirthday = mappedIncomingData.birthday instanceof Date;
-    if (!validBirthday) {
+    if (mappedIncomingData.birthday.toString() === 'Invalid Date') {
         return res.status(400).send(wrapResponse(false, { error: 'Birthday is not valid' }));
     }
 
