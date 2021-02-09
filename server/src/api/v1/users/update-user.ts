@@ -72,7 +72,7 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
                 return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
             }
             if (emailInUseCount > 0) {
-                return res.status(400).send(wrapResponse(false, { error: 'E-Mail already in use' }));
+                return res.status(400).send(wrapResponse(false, { error: 'Email already in use' }));
             }
         }
 

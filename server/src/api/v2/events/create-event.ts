@@ -16,7 +16,7 @@ export async function createEvent(req: Request, res: Response): Promise<Response
     }
 
     if (mappedIncomingData.start_date.toString() === 'Invalid Date' || mappedIncomingData.end_date.toString() === 'Invalid Date') {
-        return res.status(400).send(wrapResponse(false, { error: 'Dates is not valid' }));
+        return res.status(400).send(wrapResponse(false, { error: 'Dates are not valid' }));
     }
 
     if (mappedIncomingData.start_date > mappedIncomingData.end_date) {
