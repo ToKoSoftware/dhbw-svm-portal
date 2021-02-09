@@ -49,7 +49,7 @@ import { currentOrg } from './current-org.scope';
     }),
     ordered: {
         required: false,
-        order: [['start_date', 'ASC']]
+        order: [['closes_at', 'ASC']]
     },
     onlyCurrentOrg: (org_id: string) => currentOrg(org_id)
 })) 
