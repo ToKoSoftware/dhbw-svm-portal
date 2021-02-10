@@ -95,20 +95,20 @@ export default function startServer(): void {
      * User
      */
     app.get('/api/v1/users', userIsAuthorized, userIsAdmin, (req, res) => getUsers(req, res));
-    app.get('/api/v1/users/:id', userIsAuthorized, (req, res) => getUser(req, res));
+    app.get('/api/v1/users/:id', userIsAuthorized, (req, res) => getUser(req, res)); //Admin: jeden, jeder User nur sich selbst sonst forbidden
     app.post('/api/v1/users', (req, res) => createUser(req, res));
-    app.put('/api/v1/users/:id', userIsAuthorized, (req, res) => updateUser(req, res));
+    app.put('/api/v1/users/:id', userIsAuthorized, (req, res) => updateUser(req, res)); //Admin: jeden, jeder User nur sich selbst sonst forbidden
     app.delete('/api/v1/users/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteUser(req, res));
 
     /**
      * Team
      */
-    app.get('/api/v2/teams', userIsAuthorized, userIsAdmin, (req, res) => getTeams(req, res));
-    app.get('/api/v2/teams/:id', userIsAuthorized, (req, res) => getTeam(req, res));
+    app.get('/api/v2/teams', userIsAuthorized, (req, res) => getTeams(req, res)); //Admin alle, User die, in denen er drin ist.
+    app.get('/api/v2/teams/:id', userIsAuthorized, (req, res) => getTeam(req, res)); //Admin alle, User nur wenn er drin ist, sonst forbidden
     app.post('/api/v2/teams', userIsAuthorized, userIsAdmin, (req, res) => createTeam(req, res));
     app.post('/api/v2/teams/:id/membership', userIsAuthorized, (req, res) => createMembership(req, res));
     app.delete('/api/v2/teams/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteTeam(req, res));
-    app.delete('/api/v2/teams/:team_id/membership', userIsAuthorized, (req, res) => deleteMembership(req, res));
+    app.delete('/api/v2/teams/:team_id/membership', userIsAuthorized, (req, res) => deleteMembership(req, res)); //Admin alle, User nur eigene.
     app.put('/api/v2/teams/:id', userIsAuthorized, userIsAdmin, (req, res) => updateTeam(req, res));
 
     /**
@@ -123,25 +123,23 @@ export default function startServer(): void {
     /**
      * Event
      */
-    app.get('/api/v2/events', userIsAuthorized, (req, res) => getEvents(req, res));
-    app.get('/api/v2/events/:id', userIsAuthorized, (req, res) => getEvent(req, res));
+    app.get('/api/v2/events', (req, res) => getEvents(req, res)); //Sehen darf jeder
+    app.get('/api/v2/events/:id', (req, res) => getEvent(req, res)); //Sehen darf jeder
     app.post('/api/v2/events', userIsAuthorized, userIsAdmin, (req, res) => createEvent(req, res));
-    app.post('/api/v2/events/:id/register', userIsAuthorized, (req, res) => registerForEvent(req, res));
+    app.post('/api/v2/events/:id/register', (req, res) => registerForEvent(req, res)); //Jeder User darf anmelden
     app.delete('/api/v2/events/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteEvent(req, res));
-    app.delete('/api/v2/events/:event_id/eventregistrations/:id', userIsAuthorized, (req, res) => deleteEventRegistration(req, res));
+    app.delete('/api/v2/events/:event_id/eventregistrations/:id', userIsAuthorized, (req, res) => deleteEventRegistration(req, res)); //Admin alle, User nur eigene.
     app.put('/api/v2/events/:id', userIsAuthorized, userIsAdmin, (req, res) => updateEvent(req, res));
 
     /**
      * Poll
      */
-    app.get('/api/v2/polls', userIsAuthorized, (req, res) => getPolls(req, res));
-    app.get('/api/v2/polls/:id', userIsAuthorized, (req, res) => getPoll(req, res));
+    app.get('/api/v2/polls', userIsAuthorized, (req, res) => getPolls(req, res)); //Admin alle, User nur wenn answer_team_id
+    app.get('/api/v2/polls/:id', userIsAuthorized, (req, res) => getPoll(req, res)); //Admin alle, User nur wenn answer_team_id
     app.post('/api/v2/polls', userIsAuthorized, userIsAdmin, (req, res) => createPoll(req, res));
-    app.post('/api/v2/polls/:id/answers', userIsAuthorized, userIsAdmin, (req, res) => createPollAnswer(req, res));
     app.post('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res));
     app.delete('/api/v2/polls/:id', userIsAuthorized, userIsAdmin, (req, res) => deletePoll(req, res));
-    app.delete('/api/v2/polls/:pollId/answers/:id', userIsAuthorized, userIsAdmin, (req, res) => deletePollAnswer(req, res));
-    app.delete('/api/v2/polls/:pollId/:pollAnswerId/votes/:id', userIsAuthorized, (req, res) => deletePollVote(req, res));
+    app.delete('/api/v2/polls/:pollId/:pollAnswerId/votes/:id', userIsAuthorized, (req, res) => deletePollVote(req, res)); //Admin alle, User nur eigene.
     app.put('/api/v2/polls/:id', userIsAuthorized, userIsAdmin, (req, res) => updatePoll(req, res));
 
     /**
@@ -150,12 +148,13 @@ export default function startServer(): void {
     app.post('/api/v2/polls/:id/answers', userIsAuthorized, userIsAdmin, (req, res) => createPollAnswer(req, res));
     app.post('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res));
     app.put('/api/v2/pollAnswers/:id', userIsAuthorized, userIsAdmin, (req, res) => updatePollAnswer(req, res));
-
+    app.delete('/api/v2/polls/:pollId/answers/:id', userIsAuthorized, userIsAdmin, (req, res) => deletePollAnswer(req, res));
+    
     /**
      * Role
      */
-    app.get('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => getRoles(req, res));
-    app.get('/api/v2/roles/:id', userIsAuthorized, (req, res) => getRole(req, res));
+    app.get('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => getRoles(req, res)); 
+    app.get('/api/v2/roles/:id', userIsAuthorized, (req, res) => getRole(req, res)); //Admin alle, User nur, wenn drin
     app.post('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => createRole(req, res));
     app.post('/api/v2/roles/:id/assignment', userIsAuthorized, userIsAdmin, (req, res) => createRoleAssignmnet(req, res));
     app.delete('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteRole(req, res));
