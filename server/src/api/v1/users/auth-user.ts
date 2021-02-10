@@ -26,8 +26,7 @@ export async function loginUser(req: Request, res: Response): Promise<Response> 
     };
 
     const user = await User.scope('verification').findOne(selectStatement)
-        .catch((error) => {
-            Vars.loggy.log(error);
+        .catch(() => {
             success = false;
             return null;
         });
