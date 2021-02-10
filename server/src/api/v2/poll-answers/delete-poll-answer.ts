@@ -4,17 +4,22 @@ import {PollAnswer} from '../../../models/poll-answer.model';
 
 export async function deletePollAnswer(req: Request, res: Response): Promise<Response> {
     let success = true;
-    //TODO Authoriaztion check, if poll-answers can get created by no-admins
 
-    await PollAnswer.update(
+    const pollAnswerData: PollAnswer | null = await PollAnswer.findByPk(req.params.id)
+        .catch(() => {
+            success = false;
+            return null;
+        });
+    if (!success) {
+        return res.status(500).send(wrapResponse(false, {error: 'Database error!'}));
+    }
+    if (pollAnswerData === null) {
+        return res.status(400).send(wrapResponse(false, { error: 'There is no active PollAnswer with the given id!'}));
+    }
+
+    await pollAnswerData.update(
         {
             is_active: false,
-        },
-        {
-            where: {
-                id: req.params.id,
-                is_active: true
-            }
         })
         .catch(() => {
             success = false;
