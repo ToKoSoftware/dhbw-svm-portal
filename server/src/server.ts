@@ -95,7 +95,7 @@ export default function startServer(): void {
      * User
      */
     app.get('/api/v1/users', userIsAuthorized, userIsAdmin, (req, res) => getUsers(req, res));
-    app.get('/api/v1/users/:id', userIsAuthorized, (req, res) => getUser(req, res)); //Admin: defaultScope, User publicScope
+    app.get('/api/v1/users/:id', userIsAuthorized, (req, res) => getUser(req, res));
     app.post('/api/v1/users', (req, res) => createUser(req, res));
     app.put('/api/v1/users/:id', userIsAuthorized, (req, res) => updateUser(req, res)); //Admin: jeden, jeder User nur sich selbst sonst forbidden
     app.delete('/api/v1/users/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteUser(req, res));
