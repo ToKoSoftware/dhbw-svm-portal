@@ -103,8 +103,8 @@ export default function startServer(): void {
     /**
      * Team
      */
-    app.get('/api/v2/teams', userIsAuthorized, (req, res) => getTeams(req, res)); //Admin alle, User die, in denen er drin ist oder maintain_role_id hat
-    app.get('/api/v2/teams/:id', userIsAuthorized, (req, res) => getTeam(req, res)); //Admin alle, User nur wenn er drin ist oder maintain_role_id hat, sonst forbidden
+    app.get('/api/v2/teams', userIsAuthorized, (req, res) => getTeams(req, res));
+    app.get('/api/v2/teams/:id', userIsAuthorized, (req, res) => getTeam(req, res));
     app.post('/api/v2/teams', userIsAuthorized, userIsAdmin, (req, res) => createTeam(req, res));
     app.post('/api/v2/teams/:id/membership', userIsAuthorized, (req, res) => createMembership(req, res));
     app.delete('/api/v2/teams/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteTeam(req, res));
