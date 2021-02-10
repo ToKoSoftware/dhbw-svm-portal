@@ -12,8 +12,6 @@ export async function getTeam(req: Request, res: Response): Promise<Response> {
     let success = true;
     let query;
 
-    // TODO: prüfen nach maintain_role_id. Wenn User in der Rolle, dann darf auch diese sehen
-
     if (Vars.currentUserIsAdmin) {
         query = {
             where: {
@@ -22,11 +20,18 @@ export async function getTeam(req: Request, res: Response): Promise<Response> {
             include: [Organization, Role, User]
         };
     } else {
+        const roleIds = Vars.currentUser.assigned_roles.map(r => r.id);
+        const teamIds = Vars.currentUser.teams.map(t => t.id);
         query = {
             where: {
                 [Op.and]: [
                     { id: req.params.id },
-                    { id: Vars.currentUser.teams.map(t => t.id) }
+                    {
+                        [Op.or]: [
+                            { id: teamIds },
+                            { maintain_role_id: roleIds }
+                        ]
+                    }
                 ]
             },
             include: {
@@ -35,7 +40,8 @@ export async function getTeam(req: Request, res: Response): Promise<Response> {
         };
     }
 
-    const teamData: Team | null = await Team.scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] })
+
+    const teamData: Team | null = await Team.scope({ method: ['onlyCurrentOrg', Vars.currentOrganization?.id] })
         .findOne(query)
         .catch(() => {
             success = false;
