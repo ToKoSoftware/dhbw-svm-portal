@@ -77,7 +77,6 @@ export class User extends Model {
     @PrimaryKey
     @Column
     id: string;
-    @IsEmail
     @Column
     email: string;
     @Column
