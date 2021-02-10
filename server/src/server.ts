@@ -56,6 +56,7 @@ import { createOrganization } from './api/v2/organizations/create-organization';
 import { getEventRegistration, getEventRegistrations } from './api/v2/event-registrations/get-event-registrations';
 import { updateEventRegistration } from './api/v2/event-registrations/update-event-registration';
 import { deleteOrganization } from './api/v2/organizations/delete-organization';
+import { updatePollVote } from './api/v2/poll-votes/update-poll-vote';
 
 export default function startServer(): void {
 
@@ -137,7 +138,7 @@ export default function startServer(): void {
     app.delete('/api/v2/events/:event_id/eventregistrations/:id', userIsAuthorized, (req, res) => deleteEventRegistration(req, res));
     app.put('/api/v2/events/:id', userIsAuthorized, userIsAdmin, (req, res) => updateEvent(req, res));
     app.put('/api/v2/events/:event_id/eventregistrations', userIsAuthorized, (req, res) => updateEventRegistration(req, res));
-    
+
     /**
      * Poll
      */
@@ -157,6 +158,7 @@ export default function startServer(): void {
     app.post('/api/v2/polls/:id/answers', userIsAuthorized, userIsAdmin, (req, res) => createPollAnswer(req, res));
     app.post('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res));
     app.put('/api/v2/pollAnswers/:id', userIsAuthorized, userIsAdmin, (req, res) => updatePollAnswer(req, res));
+    app.delete('/api/v2/polls/:pollId/:pollAnswerId/votes', userIsAuthorized, (req, res) => updatePollVote(req, res));
 
     /**
      * Role
@@ -177,7 +179,7 @@ export default function startServer(): void {
     app.get('/api/v2/organizations/:id', userIsAuthorized, (req, res) => getOrganization(req, res));
     app.put('/api/v2/organizations/:id', userIsAuthorized, userIsAdmin, (req, res) => updateOrganization(req, res));
     app.delete('/api/v2/organizations/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteOrganization(req, res));
-    
+
     /**
      * Admin
      */
