@@ -9,8 +9,7 @@ export async function deleteMembership(req: Request, res: Response): Promise<Res
     let success = true;
     const incomingData: RawMembershipData = req.body;
 
-    //check if currentUser is admin oder member
-    const memberhsipToDelete = await Membership.findOne({
+    const membershipData = await Membership.findOne({
         where: {
             user_id: incomingData.user_id,
             team_id: req.params.team_id
@@ -21,15 +20,15 @@ export async function deleteMembership(req: Request, res: Response): Promise<Res
         return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
 
-    if (memberhsipToDelete === null) {
+    if (membershipData === null) {
         return res.status(404).send(wrapResponse(false, { error: 'No membership with given id' }));
-    } else if (memberhsipToDelete.user_id !== null && !currentUserIsAdminOrMatchesId(memberhsipToDelete.user_id) && !Vars.currentUserIsAdmin ){
+    } else if (membershipData.user_id !== null && !currentUserIsAdminOrMatchesId(membershipData.user_id) && !Vars.currentUserIsAdmin ){
         return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));
     }
 
 
     //Hard delete
-    await memberhsipToDelete.destroy()
+    await membershipData.destroy()
         .catch(() => {
             success = false;
             return null;
