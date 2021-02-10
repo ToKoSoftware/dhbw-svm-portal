@@ -6,7 +6,7 @@ import { RawRoleAssignmentData } from '../../../interfaces/role-assignment.inter
 import { RoleAssignment } from '../../../models/role-assignment.model';
 import { Role } from '../../../models/role.model';
 
-export async function createRoleAssignmnet(req: Request, res: Response): Promise<Response> {
+export async function createRoleAssignment(req: Request, res: Response): Promise<Response> {
     let success = true;
     const incomingData: RawRoleAssignmentData = req.body;
     const mappedIncomingData: RawRoleAssignmentData = mapRoleAssignment(incomingData, req.params.id);

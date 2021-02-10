@@ -37,7 +37,7 @@ import {deleteEventRegistration} from './api/v2/event-registrations/delete-event
 import {deleteTeam} from './api/v2/teams/delete-team';
 import {deleteMembership} from './api/v2/team-memberships/delete-membership';
 import {createRole} from './api/v2/roles/create-roles';
-import {createRoleAssignmnet} from './api/v2/role-assignments/create-role-assignment';
+import {createRoleAssignment} from './api/v2/role-assignments/create-role-assignment';
 import {deleteRole} from './api/v2/roles/delete-role';
 import {deleteRoleAssignment} from './api/v2/role-assignments/delete-role-assignment';
 import {deletePoll} from './api/v2/polls/delete-poll';
@@ -52,6 +52,7 @@ import {updateRole} from './api/v2/roles/update-role';
 import {updateOrganization} from './api/v2/organizations/update-organization';
 import {oauth2Authentication, oauth2Token, oauth2User} from './api/oauth2/authenticate';
 import {getOauth2Configuration, updateOauth2Configuration} from './api/oauth2/configure';
+import {createOrganization} from './api/v2/organizations/create-organization';
 
 export default function startServer(): void {
 
@@ -157,7 +158,7 @@ export default function startServer(): void {
     app.get('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => getRoles(req, res));
     app.get('/api/v2/roles/:id', userIsAuthorized, (req, res) => getRole(req, res));
     app.post('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => createRole(req, res));
-    app.post('/api/v2/roles/:id/assignment', userIsAuthorized, userIsAdmin, (req, res) => createRoleAssignmnet(req, res));
+    app.post('/api/v2/roles/:id/assignment', userIsAuthorized, userIsAdmin, (req, res) => createRoleAssignment(req, res));
     app.delete('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteRole(req, res));
     app.delete('/api/v2/roles/:id/assignment', userIsAuthorized, userIsAdmin, (req, res) => deleteRoleAssignment(req, res));
     app.put('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => updateRole(req, res));
@@ -166,6 +167,7 @@ export default function startServer(): void {
      * Organization
      */
     app.get('/api/v2/organizations', userIsAuthorized, (req, res) => getOrganizations(req, res));
+    app.post('/api/v2/organizations', (req, res) => createOrganization(req, res));
     app.get('/api/v2/organizations/:id', userIsAuthorized, (req, res) => getOrganization(req, res));
     app.put('/api/v2/organizations/:id', userIsAuthorized, userIsAdmin, (req, res) => updateOrganization(req, res));
 

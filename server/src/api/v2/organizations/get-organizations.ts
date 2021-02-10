@@ -4,12 +4,8 @@ import { Vars } from '../../../vars';
 import { User } from '../../../models/user.model';
 import { Organization } from '../../../models/organization.model';
 
-
-
-
 export async function getOrganization(req: Request, res: Response): Promise<Response> {
     let success = true;
-
 
     const organizationData: Organization | null = await Organization
         .scope([Vars.currentUserIsAdmin ? 'full' : 'active']) //  todo permission check in #98
