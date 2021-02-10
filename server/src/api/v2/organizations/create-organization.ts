@@ -15,7 +15,7 @@ export async function createOrganization(req: Request, res: Response): Promise<R
     if (!objectHasRequiredAndNotEmptyKeys(mappedIncomingData, requiredFields)) {
         return handleError(res, 400, 'Fields must not be empty', [null]);
     }
-    const createdOrg = await Organization.create(mappedIncomingData).catch((data) => null);
+    const createdOrg = await Organization.create(mappedIncomingData).catch(() => null);
     if (!createdOrg) {
         return handleError(res, 500, 'Organization could not be created', [null]);
     }
