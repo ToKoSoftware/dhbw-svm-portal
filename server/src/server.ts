@@ -54,6 +54,7 @@ import { oauth2Authentication, oauth2Token, oauth2User } from './api/oauth2/auth
 import { getOauth2Configuration, updateOauth2Configuration } from './api/oauth2/configure';
 import { createOrganization } from './api/v2/organizations/create-organization';
 import { getEventRegistration, getEventRegistrations } from './api/v2/event-registrations/get-event-registrations';
+import { updateEventRegistration } from './api/v2/event-registrations/update-event-registration';
 
 export default function startServer(): void {
 
@@ -134,7 +135,8 @@ export default function startServer(): void {
     app.delete('/api/v2/events/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteEvent(req, res));
     app.delete('/api/v2/events/:event_id/eventregistrations/:id', userIsAuthorized, (req, res) => deleteEventRegistration(req, res));
     app.put('/api/v2/events/:id', userIsAuthorized, userIsAdmin, (req, res) => updateEvent(req, res));
-
+    app.put('/api/v2/events/:event_id/eventregistrations', userIsAuthorized, (req, res) => updateEventRegistration(req, res));
+    
     /**
      * Poll
      */
