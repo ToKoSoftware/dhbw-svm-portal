@@ -41,7 +41,7 @@ export async function getTeam(req: Request, res: Response): Promise<Response> {
     }
 
 
-    const teamData: Team | null = await Team.scope({ method: ['onlyCurrentOrg', Vars.currentOrganization?.id] })
+    const teamData: Team | null = await Team.scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] })
         .findOne(query)
         .catch(() => {
             success = false;
