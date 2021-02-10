@@ -12,7 +12,6 @@ import { Organization } from '../../../models/organization.model';
 export async function getSingleNews(req: Request, res: Response): Promise<Response> {
     let success = true;
 
-
     const newsData: NewsData | null = await News
         .scope({method: ['onlyCurrentOrg', Vars.currentOrganization.id]})
         .findOne({

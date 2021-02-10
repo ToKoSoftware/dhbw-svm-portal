@@ -1,11 +1,11 @@
-import { Event } from '../models/event.model';
-import { News } from '../models/news.model';
-import { Poll } from '../models/poll.model';
-import { Role } from '../models/role.model';
-import { Team } from '../models/team.model';
-import { User } from '../models/user.model';
+import {Event} from '../models/event.model';
+import {News} from '../models/news.model';
+import {Poll} from '../models/poll.model';
+import {Role} from '../models/role.model';
+import {Team} from '../models/team.model';
+import {User} from '../models/user.model';
 
-export interface OrganizationDataSnapshot{
+export interface OrganizationDataSnapshot {
     id?: string;
     title: string;
     access_code: string;
@@ -13,11 +13,11 @@ export interface OrganizationDataSnapshot{
     is_active?: boolean;
 }
 
-export interface RawOrganizationData extends OrganizationDataSnapshot{
+export interface RawOrganizationData extends OrganizationDataSnapshot {
     admin_role_id: string;
 }
 
-export interface OrganizationData extends OrganizationDataSnapshot{
+export interface OrganizationData extends OrganizationDataSnapshot {
     admin_role: Role;
     users: User[];
     events: Event[];
