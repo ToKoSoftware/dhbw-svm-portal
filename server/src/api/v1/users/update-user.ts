@@ -3,24 +3,24 @@ import isBlank from 'is-blank';
 import { checkKeysAreNotEmptyOrNotSet } from '../../../functions/check-inputs.func';
 import { mapUser } from '../../../functions/map-users.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
-import { RawUserData } from '../../../interfaces/users.interface';
+import { UserDataSnapshot } from '../../../interfaces/users.interface';
 import { User } from '../../../models/user.model';
 import * as EmailValidator from 'email-validator';
 import { currentUserIsAdminOrMatchesId } from '../../../functions/current-user-is-admin-or-matches-id.func';
 import { jwtSign } from '../../../functions/jwt-sign.func';
 import { Op } from 'sequelize';
+import { Vars } from '../../../vars';
 
 export async function updateUser(req: Request, res: Response): Promise<Response> {
     let success = true;
-    const incomingData: RawUserData = req.body;
-    const mappedIncomingData: RawUserData = await mapUser(incomingData);
+    const incomingData: UserDataSnapshot = req.body;
+    const mappedIncomingData: UserDataSnapshot = await mapUser(incomingData);
 
     const requiredFields = User.requiredFields();
 
     const validEmail = EmailValidator.validate(mappedIncomingData.email) || isBlank(mappedIncomingData.email);
 
-    const validBirthday = mappedIncomingData.birthday instanceof Date || isBlank(mappedIncomingData.birthday);
-    if (!validBirthday) {
+    if (mappedIncomingData.birthday?.toString() === 'Invalid Date' && incomingData.birthday !== undefined) {
         return res.status(400).send(wrapResponse(false, { error: 'Birthday is not valid' }));
     }
 
@@ -122,8 +122,11 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
     } else {
         return res.status(400).send(wrapResponse(false));
     }
-
     const token = jwtSign(user);
-
-    return res.send(wrapResponse(true, { user: user, jwt: token }));
+    const updatedUser = await User.findByPk(req.params.id);
+    if (Vars.currentUser.id === req.params.id) {
+        return res.send(wrapResponse(true, { user: updatedUser, jwt: token }));
+    } else {
+        return res.send(wrapResponse(true, { user: updatedUser }));
+    }
 }

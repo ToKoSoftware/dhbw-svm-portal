@@ -70,7 +70,6 @@ module.exports = {
                                     city: 'Heidenheim',
                                     org_id: organizations[0].id,
                                     is_active: true,
-                                    is_admin: false,
                                     createdAt: date,
                                     updatedAt: date
                                 }];

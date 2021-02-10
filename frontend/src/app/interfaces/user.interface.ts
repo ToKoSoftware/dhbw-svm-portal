@@ -7,7 +7,6 @@ export interface UserData {
   email: string;
   username: string;
   password?: string;
-  is_admin: boolean;
   first_name: string;
   last_name: string;
   street: string;
