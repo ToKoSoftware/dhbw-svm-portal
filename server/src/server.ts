@@ -95,7 +95,7 @@ export default function startServer(): void {
      * User
      */
     app.get('/api/v1/users', userIsAuthorized, userIsAdmin, (req, res) => getUsers(req, res));
-    app.get('/api/v1/users/:id', userIsAuthorized, (req, res) => getUser(req, res)); //Admin: jeden, jeder User nur sich selbst sonst forbidden
+    app.get('/api/v1/users/:id', userIsAuthorized, (req, res) => getUser(req, res)); //Admin: defaultScope, User publicScope
     app.post('/api/v1/users', (req, res) => createUser(req, res));
     app.put('/api/v1/users/:id', userIsAuthorized, (req, res) => updateUser(req, res)); //Admin: jeden, jeder User nur sich selbst sonst forbidden
     app.delete('/api/v1/users/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteUser(req, res));
@@ -103,12 +103,12 @@ export default function startServer(): void {
     /**
      * Team
      */
-    app.get('/api/v2/teams', userIsAuthorized, (req, res) => getTeams(req, res)); //Admin alle, User die, in denen er drin ist.
-    app.get('/api/v2/teams/:id', userIsAuthorized, (req, res) => getTeam(req, res)); //Admin alle, User nur wenn er drin ist, sonst forbidden
+    app.get('/api/v2/teams', userIsAuthorized, (req, res) => getTeams(req, res)); //Admin alle, User die, in denen er drin ist oder maintain_role_id hat
+    app.get('/api/v2/teams/:id', userIsAuthorized, (req, res) => getTeam(req, res)); //Admin alle, User nur wenn er drin ist oder maintain_role_id hat, sonst forbidden
     app.post('/api/v2/teams', userIsAuthorized, userIsAdmin, (req, res) => createTeam(req, res));
     app.post('/api/v2/teams/:id/membership', userIsAuthorized, (req, res) => createMembership(req, res));
     app.delete('/api/v2/teams/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteTeam(req, res));
-    app.delete('/api/v2/teams/:team_id/membership', userIsAuthorized, (req, res) => deleteMembership(req, res)); //Admin alle, User nur eigene.
+    app.delete('/api/v2/teams/:team_id/membership', userIsAuthorized, (req, res) => deleteMembership(req, res)); //Admin alle, User nur eigene oder maintain_role_id hat
     app.put('/api/v2/teams/:id', userIsAuthorized, userIsAdmin, (req, res) => updateTeam(req, res));
 
     /**
@@ -139,7 +139,7 @@ export default function startServer(): void {
     app.post('/api/v2/polls', userIsAuthorized, userIsAdmin, (req, res) => createPoll(req, res));
     app.post('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res));
     app.delete('/api/v2/polls/:id', userIsAuthorized, userIsAdmin, (req, res) => deletePoll(req, res));
-    app.delete('/api/v2/polls/:pollId/:pollAnswerId/votes/:id', userIsAuthorized, (req, res) => deletePollVote(req, res)); //Admin alle, User nur eigene.
+    app.delete('/api/v2/polls/:pollId/:pollAnswerId/votes/:id', userIsAuthorized, (req, res) => deletePollVote(req, res)); //Nur User eigene. Admin darf nicht!
     app.put('/api/v2/polls/:id', userIsAuthorized, userIsAdmin, (req, res) => updatePoll(req, res));
 
     /**
@@ -154,7 +154,7 @@ export default function startServer(): void {
      * Role
      */
     app.get('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => getRoles(req, res)); 
-    app.get('/api/v2/roles/:id', userIsAuthorized, (req, res) => getRole(req, res)); //Admin alle, User nur, wenn drin
+    app.get('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => getRole(req, res));
     app.post('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => createRole(req, res));
     app.post('/api/v2/roles/:id/assignment', userIsAuthorized, userIsAdmin, (req, res) => createRoleAssignmnet(req, res));
     app.delete('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteRole(req, res));
