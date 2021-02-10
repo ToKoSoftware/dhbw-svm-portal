@@ -55,6 +55,7 @@ import { getOauth2Configuration, updateOauth2Configuration } from './api/oauth2/
 import { createOrganization } from './api/v2/organizations/create-organization';
 import { getEventRegistration, getEventRegistrations } from './api/v2/event-registrations/get-event-registrations';
 import { updateEventRegistration } from './api/v2/event-registrations/update-event-registration';
+import { deleteOrganization } from './api/v2/organizations/delete-organization';
 
 export default function startServer(): void {
 
@@ -175,7 +176,8 @@ export default function startServer(): void {
     app.post('/api/v2/organizations', (req, res) => createOrganization(req, res));
     app.get('/api/v2/organizations/:id', userIsAuthorized, (req, res) => getOrganization(req, res));
     app.put('/api/v2/organizations/:id', userIsAuthorized, userIsAdmin, (req, res) => updateOrganization(req, res));
-
+    app.delete('/api/v2/organizations/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteOrganization(req, res));
+    
     /**
      * Admin
      */
