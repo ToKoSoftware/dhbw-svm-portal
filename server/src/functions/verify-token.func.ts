@@ -17,8 +17,8 @@ export function verifyToken(res: Response, token: string, next: NextFunction): v
                 return res.status(403).send(wrapResponse(false, { error: 'Error occured during authorization!' }));
             }
             const user = await User.scope('full').findByPk(userData.id);
-
-            if (user === null) {
+            // No user found, or User has no organization
+            if (user === null || user.org_id === null) {
                 return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));
             }
             // check if any of the user's roles are the current user's organisation's admin role
