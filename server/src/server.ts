@@ -137,17 +137,16 @@ export default function startServer(): void {
     app.get('/api/v2/polls', userIsAuthorized, (req, res) => getPolls(req, res)); //Admin alle, User nur wenn answer_team_id
     app.get('/api/v2/polls/:id', userIsAuthorized, (req, res) => getPoll(req, res)); //Admin alle, User nur wenn answer_team_id
     app.post('/api/v2/polls', userIsAuthorized, userIsAdmin, (req, res) => createPoll(req, res));
-    app.post('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res));
     app.delete('/api/v2/polls/:id', userIsAuthorized, userIsAdmin, (req, res) => deletePoll(req, res));
     app.delete('/api/v2/polls/:pollId/:pollAnswerId/votes/:id', userIsAuthorized, (req, res) => deletePollVote(req, res)); //Nur User eigene. Admin darf nicht!
-    app.put('/api/v2/polls/:id', userIsAuthorized, userIsAdmin, (req, res) => updatePoll(req, res));
+    app.put('/api/v2/polls/:id', userIsAuthorized, userIsAdmin, (req, res) => updatePoll(req, res)); // Admin darf ändern und author darf ändern.
 
     /**
      * PollAnswer
      */
     app.post('/api/v2/polls/:id/answers', userIsAuthorized, userIsAdmin, (req, res) => createPollAnswer(req, res));
     app.post('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res)); // User hat answer_team_id
-    app.put('/api/v2/pollAnswers/:id', userIsAuthorized, userIsAdmin, (req, res) => updatePollAnswer(req, res));
+    app.put('/api/v2/polls/:pollId/answers/:id', userIsAuthorized, userIsAdmin, (req, res) => updatePollAnswer(req, res));
     app.delete('/api/v2/polls/:pollId/answers/:id', userIsAuthorized, userIsAdmin, (req, res) => deletePollAnswer(req, res));
     
     /**
