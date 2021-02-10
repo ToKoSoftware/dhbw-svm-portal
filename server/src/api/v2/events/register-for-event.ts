@@ -4,15 +4,28 @@ import { mapEventRegistration } from '../../../functions/map-event-registration.
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { EventRegistrationDataSnapshot, RawEventRegistrationData } from '../../../interfaces/event-registration.interface';
 import { EventRegistration } from '../../../models/event-registration.model';
+import { Event } from '../../../models/event.model';
 
 export async function registerForEvent(req: Request, res: Response): Promise<Response> {
     let success = true;
     const incomingData: EventRegistrationDataSnapshot = req.body;
     const mappedIncomingData: RawEventRegistrationData = mapEventRegistration(incomingData, req.params.id);
-    
+
     const requiredFields = EventRegistration.requiredFields();
     if (!objectHasRequiredAndNotEmptyKeys(mappedIncomingData, requiredFields)) {
         return res.status(400).send(wrapResponse(false, { error: 'Not all required fields have been set' }));
+    }
+
+    const event: Event | null = await Event.findByPk(mappedIncomingData.event_id)
+        .catch(() => {
+            success = false;
+            return null;
+        });
+    if (!success) {
+        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+    }
+    if (event === null) {
+        return res.status(400).send(wrapResponse(false, { error: 'There is no Event with the given id' }));
     }
 
     // Check if user is already registered for event

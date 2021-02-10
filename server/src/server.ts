@@ -123,12 +123,12 @@ export default function startServer(): void {
     /**
      * Event
      */
-    app.get('/api/v2/events', (req, res) => getEvents(req, res)); //Sehen darf jeder
-    app.get('/api/v2/events/:id', (req, res) => getEvent(req, res)); //Sehen darf jeder
+    app.get('/api/v2/events', (req, res) => getEvents(req, res));
+    app.get('/api/v2/events/:id', (req, res) => getEvent(req, res));
     app.post('/api/v2/events', userIsAuthorized, userIsAdmin, (req, res) => createEvent(req, res));
-    app.post('/api/v2/events/:id/register', (req, res) => registerForEvent(req, res)); //Jeder User darf anmelden
+    app.post('/api/v2/events/:id/register', (req, res) => registerForEvent(req, res));
     app.delete('/api/v2/events/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteEvent(req, res));
-    app.delete('/api/v2/events/:event_id/eventregistrations/:id', userIsAuthorized, (req, res) => deleteEventRegistration(req, res)); //Admin alle, User nur eigene.
+    app.delete('/api/v2/events/:event_id/eventregistrations/:id', userIsAuthorized, (req, res) => deleteEventRegistration(req, res));
     app.put('/api/v2/events/:id', userIsAuthorized, userIsAdmin, (req, res) => updateEvent(req, res));
 
     /**
@@ -146,7 +146,7 @@ export default function startServer(): void {
      * PollAnswer
      */
     app.post('/api/v2/polls/:id/answers', userIsAuthorized, userIsAdmin, (req, res) => createPollAnswer(req, res));
-    app.post('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res));
+    app.post('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res)); // User hat answer_team_id
     app.put('/api/v2/pollAnswers/:id', userIsAuthorized, userIsAdmin, (req, res) => updatePollAnswer(req, res));
     app.delete('/api/v2/polls/:pollId/answers/:id', userIsAuthorized, userIsAdmin, (req, res) => deletePollAnswer(req, res));
     
