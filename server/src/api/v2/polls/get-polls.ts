@@ -1,6 +1,4 @@
 import {Request, Response} from 'express';
-import {FindOptions} from 'sequelize';
-import {buildQuery, QueryBuilderConfig} from '../../../functions/query-builder.func';
 import {wrapResponse} from '../../../functions/response-wrapper';
 import {Poll} from '../../../models/poll.model';
 import {Vars} from '../../../vars';
