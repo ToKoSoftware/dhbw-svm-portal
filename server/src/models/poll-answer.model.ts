@@ -15,6 +15,9 @@ import { User } from './user.model';
     full: {
         include: User.scope('publicData')
     },
+    includePoll: {
+        include: Poll
+    },
     active: {
         required: false,
         where: {

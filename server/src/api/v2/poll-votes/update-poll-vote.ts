@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { checkKeysAreNotEmptyOrNotSet } from '../../../functions/check-inputs.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
+import { PollAnswer } from '../../../models/poll-answer.model';
 import { PollVote } from '../../../models/poll-vote.model';
 import { Vars } from '../../../vars';
 
@@ -8,6 +9,21 @@ export async function updatePollVote(req: Request, res: Response): Promise<Respo
     let success = true;
     const pollAnswerId = req.params.pollAnswerId;
     const incomingData = req.body;
+
+    const pollAnswerData: PollAnswer | null = await PollAnswer.scope('includePoll').findByPk(req.params.id)
+        .catch(() => {
+            success = false;
+            return null;
+        });
+    if (!success) {
+        return res.status(500).send(wrapResponse(false, {error: 'Database error!'}));
+    }
+    if (pollAnswerData === null) {
+        return res.status(400).send(wrapResponse(false, { error: 'There is no active PollAnswer with the given id!'}));
+    }
+    if (pollAnswerData.poll.org_id !== Vars.currentOrganization.id) {
+        return res.status(403).send(wrapResponse(false, { error: 'Forbidden!'}));
+    }
 
     const pollVoteData: PollVote | null = await PollVote.findOne(
         {
@@ -31,7 +47,7 @@ export async function updatePollVote(req: Request, res: Response): Promise<Respo
         return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty' }));
     }
 
-    pollVoteData.update(incomingData)
+    pollVoteData.update(incomingData.title)
         .catch(() => {
             success = false;
             return [0, []];

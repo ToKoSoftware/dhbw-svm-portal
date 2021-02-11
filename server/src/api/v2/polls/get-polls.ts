@@ -35,7 +35,7 @@ export async function getPoll(req: Request, res: Response): Promise<Response> {
                 id: req.params.id
             },
             ...Vars.currentUserIsAdmin ? {
-                include: [Organization, User, Team, PollAnswer.scope('full')]
+                include: [Organization, User, Team, PollAnswer.scope(['full', 'active'])]
             } : {
                 where: {
                     answer_team_id: Vars.currentUser.teams.map(t => t.id)
@@ -84,7 +84,7 @@ export async function getPolls(req: Request, res: Response): Promise<Response> {
     currentDate.setDate(currentDate.getDate() - 1);
     const data = await Poll.scope(['active', {method: ['notExpired', currentDate]}, 'ordered']).findAll(
         {
-            include: [Organization, User, Team, PollAnswer.scope('full')]
+            include: [Organization, User, Team, PollAnswer.scope(['full', 'active'])]
         })
         .catch(() => {
             success = false;
