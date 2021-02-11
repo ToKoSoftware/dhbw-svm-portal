@@ -178,7 +178,7 @@ export default function startServer(): void {
     app.post('/api/v2/organizations', (req, res) => createOrganization(req, res));
     app.get('/api/v2/organizations/:id', userIsAuthorized, (req, res) => getOrganization(req, res));
     app.put('/api/v2/organizations/:id', userIsAuthorized, userIsAdmin, (req, res) => updateOrganization(req, res));
-    app.delete('/api/v2/organizations/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteOrganization(req, res));
+    app.delete('/api/v2/organizations', userIsAuthorized, userIsAdmin, (req, res) => deleteOrganization(req, res));
 
     /**
      * Admin

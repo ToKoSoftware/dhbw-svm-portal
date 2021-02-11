@@ -1,12 +1,11 @@
 import { Request, Response } from 'express';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { Organization } from '../../../models/organization.model';
+import { Vars } from '../../../vars';
 
 export async function deleteOrganization(req: Request, res: Response): Promise<Response> {
     let success = true;
-    const orgId = req.params.id;
-
-    const orgData: Organization | null = await Organization.scope('full').findByPk(orgId)
+    const orgData: Organization | null = await Organization.scope('full').findByPk(Vars.currentOrganization.id)
         .catch(() => {
             success = false;
             return null;
