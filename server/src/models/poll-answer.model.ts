@@ -13,7 +13,7 @@ import { User } from './user.model';
 }))
 @Scopes(() => ({
     full: {
-        include: [Poll, User]
+        include: User.scope('publicData')
     },
     active: {
         required: false,

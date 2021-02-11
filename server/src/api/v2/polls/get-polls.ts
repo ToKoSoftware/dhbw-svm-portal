@@ -10,6 +10,22 @@ import {PollAnswer} from '../../../models/poll-answer.model';
 import {Team} from '../../../models/team.model';
 import {PollVote} from '../../../models/poll-vote.model';
 
+/**
+ * {
+  id: 123,
+  title: "Was geht",
+  total_count: 44,
+  answers: [{
+    id: 12
+    title: 12,
+    vote_count: 22
+  }],
+  user_voted_for: {
+    id: 22,
+    title: 12
+  }
+    }
+ */
 
 export async function getPoll(req: Request, res: Response): Promise<Response> {
     let success = true;
@@ -59,23 +75,19 @@ export async function getPoll(req: Request, res: Response): Promise<Response> {
 }
 
 export async function getPolls(req: Request, res: Response): Promise<Response> {
-    let query: FindOptions = {};
-    const allowedSearchFilterAndOrderFields = ['title'];
-    const queryConfig: QueryBuilderConfig = {
-        query: query,
-        searchString: req.query.search as string || '',
-        allowLimitAndOffset: true,
-        allowedFilterFields: allowedSearchFilterAndOrderFields,
-        allowedSearchFields: allowedSearchFilterAndOrderFields,
-        allowedOrderFields: allowedSearchFilterAndOrderFields
-    };
-    query = buildQuery(queryConfig, req);
+// Fehlt: Count auf jeder answer
+// Count auf poll_voted_users wie oben
+// user hat abgestimmt ja nein auf PollAnswer
+// user hat abgestimmt ja nein auf Poll
 
     let success = true;
     const currentDate = new Date();
     // allow polls that expire today to be shown
     currentDate.setDate(currentDate.getDate() - 1);
-    const data = await Poll.scope(['full', {method: ['onlyCurrentOrg', Vars.currentOrganization.id]}, 'active', {method: ['notExpired', currentDate]}, 'ordered']).findAll(query)
+    const data = await Poll.scope(['active', {method: ['notExpired', currentDate]}, 'ordered']).findAll(
+        {
+            include: [Organization, User, Team, PollAnswer.scope('full')]
+        })
         .catch(() => {
             success = false;
             return null;
