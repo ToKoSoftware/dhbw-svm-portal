@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { Op } from 'sequelize';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { Team } from '../../../models/team.model';
 import { Vars } from '../../../vars';
