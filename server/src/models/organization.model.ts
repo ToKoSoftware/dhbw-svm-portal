@@ -64,7 +64,6 @@ export class Organization extends Model {
     title: string;
     @NotEmpty
     @Column
-    @Unique
     access_code: string;
     @Column
     config: string;
