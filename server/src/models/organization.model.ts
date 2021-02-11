@@ -11,14 +11,14 @@ import {
     Scopes,
     Table, Unique
 } from 'sequelize-typescript';
-import {RawOrganizationData} from '../interfaces/organization.interface';
-import {Event} from './event.model';
-import {News} from './news.model';
-import {Poll} from './poll.model';
-import {Role} from './role.model';
-import {Team} from './team.model';
-import {User} from './user.model';
-import {v4 as uuidv4} from 'uuid';
+import { RawOrganizationData } from '../interfaces/organization.interface';
+import { Event } from './event.model';
+import { News } from './news.model';
+import { Poll } from './poll.model';
+import { Role } from './role.model';
+import { Team } from './team.model';
+import { User } from './user.model';
+import { v4 as uuidv4 } from 'uuid';
 
 @DefaultScope(() => ({
     required: false,
@@ -31,7 +31,7 @@ import {v4 as uuidv4} from 'uuid';
 }))
 @Scopes(() => ({
     full: {
-        include: [{model: Role, as: 'admin_role'}, {model: Role, as: 'roles'}, User, Team, News, Poll, Event]
+        include: [{ model: Role, as: 'admin_role' }, { model: Role, as: 'roles' }, User, Team, News, Poll, Event]
     },
     active: {
         required: false,
@@ -63,6 +63,7 @@ export class Organization extends Model {
     @Column
     title: string;
     @NotEmpty
+    @Unique
     @Column
     access_code: string;
     @Column
