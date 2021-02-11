@@ -1,35 +1,17 @@
-import {Request, Response} from 'express';
-import {wrapResponse} from '../../../functions/response-wrapper';
-import {Poll} from '../../../models/poll.model';
-import {Vars} from '../../../vars';
-import {User} from '../../../models/user.model';
-import {Organization} from '../../../models/organization.model';
-import {PollAnswer} from '../../../models/poll-answer.model';
-import {Team} from '../../../models/team.model';
-import {PollVote} from '../../../models/poll-vote.model';
-
-/**
- * {
-  id: 123,
-  title: "Was geht",
-  total_count: 44,
-  answers: [{
-    id: 12
-    title: 12,
-    vote_count: 22
-  }],
-  user_voted_for: {
-    id: 22,
-    title: 12
-  }
-    }
- */
+import { Request, Response } from 'express';
+import { wrapResponse } from '../../../functions/response-wrapper';
+import { Poll } from '../../../models/poll.model';
+import { Vars } from '../../../vars';
+import { User } from '../../../models/user.model';
+import { Organization } from '../../../models/organization.model';
+import { PollAnswer } from '../../../models/poll-answer.model';
+import { Team } from '../../../models/team.model';
 
 export async function getPoll(req: Request, res: Response): Promise<Response> {
     let success = true;
 
     const pollData: Poll | null = await Poll
-        .scope({method: ['onlyCurrentOrg', Vars.currentOrganization.id]})
+        .scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] })
         .findOne({
             where: {
                 id: req.params.id
@@ -40,9 +22,7 @@ export async function getPoll(req: Request, res: Response): Promise<Response> {
                 where: {
                     answer_team_id: Vars.currentUser.teams.map(t => t.id)
                 },
-                include: {
-                    model: User.scope('publicData')
-                }
+                include: [User.scope('publicData'), Team, PollAnswer.scope(['full', 'active'])]
             }
         })
         .catch(() => {
@@ -50,49 +30,53 @@ export async function getPoll(req: Request, res: Response): Promise<Response> {
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
+        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
     if (pollData === null) {
         return res.status(404).send(wrapResponse(false));
     }
-    const count = await PollVote.count(
-        {
-            where: {
-                poll_answer_id: pollData.poll_answers.map(t => t.id)
-            }
-        })
-        .catch(() => {
-            success = false;
-            return null;
-        });
-    if (!success) {
-        return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
-    }
-    const pollDataWithCount = {...pollData.toJSON(), total_user_votes_count: count};
+    let voted = false;
+    let totalCount = 0;
+    const pollDataWithCount = {...pollData.toJSON(), user_has_voted: voted, poll_answers: pollData.poll_answers.map(pollAnswer => {
+        const counter = pollAnswer.voted_users.length;
+        const answerVoted = !!pollAnswer.voted_users.find(user => user.id === Vars.currentUser.id);
+        voted = voted || answerVoted;
+        totalCount = totalCount + counter;
+        return { ...pollAnswer.toJSON(), user_votes_count: counter, answer_voted: answerVoted };
+    }), total_user_votes_count: totalCount};
     return res.send(wrapResponse(true, pollDataWithCount));
 }
 
 export async function getPolls(req: Request, res: Response): Promise<Response> {
-// Fehlt: Count auf jeder answer
-// Count auf poll_voted_users wie oben
-// user hat abgestimmt ja nein auf PollAnswer
-// user hat abgestimmt ja nein auf Poll
-
     let success = true;
     const currentDate = new Date();
     // allow polls that expire today to be shown
     currentDate.setDate(currentDate.getDate() - 1);
-    const data = await Poll.scope(['active', {method: ['notExpired', currentDate]}, 'ordered']).findAll(
+    const pollData: Poll[] = await Poll.scope([{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, 'active', { method: ['notExpired', currentDate] }, 'ordered']).findAll(
         {
-            include: [Organization, User, Team, PollAnswer.scope(['full', 'active'])]
+            include: [Organization, User.scope('publicData'), Team, PollAnswer.scope(['full', 'active'])]
         })
         .catch(() => {
             success = false;
-            return null;
+            return [];
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
+        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
+    if (pollData === []) {
+        return res.send(wrapResponse(true, pollData));
+    }
+    const pollDataWithCount = pollData.map(poll => {
+        let voted = false;
+        let count = 0;
+        return {...poll.toJSON(), user_has_voted: voted, poll_answers: poll.poll_answers.map(pollAnswer => {
+            const counter = pollAnswer.voted_users.length;
+            const answerVoted = !!pollAnswer.voted_users.find(user => user.id === Vars.currentUser.id);
+            voted = voted || answerVoted;
+            count = count + counter;
+            return { ...pollAnswer.toJSON(), user_votes_count: counter, answer_voted: answerVoted };
+        }), total_user_votes_count: count};
+    });
 
-    return res.send(wrapResponse(true, data));
+    return res.send(wrapResponse(true, pollDataWithCount));
 }
