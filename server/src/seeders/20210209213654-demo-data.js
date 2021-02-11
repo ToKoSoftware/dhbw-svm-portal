@@ -217,7 +217,7 @@ module.exports = {
         let maleusers = [];
         let roleAssignments = [];
         for (let i = 0; i < 15; i++) {
-            const hashed_password = await bcrypt.hash(faker.internet.password(), SALT_FACTOR);
+            const hashed_password = await bcrypt.hash('portal123', SALT_FACTOR);
             const birthday = timeFunc.randomTime(timeFunc.birthdayStartTime, timeFunc.endTime);
             const female_last_name = faker.name.lastName();
             const female_first_name = faker.name.firstName(1);//1 = female
