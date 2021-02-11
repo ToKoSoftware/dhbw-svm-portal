@@ -1,6 +1,7 @@
 import {Request, Response} from 'express';
 import {wrapResponse} from '../../../functions/response-wrapper';
 import {PollAnswer} from '../../../models/poll-answer.model';
+import { PollVote } from '../../../models/poll-vote.model';
 import { Vars } from '../../../vars';
 
 export async function deletePollAnswer(req: Request, res: Response): Promise<Response> {
@@ -31,6 +32,20 @@ export async function deletePollAnswer(req: Request, res: Response): Promise<Res
         });
     if (!success) {
         return res.status(500).send(wrapResponse(false, {error: 'Could not deactivate pollanswer with id ' + req.params.id}));
+    }
+
+    await PollVote.destroy(
+        {
+            where: {
+                poll_answer_id: pollAnswerData.id
+            }
+        })
+        .catch(() => {
+            success = false;
+            return null;
+        });
+    if (!success) {
+        return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
     }
 
     return res.status(204).send(wrapResponse(true));
