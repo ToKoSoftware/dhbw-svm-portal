@@ -19,11 +19,11 @@ export async function getPoll(req: Request, res: Response): Promise<Response> {
             ...Vars.currentUserIsAdmin ? {
                 include: [Organization, User, Team, PollAnswer.scope(['full', 'active'])]
             } : {
-                where: {
-                    answer_team_id: Vars.currentUser.teams.map(t => t.id)
-                },
-                include: [User.scope('publicData'), Team, PollAnswer.scope(['full', 'active'])]
-            }
+                    where: {
+                        answer_team_id: Vars.currentUser.teams.map(t => t.id)
+                    },
+                    include: [User.scope('publicData'), Team, PollAnswer.scope(['full', 'active'])]
+                }
         })
         .catch(() => {
             success = false;
@@ -37,13 +37,15 @@ export async function getPoll(req: Request, res: Response): Promise<Response> {
     }
     let voted = false;
     let totalCount = 0;
-    const pollDataWithCount = {...pollData.toJSON(), user_has_voted: voted, poll_answers: pollData.poll_answers.map(pollAnswer => {
-        const counter = pollAnswer.voted_users.length;
-        const answerVoted = !!pollAnswer.voted_users.find(user => user.id === Vars.currentUser.id);
-        voted = voted || answerVoted;
-        totalCount = totalCount + counter;
-        return { ...pollAnswer.toJSON(), user_votes_count: counter, answer_voted: answerVoted };
-    }), total_user_votes_count: totalCount};
+    const pollDataWithCount = {
+        ...pollData.toJSON(), user_has_voted: voted, poll_answers: pollData.poll_answers.map(pollAnswer => {
+            const counter = pollAnswer.voted_users.length;
+            const answerVoted = !!pollAnswer.voted_users.find(user => user.id === Vars.currentUser.id);
+            voted = voted || answerVoted;
+            totalCount = totalCount + counter;
+            return { ...pollAnswer.toJSON(), user_votes_count: counter, answer_voted: answerVoted };
+        }), total_user_votes_count: totalCount
+    };
     return res.send(wrapResponse(true, pollDataWithCount));
 }
 
@@ -69,13 +71,15 @@ export async function getPolls(req: Request, res: Response): Promise<Response> {
     const pollDataWithCount = pollData.map(poll => {
         let voted = false;
         let count = 0;
-        return {...poll.toJSON(), user_has_voted: voted, poll_answers: poll.poll_answers.map(pollAnswer => {
-            const counter = pollAnswer.voted_users.length;
-            const answerVoted = !!pollAnswer.voted_users.find(user => user.id === Vars.currentUser.id);
-            voted = voted || answerVoted;
-            count = count + counter;
-            return { ...pollAnswer.toJSON(), user_votes_count: counter, answer_voted: answerVoted };
-        }), total_user_votes_count: count};
+        return {
+            ...poll.toJSON(), user_has_voted: voted, poll_answers: poll.poll_answers.map(pollAnswer => {
+                const counter = pollAnswer.voted_users.length;
+                const answerVoted = !!pollAnswer.voted_users.find(user => user.id === Vars.currentUser.id);
+                voted = voted || answerVoted;
+                count = count + counter;
+                return { ...pollAnswer.toJSON(), user_votes_count: counter, answer_voted: answerVoted };
+            }), total_user_votes_count: count
+        };
     });
 
     return res.send(wrapResponse(true, pollDataWithCount));
