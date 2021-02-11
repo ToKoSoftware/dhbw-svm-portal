@@ -19,11 +19,11 @@ export async function getPoll(req: Request, res: Response): Promise<Response> {
             ...Vars.currentUserIsAdmin ? {
                 include: [Organization, User, Team, PollAnswer.scope(['full', 'active'])]
             } : {
-                    where: {
-                        answer_team_id: Vars.currentUser.teams.map(t => t.id)
-                    },
-                    include: [User.scope('publicData'), Team, PollAnswer.scope(['full', 'active'])]
-                }
+                where: {
+                    answer_team_id: Vars.currentUser.teams.map(t => t.id)
+                },
+                include: [User.scope('publicData'), Team, PollAnswer.scope(['full', 'active'])]
+            }
         })
         .catch(() => {
             success = false;
