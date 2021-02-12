@@ -10,21 +10,20 @@ export async function getEventRegistration(req: Request, res: Response): Promise
     const eventId = req.params.event_id;
     const userId = Vars.currentUserIsAdmin ? req.body.user_id : Vars.currentUser.id;
 
-    if (Vars.currentUserIsAdmin) {
-        const user: User | null = await User.scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }).findByPk(userId)
-            .catch(() => {
-                success = false;
-                return null;
-            });
-        if (!success) {
-            return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
-        }
-        if(user === null) {
-            return res.status(403).send(wrapResponse(false, { error: 'Forbidden'}));
-        }
+    const user: User | null = await User.scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }).findByPk(userId)
+        .catch(() => {
+            success = false;
+            return null;
+        });
+    if (!success) {
+        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
+    if(user === null) {
+        return res.status(403).send(wrapResponse(false, { error: 'Forbidden'}));
+    }
+    
 
-    const eventRegistrationData = EventRegistration.findAll(
+    const eventRegistrationData = await EventRegistration.findAll(
         {
             where: {
                 event_id: eventId,
