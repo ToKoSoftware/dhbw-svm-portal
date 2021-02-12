@@ -52,6 +52,7 @@ import {updateRole} from './api/v2/roles/update-role';
 import {updateOrganization} from './api/v2/organizations/update-organization';
 import {oauth2Authentication, oauth2Token, oauth2User} from './api/oauth2/authenticate';
 import {getOauth2Configuration, updateOauth2Configuration} from './api/oauth2/configure';
+import { getOrganizationByAccessCode } from './api/v2/organizations/get-organization-by-access_code';
 
 export default function startServer(): void {
 
@@ -167,7 +168,9 @@ export default function startServer(): void {
      */
     app.get('/api/v2/organizations', userIsAuthorized, (req, res) => getOrganizations(req, res));
     app.get('/api/v2/organizations/:id', userIsAuthorized, (req, res) => getOrganization(req, res));
+    app.get('/api/v2/access/:code', userIsAuthorized, (req, res) => getOrganizationByAccessCode(req, res));
     app.put('/api/v2/organizations/:id', userIsAuthorized, userIsAdmin, (req, res) => updateOrganization(req, res));
+
 
     /**
      * Admin
