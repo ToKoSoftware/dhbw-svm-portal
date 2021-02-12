@@ -22,7 +22,7 @@ export async function createUser(req: Request, res: Response): Promise<Response>
         accepted_privacy_policy = incomingData.accepted_privacy_policy;
         delete incomingData.accepted_privacy_policy;
     }
-    if(accepted_privacy_policy !== true) {
+    if(!accepted_privacy_policy) {
         return res.status(400).send(wrapResponse(false, { error: 'No acception of privacy policy' }));
     }
     const incomingDataWithoutAccessCodeAndAcceptedPrivacyPolicy: UserDataSnapshot = incomingData;
