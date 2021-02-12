@@ -7,6 +7,7 @@ import { objectHasRequiredAndNotEmptyKeys } from '../../../functions/check-input
 import * as EmailValidator from 'email-validator';
 import { UserDataSnapshot, UserRegistrationData } from '../../../interfaces/users.interface';
 import { Organization } from '../../../models/organization.model';
+import { Vars } from '../../../vars';
 
 export async function createUser(req: Request, res: Response): Promise<Response> {
     let success = true;
@@ -16,8 +17,16 @@ export async function createUser(req: Request, res: Response): Promise<Response>
         access_code = incomingData.access_code;
         delete incomingData.access_code;
     }
-    const incomingDataWithoutAccessCode: UserDataSnapshot = incomingData;
-    const mappedIncomingData: UserDataSnapshot = await mapUser(incomingDataWithoutAccessCode);
+    let accepted_privacy_policy = false;
+    if (incomingData.accepted_privacy_policy !== undefined) {
+        accepted_privacy_policy = incomingData.accepted_privacy_policy;
+        delete incomingData.accepted_privacy_policy;
+    }
+    if(accepted_privacy_policy !== true) {
+        return res.status(400).send(wrapResponse(false, { error: 'No acception of privacy policy' }));
+    }
+    const incomingDataWithoutAccessCodeAndAcceptedPrivacyPolicy: UserDataSnapshot = incomingData;
+    const mappedIncomingData: UserDataSnapshot = await mapUser(incomingDataWithoutAccessCodeAndAcceptedPrivacyPolicy);
 
     const requiredFields = User.requiredFields();
     if (!objectHasRequiredAndNotEmptyKeys(mappedIncomingData, requiredFields)) {
