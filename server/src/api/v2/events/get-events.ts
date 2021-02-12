@@ -1,6 +1,4 @@
 import { Request, Response } from 'express';
-import { FindOptions} from 'sequelize';
-import { buildQuery, QueryBuilderConfig } from '../../../functions/query-builder.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { Event } from '../../../models/event.model';
 import { Vars } from '../../../vars';
@@ -41,22 +39,10 @@ export async function getEvent(req: Request, res: Response): Promise<Response> {
 }
 
 export async function getEvents(req: Request, res: Response): Promise<Response> {
-    let query: FindOptions = {};
-    const allowedSearchFilterAndOrderFields = ['title','date'];
-    const queryConfig: QueryBuilderConfig = {
-        query: query,
-        searchString: req.query.search as string || '',
-        allowLimitAndOffset: true,
-        allowedFilterFields: allowedSearchFilterAndOrderFields,
-        allowedSearchFields: allowedSearchFilterAndOrderFields,
-        allowedOrderFields: allowedSearchFilterAndOrderFields
-    };
-    query = buildQuery(queryConfig, req);
-
     let success = true;
     const currentDate = new Date();
     // Only events, that have an end_date in the future, that are active. Ordered by start_date ASC
-    const data = await Event.scope(['full', {method: ['onlyCurrentOrg', Vars.currentOrganization.id]}, 'active', {method: ['notExpired', currentDate]}, 'ordered']).findAll(query)
+    const data = await Event.scope(['full', {method: ['onlyCurrentOrg', Vars.currentOrganization.id]}, 'active', {method: ['notExpired', currentDate]}, 'ordered']).findAll()
         .catch(() => {
             success = false;
             return null;

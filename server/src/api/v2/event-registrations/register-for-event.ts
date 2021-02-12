@@ -5,6 +5,7 @@ import { wrapResponse } from '../../../functions/response-wrapper';
 import { EventRegistrationDataSnapshot, RawEventRegistrationData } from '../../../interfaces/event-registration.interface';
 import { EventRegistration } from '../../../models/event-registration.model';
 import { Event } from '../../../models/event.model';
+import { Vars } from '../../../vars';
 
 export async function registerForEvent(req: Request, res: Response): Promise<Response> {
     let success = true;
@@ -16,7 +17,12 @@ export async function registerForEvent(req: Request, res: Response): Promise<Res
         return res.status(400).send(wrapResponse(false, { error: 'Not all required fields have been set' }));
     }
 
-    const event: Event | null = await Event.findByPk(mappedIncomingData.event_id)
+    const event: null | { rows: Event[], count: number } = await Event.scope(['full', { method: ['onlyCurrentOrg', Vars.currentOrganization.id] }]).findAndCountAll(
+        {
+            where: {
+                id: mappedIncomingData.event_id
+            }
+        })
         .catch(() => {
             success = false;
             return null;
@@ -25,7 +31,10 @@ export async function registerForEvent(req: Request, res: Response): Promise<Res
         return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
     if (event === null) {
-        return res.status(400).send(wrapResponse(false, { error: 'There is no Event with the given id' }));
+        return res.status(400).send(wrapResponse(false, { error: 'No Event with given id found!' }));
+    }
+    if (event.rows[0].max_participants !== null && event.count >= event.rows[0].max_participants){
+        return res.status(400).send(wrapResponse(false, { error: 'The participation limit has been reached!' }));
     }
 
     // Check if user is already registered for event
