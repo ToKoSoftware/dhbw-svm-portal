@@ -59,7 +59,6 @@ import { deleteOrganization } from './api/v2/organizations/delete-organization';
 import { updatePollVote } from './api/v2/poll-votes/update-poll-vote';
 import { getOrganizationByAccessCode } from './api/v2/organizations/get-organization-by-access_code';
 
-
 export default function startServer(): void {
 
     /**
