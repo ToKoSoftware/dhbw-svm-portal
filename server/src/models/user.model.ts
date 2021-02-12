@@ -1,4 +1,4 @@
-import {BeforeCreate, BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, HasMany, IsBefore, IsDate, IsEmail, IsIn, Length, Model, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
+import {BeforeCreate, BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, HasMany, IsBefore, IsDate, IsIn, Length, Model, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
 import {v4 as uuidv4} from 'uuid';
 import {genderType, UserDataSnapshot} from '../interfaces/users.interface';
 import { Organization } from './organization.model';
@@ -77,7 +77,6 @@ export class User extends Model {
     @PrimaryKey
     @Column
     id: string;
-    @IsEmail
     @Column
     email: string;
     @Column

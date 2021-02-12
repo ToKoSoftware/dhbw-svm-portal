@@ -1,6 +1,4 @@
 import { Request, Response } from 'express';
-import { FindOptions } from 'sequelize';
-import { buildQuery, QueryBuilderConfig } from '../../../functions/query-builder.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { Vars } from '../../../vars';
 import { RoleData } from '../../../interfaces/role.interface';
@@ -42,20 +40,8 @@ export async function getRole(req: Request, res: Response): Promise<Response> {
 }
 
 export async function getRoles(req: Request, res: Response): Promise<Response> {
-    let query: FindOptions = {};
-    const allowedSearchFilterAndOrderFields = ['title'];
-    const queryConfig: QueryBuilderConfig = {
-        query: query,
-        searchString: req.query.search as string || '',
-        allowLimitAndOffset: true,
-        allowedFilterFields: allowedSearchFilterAndOrderFields,
-        allowedSearchFields: allowedSearchFilterAndOrderFields,
-        allowedOrderFields: allowedSearchFilterAndOrderFields
-    };
-    query = buildQuery(queryConfig, req);
-
     let success = true;
-    const data = await Role.scope(['full', {method: ['onlyCurrentOrg', Vars.currentOrganization.id]}, 'ordered']).findAll(query)
+    const data = await Role.scope(['full', {method: ['onlyCurrentOrg', Vars.currentOrganization.id]}, 'ordered']).findAll()
         .catch(() => {
             success = false;
             return null;
