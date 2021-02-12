@@ -1,22 +1,15 @@
 import { Request, Response } from 'express';
 import { wrapResponse } from '../../../functions/response-wrapper';
-import { Vars } from '../../../vars';
-import { User } from '../../../models/user.model';
 import { Organization } from '../../../models/organization.model';
 
 export async function getOrganizationByAccessCode(req: Request, res: Response): Promise<Response> {
     let success = true;
     const organizationData: Organization | null = await Organization
-        .scope([Vars.currentUserIsAdmin ? 'full' : 'active']) //  todo permission check in #98
+        .scope('active') 
         .findOne({
             where: {
                 access_code: req.params.code
-            }, 
-            ...!Vars.currentUserIsAdmin ? {
-                include: {
-                    model: User.scope('publicData')
-                }
-            }: {}
+            }
         })
         .catch(() => {
             success = false;
