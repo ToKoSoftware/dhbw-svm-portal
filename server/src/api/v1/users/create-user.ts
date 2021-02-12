@@ -7,7 +7,6 @@ import { objectHasRequiredAndNotEmptyKeys } from '../../../functions/check-input
 import * as EmailValidator from 'email-validator';
 import { UserDataSnapshot, UserRegistrationData } from '../../../interfaces/users.interface';
 import { Organization } from '../../../models/organization.model';
-import { Vars } from '../../../vars';
 
 export async function createUser(req: Request, res: Response): Promise<Response> {
     let success = true;
