@@ -44,13 +44,13 @@ export async function getPoll(req: Request, res: Response): Promise<Response> {
     let voted = false;
     let totalCount = 0;
     const pollDataWithCount = {
-        ...pollData.toJSON(), user_has_voted: voted, poll_answers: pollData.poll_answers.map(pollAnswer => {
+        ...pollData.toJSON(), poll_answers: pollData.poll_answers.map(pollAnswer => {
             const counter = pollAnswer.voted_users.length;
             const answerVoted = !!pollAnswer.voted_users.find(user => user.id === Vars.currentUser.id);
             voted = voted || answerVoted;
             totalCount = totalCount + counter;
             return { ...pollAnswer.toJSON(), user_votes_count: counter, answer_voted: answerVoted };
-        }), total_user_votes_count: totalCount
+        }), user_has_voted: voted, total_user_votes_count: totalCount
     };
     return res.send(wrapResponse(true, pollDataWithCount));
 }
