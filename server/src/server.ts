@@ -133,7 +133,7 @@ export default function startServer(): void {
     // Get a single event registration by eventId and userId
     app.get('/api/v2/events/:event_id/eventregistration', userIsAuthorized, (req, res) => getEventRegistration(req, res));
     // Get all event registrations for one eventId
-    app.get('/api/v2/events/:event_id/eventregistrations', userIsAuthorized, (req, res) => getEventRegistrationsFromEvent(req, res));
+    app.get('/api/v2/events/:event_id/eventregistrations', userIsAuthorized, userIsAdmin, (req, res) => getEventRegistrationsFromEvent(req, res));
     // Get all event registrations for one user (or own registrations as non-admin)
     app.get('/api/v2/events/eventregistrations', userIsAuthorized, (req, res) => getEventRegistrationsFromUser(req, res));
     app.post('/api/v2/events', userIsAuthorized, userIsAdmin, (req, res) => createEvent(req, res));

@@ -83,25 +83,24 @@ export async function getEventRegistrationsFromEvent(req: Request, res: Response
     let success = true;
     const eventId = req.params.event_id;
 
-    if (Vars.currentUserIsAdmin) {
-        const event: Event | null = await Event.scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }).findByPk(eventId)
-            .catch(() => {
-                success = false;
-                return null;
-            });
-        if (!success) {
-            return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
-        }
-        if(event === null) {
-            return res.status(403).send(wrapResponse(false, { error: 'Forbidden'}));
-        }
+    const event: Event | null = await Event.scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }).findByPk(eventId)
+        .catch(() => {
+            success = false;
+            return null;
+        });
+    if (!success) {
+        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+    }
+    if(event === null) {
+        return res.status(403).send(wrapResponse(false, { error: 'Forbidden'}));
     }
 
     const data = await EventRegistration.findAll(
         {
             where: {
                 event_id: eventId
-            }
+            },
+            include: User.scope('publicData')
         })
         .catch(() => {
             success = false;
