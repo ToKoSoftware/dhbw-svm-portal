@@ -9,9 +9,15 @@ import { Team } from '../../../models/team.model';
 
 export async function getPoll(req: Request, res: Response): Promise<Response> {
     let success = true;
-
+    const currentDate = new Date();
+    // allow polls that expire today to be shown
+    currentDate.setDate(currentDate.getDate() - 1);
     const pollData: Poll | null = await Poll
-        .scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] })
+        .scope(
+            Vars.currentUserIsAdmin
+                ? [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }]
+                : [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, { method: ['onlyAnswerTeam', Vars.currentUser.teams] }, 'active', { method: ['notExpired', currentDate] }]
+        )
         .findOne({
             where: {
                 id: req.params.id
@@ -54,10 +60,16 @@ export async function getPolls(req: Request, res: Response): Promise<Response> {
     const currentDate = new Date();
     // allow polls that expire today to be shown
     currentDate.setDate(currentDate.getDate() - 1);
-    const pollData: Poll[] = await Poll.scope([{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, 'active', { method: ['notExpired', currentDate] }, 'ordered']).findAll(
-        {
-            include: [Organization, User.scope('publicData'), Team, PollAnswer.scope(['full', 'active'])]
-        })
+    const pollData: Poll[] = await Poll
+        .scope(
+            Vars.currentUserIsAdmin
+                ? [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, 'active', { method: ['notExpired', currentDate] }, 'ordered']
+                : [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, { method: ['onlyAnswerTeam', Vars.currentUser.teams] }, 'active', { method: ['notExpired', currentDate] }, 'ordered']
+        )
+        .findAll(
+            {
+                include: [Organization, User.scope('publicData'), Team, PollAnswer.scope(['full', 'active'])]
+            })
         .catch(() => {
             success = false;
             return [];
