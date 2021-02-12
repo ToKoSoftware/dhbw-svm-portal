@@ -45,7 +45,24 @@ export async function voteForPollAnswer(req: Request, res: Response): Promise<Re
     if (pollAnswerData === null) {
         return res.status(404).send(wrapResponse(false));
     }
-    
+    const pollVoteData: PollVote | null = await PollVote.findOne(
+        {
+            where: {
+                user_id: Vars.currentUser.id,
+                poll_answer_id: pollAnswerData.id
+            }
+        })
+        .catch(() => {
+            success = false;
+            return null;
+        });
+    if (!success) {
+        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+    }
+    if (pollVoteData !== null) {
+        return res.status(404).send(wrapResponse(false, { error: 'You already voted!' }));
+    }
+
     const createdData = await PollVote.create(mappedIncomingData)
         .catch(() => {
             success = false;
