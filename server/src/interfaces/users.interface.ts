@@ -44,7 +44,6 @@ export interface UserLoginData {
 export interface UserRegistrationData extends UserDataSnapshot {
     access_code?: string;
     accepted_privacy_policy?: boolean;
-
 }
 
 export type genderType = 'M' | 'W' | 'D';
