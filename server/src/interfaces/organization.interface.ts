@@ -11,6 +11,7 @@ export interface OrganizationDataSnapshot {
     access_code: string;
     config: string;
     is_active?: boolean;
+    CI?: string;
 }
 
 export interface RawOrganizationData extends OrganizationDataSnapshot {

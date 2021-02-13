@@ -19,6 +19,7 @@ import { Role } from './role.model';
 import { Team } from './team.model';
 import { User } from './user.model';
 import { v4 as uuidv4 } from 'uuid';
+import { DirectDebitMandate } from './direct-debit-mandate.model';
 
 @DefaultScope(() => ({
     required: false,
@@ -70,6 +71,10 @@ export class Organization extends Model {
     config: string;
     @Column
     is_active: boolean;
+    @Column
+    CI: string; // "Gläubiger-Identifikationsnummer"
+    @Column
+    direct_debit_mandate_contract_text: string;
     @ForeignKey(() => Role)
     @Column
     admin_role_id: string;
@@ -89,6 +94,8 @@ export class Organization extends Model {
     roles: Role[];
     @HasMany(() => Team)
     teams: Team[];
+    @HasMany(() => DirectDebitMandate)
+    direct_debit_mandates: DirectDebitMandate[];
 
     @BeforeCreate
     static addUuid(instance: Organization): string {
