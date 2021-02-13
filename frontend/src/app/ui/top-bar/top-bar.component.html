@@ -4,7 +4,7 @@
     {{titleBar.title$ | async}}
   </div>
   <div>
-    <ng-container *ngFor="let b of (titleBar.buttons$ | async)">
+    <ng-container *ngFor="let b of (buttons$ | async)">
       <app-button
         size="small"
         (click)="handleButtonClick(b)"

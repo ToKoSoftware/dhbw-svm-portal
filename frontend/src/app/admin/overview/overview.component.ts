@@ -69,6 +69,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.currentOrgSubscription.unsubscribe();
+    this.titleBarService.buttons$.next([]);
   }
 
 
