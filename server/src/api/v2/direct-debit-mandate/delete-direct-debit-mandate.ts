@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
-import { wrapResponse } from "../../../functions/response-wrapper";
-import { DirectDebitMandate } from "../../../models/direct-debit-mandate.model";
-import { User } from "../../../models/user.model";
-import { Vars } from "../../../vars";
+import { Request, Response } from 'express';
+import { wrapResponse } from '../../../functions/response-wrapper';
+import { DirectDebitMandate } from '../../../models/direct-debit-mandate.model';
+import { User } from '../../../models/user.model';
+import { Vars } from '../../../vars';
 
 export async function deleteDirectDebitMandate(req: Request, res: Response): Promise<Response> {
     let success = true;
