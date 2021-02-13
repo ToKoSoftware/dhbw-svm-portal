@@ -70,8 +70,7 @@ export async function getPolls(req: Request, res: Response): Promise<Response> {
             {
                 include: [Organization, User.scope('publicData'), PollAnswer.scope(['full', 'active'])]
             })
-        .catch((error) => {
-            Vars.loggy.log(error);
+        .catch(() => {
             success = false;
             return [];
         });
