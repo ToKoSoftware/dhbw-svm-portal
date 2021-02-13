@@ -64,7 +64,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
       return;
     }
     const data = {...this.editOrgForm.value, id: this.currentOrg.currentOrg$.getValue()?.id}
-    this.organizations.update(data).subscribe();
+    this.organizations.update(data).subscribe(updatedOrg => this.currentOrg.currentOrg$.next(updatedOrg));
   }
 
   ngOnDestroy(): void {
