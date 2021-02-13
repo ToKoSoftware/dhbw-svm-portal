@@ -188,7 +188,7 @@ export default function startServer(): void {
     /**
      * Direct Debit Mandate
      */
-    //app.get('/api/v2/directDebitMandate', userIsAuthorized, (req, res) => getDirectDebitMandate(req, res));
+    app.get('/api/v2/directDebitMandate', userIsAuthorized, (req, res) => getDirectDebitMandate(req, res));
     app.post('/api/v2/directDebitMandate', userIsAuthorized, (req, res) => createDirectDebitMandate(req, res));
     //app.delete('/api/v2/directDebitMandate', userIsAuthorized, (req, res) => deleteDirectDebitMandate(req, res));
 
