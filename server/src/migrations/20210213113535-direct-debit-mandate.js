@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.addColumn('Organizations', 'CI', {
+        await queryInterface.addColumn('Organizations', 'creditor_id', {
             type: Sequelize.STRING,
             allowNull: true,
             defaultValue: null
@@ -45,7 +45,7 @@ module.exports = {
         });
     },
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.removeColumn('Organizations', 'CI');
+        await queryInterface.removeColumn('Organizations', 'creditor_id');
         await queryInterface.removeColumn('Organizations', 'direct_debit_mandate_contract_text');
         await queryInterface.dropTable('DirectDebitMandates');
     }

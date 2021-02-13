@@ -72,7 +72,7 @@ export class Organization extends Model {
     @Column
     is_active: boolean;
     @Column
-    CI: string; // "Gläubiger-Identifikationsnummer"
+    creditor_id: string; // "Gläubiger-Identifikationsnummer"
     @Column
     direct_debit_mandate_contract_text: string;
     @ForeignKey(() => Role)
