@@ -1,5 +1,6 @@
 import { Model, Table, ForeignKey, Column, BelongsTo, PrimaryKey, Scopes, BeforeCreate } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
+import { RawDirectDebitMandateData } from '../interfaces/direct-debit-mandate.interface';
 import { Organization } from './organization.model';
 import { User } from './user.model';
 
@@ -37,7 +38,7 @@ export class DirectDebitMandate extends Model {
         return instance.id = uuidv4();
     }
 
-    public static requiredFields(): Array<keyof DirectDebitMandate> {
+    public static requiredFields(): Array<keyof RawDirectDebitMandateData> {
         return [
             'user_id',
             'org_id',
