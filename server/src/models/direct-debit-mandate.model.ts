@@ -11,7 +11,9 @@ import { User } from './user.model';
     }
 }))
 
-@Table
+@Table({
+    paranoid: true
+})
 export class DirectDebitMandate extends Model {
 
     @PrimaryKey
