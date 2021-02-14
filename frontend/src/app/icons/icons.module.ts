@@ -8,7 +8,7 @@ import {
   LogIn, UserPlus, Tool, Activity,
   Calendar, UserCheck, Info, Lock, Edit,
   X, PieChart, Plus, ChevronRight, ChevronLeft, Minus,
-  Check, Code, Shuffle, Copy
+  Check, Code, Shuffle, Copy, CreditCard
 } from 'angular-feather/icons';
 import {CommonModule} from '@angular/common';
 
@@ -20,7 +20,7 @@ const icons = {
   LogIn, UserPlus, Tool, Activity,
   Calendar, UserCheck, Info, Lock, Edit,
   X, PieChart, Plus, ChevronRight, ChevronLeft, Minus,
-  Check, Code, Shuffle, Copy
+  Check, Code, Shuffle, Copy, CreditCard
 };
 
 @NgModule({

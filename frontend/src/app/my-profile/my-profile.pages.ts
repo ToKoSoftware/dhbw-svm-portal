@@ -17,6 +17,12 @@ export const myProfilePages: SidebarPageGroup[] = [
         url: '/my-profile/credentials',
         matchFull: true
       },
+      {
+        title: 'Lastschriftmandat',
+        icon: 'credit-card',
+        url: '/my-profile/direct-debit-mandates',
+        matchFull: true
+      },
     ]
   }
 ];
