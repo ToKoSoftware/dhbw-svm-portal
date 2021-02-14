@@ -21,6 +21,7 @@ import {EditTeamMembershipsComponent} from './edit-team-memberships/edit-team-me
 import { EditDeveloperSettingsComponent } from './edit-developer-settings/edit-developer-settings.component';
 import {ClipboardModule} from 'ngx-clipboard';
 import {EditUserPermissionsComponent} from './edit-user-permissions/edit-user-permissions.component';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import {EditUserPermissionsComponent} from './edit-user-permissions/edit-user-pe
     ReactiveFormsModule,
     MomentModule,
     IconsModule,
-    UiModule
+    UiModule,
+    RouterModule
   ]
 })
 export class EditCreatePagesModule {
