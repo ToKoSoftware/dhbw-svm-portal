@@ -60,6 +60,7 @@ export async function getPolls(req: Request, res: Response): Promise<Response> {
     const currentDate = new Date();
     // allow polls that expire today to be shown
     currentDate.setDate(currentDate.getDate() - 1);
+    
     const pollData: Poll[] = await Poll
         .scope(
             Vars.currentUserIsAdmin
