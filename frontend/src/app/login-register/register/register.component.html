@@ -6,6 +6,10 @@
         <p class="text-2xl text-malachite-600 dark:text-malachite-600 pt-1.5 font-bold">Mein Verein</p>
       </div>
       <div class="mt-10 h-full">
+        <div class="text-gray-600 cursor-pointer" (click)="step = step - 1" *ngIf="step !== 1">
+          <feather-icon name="chevron-left" [style.padding-top]="'7px'"></feather-icon>
+          Vorheriger Schritt
+        </div>
         <form [formGroup]="formGroup" (ngSubmit)="createUser()">
           <ng-container *ngIf="step === 1">
             <p class="py-3 text-xs leading-4 font-semibold text-gray-500 uppercase tracking-wider">

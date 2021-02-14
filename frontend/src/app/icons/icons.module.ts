@@ -7,7 +7,7 @@ import {
   MousePointer, AlertCircle, File, LogOut,
   LogIn, UserPlus, Tool, Activity,
   Calendar, UserCheck, Info, Lock, Edit,
-  X, PieChart, Plus, ChevronRight, Minus,
+  X, PieChart, Plus, ChevronRight, ChevronLeft, Minus,
   Check, Code, Shuffle, Copy
 } from 'angular-feather/icons';
 import {CommonModule} from '@angular/common';
@@ -19,7 +19,7 @@ const icons = {
   MousePointer, AlertCircle, File, LogOut,
   LogIn, UserPlus, Tool, Activity,
   Calendar, UserCheck, Info, Lock, Edit,
-  X, PieChart, Plus, ChevronRight, Minus,
+  X, PieChart, Plus, ChevronRight, ChevronLeft, Minus,
   Check, Code, Shuffle, Copy
 };
 

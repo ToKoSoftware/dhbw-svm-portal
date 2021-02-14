@@ -164,7 +164,7 @@ export class RegisterComponent implements OnInit {
       });
     if (valid) {
       this.step++;
-      this.error = true;
+      this.error = false;
       requiredFieldsForNextStep.forEach(field => this.createUserData[field as UserDataType] = this.formGroup.value[field]);
       return;
     }
