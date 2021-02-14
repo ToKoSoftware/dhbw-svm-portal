@@ -7,6 +7,6 @@ module.exports = {
         });
     },
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.removeColumn('Organizations', 'orprivacy_policy_textg_id');
+        await queryInterface.removeColumn('Organizations', 'privacy_policy_text');
     }
 };
