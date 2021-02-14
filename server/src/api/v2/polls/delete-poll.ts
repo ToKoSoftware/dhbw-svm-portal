@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { Poll } from '../../../models/poll.model';
 import { PollAnswer } from '../../../models/poll-answer.model';
+import { PollVote } from '../../../models/poll-vote.model';
 
 export async function deletePoll(req: Request, res: Response): Promise<Response> {
     let success = true;
@@ -37,7 +38,7 @@ export async function deletePoll(req: Request, res: Response): Promise<Response>
         return res.status(500).send(wrapResponse(false, { error: 'Could not deactivate poll with id ' + pollId }));
     }
 
-    await PollAnswer.update(
+    const updatedPollAnswers: [number, PollAnswer[]] | null = await PollAnswer.update(
         {
             is_active: false,
         },
@@ -51,8 +52,22 @@ export async function deletePoll(req: Request, res: Response): Promise<Response>
             success = false;
             return null;
         });
-    if (!success) {
+    if (!success || updatedPollAnswers === null) {
         return res.status(500).send(wrapResponse(false, { error: 'Could not deactivate pollanswer belonging to poll with id ' + pollId }));
+    }
+
+    await PollVote.destroy(
+        {
+            where: {
+                poll_answer_id: updatedPollAnswers[1].map(p => p.id)
+            }
+        })
+        .catch(() => {
+            success = false;
+            return null;
+        });
+    if (!success) {
+        return res.status(500).send(wrapResponse(false, { error: 'Could not delete PollVotes belonging to poll with id ' + pollId }));
     }
 
     return res.status(204).send(wrapResponse(true));
