@@ -66,7 +66,7 @@ export async function getPolls(req: Request, res: Response): Promise<Response> {
             Vars.currentUserIsAdmin
                 ? (showExpired == 'true'
                     ? [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, 'ordered']
-                    : [{ method: ['notExpired', currentDate] }, 'ordered'])
+                    : [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, { method: ['notExpired', currentDate] }, 'ordered'])
                 : [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, { method: ['onlyAnswerTeam', Vars.currentUser.teams.map(t => t.id)] }, 'active', { method: ['notExpired', currentDate] }, 'ordered']
         )
         .findAll(
