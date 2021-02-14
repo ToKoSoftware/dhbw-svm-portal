@@ -9,6 +9,7 @@ import { UserDataSnapshot, UserRegistrationData } from '../../../interfaces/user
 import { Organization } from '../../../models/organization.model';
 import { RoleAssignment } from '../../../models/role-assignment.model';
 import { Role } from '../../../models/role.model';
+import { Vars } from '../../../vars';
 
 export async function createUser(req: Request, res: Response): Promise<Response> {
     let success = true;
