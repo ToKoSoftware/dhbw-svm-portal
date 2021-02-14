@@ -42,6 +42,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
       {
         title: [],
         access_code: [],
+        privacy_policy_text: [],
       }
     );
     this.currentOrgSubscription = this.currentOrg.currentOrg$.subscribe(
@@ -52,6 +53,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
             {
               title: [org.title],
               access_code: [org.access_code],
+              privacy_policy_text: [org.privacy_policy_text],
             }
           );
         }
