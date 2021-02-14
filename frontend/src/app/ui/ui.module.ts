@@ -124,7 +124,8 @@ import { ProgressBarComponent } from './progress-bar/progress-bar.component';
     PollComponent,
     SlideOverComponent,
     MarkdownInputComponent,
-    DatetimeInputComponent
+    DatetimeInputComponent,
+    ProgressBarComponent
   ],
   imports: [
     CommonModule,

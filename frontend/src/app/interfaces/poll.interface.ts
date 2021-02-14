@@ -26,3 +26,10 @@ export interface PollAnswerData {
   voted_users: UserData[];
   user_votes_count: number;
 }
+
+export interface PollVoteData {
+  id: string;
+  user_id: string;
+  poll_answer_id: string;
+  title: string | null;
+}

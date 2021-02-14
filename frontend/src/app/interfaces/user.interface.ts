@@ -1,6 +1,7 @@
 import {OrganizationData} from './organization.interface';
 import {EventData} from './event.interface';
 import {RoleData} from './role.interface';
+import {PollVoteData} from './poll.interface';
 
 export interface UserData {
   id: string;
@@ -21,5 +22,6 @@ export interface UserData {
   organization?: OrganizationData;
   registered_events: EventData[];
   assigned_roles: RoleData[];
+  PollVote?: PollVoteData;
   jwt?: string;
 }
