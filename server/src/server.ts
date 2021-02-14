@@ -187,10 +187,10 @@ export default function startServer(): void {
     /**
      * Direct Debit Mandate
      */
-    app.get('/api/v2/directDebitMandate', userIsAuthorized, (req, res) => getDirectDebitMandate(req, res));
-    app.get('/api/v2/directDebitMandates', userIsAuthorized, userIsAdmin, (req, res) => getDirectDebitMandates(req, res));
-    app.post('/api/v2/directDebitMandate', userIsAuthorized, (req, res) => createDirectDebitMandate(req, res));
-    app.delete('/api/v2/directDebitMandate', userIsAuthorized, (req, res) => deleteDirectDebitMandate(req, res));
+    app.get('/api/v2/direct-debit-mandates', userIsAuthorized, (req, res) => getDirectDebitMandate(req, res));
+    app.get('/api/v2/direct-debit-mandates', userIsAuthorized, userIsAdmin, (req, res) => getDirectDebitMandates(req, res));
+    app.post('/api/v2/direct-debit-mandates', userIsAuthorized, (req, res) => createDirectDebitMandate(req, res));
+    app.delete('/api/v2/direct-debit-mandates', userIsAuthorized, (req, res) => deleteDirectDebitMandate(req, res));
 
     /**
      * Admin
