@@ -39,7 +39,7 @@
           </div>
         </app-titled-content>
       </div>
-      <app-zero-data heading="Keine Antwortmöglichkeiten vorhanden.">
+      <app-zero-data *ngIf="!currentPoll.poll_answers.length" heading="Keine Antwortmöglichkeiten vorhanden.">
       </app-zero-data>
     </ng-container>
   </ng-template>
