@@ -33,7 +33,6 @@ export class PollAnswerDetailComponent implements OnInit, OnDestroy {
       this.pollId = params.get('id') || '';
       this.polls.read(this.pollId).subscribe(poll => {
         this.currentPoll = poll;
-        this.slideOver.showSlideOver('Umfrageergebnisse', this.results);
       }, () => this.notifications.loadingFailed());
     });
 
