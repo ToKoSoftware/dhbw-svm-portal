@@ -7,6 +7,7 @@ import {PollData} from '../../interfaces/poll.interface';
 import {PollsService} from '../../services/data/polls/polls.service';
 import {TeamService} from '../../services/data/teams/team.service';
 import {Subscription} from 'rxjs';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-create-poll',
@@ -22,10 +23,11 @@ export class CreatePollComponent implements OnInit, OnDestroy {
   constructor(
     public readonly polls: PollsService,
     public readonly teams: TeamService,
-    private formBuilder: FormBuilder,
-    private slideOverService: SlideOverService,
-    private loadingModalService: LoadingModalService,
-    private notificationService: NotificationService) {
+    private readonly formBuilder: FormBuilder,
+    private readonly slideOverService: SlideOverService,
+    private readonly loadingModalService: LoadingModalService,
+    private readonly router: Router,
+    private readonly notificationService: NotificationService) {
   }
 
   ngOnInit(): void {
@@ -61,11 +63,11 @@ export class CreatePollComponent implements OnInit, OnDestroy {
         this.notificationService.savedSuccessfully();
         this.notificationService.createNotification({
           id: Math.random().toString(36).substring(7),
-          title: `Umfrage ${this.formGroup.value.title} angelegt`,
-          description: 'Bearbeiten Sie die Umfrage, um Antwortmöglichkeiten hinzuzufügen',
+          title: `Umfrage "${this.formGroup.value.title}" angelegt`,
+          description: 'Fügen Sie nun Antwortmöglichkeiten hinzu.',
           type: 'warning'
         }, null);
-        this.slideOverService.close();
+        this.router.navigate(['/my-team/polls', data.id])
       },
       error => {
         this.loadingModalService.hideLoading();

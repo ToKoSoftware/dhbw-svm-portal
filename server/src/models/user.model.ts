@@ -92,7 +92,6 @@ export class User extends Model {
     @Column
     gender: genderType;
     @IsDate
-    @IsBefore(Date())
     @Column
     birthday: Date;
     @Column

@@ -21,6 +21,11 @@
           description="Dieser Code muss von neuen Nutzern angegeben werden, um sich bei der Plattform zu registrieren."
           label="Zugangscode">
         </app-input>
+        <app-markdown-input
+          formControlName="privacy_policy_text"
+          description="Diese Datenschutzerklärung muss von jedem Benutzer der Webseite bei der Registrierung akzeptiert werden. Sie gilt neben der Datenschutzerklärung des Portals. Falls diese Funktion nicht benötigt wird, lassen Sie dieses Feld leer."
+          label="Datenschutzerklärung Ihres Vereins">
+        </app-markdown-input>
         <small class="text-gray-500">Technische ID: {{(currentOrg.currentOrg$ | async)?.id}}</small>
         <div class="flex justify-end w-full">
           <app-button

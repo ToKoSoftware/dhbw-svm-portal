@@ -30,11 +30,6 @@ export class PollsComponent implements OnInit, OnDestroy {
     }]);
   }
 
-  public editSlide(poll: PollData) {
-    this.current = poll.id || '';
-    this.slideOver.showSlideOver('', this.edit);
-  }
-
   ngOnDestroy() {
     this.titleBarService.buttons$.next([]);
   }

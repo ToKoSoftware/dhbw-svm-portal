@@ -1,0 +1,12 @@
+<app-role-picker
+  [availableRoles]="currentUser.assigned_roles"
+  [selectedRoles]="currentUser.assigned_roles" *ngIf="!loading"></app-role-picker>
+<div *ngIf="currentUser.assigned_roles.length === 0 && !loading">
+  Keine Rollen vergeben.
+</div>
+<div class="flex justify-end w-full">
+  <a routerLink="/my-team/roles">
+    <app-button label="Rollen bearbeiten" type="blank" size="small"></app-button>
+  </a>
+</div>
+<app-loading *ngIf="loading"></app-loading>

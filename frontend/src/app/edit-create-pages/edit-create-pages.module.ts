@@ -20,6 +20,8 @@ import { EditRoleMembershipsComponent } from './edit-role-memberships/edit-role-
 import {EditTeamMembershipsComponent} from './edit-team-memberships/edit-team-memberships.component';
 import { EditDeveloperSettingsComponent } from './edit-developer-settings/edit-developer-settings.component';
 import {ClipboardModule} from 'ngx-clipboard';
+import {EditUserPermissionsComponent} from './edit-user-permissions/edit-user-permissions.component';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -37,9 +39,12 @@ import {ClipboardModule} from 'ngx-clipboard';
     EditTeamComponent,
     EditRoleMembershipsComponent,
     EditTeamMembershipsComponent,
-    EditDeveloperSettingsComponent
+    EditDeveloperSettingsComponent,
+    EditUserPermissionsComponent
   ],
-  exports: [EditUserComponent, EditEventComponent, CreateNewsComponent, EditNewsComponent, EditPollComponent, CreatePollComponent, CreateEventComponent, CreateRoleComponent, EditRoleComponent, EditTeamComponent, CreateTeamComponent, EditRoleMembershipsComponent, EditTeamMembershipsComponent, EditDeveloperSettingsComponent],
+  exports: [EditUserComponent, EditEventComponent, CreateNewsComponent, EditNewsComponent, EditPollComponent, CreatePollComponent,
+    CreateEventComponent, CreateRoleComponent, EditRoleComponent, EditTeamComponent, CreateTeamComponent, EditRoleMembershipsComponent,
+    EditTeamMembershipsComponent, EditDeveloperSettingsComponent, EditUserPermissionsComponent],
   imports: [
     CommonModule,
     ClipboardModule,
@@ -47,7 +52,8 @@ import {ClipboardModule} from 'ngx-clipboard';
     ReactiveFormsModule,
     MomentModule,
     IconsModule,
-    UiModule
+    UiModule,
+    RouterModule
   ]
 })
 export class EditCreatePagesModule {

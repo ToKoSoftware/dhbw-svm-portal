@@ -16,7 +16,10 @@ export async function getUser(req: Request, res: Response): Promise<Response> {
     const data = await User
         .scope(Vars.currentUserIsAdmin 
             ? ['full', { method: ['onlyCurrentOrg', Vars.currentOrganization.id] }] 
-            : ['full', { method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, 'publicData'])
+            : Vars.currentUser.id === req.params.id 
+                ? ['full']
+                : [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, 'publicData']
+        )
         .findByPk(req.params.id)
         .catch(() => {
             success = false;

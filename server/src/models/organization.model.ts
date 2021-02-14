@@ -37,7 +37,7 @@ import { DirectDebitMandate } from './direct-debit-mandate.model';
     active: {
         required: false,
         attributes: {
-            exclude: ['access_code']
+            exclude: ['access_code', 'config']
         },
         where: {
             is_active: true
@@ -46,7 +46,7 @@ import { DirectDebitMandate } from './direct-debit-mandate.model';
     inactive: {
         required: false,
         attributes: {
-            exclude: ['access_code']
+            exclude: ['access_code', 'config']
         },
         where: {
             is_active: false
@@ -75,6 +75,8 @@ export class Organization extends Model {
     creditor_id: string; // "Gläubiger-Identifikationsnummer"
     @Column
     direct_debit_mandate_contract_text: string;
+    @Column
+    privacy_policy_text: string;
     @ForeignKey(() => Role)
     @Column
     admin_role_id: string;

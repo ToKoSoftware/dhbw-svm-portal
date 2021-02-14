@@ -12,6 +12,8 @@ export interface OrganizationDataSnapshot {
     config: string;
     is_active?: boolean;
     creditor_id?: string;
+    direct_debit_mandate_contract_text: string;
+    privacy_policy_text: string;
 }
 
 export interface RawOrganizationData extends OrganizationDataSnapshot {

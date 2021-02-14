@@ -18,6 +18,7 @@ import {EditCreatePagesModule} from "../edit-create-pages/edit-create-pages.modu
 import { PollsComponent } from './polls/polls.component';
 import { StatsComponent } from './stats/stats.component';
 import { NewsComponent } from './news/news.component';
+import {PollAnswerDetailComponent} from './polls/poll-answer-detail/poll-answer-detail.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { NewsComponent } from './news/news.component';
     TeamsComponent,
     PollsComponent,
     StatsComponent,
-    NewsComponent
+    NewsComponent,
+    PollAnswerDetailComponent
   ],
   imports: [
     adminRoutes,

@@ -1,38 +1,56 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {ApiService} from '../../services/api/api.service';
-import {UserData} from '../../interfaces/user.interface';
 import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
 import {LoginService} from '../../services/login/login.service';
 import {Router} from '@angular/router';
 import {ConfirmModalService} from '../../services/confirm-modal/confirm-modal.service';
 import {UsersService} from '../../services/data/users/users.service';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {OrganizationsService} from '../../services/data/organizations/organizations.service';
+import {NotificationService} from '../../services/notification/notification.service';
+import {OrganizationData} from '../../interfaces/organization.interface';
+import {SlideOverService} from '../../services/slide-over/slide-over.service';
 
 @Component({
   selector: 'app-register',
-  templateUrl: './register.component.html'
+  templateUrl: './register.component.html',
+  styles: [`
+    input:checked + svg {
+      display: block;
+    }
+  `]
 })
-export class RegisterComponent implements OnInit{
+export class RegisterComponent implements OnInit {
+  public currentOrg: OrganizationData | null = null;
+  @ViewChild('privacy', {static: true}) privacy: TemplateRef<unknown>;
+  public availableGenderOptions: [string | number, string | number][] = [['M', 'Männlich'], ['W', 'Weiblich'], ['D', 'Divers']];
+  public step = 1;
+  public error = false;
+  public formGroup: FormGroup;
   public createUserData: CreateUserData = {
     email: '',
-    accessCode: '',
+    access_code: '',
     password: '',
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     street: '',
-    streetNumber: '',
-    postcode: '',
+    street_number: '',
+    username: '',
+    post_code: '',
+    gender: '',
+    birthday: '',
     city: '',
   };
-  public error: false;
-  public formGroup: FormGroup;
 
   constructor(
+    private readonly organization: OrganizationsService,
+    private readonly slideOver: SlideOverService,
     private readonly router: Router,
     private readonly api: ApiService,
     private readonly users: UsersService,
     private readonly formBuilder: FormBuilder,
     private readonly loginService: LoginService,
+    private readonly notificationService: NotificationService,
     private readonly confirm: ConfirmModalService,
     private readonly loading: LoadingModalService) {
   }
@@ -47,14 +65,45 @@ export class RegisterComponent implements OnInit{
         last_name: [],
         street: [],
         street_number: [],
-        postcode: [],
+        post_code: ['', Validators.minLength(5)],
+        gender: ['M'],
+        username: [],
+        birthday: [],
         city: [],
       }
     );
   }
 
   public createUser(): void {
-    this.users.create(this.formGroup.value).subscribe(
+    // if current step is not final step, enter has been pressed before form is completed
+    if (this.step !== 4) {
+      switch (this.step) {
+        case 1:
+          return this.checkOrganization();
+        case 2:
+          return this.checkNameData();
+        case 3:
+          return this.checkBirthdayAndGenderData();
+      }
+    }
+    if (this.currentOrg?.privacy_policy_text){
+      this.confirm.confirm({
+        title: `Datenschutz`,
+        confirmButtonType: 'info',
+        confirmText: 'Ok',
+        description: 'Um das Portal nutzen zu können, müssen Sie der Datenenschutzvereinbarung des Vereins zustimmen.',
+        showCancelButton: false
+      });
+      return;
+    }
+    let data = {
+      ...this.createUserData,
+      password: this.formGroup.value.password,
+      username: this.formGroup.value.username,
+      email: this.formGroup.value.email,
+      accepted_privacy_policy: true
+    };
+    this.users.create(data as any).subscribe(
       (data) => {
         this.loading.hideLoading();
         this.login();
@@ -73,30 +122,129 @@ export class RegisterComponent implements OnInit{
   private login(): void {
     this.loading.showLoading();
     this.api.post<string>(['/login', 1], {
-      email: this.createUserData.email,
-      password: this.createUserData.password,
+      email: this.formGroup.value.email,
+      password: this.formGroup.value.password,
     }).subscribe(
       data => {
         this.loginService.login(data.data);
         this.loading.hideLoading();
         this.router.navigate(['/']);
+        this.notificationService.createNotification({
+          id: Math.random().toString(36).substring(7),
+          title: 'Willkommen!',
+          description: 'Herzlich Willkommen im Vereinsportal!',
+          type: 'info'
+        });
       }, error => {
         this.loading.hideLoading();
       }
     );
   }
+
+  public checkOrganization(): void {
+    this.organization.getByAccessCode(this.formGroup.value.access_code).subscribe(
+      org => {
+        this.notificationService.createNotification({
+          id: Math.random().toString(36).substring(7),
+          title: 'Verein gefunden',
+          description: org.title,
+          type: 'info'
+        }, 10000);
+        this.createUserData.access_code = this.formGroup.value.access_code;
+        this.currentOrg = org;
+        this.step++;
+      },
+      error => {
+        this.notificationService.createNotification({
+          id: Math.random().toString(36).substring(7),
+          title: 'Fehler',
+          description: 'Der Verein konnte nicht gefunden werden.',
+          type: 'error'
+        });
+      }
+    );
+  }
+
+  public checkNameData(): void {
+    let currentlyValidFields = this.getValidFormFieldNames();
+    // all fields that are required to be valid
+    const requiredFieldsForNextStep = [
+      'first_name',
+      'last_name',
+      'street',
+      'street_number',
+      'post_code',
+      'city',
+      'access_code'
+    ];
+    const valid = requiredFieldsForNextStep.every(
+      // remove fields that are displayed in next step
+      field => {
+        return currentlyValidFields.includes(field) || ['email', 'password', 'access_code'].includes(field);
+      });
+    if (valid) {
+      this.step++;
+      this.error = false;
+      requiredFieldsForNextStep.forEach(field => this.createUserData[field as UserDataType] = this.formGroup.value[field]);
+      return;
+    }
+    this.error = true;
+  }
+
+  public checkBirthdayAndGenderData(): void {
+    let currentlyValidFields = this.getValidFormFieldNames();
+    // all fields that are required to be valid
+    const requiredFieldsForNextStep = [
+      'gender',
+      'birthday',
+    ];
+    const valid = requiredFieldsForNextStep.every(
+      // remove fields that are displayed in next step
+      field => {
+        console.log(currentlyValidFields.includes(field) || ['email', 'password'].includes(field), field);
+        return currentlyValidFields.includes(field) || ['email', 'password'].includes(field);
+      });
+    if (valid) {
+      this.step++;
+      this.error = true;
+      requiredFieldsForNextStep.forEach(field => this.createUserData[field as UserDataType] = this.formGroup.value[field]);
+      return;
+    }
+    this.error = true;
+  }
+
+  private getValidFormFieldNames() {
+    const valid = [];
+    const controls = this.formGroup.controls;
+    for (const name in controls) {
+      if (!controls[name].invalid) {
+        valid.push(name);
+      }
+    }
+    return valid;
+  }
+
+  public showPrivacySlideOver(event: Event) {
+    event.stopPropagation();
+    if (!this.currentOrg) {
+      return;
+    }
+    this.slideOver.showSlideOver('Datenschutzbestimmungen des Vereins "' + this.currentOrg.title + '"', this.privacy);
+  }
+
 }
 
-export type CreateUserData = {
-  [key in UserDataType]: string;
-};
+export type CreateUserData = { [key in UserDataType]: string; };
 
 export type UserDataType = 'email' |
   'password' |
-  'accessCode' |
-  'firstName' |
-  'lastName' |
   'street' |
-  'streetNumber' |
-  'postcode' |
+  'gender' |
+  'access_code' |
+  'first_name' |
+  'last_name' |
+  'username' |
+  'street_number' |
+  'birthday' |
+  'post_code' |
   'city';

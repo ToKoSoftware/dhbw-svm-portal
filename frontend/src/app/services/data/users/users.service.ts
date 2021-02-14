@@ -11,11 +11,13 @@ export class UsersService extends DataService<UserData> implements DataServiceFu
 
   reloadData() {
     this.data$.next(null);
-    this.api.get<UserData[]>(['/users', 1], {sort: 'date'})
-      .subscribe(
-        data => this.data$.next(data.data),
-        error => this.notifications.loadingFailed()
-      );
+    if (this.login.decodedJwt$.value?.is_admin) {
+      this.api.get<UserData[]>(['/users', 1])
+        .subscribe(
+          data => this.data$.next(data.data),
+          error => this.notifications.loadingFailed()
+        );
+    }
   }
 
   create(UserData: CreateAndUpdateData<UserData>): Observable<UserData> {

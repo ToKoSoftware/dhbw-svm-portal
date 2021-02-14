@@ -70,6 +70,9 @@ export class EditUserComponent implements OnInit, OnChanges {
         this.currentUser = data;
         this.notifications.savedSuccessfully();
         this.loading = false;
+        if (data.jwt) {
+          this.login.login(data.jwt);
+        }
       },
       error => {
         this.notifications.savingFailed();

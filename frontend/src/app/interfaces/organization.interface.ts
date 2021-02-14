@@ -9,6 +9,7 @@ export interface OrganizationData {
   id?: string;
   title: string;
   access_code: string;
+  privacy_policy_text: string;
   config: string;
   is_active?: boolean;
   admin_role: RoleData;

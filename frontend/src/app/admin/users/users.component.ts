@@ -19,22 +19,9 @@ import {UsersService} from '../../services/data/users/users.service';
 export class UsersComponent implements OnInit, OnDestroy {
   private routeSubscription: Subscription;
   public sidebarPages = adminPages;
-  public breadcrumb = adminBreadcrumb;
   @ViewChild('relatedCustomersModal', {static: true}) relatedCustomersModal: TemplateRef<unknown>;
   public loading = false;
   public currentEditUserId: string = '';
-  public buttonGroup: UiButtonGroup = {
-    buttons: [
-      {
-        title: 'Benutzerdaten exportieren',
-        function: () => {
-          const jwt = this.login.jwt$.value;
-          window.location.assign(`/api/v1/admin/export/users?token=${jwt}`);
-        },
-        icon: 'download-cloud'
-      }
-    ]
-  };
   public filters: AvailableFilter[] = [{
     title: "E-Mail",
     name: "email",

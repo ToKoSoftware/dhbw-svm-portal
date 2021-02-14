@@ -6,7 +6,7 @@
     <div class="overflow-hidden pt-3 cursor-pointer md:-ml-2">
       <ul class="divide-y divide-gray-200">
         <li *ngFor="let poll of polls.data$ | async">
-          <div (click)="editSlide(poll)" class="block hover:bg-gray-50">
+          <a [routerLink]="'/my-team/polls/' + poll.id" class="block hover:bg-gray-50">
             <div class="px-4 py-4 flex items-center sm:px-6">
               <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
                 <div>
@@ -29,7 +29,7 @@
                 <feather-icon name="chevron-right" class="pt-1 text-gray-400"></feather-icon>
               </div>
             </div>
-          </div>
+          </a>
         </li>
       </ul>
     </div>
