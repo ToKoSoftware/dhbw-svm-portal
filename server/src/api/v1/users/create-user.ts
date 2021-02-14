@@ -16,15 +16,12 @@ export async function createUser(req: Request, res: Response): Promise<Response>
     if (incomingData.access_code !== undefined) {
         access_code = incomingData.access_code;
         delete incomingData.access_code;
-        if (incomingData.accepted_privacy_policy !== undefined) {
-            accepted_privacy_policy = incomingData.accepted_privacy_policy;
-            delete incomingData.accepted_privacy_policy;
-        }
-        if(!accepted_privacy_policy) {
-            return res.status(400).send(wrapResponse(false, { error: 'No acception of privacy policy' }));
-        }
-    } 
-    
+    }
+    if (incomingData.accepted_privacy_policy !== undefined) {
+        accepted_privacy_policy = incomingData.accepted_privacy_policy;
+        delete incomingData.accepted_privacy_policy;
+    }
+
     const incomingDataWithoutAccessCodeAndAcceptedPrivacyPolicy: UserDataSnapshot = incomingData;
     const mappedIncomingData: UserDataSnapshot = await mapUser(incomingDataWithoutAccessCodeAndAcceptedPrivacyPolicy);
 
@@ -81,8 +78,12 @@ export async function createUser(req: Request, res: Response): Promise<Response>
         if (!success) {
             return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
         }
-        
+
         const org_id = org ? org.id : null;
+
+        if (org !== null && !accepted_privacy_policy) {
+            return res.status(400).send(wrapResponse(false, { error: 'No acception of privacy policy' }));
+        }
 
         const createdData = await User.create(
             {
