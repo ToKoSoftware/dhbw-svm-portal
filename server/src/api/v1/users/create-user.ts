@@ -7,9 +7,6 @@ import { objectHasRequiredAndNotEmptyKeys } from '../../../functions/check-input
 import * as EmailValidator from 'email-validator';
 import { UserDataSnapshot, UserRegistrationData } from '../../../interfaces/users.interface';
 import { Organization } from '../../../models/organization.model';
-import { RoleAssignment } from '../../../models/role-assignment.model';
-import { Vars } from '../../../vars';
-import { Role } from '../../../models/role.model';
 
 export async function createUser(req: Request, res: Response): Promise<Response> {
     let success = true;
@@ -66,7 +63,7 @@ export async function createUser(req: Request, res: Response): Promise<Response>
 
     if (user === null) {
 
-        const org: Organization | null = await Organization.scope('full').findOne(
+        const org: Organization | null = await Organization.findOne(
             {
                 where: {
                     access_code: access_code
@@ -75,7 +72,9 @@ export async function createUser(req: Request, res: Response): Promise<Response>
         if (!success) {
             return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
         }
+        
         const org_id = org ? org.id : null;
+
         const createdData = await User.create(
             {
                 ...mappedIncomingData,
@@ -87,36 +86,6 @@ export async function createUser(req: Request, res: Response): Promise<Response>
             });
         if (!success || createdData === null) {
             return res.status(500).send(wrapResponse(false, { error: 'Could not create User' }));
-        }
-        const adminRoleId = org?.admin_role.id;
-        if (adminRoleId) {
-            const adminRole: Role[] = await Role.scope('full').findAll({
-                where: {
-                    id: adminRoleId
-                }
-            })
-                .catch(() => {
-                    success = false;
-                    return [];
-                });
-            if (!success) {
-                return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
-            }
-            const hasAdmin = adminRole[0].users.length;
-            if (!hasAdmin) {
-                await RoleAssignment.scope('full').create(
-                    {
-                        user_id: createdData.id,
-                        role_id: org?.admin_role_id
-                    })
-                    .catch(() => {
-                        success = false;
-                        return null;
-                    });
-                if (!success) {
-                    return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
-                }
-            }
         }
 
         const user = await User.findByPk(createdData.id)
