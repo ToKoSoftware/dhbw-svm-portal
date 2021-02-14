@@ -1,17 +1,30 @@
 import {Inject, Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {ApiService} from '../api/api.service';
 import {NotificationService} from '../notification/notification.service';
+import {LoginService} from '../login/login.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService<Single> {
+  private loginSubscription: Subscription = new Subscription();
   public data$: BehaviorSubject<Single[] | null> = new BehaviorSubject(null);
 
-  constructor(@Inject(ApiService) public api: ApiService,
+  constructor(@Inject(ApiService) protected api: ApiService,
+              @Inject(LoginService) protected login: LoginService,
               @Inject(NotificationService) protected readonly notifications: NotificationService) {
     this.reloadData();
+    this.loginSubscription = this.login.decodedJwt$.subscribe(jwt => {
+      if (jwt) {
+        if (jwt.is_admin) {
+          this.reloadData();
+        }
+        this.data$.next(null);
+      } else {
+        this.data$.next(null);
+      }
+    });
   }
 
   reloadData(): void {

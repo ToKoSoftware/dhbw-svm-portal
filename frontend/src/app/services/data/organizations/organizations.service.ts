@@ -11,11 +11,13 @@ export class OrganizationsService extends DataService<OrganizationData> implemen
 
   reloadData() {
     this.data$.next(null);
-    this.api.get<OrganizationData[]>('/organizations')
-      .subscribe(
-        data => this.data$.next(data.data),
-        error => this.notifications.loadingFailed()
-      );
+    if (this.login.decodedJwt$.value?.is_admin) {
+      this.api.get<OrganizationData[]>('/organizations')
+        .subscribe(
+          data => this.data$.next(data.data),
+          error => this.notifications.loadingFailed()
+        );
+    }
   }
 
   create(OrganizationData: CreateAndUpdateData<OrganizationData>): Observable<OrganizationData> {
