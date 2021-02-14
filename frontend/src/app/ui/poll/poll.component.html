@@ -26,10 +26,30 @@
       <div [innerHTML]="poll.body | MarkdownToHtml">
       </div>
     </div>
-    <div class="py-1 dark:text-white justify-between flex overflow-x-auto">
-        <app-button *ngFor="let answer of poll.poll_answers" [label]="answer.title" size="small" type="blank"
-                    class="pb-3">
-        </app-button>
+    <div class="py-1 -ml-2 dark:text-white justify-between
+                flex flex-col overflow-x-auto"
+         *ngIf="!poll.user_has_voted">
+      <app-button *ngFor="let answer of poll.poll_answers" [label]="answer.title" size="small" type="blank"
+                  class="pb-3" (click)="vote(answer)">
+      </app-button>
+    </div>
+    <div class=""
+         *ngIf="poll.user_has_voted">
+      <div
+        *ngFor="let answer of poll.poll_answers"
+        class="flex">
+        <div class="w-1/2 flex-1">
+          {{answer.title}}
+          <span class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" *ngIf="answer.answer_voted">
+            Ihre Antwort
+          </span>
+        </div>
+        <div class="w-1/2 flex-1">
+          <app-progress-bar
+            [progress]="calculateProgress(answer.user_votes_count, poll.total_user_votes_count)">
+          </app-progress-bar>
+        </div>
+      </div>
     </div>
   </app-card>
 </div>

@@ -44,6 +44,7 @@ import {SlideOverComponent} from './slide-over/slide-over.component';
 import {MarkdownInputComponent} from './markdown-input/markdown-input.component';
 import {DatetimeInputComponent} from './datetime-input/datetime-input.component';
 import {Ng2FlatpickrModule} from 'ng2-flatpickr';
+import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 
 
 @NgModule({
@@ -85,7 +86,8 @@ import {Ng2FlatpickrModule} from 'ng2-flatpickr';
     PollComponent,
     SlideOverComponent,
     MarkdownInputComponent,
-    DatetimeInputComponent
+    DatetimeInputComponent,
+    ProgressBarComponent
   ],
   exports: [
     NavbarComponent,

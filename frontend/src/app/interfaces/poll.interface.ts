@@ -3,6 +3,7 @@ import {TeamData} from './team.interface';
 import {OrganizationData} from './organization.interface';
 
 export interface PollData {
+  total_user_votes_count: number;
   user_has_voted: boolean;
   createdAt: string;
   id?: string;
@@ -17,6 +18,7 @@ export interface PollData {
 }
 
 export interface PollAnswerData {
+  answer_voted: boolean;
   createdAt: string;
   id?: string;
   title: string;

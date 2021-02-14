@@ -55,6 +55,15 @@ export class PollsService extends DataService<PollData> implements DataServiceFu
       }));
   }
 
+  vote(poll: PollData, pollAnswer: PollAnswerData) {
+    return this.api.post<PollData>(`/polls/${poll.id}/${pollAnswer.id}/vote`)
+      .pipe(map(res => {
+        this.notifications.savedSuccessfully();
+        this.reloadData();
+        return res.data;
+      }));
+  }
+
   updateAnswer(poll: PollData, pollAnswerData: CreateAndUpdateData<PollAnswerData>) {
     return this.api.put<PollData>(`/polls/${poll.id}/${pollAnswerData.id}`, pollAnswerData)
       .pipe(map(res => {

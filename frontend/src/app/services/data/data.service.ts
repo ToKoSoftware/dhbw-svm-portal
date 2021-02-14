@@ -1,4 +1,4 @@
-import {Inject, Injectable} from '@angular/core';
+import {Inject, Injectable, OnDestroy} from '@angular/core';
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {ApiService} from '../api/api.service';
 import {NotificationService} from '../notification/notification.service';
@@ -7,7 +7,7 @@ import {LoginService} from '../login/login.service';
 @Injectable({
   providedIn: 'root'
 })
-export class DataService<Single> {
+export class DataService<Single> implements OnDestroy{
   private loginSubscription: Subscription = new Subscription();
   public data$: BehaviorSubject<Single[] | null> = new BehaviorSubject(null);
 
@@ -29,6 +29,10 @@ export class DataService<Single> {
 
   reloadData(): void {
     return;
+  }
+
+  ngOnDestroy(): void {
+    this.loginSubscription.unsubscribe();
   }
 
 }
