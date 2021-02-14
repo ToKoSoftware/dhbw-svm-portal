@@ -7,7 +7,7 @@ import { Vars } from '../../../vars';
 export async function deleteDirectDebitMandate(req: Request, res: Response): Promise<Response> {
     let success = true;
     const orgId = Vars.currentOrganization.id;
-    const userId = Vars.currentUser.id;
+    const userId = Vars.currentUserIsAdmin ? req.params.id : Vars.currentUser.id;
 
     const user: User | null = await User.scope({ method: ['onlyCurrentOrg', orgId] }).findByPk(userId)
         .catch(() => {

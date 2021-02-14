@@ -104,6 +104,8 @@ export default function startServer(): void {
      */
     app.get('/api/v1/users', userIsAuthorized, userIsAdmin, (req, res) => getUsers(req, res));
     app.get('/api/v1/users/:id', userIsAuthorized, (req, res) => getUser(req, res));
+    app.get('/api/v1/users/:id/direct-debit-mandates', userIsAuthorized, (req, res) => getDirectDebitMandate(req, res));
+    app.delete('/api/v1/users/:id/direct-debit-mandates', userIsAuthorized, (req, res) => deleteDirectDebitMandate(req, res));
     app.post('/api/v1/users', (req, res) => createUser(req, res));
     app.put('/api/v1/users/:id', userIsAuthorized, (req, res) => updateUser(req, res));
     app.delete('/api/v1/users/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteUser(req, res));
@@ -187,10 +189,8 @@ export default function startServer(): void {
     /**
      * Direct Debit Mandate
      */
-    app.get('/api/v2/direct-debit-mandates', userIsAuthorized, (req, res) => getDirectDebitMandate(req, res));
     app.get('/api/v2/direct-debit-mandates', userIsAuthorized, userIsAdmin, (req, res) => getDirectDebitMandates(req, res));
     app.post('/api/v2/direct-debit-mandates', userIsAuthorized, (req, res) => createDirectDebitMandate(req, res));
-    app.delete('/api/v2/direct-debit-mandates', userIsAuthorized, (req, res) => deleteDirectDebitMandate(req, res));
 
     /**
      * Admin
