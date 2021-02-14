@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {ApiService} from '../../services/api/api.service';
 import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
 import {LoginService} from '../../services/login/login.service';
@@ -8,12 +8,21 @@ import {UsersService} from '../../services/data/users/users.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {OrganizationsService} from '../../services/data/organizations/organizations.service';
 import {NotificationService} from '../../services/notification/notification.service';
+import {OrganizationData} from '../../interfaces/organization.interface';
+import {SlideOverService} from '../../services/slide-over/slide-over.service';
 
 @Component({
   selector: 'app-register',
-  templateUrl: './register.component.html'
+  templateUrl: './register.component.html',
+  styles: [`
+    input:checked + svg {
+      display: block;
+    }
+  `]
 })
 export class RegisterComponent implements OnInit {
+  public currentOrg: OrganizationData | null = null;
+  @ViewChild('privacy', {static: true}) privacy: TemplateRef<unknown>;
   public availableGenderOptions: [string | number, string | number][] = [['M', 'Männlich'], ['W', 'Weiblich'], ['D', 'Divers']];
   public step = 1;
   public error = false;
@@ -35,6 +44,7 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private readonly organization: OrganizationsService,
+    private readonly slideOver: SlideOverService,
     private readonly router: Router,
     private readonly api: ApiService,
     private readonly users: UsersService,
@@ -67,7 +77,7 @@ export class RegisterComponent implements OnInit {
   public createUser(): void {
     // if current step is not final step, enter has been pressed before form is completed
     if (this.step !== 4) {
-      switch (this.step){
+      switch (this.step) {
         case 1:
           return this.checkOrganization();
         case 2:
@@ -76,12 +86,23 @@ export class RegisterComponent implements OnInit {
           return this.checkBirthdayAndGenderData();
       }
     }
+    if (this.currentOrg?.privacy_policy_text){
+      this.confirm.confirm({
+        title: `Datenschutz`,
+        confirmButtonType: 'info',
+        confirmText: 'Ok',
+        description: 'Um das Portal nutzen zu können, müssen Sie der Datenenschutzvereinbarung des Vereins zustimmen.',
+        showCancelButton: false
+      });
+      return;
+    }
     let data = {
       ...this.createUserData,
       password: this.formGroup.value.password,
       username: this.formGroup.value.username,
       email: this.formGroup.value.email,
-    }
+      accepted_privacy_policy: true
+    };
     this.users.create(data as any).subscribe(
       (data) => {
         this.loading.hideLoading();
@@ -121,9 +142,7 @@ export class RegisterComponent implements OnInit {
   }
 
   public checkOrganization(): void {
-    // TODO Currently Missing API
-    // this.organization.getByAccessCode('aaabbb')
-    this.organization.read('a37b2bb5-444c-4a7c-b8b0-bcac59268f59').subscribe(
+    this.organization.getByAccessCode(this.formGroup.value.access_code).subscribe(
       org => {
         this.notificationService.createNotification({
           id: Math.random().toString(36).substring(7),
@@ -132,6 +151,7 @@ export class RegisterComponent implements OnInit {
           type: 'info'
         }, 10000);
         this.createUserData.access_code = this.formGroup.value.access_code;
+        this.currentOrg = org;
         this.step++;
       },
       error => {
@@ -202,6 +222,14 @@ export class RegisterComponent implements OnInit {
       }
     }
     return valid;
+  }
+
+  public showPrivacySlideOver(event: Event) {
+    event.stopPropagation();
+    if (!this.currentOrg) {
+      return;
+    }
+    this.slideOver.showSlideOver('Datenschutzbestimmungen des Vereins "' + this.currentOrg.title + '"', this.privacy);
   }
 
 }

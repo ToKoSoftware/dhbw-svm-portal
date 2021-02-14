@@ -8,20 +8,22 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {LogoutComponent} from './logout/logout.component';
 import { CreateOrgComponent } from './create-org/create-org.component';
 import {IconsModule} from '../icons/icons.module';
+import {MarkdownToHtmlModule} from 'markdown-to-html-pipe';
 
 @NgModule({
     declarations: [RegisterComponent, LoginComponent, LogoutComponent, CreateOrgComponent],
     exports: [
         LoginComponent
     ],
-  imports: [
-    loginRegisterRoutes,
-    CommonModule,
-    FormsModule,
-    UiModule,
-    ReactiveFormsModule,
-    IconsModule
-  ]
+    imports: [
+        loginRegisterRoutes,
+        CommonModule,
+        FormsModule,
+        UiModule,
+        ReactiveFormsModule,
+        IconsModule,
+        MarkdownToHtmlModule
+    ]
 })
 export class LoginRegisterModule {
 }
