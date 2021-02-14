@@ -1,5 +1,6 @@
 import {OrganizationData} from './organization.interface';
 import {EventData} from './event.interface';
+import {RoleData} from './role.interface';
 
 export interface UserData {
   id: string;
@@ -19,5 +20,6 @@ export interface UserData {
   updatedAt: string;
   organization?: OrganizationData;
   registered_events: EventData[];
+  assigned_roles: RoleData[];
   jwt?: string;
 }

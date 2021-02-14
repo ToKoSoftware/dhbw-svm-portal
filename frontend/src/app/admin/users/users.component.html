@@ -33,8 +33,7 @@
         <app-titled-content
           label="Berechtigungen"
           description="Diese Berechtigungs-Rollen wurden dem Nutzer vergeben">
-          <app-role-picker [selectedRoles]="">
-          </app-role-picker>
+          <app-edit-user-permissions [userId]="currentEditUserId"></app-edit-user-permissions>
         </app-titled-content>
       </app-container>
     </div>
