@@ -15,10 +15,11 @@ export class PollComponent implements OnInit {
   public formGroup: FormGroup;
   public answerOptions: [string | number, string | number][] = [];
 
-  constructor(private formBuilder: FormBuilder,
-              private readonly polls: PollsService,
-              private readonly loading: LoadingModalService,
-              private readonly notification: NotificationService
+  constructor(
+       private readonly formBuilder: FormBuilder,
+       private readonly polls: PollsService,
+       private readonly loading: LoadingModalService,
+       private readonly notification: NotificationService
   ) {
   }
 
