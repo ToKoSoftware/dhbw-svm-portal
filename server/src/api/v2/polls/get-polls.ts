@@ -58,7 +58,6 @@ export async function getPoll(req: Request, res: Response): Promise<Response> {
 export async function getPolls(req: Request, res: Response): Promise<Response> {
     let success = true;
     const showExpired = req.query.showExpired;
-    Vars.loggy.log(showExpired);
     const currentDate = new Date();
     // allow polls that expire today to be shown
     currentDate.setDate(currentDate.getDate() - 1);
