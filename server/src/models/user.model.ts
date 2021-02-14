@@ -13,6 +13,7 @@ import { Membership } from './membership.model';
 import { Role } from './role.model';
 import { RoleAssignment } from './role-assignment.model';
 import {SingleSignOnRequest} from './single-sign-on-request.model';
+import { DirectDebitMandate } from './direct-debit-mandate.model';
 
 @DefaultScope(() => ({
     required: false,
@@ -133,6 +134,8 @@ export class User extends Model {
     created_polls: Poll[];
     @HasMany(() => SingleSignOnRequest)
     sso: SingleSignOnRequest[];
+    @HasMany(() => DirectDebitMandate)
+    direct_debit_mandates: DirectDebitMandate[];
 
 
     public static requiredFields(): Array<keyof UserDataSnapshot> {

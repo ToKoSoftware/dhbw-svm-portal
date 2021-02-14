@@ -12,8 +12,12 @@ export async function getUser(req: Request, res: Response): Promise<Response> {
     if (!currentUserIsAdminOrMatchesId(req.params.id)) {
         return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));
     }
-
-    const data = await User.scope(['full', { method: ['onlyCurrentOrg', Vars.currentOrganization.id] }]).findByPk(req.params.id)
+    
+    const data = await User
+        .scope(Vars.currentUserIsAdmin 
+            ? ['full', { method: ['onlyCurrentOrg', Vars.currentOrganization.id] }] 
+            : ['full', { method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, 'publicData'])
+        .findByPk(req.params.id)
         .catch(() => {
             success = false;
             return null;

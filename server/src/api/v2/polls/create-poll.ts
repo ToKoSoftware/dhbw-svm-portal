@@ -13,7 +13,7 @@ export async function createPoll(req: Request, res: Response): Promise<Response>
     const mappedIncomingData: RawPollData = mapPoll(incomingData);
 
     const requiredFields = Poll.requiredFields();
-    if (!objectHasRequiredAndNotEmptyKeys(mappedIncomingData, requiredFields)) {
+    if (!objectHasRequiredAndNotEmptyKeys(mappedIncomingData, requiredFields, true)) {
         return res.status(400).send(wrapResponse(false, { error: 'Not all required fields have been set' }));
     }
 

@@ -9,9 +9,15 @@ import { Team } from '../../../models/team.model';
 
 export async function getPoll(req: Request, res: Response): Promise<Response> {
     let success = true;
-
+    const currentDate = new Date();
+    // allow polls that expire today to be shown
+    currentDate.setDate(currentDate.getDate() - 1);
     const pollData: Poll | null = await Poll
-        .scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] })
+        .scope(
+            Vars.currentUserIsAdmin
+                ? [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }]
+                : [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, { method: ['onlyAnswerTeam', Vars.currentUser.teams.map(t => t.id)] }, 'active', { method: ['notExpired', currentDate] }]
+        )
         .findOne({
             where: {
                 id: req.params.id
@@ -38,13 +44,13 @@ export async function getPoll(req: Request, res: Response): Promise<Response> {
     let voted = false;
     let totalCount = 0;
     const pollDataWithCount = {
-        ...pollData.toJSON(), user_has_voted: voted, poll_answers: pollData.poll_answers.map(pollAnswer => {
+        ...pollData.toJSON(), poll_answers: pollData.poll_answers.map(pollAnswer => {
             const counter = pollAnswer.voted_users.length;
             const answerVoted = !!pollAnswer.voted_users.find(user => user.id === Vars.currentUser.id);
             voted = voted || answerVoted;
             totalCount = totalCount + counter;
             return { ...pollAnswer.toJSON(), user_votes_count: counter, answer_voted: answerVoted };
-        }), total_user_votes_count: totalCount
+        }), user_has_voted: voted, total_user_votes_count: totalCount
     };
     return res.send(wrapResponse(true, pollDataWithCount));
 }
@@ -54,10 +60,16 @@ export async function getPolls(req: Request, res: Response): Promise<Response> {
     const currentDate = new Date();
     // allow polls that expire today to be shown
     currentDate.setDate(currentDate.getDate() - 1);
-    const pollData: Poll[] = await Poll.scope([{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, 'active', { method: ['notExpired', currentDate] }, 'ordered']).findAll(
-        {
-            include: [Organization, User.scope('publicData'), Team, PollAnswer.scope(['full', 'active'])]
-        })
+    const pollData: Poll[] = await Poll
+        .scope(
+            Vars.currentUserIsAdmin
+                ? [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, 'active', { method: ['notExpired', currentDate] }, 'ordered']
+                : [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, { method: ['onlyAnswerTeam', Vars.currentUser.teams.map(t => t.id)] }, 'active', { method: ['notExpired', currentDate] }, 'ordered']
+        )
+        .findAll(
+            {
+                include: [Organization, User.scope('publicData'), PollAnswer.scope(['full', 'active'])]
+            })
         .catch(() => {
             success = false;
             return [];
@@ -72,13 +84,13 @@ export async function getPolls(req: Request, res: Response): Promise<Response> {
         let voted = false;
         let count = 0;
         return {
-            ...poll.toJSON(), user_has_voted: voted, poll_answers: poll.poll_answers.map(pollAnswer => {
+            ...poll.toJSON(), poll_answers: poll.poll_answers.map(pollAnswer => {
                 const counter = pollAnswer.voted_users.length;
                 const answerVoted = !!pollAnswer.voted_users.find(user => user.id === Vars.currentUser.id);
                 voted = voted || answerVoted;
                 count = count + counter;
                 return { ...pollAnswer.toJSON(), user_votes_count: counter, answer_voted: answerVoted };
-            }), total_user_votes_count: count
+            }), user_has_voted: voted, total_user_votes_count: count
         };
     });
 
