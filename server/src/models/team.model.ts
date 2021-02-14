@@ -1,5 +1,6 @@
 import {BeforeCreate, BelongsTo, Column, ForeignKey, HasMany, BelongsToMany, Model, NotEmpty, PrimaryKey, Scopes, Table, DefaultScope} from 'sequelize-typescript';
 import {v4 as uuidv4} from 'uuid';
+import { Op } from 'sequelize';
 import {RawTeamData} from '../interfaces/team.interface';
 import { currentOrg } from './current-org.scope';
 import { Membership } from './membership.model';
@@ -21,6 +22,15 @@ import { User } from './user.model';
         required: false,
         order: [['title', 'ASC']]
     },
+    onlyOwnOrMaintainedTeams: (teamIds: string[], roleIds: string[]) => ({
+        required: false,
+        where: {
+            [Op.or]: [
+                { id: teamIds },
+                { maintain_role_id: roleIds }
+            ]
+        }
+    }),
     onlyCurrentOrg: (org_id: string) => currentOrg(org_id)
 }))
 

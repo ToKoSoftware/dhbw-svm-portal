@@ -56,7 +56,6 @@ import { createOrganization } from './api/v2/organizations/create-organization';
 import { getEventRegistration, getEventRegistrationsFromEvent, getEventRegistrationsFromUser } from './api/v2/event-registrations/get-event-registrations';
 import { updateEventRegistration } from './api/v2/event-registrations/update-event-registration';
 import { deleteOrganization } from './api/v2/organizations/delete-organization';
-import { updatePollVote } from './api/v2/poll-votes/update-poll-vote';
 
 export default function startServer(): void {
 
@@ -108,7 +107,7 @@ export default function startServer(): void {
     /**
      * Team
      */
-    app.get('/api/v2/teams', userIsAuthorized, userIsAdmin, (req, res) => getTeams(req, res));
+    app.get('/api/v2/teams', userIsAuthorized, (req, res) => getTeams(req, res));
     app.get('/api/v2/teams/:id', userIsAuthorized, (req, res) => getTeam(req, res));
     app.post('/api/v2/teams', userIsAuthorized, userIsAdmin, (req, res) => createTeam(req, res));
     app.post('/api/v2/teams/:id/membership', userIsAuthorized, (req, res) => createMembership(req, res));
@@ -137,7 +136,7 @@ export default function startServer(): void {
     // Get all event registrations for one user (or own registrations as non-admin)
     app.get('/api/v2/eventregistrations', userIsAuthorized, (req, res) => getEventRegistrationsFromUser(req, res));
     app.post('/api/v2/events', userIsAuthorized, userIsAdmin, (req, res) => createEvent(req, res));
-    app.post('/api/v2/events/:id/register', userIsAuthorized, (req, res) => registerForEvent(req, res));
+    app.post('/api/v2/events/:id/register', (req, res) => registerForEvent(req, res));
     app.delete('/api/v2/events/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteEvent(req, res));
     app.delete('/api/v2/events/:event_id/eventregistrations/:id', userIsAuthorized, (req, res) => deleteEventRegistration(req, res));
     app.put('/api/v2/events/:id', userIsAuthorized, userIsAdmin, (req, res) => updateEvent(req, res));
@@ -149,11 +148,7 @@ export default function startServer(): void {
     app.get('/api/v2/polls', userIsAuthorized, (req, res) => getPolls(req, res));
     app.get('/api/v2/polls/:id', userIsAuthorized, (req, res) => getPoll(req, res));
     app.post('/api/v2/polls', userIsAuthorized, userIsAdmin, (req, res) => createPoll(req, res));
-    app.post('/api/v2/polls/:id/answers', userIsAuthorized, userIsAdmin, (req, res) => createPollAnswer(req, res));
-    app.post('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res));
     app.delete('/api/v2/polls/:id', userIsAuthorized, userIsAdmin, (req, res) => deletePoll(req, res));
-    app.delete('/api/v2/polls/:pollId/answers/:id', userIsAuthorized, userIsAdmin, (req, res) => deletePollAnswer(req, res));
-    app.delete('/api/v2/polls/:pollId/:pollAnswerId/votes/:id', userIsAuthorized, (req, res) => deletePollVote(req, res));
     app.put('/api/v2/polls/:id', userIsAuthorized, userIsAdmin, (req, res) => updatePoll(req, res));
 
     /**
@@ -161,14 +156,15 @@ export default function startServer(): void {
      */
     app.post('/api/v2/polls/:id/answers', userIsAuthorized, userIsAdmin, (req, res) => createPollAnswer(req, res));
     app.post('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res));
-    app.put('/api/v2/pollAnswers/:id', userIsAuthorized, userIsAdmin, (req, res) => updatePollAnswer(req, res));
-    app.delete('/api/v2/polls/:pollId/:pollAnswerId/votes', userIsAuthorized, (req, res) => updatePollVote(req, res));
-
+    app.put('/api/v2/polls/:pollId/answers/:id', userIsAuthorized, userIsAdmin, (req, res) => updatePollAnswer(req, res));
+    app.delete('/api/v2/polls/:pollId/answers/:id', userIsAuthorized, userIsAdmin, (req, res) => deletePollAnswer(req, res));
+    app.delete('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => deletePollVote(req, res));
+    
     /**
      * Role
      */
-    app.get('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => getRoles(req, res));
-    app.get('/api/v2/roles/:id', userIsAuthorized, (req, res) => getRole(req, res));
+    app.get('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => getRoles(req, res)); 
+    app.get('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => getRole(req, res));
     app.post('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => createRole(req, res));
     app.post('/api/v2/roles/:id/assignment', userIsAuthorized, userIsAdmin, (req, res) => createRoleAssignment(req, res));
     app.delete('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteRole(req, res));
