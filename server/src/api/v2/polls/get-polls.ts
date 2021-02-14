@@ -57,13 +57,16 @@ export async function getPoll(req: Request, res: Response): Promise<Response> {
 
 export async function getPolls(req: Request, res: Response): Promise<Response> {
     let success = true;
+    const showExpired = req.query.showExpired;
     const currentDate = new Date();
     // allow polls that expire today to be shown
     currentDate.setDate(currentDate.getDate() - 1);
     const pollData: Poll[] = await Poll
         .scope(
             Vars.currentUserIsAdmin
-                ? [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, 'active', { method: ['notExpired', currentDate] }, 'ordered']
+                ? (showExpired == 'true'
+                    ? [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, 'ordered']
+                    : [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, { method: ['notExpired', currentDate] }, 'ordered'])
                 : [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, { method: ['onlyAnswerTeam', Vars.currentUser.teams.map(t => t.id)] }, 'active', { method: ['notExpired', currentDate] }, 'ordered']
         )
         .findAll(
