@@ -8,7 +8,6 @@ import * as EmailValidator from 'email-validator';
 import { UserDataSnapshot, UserRegistrationData } from '../../../interfaces/users.interface';
 import { Organization } from '../../../models/organization.model';
 import { RoleAssignment } from '../../../models/role-assignment.model';
-import { Vars } from '../../../vars';
 import { Role } from '../../../models/role.model';
 
 export async function createUser(req: Request, res: Response): Promise<Response> {
