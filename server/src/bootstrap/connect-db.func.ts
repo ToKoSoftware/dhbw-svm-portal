@@ -14,6 +14,7 @@ import {Team} from '../models/team.model';
 import {Event} from '../models/event.model';
 import {Op} from 'sequelize';
 import {SingleSignOnRequest} from '../models/single-sign-on-request.model';
+import { DirectDebitMandate } from '../models/direct-debit-mandate.model';
 
 
 export function connectToDatabase(): void {
@@ -27,7 +28,7 @@ export function connectToDatabase(): void {
             dialect: 'postgres',
             models: [User, Organization, EventRegistration,
                 Membership, News, Poll, PollAnswer, PollVote,
-                RoleAssignment, Role, Team, Event, SingleSignOnRequest]
+                RoleAssignment, Role, Team, Event, SingleSignOnRequest, DirectDebitMandate]
         });
         Vars.db = sequelize;
         Vars.op = Op;

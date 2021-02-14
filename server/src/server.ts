@@ -56,6 +56,10 @@ import { createOrganization } from './api/v2/organizations/create-organization';
 import { getEventRegistration, getEventRegistrationsFromEvent, getEventRegistrationsFromUser } from './api/v2/event-registrations/get-event-registrations';
 import { updateEventRegistration } from './api/v2/event-registrations/update-event-registration';
 import { deleteOrganization } from './api/v2/organizations/delete-organization';
+import { updatePollVote } from './api/v2/poll-votes/update-poll-vote';
+import { createDirectDebitMandate } from './api/v2/direct-debit-mandate/create-direct-debit-mandate';
+import { getDirectDebitMandate, getDirectDebitMandates } from './api/v2/direct-debit-mandate/get-direct-debit-mandate';
+import { deleteDirectDebitMandate } from './api/v2/direct-debit-mandate/delete-direct-debit-mandate';
 
 export default function startServer(): void {
 
@@ -100,6 +104,8 @@ export default function startServer(): void {
      */
     app.get('/api/v1/users', userIsAuthorized, userIsAdmin, (req, res) => getUsers(req, res));
     app.get('/api/v1/users/:id', userIsAuthorized, (req, res) => getUser(req, res));
+    app.get('/api/v1/users/:id/direct-debit-mandates', userIsAuthorized, (req, res) => getDirectDebitMandate(req, res));
+    app.delete('/api/v1/users/:id/direct-debit-mandates', userIsAuthorized, (req, res) => deleteDirectDebitMandate(req, res));
     app.post('/api/v1/users', (req, res) => createUser(req, res));
     app.put('/api/v1/users/:id', userIsAuthorized, (req, res) => updateUser(req, res));
     app.delete('/api/v1/users/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteUser(req, res));
@@ -179,6 +185,12 @@ export default function startServer(): void {
     app.get('/api/v2/organizations/:id', userIsAuthorized, (req, res) => getOrganization(req, res));
     app.put('/api/v2/organizations/:id', userIsAuthorized, userIsAdmin, (req, res) => updateOrganization(req, res));
     app.delete('/api/v2/organizations', userIsAuthorized, userIsAdmin, (req, res) => deleteOrganization(req, res));
+
+    /**
+     * Direct Debit Mandate
+     */
+    app.get('/api/v2/direct-debit-mandates', userIsAuthorized, userIsAdmin, (req, res) => getDirectDebitMandates(req, res));
+    app.post('/api/v2/direct-debit-mandates', userIsAuthorized, (req, res) => createDirectDebitMandate(req, res));
 
     /**
      * Admin
