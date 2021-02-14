@@ -19,4 +19,5 @@ export interface UserData {
   updatedAt: string;
   organization?: OrganizationData;
   registered_events: EventData[];
+  jwt?: string;
 }
