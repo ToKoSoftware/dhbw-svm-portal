@@ -6,9 +6,10 @@ import {loginRegisterRoutes} from './login-register.routes';
 import {UiModule} from '../ui/ui.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {LogoutComponent} from './logout/logout.component';
+import { CreateOrgComponent } from './create-org/create-org.component';
 
 @NgModule({
-    declarations: [RegisterComponent, LoginComponent, LogoutComponent],
+    declarations: [RegisterComponent, LoginComponent, LogoutComponent, CreateOrgComponent],
     exports: [
         LoginComponent
     ],

@@ -46,4 +46,10 @@ export class OrganizationsService extends DataService<OrganizationData> implemen
       }));
   }
 
+  getByAccessCode(code: string) {
+    return this.api.get<OrganizationData>(`/access/${code}`)
+      .pipe(map(res => {
+        return res.data;
+      }));
+  }
 }
