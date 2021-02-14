@@ -12,7 +12,7 @@ import {RouterModule} from '@angular/router';
 import {HeaderComponent} from './header/header.component';
 import {ContainerComponent} from './container/container.component';
 import {StepsComponent} from './steps/steps.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NavSpacerComponent} from './nav-spacer/nav-spacer.component';
 import {ButtonGroupButtonComponent} from './button-group-button/button-group-button.component';
 import {SidebarItemComponent} from './sidebar-item/sidebar-item.component';
@@ -133,7 +133,8 @@ import { ProgressBarComponent } from './progress-bar/progress-bar.component';
     FormsModule,
     MarkdownToHtmlModule,
     MomentModule,
-    Ng2FlatpickrModule
+    Ng2FlatpickrModule,
+    ReactiveFormsModule
   ]
 })
 export class UiModule {

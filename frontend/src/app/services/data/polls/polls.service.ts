@@ -11,7 +11,7 @@ export class PollsService extends DataService<PollData> implements DataServiceFu
 
   reloadData() {
     this.data$.next(null);
-    this.api.get<PollData[]>('/polls')
+    this.api.get<PollData[]>('/polls', {showExpired: 'true'})
       .subscribe(
         data => this.data$.next(data.data),
         error => this.notifications.loadingFailed()
@@ -55,8 +55,8 @@ export class PollsService extends DataService<PollData> implements DataServiceFu
       }));
   }
 
-  vote(poll: PollData, pollAnswer: PollAnswerData) {
-    return this.api.post<PollData>(`/polls/${poll.id}/${pollAnswer.id}/vote`)
+  vote(poll: PollData, pollAnswer: {title: string, answer_id: string}) {
+    return this.api.post<PollData>(`/polls/${poll.id}/${pollAnswer.answer_id}/vote`, {title: pollAnswer.title})
       .pipe(map(res => {
         this.notifications.savedSuccessfully();
         this.reloadData();
