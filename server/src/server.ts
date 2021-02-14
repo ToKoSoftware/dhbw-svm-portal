@@ -58,7 +58,7 @@ import { updateEventRegistration } from './api/v2/event-registrations/update-eve
 import { deleteOrganization } from './api/v2/organizations/delete-organization';
 import { updatePollVote } from './api/v2/poll-votes/update-poll-vote';
 import { createDirectDebitMandate } from './api/v2/direct-debit-mandate/create-direct-debit-mandate';
-import { getDirectDebitMandate } from './api/v2/direct-debit-mandate/get-direct-debit-mandate';
+import { getDirectDebitMandate, getDirectDebitMandates } from './api/v2/direct-debit-mandate/get-direct-debit-mandate';
 import { deleteDirectDebitMandate } from './api/v2/direct-debit-mandate/delete-direct-debit-mandate';
 
 export default function startServer(): void {
@@ -191,6 +191,7 @@ export default function startServer(): void {
      * Direct Debit Mandate
      */
     app.get('/api/v2/directDebitMandate', userIsAuthorized, (req, res) => getDirectDebitMandate(req, res));
+    app.get('/api/v2/directDebitMandates', userIsAuthorized, userIsAdmin, (req, res) => getDirectDebitMandates(req, res));
     app.post('/api/v2/directDebitMandate', userIsAuthorized, (req, res) => createDirectDebitMandate(req, res));
     app.delete('/api/v2/directDebitMandate', userIsAuthorized, (req, res) => deleteDirectDebitMandate(req, res));
 

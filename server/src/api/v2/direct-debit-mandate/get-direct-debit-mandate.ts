@@ -26,7 +26,31 @@ export async function getDirectDebitMandate(req: Request, res: Response): Promis
             where: {
                 user_id: userId,
                 org_id: orgId
-            }
+            },
+            paranoid: false
+        })
+        .catch(() => {
+            success = false;
+            return [];
+        });
+    if (!success || directDebitMandateData === []) {
+        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+    }
+
+    return res.send(wrapResponse(true, directDebitMandateData));
+}
+
+export async function getDirectDebitMandates(req: Request, res: Response): Promise<Response> {
+    let success = true;
+    const orgId = Vars.currentOrganization.id;
+
+    const directDebitMandateData: DirectDebitMandate[] = await DirectDebitMandate.findAll(
+        {
+            where: {
+                org_id: orgId
+            },
+            include: User,
+            paranoid: false
         })
         .catch(() => {
             success = false;
