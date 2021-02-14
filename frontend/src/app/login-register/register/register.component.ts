@@ -70,6 +70,7 @@ export class RegisterComponent implements OnInit {
         username: [],
         birthday: [],
         city: [],
+        accepted_privacy_policy: [],
       }
     );
   }
@@ -86,15 +87,17 @@ export class RegisterComponent implements OnInit {
           return this.checkBirthdayAndGenderData();
       }
     }
-    if (this.currentOrg?.privacy_policy_text){
-      this.confirm.confirm({
-        title: `Datenschutz`,
-        confirmButtonType: 'info',
-        confirmText: 'Ok',
-        description: 'Um das Portal nutzen zu können, müssen Sie der Datenenschutzvereinbarung des Vereins zustimmen.',
-        showCancelButton: false
-      });
-      return;
+    if (this.currentOrg?.privacy_policy_text) {
+      if (!this.formGroup.value.accepted_privacy_policy) {
+        this.confirm.confirm({
+          title: `Datenschutz`,
+          confirmButtonType: 'info',
+          confirmText: 'Ok',
+          description: 'Um das Portal nutzen zu können, müssen Sie der Datenenschutzvereinbarung des Vereins zustimmen.',
+          showCancelButton: false
+        });
+        return;
+      }
     }
     let data = {
       ...this.createUserData,
