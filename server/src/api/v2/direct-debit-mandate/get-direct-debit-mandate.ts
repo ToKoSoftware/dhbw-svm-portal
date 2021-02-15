@@ -8,6 +8,7 @@ export async function getDirectDebitMandate(req: Request, res: Response): Promis
     let success = true;
     const orgId = Vars.currentOrganization.id;
     const userId = Vars.currentUserIsAdmin ? req.params.id : Vars.currentUser.id;
+    const showDeleted = req.query.showDeleted === 'true';
 
     const user: User | null = await User.scope({ method: ['onlyCurrentOrg', orgId] }).findByPk(userId)
         .catch(() => {
@@ -27,7 +28,7 @@ export async function getDirectDebitMandate(req: Request, res: Response): Promis
                 user_id: userId,
                 org_id: orgId
             },
-            paranoid: false
+            paranoid: !showDeleted
         })
         .catch(() => {
             success = false;

@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {UsersService} from '../../services/data/users/users.service';
 import {Subscription} from 'rxjs';
 import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
@@ -11,7 +11,7 @@ import {TeamService} from '../../services/data/teams/team.service';
   selector: 'app-edit-team-memberships',
   templateUrl: './edit-team-memberships.component.html'
 })
-export class EditTeamMembershipsComponent implements OnInit, OnDestroy {
+export class EditTeamMembershipsComponent implements OnDestroy, OnChanges {
   public selectedUsers: UserData[] = [];
   public availableUsers: UserData[] = [];
   @Input() editId: string = '';
@@ -23,10 +23,6 @@ export class EditTeamMembershipsComponent implements OnInit, OnDestroy {
     private readonly loading: LoadingModalService,
     private readonly notification: NotificationService,
   ) {
-  }
-
-  ngOnInit(): void {
-    this.loadData();
   }
 
   private loadData(): void {
@@ -80,6 +76,14 @@ export class EditTeamMembershipsComponent implements OnInit, OnDestroy {
         this.loading.hideLoading();
         this.notification.savingFailed();
       });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.editId) {
+      if (changes.editId.previousValue !== changes.editId.currentValue) {
+        this.loadData();
+      }
+    }
   }
 
 }

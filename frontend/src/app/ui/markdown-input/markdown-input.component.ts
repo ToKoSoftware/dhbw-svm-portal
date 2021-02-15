@@ -36,7 +36,7 @@ export class MarkdownInputComponent implements OnInit, ControlValueAccessor, OnC
   ngAfterViewInit() {
     this.mde = new SimpleMDE(
       {
-        element: this.textarea.nativeElement.value,
+        element: this.textarea.nativeElement,
         forceSync: true,
         spellChecker: false,
         renderingConfig: {

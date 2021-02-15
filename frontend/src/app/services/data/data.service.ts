@@ -17,10 +17,7 @@ export class DataService<Single> implements OnDestroy{
     this.reloadData();
     this.loginSubscription = this.login.decodedJwt$.subscribe(jwt => {
       if (jwt) {
-        if (jwt.is_admin) {
-          this.reloadData();
-        }
-        this.data$.next(null);
+        this.reloadData();
       } else {
         this.data$.next(null);
       }

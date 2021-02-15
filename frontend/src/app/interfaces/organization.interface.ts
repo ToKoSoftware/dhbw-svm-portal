@@ -10,6 +10,8 @@ export interface OrganizationData {
   title: string;
   access_code: string;
   privacy_policy_text: string;
+  direct_debit_mandate_contract_text: string;
+  creditor_id: string;
   config: string;
   is_active?: boolean;
   admin_role: RoleData;

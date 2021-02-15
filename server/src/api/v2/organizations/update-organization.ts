@@ -9,7 +9,7 @@ export async function updateOrganization(req: Request, res: Response): Promise<R
     const incomingData: RawOrganizationData = req.body;
     const organizationId = req.params.id;
 
-    const organizationData: Organization | null = await Organization.findByPk(organizationId)
+    const organizationData: Organization | null = await Organization.scope('full').findByPk(organizationId)
         .catch(() => {
             success = false;
             return null;

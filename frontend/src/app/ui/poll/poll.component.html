@@ -27,7 +27,9 @@
       <h2 class="dark:text-white">
         {{poll.title}}
       </h2>
-      <div [innerHTML]="poll.body | MarkdownToHtml">
+      <div class="prose prose-sm dark:text-white flex-shrink mt-10 divide-y divide-gray-200">
+        <div [innerHTML]="poll.body | MarkdownToHtml">
+        </div>
       </div>
     </div>
     <div class="py-1 dark:text-white justify-between

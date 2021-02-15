@@ -70,6 +70,7 @@ export class RegisterComponent implements OnInit {
         username: [],
         birthday: [],
         city: [],
+        accepted_privacy_policy: [],
       }
     );
   }
@@ -86,15 +87,17 @@ export class RegisterComponent implements OnInit {
           return this.checkBirthdayAndGenderData();
       }
     }
-    if (this.currentOrg?.privacy_policy_text){
-      this.confirm.confirm({
-        title: `Datenschutz`,
-        confirmButtonType: 'info',
-        confirmText: 'Ok',
-        description: 'Um das Portal nutzen zu können, müssen Sie der Datenenschutzvereinbarung des Vereins zustimmen.',
-        showCancelButton: false
-      });
-      return;
+    if (this.currentOrg?.privacy_policy_text) {
+      if (!this.formGroup.value.accepted_privacy_policy) {
+        this.confirm.confirm({
+          title: `Datenschutz`,
+          confirmButtonType: 'info',
+          confirmText: 'Ok',
+          description: 'Um das Portal nutzen zu können, müssen Sie der Datenenschutzvereinbarung des Vereins zustimmen.',
+          showCancelButton: false
+        });
+        return;
+      }
     }
     let data = {
       ...this.createUserData,
@@ -105,9 +108,9 @@ export class RegisterComponent implements OnInit {
     };
     this.users.create(data as any).subscribe(
       (data) => {
-        this.loading.hideLoading();
-        this.login();
+        setTimeout(this.login, 2000);
       }, error => {
+        this.loading.hideLoading();
         this.confirm.confirm({
           title: `Es ist ein Fehler beim Anlegen Ihres Accounts aufgetreten.`,
           confirmButtonType: 'info',
@@ -122,8 +125,8 @@ export class RegisterComponent implements OnInit {
   private login(): void {
     this.loading.showLoading();
     this.api.post<string>(['/login', 1], {
-      email: this.formGroup.value.email,
-      password: this.formGroup.value.password,
+      email: this.createUserData.email,
+      password: this.createUserData.password,
     }).subscribe(
       data => {
         this.loginService.login(data.data);

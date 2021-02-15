@@ -41,7 +41,7 @@ export class EditDeveloperSettingsComponent implements OnInit {
         copyContent = this.editDevSettingsForm.value.client_secret;
         break;
       case 'oauth2_token_url':
-        copyContent = this.hostname + '/oauth2/token';
+        copyContent = this.hostname + '/api/v2/oauth2/token';
         break;
       case 'sso_url':
         copyContent = this.hostname + '/sso';
