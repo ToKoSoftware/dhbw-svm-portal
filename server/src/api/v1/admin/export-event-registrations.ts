@@ -41,13 +41,14 @@ export async function exportEventRegistrations(req: Request, res: Response): Pro
     if (!success) {
         return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
     }
+
     if (eventRegistration === []) {
-        return res.status(404).send(wrapResponse(false, {error: 'No event registration found'}));
+        return res.status(404).send(wrapResponse(false, {error: 'No user found'}));
     }
 
     const csvData = convertObjectArrayToCsv(eventRegistration);
     const date = new Date().toISOString();
-    res.set({'Content-Disposition': `attachment; filename="${date}_EventRegistrations.csv"`});
+    res.set({'Content-Disposition': `attachment; filename="${date}_${eventData.title}_registrations.csv"`});
 
     return res.send(csvData);
 }
