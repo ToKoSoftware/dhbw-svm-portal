@@ -57,7 +57,25 @@ import { Team } from './team.model';
             price: null
         }
     },
-    onlyCurrentOrg: (org_id: string) => currentOrg(org_id)
+    onlyCurrentOrg: (org_id: string) => currentOrg(org_id),
+    onlyAllowedTeam: (allowed_team_id: string, public_team_id: string) => ({
+        required: false,
+        where: {
+            [Op.or]: [
+                {
+                    allowed_team_id: allowed_team_id
+                },
+                {
+                    allowed_team_id: public_team_id
+                },
+                {
+                    allowed_team_id: {
+                        [Op.is]: null
+                    }
+                }
+            ]
+        }
+    })
 })) 
 
 @Table
