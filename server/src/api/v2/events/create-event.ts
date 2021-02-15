@@ -25,8 +25,7 @@ export async function createEvent(req: Request, res: Response): Promise<Response
     }
 
     const createdData = await Event.create(mappedIncomingData)
-        .catch((error) => {
-            Vars.loggy.log(error);
+        .catch(() => {
             success = false;
             return null;
         });
