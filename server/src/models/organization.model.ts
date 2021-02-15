@@ -80,9 +80,15 @@ export class Organization extends Model {
     @ForeignKey(() => Role)
     @Column
     admin_role_id: string;
+    @ForeignKey(() => Team)
+    @Column
+    public_team_id: string;
+
 
     @BelongsTo(() => Role, 'admin_role_id')
     admin_role: Role;
+    @BelongsTo(() => Team, 'public_team_id')
+    public_team: Team;
 
     @HasMany(() => User)
     users: User[];
@@ -94,7 +100,7 @@ export class Organization extends Model {
     polls: Poll[];
     @HasMany(() => Role, 'org_id')
     roles: Role[];
-    @HasMany(() => Team)
+    @HasMany(() => Team, 'org_id')
     teams: Team[];
     @HasMany(() => DirectDebitMandate)
     direct_debit_mandates: DirectDebitMandate[];

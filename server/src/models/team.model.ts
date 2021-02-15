@@ -1,4 +1,4 @@
-import {BeforeCreate, BelongsTo, Column, ForeignKey, HasMany, BelongsToMany, Model, NotEmpty, PrimaryKey, Scopes, Table, DefaultScope} from 'sequelize-typescript';
+import {BeforeCreate, BelongsTo, Column, ForeignKey, HasMany, BelongsToMany, Model, NotEmpty, PrimaryKey, Scopes, Table, DefaultScope, HasOne} from 'sequelize-typescript';
 import {v4 as uuidv4} from 'uuid';
 import { Op } from 'sequelize';
 import {RawTeamData} from '../interfaces/team.interface';
@@ -50,8 +50,10 @@ export class Team extends Model {
     @Column
     maintain_role_id: string;
 
-    @BelongsTo(() => Organization)
+    @BelongsTo(() => Organization, 'org_id')
     organization: Organization;
+    @HasOne(() => Organization, 'public_team_id')
+    public_team_of_organization: Organization;
     @BelongsTo(() => Role)
     maintain_role: Role;
     @BelongsToMany(() => User, () => Membership)
