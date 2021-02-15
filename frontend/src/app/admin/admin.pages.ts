@@ -52,6 +52,15 @@ export const adminPages: SidebarPageGroup[] = [
         url: '/my-team/polls',
       },
     ]
+  }, {
+    title: 'Erweitert',
+    pages: [
+      {
+        title: 'Lastschriftmandate',
+        icon: 'credit-card',
+        url: '/my-team/direct-debit-mandates',
+      },
+    ]
   }
 ];
 

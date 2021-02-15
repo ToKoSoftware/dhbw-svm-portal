@@ -8,10 +8,12 @@ import {IconsModule} from '../icons/icons.module';
 import {MomentModule} from 'ngx-moment';
 import {MyProfileComponent} from './my-profile/my-profile.component';
 import {EditCreatePagesModule} from "../edit-create-pages/edit-create-pages.module";
+import { DirectDebitMandateComponent } from './direct-debit-mandate/direct-debit-mandate.component';
+import {MarkdownToHtmlModule} from 'markdown-to-html-pipe';
 
 
 @NgModule({
-  declarations: [MyCredentialsComponent, MyProfileComponent],
+  declarations: [MyCredentialsComponent, MyProfileComponent, DirectDebitMandateComponent],
   imports: [
     myProfileRoutes,
     CommonModule,
@@ -20,7 +22,8 @@ import {EditCreatePagesModule} from "../edit-create-pages/edit-create-pages.modu
     FormsModule,
     IconsModule,
     MomentModule,
-    EditCreatePagesModule
+    EditCreatePagesModule,
+    MarkdownToHtmlModule
   ]
 })
 export class MyProfileModule {

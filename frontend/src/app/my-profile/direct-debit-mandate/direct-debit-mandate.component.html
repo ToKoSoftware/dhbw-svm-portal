@@ -1,0 +1,66 @@
+<app-layout [sidebarPages]="profilePages">
+  <app-container>
+    <app-titled-content
+      *ngIf="!mandates?.length"
+      label="Lastschriftmandat erteilen"
+      description="Dieses Lastschriftmandat ermächtigt den Verein, Zahlungen von Ihrem Konto abzubuchen.">
+      <app-labeled-value label="Vetragstext des Vereins">
+        <div class="prose prose-sm dark:text-white flex-shrink mt-10 divide-y divide-gray-200">
+          <div
+            [innerHTML]="(currentOrg.currentOrg$ | async)?.direct_debit_mandate_contract_text | MarkdownToHtml">
+          </div>
+        </div>
+      </app-labeled-value>
+      <app-labeled-value label="Gläubiger-Identifikationsnummer des Vereins">
+        {{ (currentOrg.currentOrg$ | async)?.creditor_id }}
+      </app-labeled-value>
+      <form (ngSubmit)="createMandate()" [formGroup]="formGroup">
+        <app-input
+          required="true"
+          formControlName="IBAN"
+          description="Die IBAN Ihres Kontos, von dem der Betrag abgebucht werden soll."
+          placeholder="IBAN"
+          label="Titel">
+        </app-input>
+        <app-input
+          required="true"
+          formControlName="bank_name"
+          description="Der Name Ihrer Bank"
+          placeholder="Bankname"
+          label="Bankname">
+        </app-input>
+        <div class="flex justify-end w-full">
+          <app-button
+            formButtonType="submit"
+            label="Mandat erteilen">
+          </app-button>
+        </div>
+      </form>
+    </app-titled-content>
+    <app-titled-content
+      *ngIf="mandates?.length"
+      label="Lastschriftmandat bearbeiten"
+      description="Sie haben bereits ein Lastschriftmandat erteilt.">
+      <ng-container *ngFor="let mandate of mandates">
+        <div class="md:flex">
+          <app-labeled-value class="flex-1" label="IBAN">
+            {{mandate.IBAN}}
+          </app-labeled-value>
+          <app-labeled-value class="flex-1" label="Bankname">
+            {{mandate.bank_name}}
+          </app-labeled-value>
+        </div>
+        <div class="md:flex">
+          <app-labeled-value class="flex-1" label="Erteilt am">
+            {{mandate.createdAt | amLocal | amDateFormat: 'DD.MM.YYYY H:mm' }}
+          </app-labeled-value>
+          <app-labeled-value class="flex-1" label="Lastschriftmandat widerrufen">
+            <app-button type="danger" (click)="cancelMandate()" size="small"
+                        label="Widerrufen"></app-button>
+          </app-labeled-value>
+        </div>
+      </ng-container>
+    </app-titled-content>
+  </app-container>
+
+</app-layout>

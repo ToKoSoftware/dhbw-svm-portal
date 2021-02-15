@@ -18,6 +18,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
   public editOrgForm: FormGroup;
   private currentOrgSubscription: Subscription;
   @ViewChild('advanced', {static: true}) advanced: TemplateRef<unknown>;
+  @ViewChild('directDebitMandate', {static: true}) directDebitMandate: TemplateRef<unknown>;
+  @ViewChild('privacyPolicy', {static: true}) privacyPolicy: TemplateRef<unknown>;
 
   constructor(
     public readonly organizations: OrganizationsService,
@@ -26,7 +28,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
     private readonly loading: LoadingModalService,
     private readonly titleBarService: TitleBarService,
     private readonly formBuilder: FormBuilder,
-    private readonly slideOver: SlideOverService) {
+    public readonly slideOver: SlideOverService) {
   }
 
   ngOnInit(): void {
@@ -42,16 +44,18 @@ export class OverviewComponent implements OnInit, OnDestroy {
       {
         title: [],
         access_code: [],
+        privacy_policy_text: [],
       }
     );
     this.currentOrgSubscription = this.currentOrg.currentOrg$.subscribe(
       org => {
-        this.loading.hideLoading();
         if (org) {
+          this.loading.hideLoading();
           this.editOrgForm = this.formBuilder.group(
             {
               title: [org.title],
               access_code: [org.access_code],
+              privacy_policy_text: [org.privacy_policy_text],
             }
           );
         }
@@ -64,11 +68,12 @@ export class OverviewComponent implements OnInit, OnDestroy {
       return;
     }
     const data = {...this.editOrgForm.value, id: this.currentOrg.currentOrg$.getValue()?.id}
-    this.organizations.update(data).subscribe();
+    this.organizations.update(data).subscribe(updatedOrg => this.currentOrg.currentOrg$.next(updatedOrg));
   }
 
   ngOnDestroy(): void {
     this.currentOrgSubscription.unsubscribe();
+    this.titleBarService.buttons$.next([]);
   }
 
 

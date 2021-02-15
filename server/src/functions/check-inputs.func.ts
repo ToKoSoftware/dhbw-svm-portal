@@ -1,9 +1,9 @@
 import isBlank from 'is-blank';
 
 // eslint-disable-next-line
-export function keyIsSetAndNotEmpty<T extends object, U extends keyof T>(obj: T, key: U): boolean {
+export function keyIsSetAndNotEmpty<T extends object, U extends keyof T>(obj: T, key: U, nullAllowed = false): boolean {
     if (key in obj) {
-        if (!isBlank(obj[key]) || obj[key] === null) {
+        if (!isBlank(obj[key]) || (nullAllowed && obj[key] === null)) {
             return true;
         }
     }
@@ -11,8 +11,8 @@ export function keyIsSetAndNotEmpty<T extends object, U extends keyof T>(obj: T,
 }
 
 // eslint-disable-next-line
-export function objectHasRequiredAndNotEmptyKeys<T extends object, U extends keyof T>(obj: T, keys: U[]): boolean {
-    const notEmptyOrUnsetArray: boolean[] = keys.map((el) => keyIsSetAndNotEmpty(obj, el));
+export function objectHasRequiredAndNotEmptyKeys<T extends object, U extends keyof T>(obj: T, keys: U[], nullAllowed = false): boolean {
+    const notEmptyOrUnsetArray: boolean[] = keys.map((el) => keyIsSetAndNotEmpty(obj, el, nullAllowed));
     const d = notEmptyOrUnsetArray.find(el => !el);
     return d == undefined;
 }

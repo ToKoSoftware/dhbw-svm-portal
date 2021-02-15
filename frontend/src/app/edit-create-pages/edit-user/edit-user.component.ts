@@ -47,13 +47,13 @@ export class EditUserComponent implements OnInit, OnChanges {
         this.editUserForm = this.formBuilder.group(
           {
             email: [user.email],
-            firstName: [user.first_name],
-            lastName: [user.last_name],
+            first_name: [user.first_name],
+            last_name: [user.last_name],
             city: [user.city],
             birthday: [user.birthday],
             postcode: [user.post_code, Validators.minLength(5)],
             street: [user.street],
-            streetNumber: [user.street_number],
+            street_number: [user.street_number],
           }
         );
       });
@@ -70,6 +70,9 @@ export class EditUserComponent implements OnInit, OnChanges {
         this.currentUser = data;
         this.notifications.savedSuccessfully();
         this.loading = false;
+        if (data.jwt) {
+          this.login.login(data.jwt);
+        }
       },
       error => {
         this.notifications.savingFailed();

@@ -1,6 +1,6 @@
-import {BeforeCreate, BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, HasMany, IsBefore, IsDate, IsEmail, IsIn, Length, Model, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
+import {BeforeCreate, BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, HasMany, IsBefore, IsDate, IsIn, Length, Model, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
 import {v4 as uuidv4} from 'uuid';
-import {genderType, RawUserData} from '../interfaces/users.interface';
+import {genderType, UserDataSnapshot} from '../interfaces/users.interface';
 import { Organization } from './organization.model';
 import { EventRegistration } from './event-registration.model';
 import { Event } from './event.model';
@@ -13,6 +13,7 @@ import { Membership } from './membership.model';
 import { Role } from './role.model';
 import { RoleAssignment } from './role-assignment.model';
 import {SingleSignOnRequest} from './single-sign-on-request.model';
+import { DirectDebitMandate } from './direct-debit-mandate.model';
 
 @DefaultScope(() => ({
     required: false,
@@ -77,7 +78,6 @@ export class User extends Model {
     @PrimaryKey
     @Column
     id: string;
-    @IsEmail
     @Column
     email: string;
     @Column
@@ -92,7 +92,6 @@ export class User extends Model {
     @Column
     gender: genderType;
     @IsDate
-    @IsBefore(Date())
     @Column
     birthday: Date;
     @Column
@@ -134,9 +133,11 @@ export class User extends Model {
     created_polls: Poll[];
     @HasMany(() => SingleSignOnRequest)
     sso: SingleSignOnRequest[];
+    @HasMany(() => DirectDebitMandate)
+    direct_debit_mandates: DirectDebitMandate[];
 
 
-    public static requiredFields(): Array<keyof RawUserData> {
+    public static requiredFields(): Array<keyof UserDataSnapshot> {
         return [
             'email',
             'username',
@@ -148,8 +149,7 @@ export class User extends Model {
             'street',
             'street_number',
             'post_code',
-            'city',
-            'org_id'
+            'city'
         ];
     }
 }

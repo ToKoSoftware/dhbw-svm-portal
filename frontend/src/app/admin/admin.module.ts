@@ -18,6 +18,10 @@ import {EditCreatePagesModule} from "../edit-create-pages/edit-create-pages.modu
 import { PollsComponent } from './polls/polls.component';
 import { StatsComponent } from './stats/stats.component';
 import { NewsComponent } from './news/news.component';
+import {PollAnswerDetailComponent} from './polls/poll-answer-detail/poll-answer-detail.component';
+import {MarkdownToHtmlModule} from 'markdown-to-html-pipe';
+import {TruncatePipe} from '../pipes/truncate.pipe';
+import { DirectDebitMandatesComponent } from './direct-debit-mandates/direct-debit-mandates.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +35,10 @@ import { NewsComponent } from './news/news.component';
     TeamsComponent,
     PollsComponent,
     StatsComponent,
-    NewsComponent
+    NewsComponent,
+    PollAnswerDetailComponent,
+    TruncatePipe,
+    DirectDebitMandatesComponent
   ],
   imports: [
     adminRoutes,
@@ -44,6 +51,7 @@ import { NewsComponent } from './news/news.component';
     FormsModule,
     ReactiveFormsModule,
     EditCreatePagesModule,
+    MarkdownToHtmlModule,
   ]
 })
 export class AdminModule {

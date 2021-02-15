@@ -11,8 +11,7 @@ export interface UserDataSnapshot {
     id?: string;
     email: string;
     username: string;
-    password: string;
-    is_admin: boolean;
+    password?: string;
     first_name: string;
     last_name: string;
     gender: genderType;
@@ -25,7 +24,7 @@ export interface UserDataSnapshot {
 }
 
 export interface RawUserData extends UserDataSnapshot {
-    org_id: string;
+    org_id: string | null;
 }
 
 export interface UserData extends UserDataSnapshot {
@@ -40,6 +39,11 @@ export interface UserLoginData {
     email?: string;
     username?: string;
     password: string;
+}
+
+export interface UserRegistrationData extends UserDataSnapshot {
+    access_code?: string;
+    accepted_privacy_policy?: boolean;
 }
 
 export type genderType = 'M' | 'W' | 'D';

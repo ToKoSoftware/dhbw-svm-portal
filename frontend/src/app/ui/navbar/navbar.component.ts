@@ -2,6 +2,7 @@ import {Component, ElementRef, HostBinding, OnInit, ViewChild} from '@angular/co
 import {Router} from '@angular/router';
 import {LoginService} from '../../services/login/login.service';
 import {SidebarPageGroup} from '../sidebar/sidebar.component';
+import {CurrentOrgService} from '../../services/current-org/current-org.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,41 +12,48 @@ export class NavbarComponent implements OnInit {
   @HostBinding('class') classes = 'h-full flex flex-col';
   @ViewChild('profileMenu') profileMenu: ElementRef<any>;
   public searchQuery = '';
-  public sidebarPageGroups: SidebarPageGroup[] = [{
-    title: 'Portal',
-    pages: [{
-      icon: 'activity',
-      title: 'News',
-      matchFull: true,
-      url: '/'
-    }, {
-      icon: 'calendar',
-      title: 'Veranstaltungen',
-      url: '/events'
-    }, {
-      icon: 'user-check',
-      title: 'Meine Anmeldungen',
-      url: '/join'
-    }, {
-      icon: 'pie-chart',
-      title: 'Umfragen',
-      url: '/polls'
-    }]
-  }, {
-    title: 'Mein Verein',
-    pages: [{
-      icon: 'tool',
-      title: 'Verwaltung',
-      url: '/my-team'
-    }]
-  }];
+  public sidebarPageGroups: SidebarPageGroup[] = [];
 
   constructor(
-    public login: LoginService,
-    private router: Router) {
+    public readonly login: LoginService,
+    private readonly currentOrg: CurrentOrgService,
+    private readonly router: Router) {
   }
 
   ngOnInit(): void {
+    this.login.isAdmin$.subscribe(isAdmin => {
+      this.sidebarPageGroups = [{
+        title: 'Portal',
+        pages: [{
+          icon: 'activity',
+          title: 'News',
+          matchFull: true,
+          url: '/'
+        }, {
+          icon: 'calendar',
+          title: 'Veranstaltungen',
+          url: '/events'
+        }, {
+          icon: 'user-check',
+          title: 'Meine Anmeldungen',
+          url: '/join'
+        }, {
+          icon: 'pie-chart',
+          title: 'Umfragen',
+          url: '/polls'
+        }]
+      }];
+      if (isAdmin) {
+        this.sidebarPageGroups.push({
+          title: 'Mein Verein',
+          pages: [{
+            icon: 'tool',
+            title: 'Verwaltung',
+            url: '/my-team'
+          }]
+        });
+      }
+    });
   }
 
   public toggleUserMenu(): void {

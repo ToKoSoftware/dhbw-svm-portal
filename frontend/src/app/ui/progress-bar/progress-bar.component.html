@@ -1,0 +1,12 @@
+<div class="relative pt-1">
+  <div class="overflow-hidden h-4 mb-4 text-xs flex rounded bg-malachite-200">
+    <div
+      [class.text-black]="progress < 20"
+      [class.text-white]="progress >= 20"
+      [style.width]="progress + '%'" class="shadow-none flex
+          flex-col text-center whitespace-nowrap
+          justify-center bg-malachite-600">
+      {{roundToPercent(progress)}}
+    </div>
+  </div>
+</div>

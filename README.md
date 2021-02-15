@@ -58,4 +58,4 @@ To run all seeders execute `cd server && npm run db:seed`. The Docker container 
 
 To undo all seeders run `cd server && npm run db:seed:undo`. **This may lead to a data loss.**
 
-Note: Remember to add your database configuration as ENV variables (`DATABASE_NAME=protal DATABASE_PASSWORD=postgres DATABASE_USER=postgres DATABASE_URL=localhost npm run db:seed`) 
+Note: Remember to add your database configuration as ENV variables (`DATABASE_NAME=portal DATABASE_PASSWORD=postgres DATABASE_USER=postgres DATABASE_URL=localhost npm run db:seed`) 

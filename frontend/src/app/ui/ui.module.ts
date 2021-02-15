@@ -12,7 +12,7 @@ import {RouterModule} from '@angular/router';
 import {HeaderComponent} from './header/header.component';
 import {ContainerComponent} from './container/container.component';
 import {StepsComponent} from './steps/steps.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NavSpacerComponent} from './nav-spacer/nav-spacer.component';
 import {ButtonGroupButtonComponent} from './button-group-button/button-group-button.component';
 import {SidebarItemComponent} from './sidebar-item/sidebar-item.component';
@@ -44,6 +44,7 @@ import {SlideOverComponent} from './slide-over/slide-over.component';
 import {MarkdownInputComponent} from './markdown-input/markdown-input.component';
 import {DatetimeInputComponent} from './datetime-input/datetime-input.component';
 import {Ng2FlatpickrModule} from 'ng2-flatpickr';
+import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 
 
 @NgModule({
@@ -85,7 +86,8 @@ import {Ng2FlatpickrModule} from 'ng2-flatpickr';
     PollComponent,
     SlideOverComponent,
     MarkdownInputComponent,
-    DatetimeInputComponent
+    DatetimeInputComponent,
+    ProgressBarComponent
   ],
   exports: [
     NavbarComponent,
@@ -122,7 +124,8 @@ import {Ng2FlatpickrModule} from 'ng2-flatpickr';
     PollComponent,
     SlideOverComponent,
     MarkdownInputComponent,
-    DatetimeInputComponent
+    DatetimeInputComponent,
+    ProgressBarComponent
   ],
   imports: [
     CommonModule,
@@ -131,7 +134,8 @@ import {Ng2FlatpickrModule} from 'ng2-flatpickr';
     FormsModule,
     MarkdownToHtmlModule,
     MomentModule,
-    Ng2FlatpickrModule
+    Ng2FlatpickrModule,
+    ReactiveFormsModule
   ]
 })
 export class UiModule {

@@ -1,0 +1,16 @@
+<form [formGroup]="editOrgForm" (ngSubmit)="save()">
+  <app-titled-content
+    label="Datenschutzerklärungstext">
+    <app-markdown-input
+      formControlName="privacy_policy_text"
+      description="Diese Datenschutzerklärung muss von jedem Benutzer der Webseite bei der Registrierung akzeptiert werden. Sie gilt neben der Datenschutzerklärung des Portals. Falls diese Funktion nicht benötigt wird, lassen Sie dieses Feld leer."
+      label="Datenschutzerklärung Ihres Vereins">
+    </app-markdown-input>
+    <div class="flex justify-end w-full">
+      <app-button
+        formButtonType="submit"
+        label="Speichern">
+      </app-button>
+    </div>
+  </app-titled-content>
+</form>

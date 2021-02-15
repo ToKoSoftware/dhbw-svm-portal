@@ -1,16 +1,30 @@
-import {BelongsTo, Column, DefaultScope, ForeignKey, HasMany, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
-import {RawOrganizationData} from '../interfaces/organization.interface';
+import {
+    BeforeCreate,
+    BelongsTo,
+    Column,
+    DefaultScope,
+    ForeignKey,
+    HasMany,
+    Model,
+    NotEmpty,
+    PrimaryKey,
+    Scopes,
+    Table, Unique
+} from 'sequelize-typescript';
+import { RawOrganizationData } from '../interfaces/organization.interface';
 import { Event } from './event.model';
 import { News } from './news.model';
 import { Poll } from './poll.model';
 import { Role } from './role.model';
 import { Team } from './team.model';
 import { User } from './user.model';
+import { v4 as uuidv4 } from 'uuid';
+import { DirectDebitMandate } from './direct-debit-mandate.model';
 
 @DefaultScope(() => ({
     required: false,
-    attributes: { 
-        exclude: ['access_code', 'config'] 
+    attributes: {
+        exclude: ['access_code', 'config']
     },
     where: {
         is_active: true
@@ -18,12 +32,12 @@ import { User } from './user.model';
 }))
 @Scopes(() => ({
     full: {
-        include: [{model: Role, as: 'admin_role'},{model: Role, as: 'roles'}, User, Team, News, Poll, Event]
+        include: [{ model: Role, as: 'admin_role' }, { model: Role, as: 'roles' }, User, Team, News, Poll, Event]
     },
     active: {
         required: false,
-        attributes: { 
-            exclude: ['access_code'] 
+        attributes: {
+            exclude: ['access_code', 'config']
         },
         where: {
             is_active: true
@@ -31,8 +45,8 @@ import { User } from './user.model';
     },
     inactive: {
         required: false,
-        attributes: { 
-            exclude: ['access_code'] 
+        attributes: {
+            exclude: ['access_code', 'config']
         },
         where: {
             is_active: false
@@ -50,12 +64,19 @@ export class Organization extends Model {
     @Column
     title: string;
     @NotEmpty
+    @Unique
     @Column
     access_code: string;
     @Column
     config: string;
     @Column
     is_active: boolean;
+    @Column
+    creditor_id: string; // "Gläubiger-Identifikationsnummer"
+    @Column
+    direct_debit_mandate_contract_text: string;
+    @Column
+    privacy_policy_text: string;
     @ForeignKey(() => Role)
     @Column
     admin_role_id: string;
@@ -75,12 +96,18 @@ export class Organization extends Model {
     roles: Role[];
     @HasMany(() => Team)
     teams: Team[];
+    @HasMany(() => DirectDebitMandate)
+    direct_debit_mandates: DirectDebitMandate[];
+
+    @BeforeCreate
+    static addUuid(instance: Organization): string {
+        return instance.id = uuidv4();
+    }
 
     public static requiredFields(): Array<keyof RawOrganizationData> {
         return [
             'title',
-            'access_code',
-            'config'
+            'access_code'
         ];
     }
 }

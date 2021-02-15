@@ -16,6 +16,10 @@
               {{ poll.createdAt | amLocal | amTimeAgo }}
             </p>
           </div>
+          <p class="text-sm pt-2 text-gray-600">
+            Antworten werden akzeptiert bis <span
+            class="text-malachite-600">{{ poll.closes_at | amLocal | amTimeAgo }}</span>
+          </p>
         </div>
       </div>
     </div>
@@ -23,13 +27,51 @@
       <h2 class="dark:text-white">
         {{poll.title}}
       </h2>
-      <div [innerHTML]="poll.body | MarkdownToHtml">
+      <div class="prose prose-sm dark:text-white flex-shrink mt-10 divide-y divide-gray-200">
+        <div [innerHTML]="poll.body | MarkdownToHtml">
+        </div>
       </div>
     </div>
-    <div class="py-1 dark:text-white justify-between flex overflow-x-auto">
-        <app-button *ngFor="let answer of poll.poll_answers" [label]="answer.title" size="small" type="blank"
-                    class="pb-3">
-        </app-button>
+    <div class="py-1 dark:text-white justify-between
+                flex flex-col overflow-x-auto"
+         *ngIf="!poll.user_has_voted && poll.poll_answers.length">
+      <form [formGroup]="formGroup" (ngSubmit)="vote()">
+        <app-select
+          required="true"
+          label="Ihre Antwort wählen"
+          [items]="answerOptions"
+          formControlName="answer_id">
+        </app-select>
+        <app-input
+          formControlName="title"
+          label="Kommentar / Begründung"
+          placeholder="Weil ich das will!"
+          description="Geben Sie einen Kommentar ein oder lassen Sie dieses Feld leer.">
+        </app-input>
+        <div class="flex justify-end w-full">
+          <app-button
+            formButtonType="submit"
+            label="Abstimmen">
+          </app-button>
+        </div>
+      </form>
+    </div>
+    <div *ngIf="poll.user_has_voted">
+      <div
+        *ngFor="let answer of poll.poll_answers"
+        class="flex">
+        <div class="w-1/2 flex-1">
+          {{answer.title}}
+          <span class="px-6 py-4 whitespace-nowrap text-sm text-gray-600" *ngIf="answer.answer_voted">
+            Ihre Antwort
+          </span>
+        </div>
+        <div class="w-1/2 flex-1">
+          <app-progress-bar
+            [progress]="calculateProgress(answer.user_votes_count, poll.total_user_votes_count)">
+          </app-progress-bar>
+        </div>
+      </div>
     </div>
   </app-card>
 </div>

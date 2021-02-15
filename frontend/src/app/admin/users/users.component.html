@@ -1,5 +1,4 @@
-<app-layout [sidebarPages]="sidebarPages" [buttons]="buttonGroup" [breadcrumbs]="breadcrumb"
-            heading="Benutzer verwalten">
+<app-layout [sidebarPages]="sidebarPages">
   <div class="md:flex md:h-full">
     <app-secondary-navigation size="large" class="md:-ml-2">
       <div class="flex justify-end py-10">
@@ -34,8 +33,7 @@
         <app-titled-content
           label="Berechtigungen"
           description="Diese Berechtigungs-Rollen wurden dem Nutzer vergeben">
-          <app-role-picker>
-          </app-role-picker>
+          <app-edit-user-permissions [userId]="currentEditUserId"></app-edit-user-permissions>
         </app-titled-content>
       </app-container>
     </div>

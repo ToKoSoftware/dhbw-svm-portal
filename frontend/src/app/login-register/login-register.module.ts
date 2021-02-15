@@ -6,9 +6,12 @@ import {loginRegisterRoutes} from './login-register.routes';
 import {UiModule} from '../ui/ui.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {LogoutComponent} from './logout/logout.component';
+import { CreateOrgComponent } from './create-org/create-org.component';
+import {IconsModule} from '../icons/icons.module';
+import {MarkdownToHtmlModule} from 'markdown-to-html-pipe';
 
 @NgModule({
-    declarations: [RegisterComponent, LoginComponent, LogoutComponent],
+    declarations: [RegisterComponent, LoginComponent, LogoutComponent, CreateOrgComponent],
     exports: [
         LoginComponent
     ],
@@ -17,7 +20,9 @@ import {LogoutComponent} from './logout/logout.component';
         CommonModule,
         FormsModule,
         UiModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        IconsModule,
+        MarkdownToHtmlModule
     ]
 })
 export class LoginRegisterModule {
