@@ -21,6 +21,7 @@ import { NewsComponent } from './news/news.component';
 import {PollAnswerDetailComponent} from './polls/poll-answer-detail/poll-answer-detail.component';
 import {MarkdownToHtmlModule} from 'markdown-to-html-pipe';
 import {TruncatePipe} from '../pipes/truncate.pipe';
+import { DirectDebitMandatesComponent } from './direct-debit-mandates/direct-debit-mandates.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import {TruncatePipe} from '../pipes/truncate.pipe';
     StatsComponent,
     NewsComponent,
     PollAnswerDetailComponent,
-    TruncatePipe
+    TruncatePipe,
+    DirectDebitMandatesComponent
   ],
   imports: [
     adminRoutes,

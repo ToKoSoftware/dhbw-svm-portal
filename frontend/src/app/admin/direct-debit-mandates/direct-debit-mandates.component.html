@@ -1,0 +1,67 @@
+<app-layout
+  [sidebarPages]="sidebarPages">
+  <app-container [large]="true">
+    <div class="flex flex-col -ml-5" *ngIf="mandates?.length">
+      <div class="overflow-x-auto">
+        <div class="align-middle inline-block min-w-full">
+          <div class="overflow-hidden border-b border-gray-300">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-100 dark:bg-black">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  Name
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  IBAN
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  Bankname
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  Status
+                </th>
+                <th scope="col" class="relative px-6 py-3">
+
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let mandate of mandates">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  {{mandate.user.first_name}} {{mandate.user.last_name}}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {{mandate.IBAN}}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {{mandate.bank_name}}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <span class="text-red-500" *ngIf="mandate.deletedAt">
+                    Widerrufen
+                  </span>
+                  <span class="text-malachite-600" *ngIf="!mandate.deletedAt">
+                    Aktiv
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <app-button
+                    *ngIf="!mandate.deletedAt"
+                    (click)="cancelMandate(mandate)"
+                    label="Widerrufen" size="small" type="link"></app-button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-zero-data *ngIf="!mandates?.length"></app-zero-data>
+  </app-container>
+
+</app-layout>
+
+<ng-template #edit>
+  <app-edit-direct-debit-mandate-contract-text></app-edit-direct-debit-mandate-contract-text>
+</ng-template>

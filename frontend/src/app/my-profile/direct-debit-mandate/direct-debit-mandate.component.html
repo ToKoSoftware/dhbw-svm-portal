@@ -1,6 +1,7 @@
 <app-layout [sidebarPages]="profilePages">
   <app-container>
     <app-titled-content
+      *ngIf="!mandates?.length"
       label="Lastschriftmandat erteilen"
       description="Dieses Lastschriftmandat ermächtigt den Verein, Zahlungen von Ihrem Konto abzubuchen.">
       <app-labeled-value label="Vetragstext des Vereins">
@@ -35,6 +36,30 @@
           </app-button>
         </div>
       </form>
+    </app-titled-content>
+    <app-titled-content
+      *ngIf="mandates?.length"
+      label="Lastschriftmandat bearbeiten"
+      description="Sie haben bereits ein Lastschriftmandat erteilt.">
+      <ng-container *ngFor="let mandate of mandates">
+        <div class="md:flex">
+          <app-labeled-value class="flex-1" label="IBAN">
+            {{mandate.IBAN}}
+          </app-labeled-value>
+          <app-labeled-value class="flex-1" label="Bankname">
+            {{mandate.bank_name}}
+          </app-labeled-value>
+        </div>
+        <div class="md:flex">
+          <app-labeled-value class="flex-1" label="Erteilt am">
+            {{mandate.createdAt | amLocal | amDateFormat: 'DD.MM.YYYY H:mm' }}
+          </app-labeled-value>
+          <app-labeled-value class="flex-1" label="Lastschriftmandat widerrufen">
+            <app-button type="danger" (click)="cancelMandate()" size="small"
+                        label="Widerrufen"></app-button>
+          </app-labeled-value>
+        </div>
+      </ng-container>
     </app-titled-content>
   </app-container>
 
