@@ -108,9 +108,9 @@ export class RegisterComponent implements OnInit {
     };
     this.users.create(data as any).subscribe(
       (data) => {
-        this.loading.hideLoading();
-        this.login();
+        setTimeout(this.login, 2000);
       }, error => {
+        this.loading.hideLoading();
         this.confirm.confirm({
           title: `Es ist ein Fehler beim Anlegen Ihres Accounts aufgetreten.`,
           confirmButtonType: 'info',
@@ -125,8 +125,8 @@ export class RegisterComponent implements OnInit {
   private login(): void {
     this.loading.showLoading();
     this.api.post<string>(['/login', 1], {
-      email: this.formGroup.value.email,
-      password: this.formGroup.value.password,
+      email: this.createUserData.email,
+      password: this.createUserData.password,
     }).subscribe(
       data => {
         this.loginService.login(data.data);
