@@ -1,4 +1,3 @@
-import { AsyncResource } from 'async_hooks';
 import {Request, Response} from 'express';
 import {convertObjectArrayToCsv} from '../../../functions/convert-object-array-to-csv.func';
 import {wrapResponse} from '../../../functions/response-wrapper';
@@ -13,10 +12,10 @@ export async function exportDirectDebitMandates(req: Request, res: Response): Pr
             { 
                 raw: true
             })
-            .catch(() => {
-                success = false;
-                return [];
-            });
+        .catch(() => {
+            success = false;
+            return [];
+        });
     if (!success) {
         return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
     }
