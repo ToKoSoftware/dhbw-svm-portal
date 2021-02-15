@@ -60,6 +60,7 @@ import { getOrganizationByAccessCode } from './api/v2/organizations/get-organiza
 import { createDirectDebitMandate } from './api/v2/direct-debit-mandate/create-direct-debit-mandate';
 import { getDirectDebitMandate, getDirectDebitMandates } from './api/v2/direct-debit-mandate/get-direct-debit-mandate';
 import { deleteDirectDebitMandate } from './api/v2/direct-debit-mandate/delete-direct-debit-mandate';
+import {deleteDocument, downloadDocument, getDocuments, uploadDocument} from './api/v2/documents/get-documents';
 
 export default function startServer(): void {
 
@@ -192,6 +193,14 @@ export default function startServer(): void {
      */
     app.get('/api/v2/direct-debit-mandates', userIsAuthorized, userIsAdmin, (req, res) => getDirectDebitMandates(req, res));
     app.post('/api/v2/direct-debit-mandates', userIsAuthorized, (req, res) => createDirectDebitMandate(req, res));
+
+    /**
+     * Documents
+     */
+    app.get('/api/v2/documents', userIsAuthorized, (req, res) => getDocuments(req, res));
+    app.get('/api/v2/documents/:fileName', userIsAuthorizedByParam, (req, res) => downloadDocument(req, res));
+    app.post('/api/v2/documents', userIsAuthorized, userIsAdmin, (req, res) => uploadDocument(req, res));
+    app.delete('/api/v2/documents/:fileName', userIsAuthorized, userIsAdmin, (req, res) => deleteDocument(req, res));
 
     /**
      * Admin
