@@ -32,7 +32,7 @@ import { DirectDebitMandate } from './direct-debit-mandate.model';
 }))
 @Scopes(() => ({
     full: {
-        include: [{ model: Role, as: 'admin_role' }, { model: Role, as: 'roles' }, User, Team, News, Poll, Event]
+        include: [{ model: Role, as: 'admin_role' }, { model: Role, as: 'roles' }, User, { model: Team, as: 'public_team' }, { model: Team, as: 'teams' }, News, Poll, Event]
     },
     active: {
         required: false,

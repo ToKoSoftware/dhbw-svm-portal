@@ -16,7 +16,7 @@ import { User } from './user.model';
 
 @Scopes(() => ({
     full: {
-        include: [Organization, Role, User]
+        include: [{ model: Organization, as: 'organization' }, Role, User]
     },
     ordered: {
         required: false,
