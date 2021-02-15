@@ -22,6 +22,8 @@ import { EditDeveloperSettingsComponent } from './edit-developer-settings/edit-d
 import {ClipboardModule} from 'ngx-clipboard';
 import {EditUserPermissionsComponent} from './edit-user-permissions/edit-user-permissions.component';
 import {RouterModule} from '@angular/router';
+import { EditPrivacyPolicyComponent } from './edit-privacy-policy/edit-privacy-policy.component';
+import { EditDirectDebitMandateContractTextComponent } from './edit-direct-debit-mandate-contract-text/edit-direct-debit-mandate-contract-text.component';
 
 @NgModule({
   declarations: [
@@ -40,11 +42,13 @@ import {RouterModule} from '@angular/router';
     EditRoleMembershipsComponent,
     EditTeamMembershipsComponent,
     EditDeveloperSettingsComponent,
-    EditUserPermissionsComponent
+    EditUserPermissionsComponent,
+    EditPrivacyPolicyComponent,
+    EditDirectDebitMandateContractTextComponent
   ],
   exports: [EditUserComponent, EditEventComponent, CreateNewsComponent, EditNewsComponent, EditPollComponent, CreatePollComponent,
     CreateEventComponent, CreateRoleComponent, EditRoleComponent, EditTeamComponent, CreateTeamComponent, EditRoleMembershipsComponent,
-    EditTeamMembershipsComponent, EditDeveloperSettingsComponent, EditUserPermissionsComponent],
+    EditTeamMembershipsComponent, EditDeveloperSettingsComponent, EditUserPermissionsComponent, EditDirectDebitMandateContractTextComponent, EditPrivacyPolicyComponent],
   imports: [
     CommonModule,
     ClipboardModule,

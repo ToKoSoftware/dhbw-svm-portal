@@ -1,49 +1,33 @@
-import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {ApiService} from '../../services/api/api.service';
-import {adminPages} from '../admin.pages';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
+import {Subscription} from 'rxjs';
 import {OrganizationsService} from '../../services/data/organizations/organizations.service';
 import {CurrentOrgService} from '../../services/current-org/current-org.service';
+import {ApiService} from '../../services/api/api.service';
 import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
-import {Subscription} from 'rxjs';
-import {TitleBarService} from '../../services/title-bar/title-bar.service';
 import {SlideOverService} from '../../services/slide-over/slide-over.service';
 
 @Component({
-  selector: 'app-overview',
-  templateUrl: './overview.component.html',
+  selector: 'app-edit-privacy-policy',
+  templateUrl: './edit-privacy-policy.component.html'
 })
-export class OverviewComponent implements OnInit, OnDestroy {
-  public sidebarPages = adminPages;
+export class EditPrivacyPolicyComponent implements OnInit, OnDestroy {
   public editOrgForm: FormGroup;
   private currentOrgSubscription: Subscription;
-  @ViewChild('advanced', {static: true}) advanced: TemplateRef<unknown>;
-  @ViewChild('directDebitMandate', {static: true}) directDebitMandate: TemplateRef<unknown>;
-  @ViewChild('privacyPolicy', {static: true}) privacyPolicy: TemplateRef<unknown>;
 
   constructor(
     public readonly organizations: OrganizationsService,
     public readonly currentOrg: CurrentOrgService,
     private readonly api: ApiService,
     private readonly loading: LoadingModalService,
-    private readonly titleBarService: TitleBarService,
     private readonly formBuilder: FormBuilder,
     public readonly slideOver: SlideOverService) {
   }
 
   ngOnInit(): void {
-    this.titleBarService.buttons$.next([{
-      title: 'Entwickler',
-      icon: 'code',
-      function: () => {
-        this.slideOver.showSlideOver('', this.advanced);
-      }
-    }]);
     this.loading.showLoading();
     this.editOrgForm = this.formBuilder.group(
       {
-        title: [],
-        access_code: [],
         privacy_policy_text: [],
       }
     );
@@ -53,8 +37,6 @@ export class OverviewComponent implements OnInit, OnDestroy {
           this.loading.hideLoading();
           this.editOrgForm = this.formBuilder.group(
             {
-              title: [org.title],
-              access_code: [org.access_code],
               privacy_policy_text: [org.privacy_policy_text],
             }
           );
@@ -67,15 +49,15 @@ export class OverviewComponent implements OnInit, OnDestroy {
     if (this.editOrgForm.dirty && !this.editOrgForm.valid) {
       return;
     }
-    const data = {...this.editOrgForm.value, id: this.currentOrg.currentOrg$.getValue()?.id}
-    this.organizations.update(data).subscribe(updatedOrg => this.currentOrg.currentOrg$.next(updatedOrg));
+    const data = {...this.editOrgForm.value, id: this.currentOrg.currentOrg$.getValue()?.id};
+    this.organizations.update(data).subscribe(updatedOrg => {
+      this.currentOrg.currentOrg$.next(updatedOrg);
+      this.slideOver.close();
+    });
   }
 
   ngOnDestroy(): void {
     this.currentOrgSubscription.unsubscribe();
-    this.titleBarService.buttons$.next([]);
   }
 
-
 }
-
