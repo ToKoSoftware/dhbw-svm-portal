@@ -51,10 +51,17 @@ import { currentOrg } from './current-org.scope';
         required: false,
         order: [['closes_at', 'ASC']]
     },
-    onlyAnswerTeam: (teamId: string) => ({
+    onlyAnswerTeam: (teamId: string, publicTeamId: string) => ({
         required: false,
         where: {
-            answer_team_id: teamId
+            [Op.or]: [
+                {
+                    answer_team_id: teamId
+                },
+                {
+                    answer_team_id: publicTeamId
+                }
+            ]
         }
     }),
     onlyCurrentOrg: (org_id: string) => currentOrg(org_id)
