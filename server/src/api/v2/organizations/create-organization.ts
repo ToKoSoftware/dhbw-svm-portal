@@ -27,7 +27,7 @@ export async function createOrganization(req: Request, res: Response): Promise<R
     }
     createdOrg.admin_role_id = createdRole.id;
     // create a new public Team
-    const createdTeam = await Team.create({ title: 'Öffentlich', org_id: createdOrg.id, maintain_role_id: createdRole.id }).catch(() => null);
+    const createdTeam = await Team.create({ title: 'Alle Vereinsmitglieder', org_id: createdOrg.id, maintain_role_id: createdRole.id }).catch(() => null);
     if (!createdTeam) {
         return handleError(res, 500, 'Team could not be created', [createdOrg]);
     }
