@@ -7,7 +7,7 @@
         <p class="pt-1">
           {{hostname}}/<b>sso</b>
         </p>
-        <app-button icon="copy" (click)="copyToClipboard('sso_url')" type="transparent" label="Kopieren"
+        <app-button icon="copy" (click)="copyToClipboard('sso_url')" type="link" label="Kopieren"
                     size="small"></app-button>
       </div>
     </app-labeled-value>
@@ -16,7 +16,7 @@
         <p class="pt-1">
           {{hostname}}/<b>api/v2/oauth2/token</b>
         </p>
-        <app-button icon="copy" (click)="copyToClipboard('oauth2_token_url')" type="transparent" label="Kopieren"
+        <app-button icon="copy" (click)="copyToClipboard('oauth2_token_url')" type="link" label="Kopieren"
                     size="small"></app-button>
       </div>
     </app-labeled-value>
@@ -35,9 +35,9 @@
           {{editDevSettingsForm.value.client_secret}}
         </p>
         <div>
-          <app-button (click)="createRandomClientSecret()" icon="shuffle" type="transparent" label="Generieren"
+          <app-button (click)="createRandomClientSecret()" icon="shuffle" type="link" label="Generieren"
                       size="small"></app-button>
-          <app-button icon="copy" (click)="copyToClipboard('client_secret')" type="transparent" label="Kopieren"
+          <app-button icon="copy" (click)="copyToClipboard('client_secret')" type="link" label="Kopieren"
                       size="small"></app-button>
         </div>
       </div>

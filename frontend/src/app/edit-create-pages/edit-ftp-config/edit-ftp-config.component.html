@@ -1,0 +1,39 @@
+<app-titled-content
+  label="FTP-Server Einstellungen"
+  description="Das Portal unterstützt das FTPS-Protokoll, um Dateien für Ihren Verein bereitzustellen. Konfigurieren Sie im nachstehenden Formular die Zugangsdaten zu Ihrem FTP-Server.">
+  <form [formGroup]="formGroup" (ngSubmit)="saveData()">
+    <app-input
+      required="true"
+      type="text"
+      formControlName="host"
+      placeholder="example.com"
+      label="Hostname / IP-Adresse"
+      description="Unter dieser Adresse sollte Ihr Server erreichbar sein."
+    >
+    </app-input>
+    <app-input
+      required="true"
+      type="text"
+      formControlName="user"
+      placeholder="portal_ftp_user"
+      label="User"
+      description="Geben Sie den Benutzernamen an, welcher verwendet werden soll. Es wird empfohlen, einen eigenen User für das Portal zu erstellen, welcher nur auf den gewünschten Ordner Zugriff hat."
+    >
+    </app-input>
+    <app-input
+      required="true"
+      type="password"
+      formControlName="password"
+      placeholder="123abc123"
+      label="Passwort"
+      description="Dieses Passwort wird im Klartext in der Datenbank gespeichert."
+    >
+    </app-input>
+    <div class="flex justify-end w-full">
+      <app-button
+        formButtonType="submit"
+        label="Speichern">
+      </app-button>
+    </div>
+  </form>
+</app-titled-content>

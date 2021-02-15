@@ -15,15 +15,15 @@ export async function getFTPConfiguration(req: Request, res: Response): Promise<
 }
 
 export async function updateFTPConfiguration(req: Request, res: Response): Promise<Response> {
-    const fields = ['client_secret', 'user', 'domain'];
+    const fields = ['password', 'user', 'host'];
     if (!objectHasRequiredAndNotEmptyKeys(req.body, fields)) {
         return res.status(400).send(wrapResponse(false, {error: 'Fields must not be empty'}));
     }
-    const updatedConfig = await updateOrgSetting<FTPClientConfiguration>('oauth2',
+    const updatedConfig = await updateOrgSetting<FTPClientConfiguration>('ftp',
         {
             data: {
                 password: req.body.password,
-                domain: req.body.domain,
+                host: req.body.host,
                 user: req.body.user
             },
             protection: ['system', 'admin']
@@ -40,7 +40,7 @@ async function createDefaultFTPConfig(): Promise<void> {
         {
             data: {
                 password: Math.random().toString(36).substring(7),
-                domain: 'example.com',
+                host: 'example.com',
                 user: 'example',
                 enabled: false
             },
@@ -51,7 +51,7 @@ async function createDefaultFTPConfig(): Promise<void> {
 
 export interface FTPClientConfiguration {
     password: string;
-    domain: string;
+    host: string;
     user: string;
     enabled?: boolean;
 }

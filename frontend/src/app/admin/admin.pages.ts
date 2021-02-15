@@ -47,6 +47,11 @@ export const adminPages: SidebarPageGroup[] = [
         url: '/my-team/events',
       },
       {
+        title: 'Dokumente',
+        icon: 'folder',
+        url: '/my-team/documents',
+      },
+      {
         title: 'Umfragen',
         icon: 'pie-chart',
         url: '/my-team/polls',

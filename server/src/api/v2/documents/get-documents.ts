@@ -101,7 +101,7 @@ async function getFTPClientForOrg(): Promise<Client> {
     }
 
     await client.access({
-        host: ftpConfig.data.domain,
+        host: ftpConfig.data.host,
         user: ftpConfig.data.user,
         password: ftpConfig.data.password,
         secure: true

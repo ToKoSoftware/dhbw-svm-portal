@@ -61,6 +61,7 @@ import { createDirectDebitMandate } from './api/v2/direct-debit-mandate/create-d
 import { getDirectDebitMandate, getDirectDebitMandates } from './api/v2/direct-debit-mandate/get-direct-debit-mandate';
 import { deleteDirectDebitMandate } from './api/v2/direct-debit-mandate/delete-direct-debit-mandate';
 import {deleteDocument, downloadDocument, getDocuments, uploadDocument} from './api/v2/documents/get-documents';
+import {getFTPConfiguration, updateFTPConfiguration} from './api/v2/documents/configure';
 
 export default function startServer(): void {
 
@@ -201,6 +202,8 @@ export default function startServer(): void {
     app.get('/api/v2/documents/:fileName', userIsAuthorizedByParam, (req, res) => downloadDocument(req, res));
     app.post('/api/v2/documents', userIsAuthorized, userIsAdmin, (req, res) => uploadDocument(req, res));
     app.delete('/api/v2/documents/:fileName', userIsAuthorized, userIsAdmin, (req, res) => deleteDocument(req, res));
+    app.get('/api/v2/ftp/configuration', userIsAuthorized, userIsAdmin, (req, res) => getFTPConfiguration(req, res));
+    app.put('/api/v2/ftp/configuration', userIsAuthorized, userIsAdmin, (req, res) => updateFTPConfiguration(req, res));
 
     /**
      * Admin
