@@ -2,13 +2,16 @@ import {Request, Response} from 'express';
 import {convertObjectArrayToCsv} from '../../../functions/convert-object-array-to-csv.func';
 import {wrapResponse} from '../../../functions/response-wrapper';
 import {User} from '../../../models/user.model';
+import {Vars} from '../../../vars';
 
 export async function exportUsers(req: Request, res: Response): Promise<Response>  {
     let success = true;
     const users: User[] = await User.findAll(
         {
             where: {
-                is_active: true
+                is_active: true,
+                org_id: Vars.currentOrganization.id
+
             },
             raw: true
         })
