@@ -69,9 +69,7 @@ import { Team } from './team.model';
                     allowed_team_id: public_team_id
                 },
                 {
-                    allowed_team_id: {
-                        [Op.is]: null
-                    }
+                    allowed_team_id: 'public'
                 }
             ]
         }

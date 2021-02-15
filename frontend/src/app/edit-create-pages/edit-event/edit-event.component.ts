@@ -55,6 +55,7 @@ export class EditEventComponent implements OnInit, OnChanges {
     this.teamSubscription = this.teams.data$.subscribe(teams => {
       if (teams) {
         this.teamSelectData = teams.map(t => [t.id || '', t.title]);
+        this.teamSelectData.unshift(['public', 'Jeder (auch Vereinsexterne)']);
       }
     });
     this.events.read(this.editId)
