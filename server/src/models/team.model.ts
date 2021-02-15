@@ -8,6 +8,7 @@ import { Organization } from './organization.model';
 import { Poll } from './poll.model';
 import { Role } from './role.model';
 import { User } from './user.model';
+import { Event } from './event.model';
 
 @DefaultScope(() => ({
     required: false,
@@ -61,6 +62,8 @@ export class Team extends Model {
 
     @HasMany(() => Poll)
     can_answer_polls: Poll[];
+    @HasMany(() => Event)
+    can_participate_events: Event[];
 
     @BeforeCreate
     static addUuid(instance: Team): string {
