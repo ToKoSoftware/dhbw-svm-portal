@@ -4,12 +4,14 @@ import { Vars } from '../../../vars';
 import { Membership } from '../../../models/membership.model';
 import { RawMembershipData } from '../../../interfaces/membership.interface';
 import { Team } from '../../../models/team.model';
+import { User } from '../../../models/user.model';
 
 export async function deleteMembership(req: Request, res: Response): Promise<Response> {
     let success = true;
     const incomingData: RawMembershipData = req.body;
+    const teamId = req.params.id;
 
-    const teamData: Team | null = await Team.scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }).findByPk(incomingData.team_id)
+    const teamData: Team | null = await Team.scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }).findByPk(teamId)
         .catch(() => {
             success = false;
             return null;
@@ -17,9 +19,18 @@ export async function deleteMembership(req: Request, res: Response): Promise<Res
     if (!success) {
         return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
-    if (teamData === null) {
-        return res.status(400).send(wrapResponse(false, { error: 'No team with given id found!' }));
+    const user = await User.scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }).findByPk(incomingData.user_id)
+        .catch(() => {
+            success = false;
+            return null;
+        });
+    if (!success) {
+        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
+    if (teamData === null || user === null) {
+        return res.status(400).send(wrapResponse(false, { error: 'Invalid input data!' }));
+    }
+
 
     // If User does not delete it's own membership, check if user is Admin, or is at least maintainer of this team (has maintainer_role_id)
     if (Vars.currentUser.id != incomingData.user_id) {
@@ -35,7 +46,7 @@ export async function deleteMembership(req: Request, res: Response): Promise<Res
         {
             where: {
                 user_id: incomingData.user_id,
-                team_id: req.params.team_id
+                team_id: teamId
             }
         })
         .catch(() => {
