@@ -73,7 +73,13 @@ import { Team } from './team.model';
                 }
             ]
         }
-    })
+    }),
+    public: {
+        required: false,
+        where: {
+            allowed_team_id: 'public'
+        }
+    }
 })) 
 
 @Table
