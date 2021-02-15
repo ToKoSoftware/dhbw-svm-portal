@@ -21,11 +21,6 @@
           description="Dieser Code muss von neuen Nutzern angegeben werden, um sich bei der Plattform zu registrieren."
           label="Zugangscode">
         </app-input>
-        <app-markdown-input
-          formControlName="privacy_policy_text"
-          description="Diese Datenschutzerklärung muss von jedem Benutzer der Webseite bei der Registrierung akzeptiert werden. Sie gilt neben der Datenschutzerklärung des Portals. Falls diese Funktion nicht benötigt wird, lassen Sie dieses Feld leer."
-          label="Datenschutzerklärung Ihres Vereins">
-        </app-markdown-input>
         <small class="text-gray-500">Technische ID: {{(currentOrg.currentOrg$ | async)?.id}}</small>
         <div class="flex justify-end w-full">
           <app-button
@@ -35,9 +30,47 @@
         </div>
       </app-titled-content>
     </form>
+    <app-labeled-value label="Vereinseigene Datenschutzerklärung">
+      <div class="flex justify-between">
+        <p class="pt-1 truncate">
+          <ng-container *ngIf="(currentOrg.currentOrg$ | async)?.privacy_policy_text">
+            <span
+              [innerHTML]="((currentOrg.currentOrg$ | async)?.privacy_policy_text) | truncate : ['80'] | MarkdownToHtml">
+            </span>
+          </ng-container>
+          <ng-container *ngIf="!(currentOrg.currentOrg$ | async)?.privacy_policy_text">
+            Nicht konfiguriert
+          </ng-container>
+        </p>
+        <app-button (click)="slideOver.showSlideOver('', privacyPolicy)" icon="edit" type="link" label="Bearbeiten" size="small">
+        </app-button>
+      </div>
+    </app-labeled-value>
+    <app-labeled-value label="Lastschriftmandate">
+      <div class="flex justify-between">
+        <p class="pt-1 truncate">
+          <ng-container *ngIf="(currentOrg.currentOrg$ | async)?.direct_debit_mandate_contract_text">
+            <span
+              [innerHTML]="((currentOrg.currentOrg$ | async)?.direct_debit_mandate_contract_text) | truncate : ['80'] | MarkdownToHtml">
+            </span>
+          </ng-container>
+          <ng-container *ngIf="!(currentOrg.currentOrg$ | async)?.direct_debit_mandate_contract_text">
+            Nicht konfiguriert
+          </ng-container>
+        </p>
+        <app-button (click)="slideOver.showSlideOver('', directDebitMandate)" icon="edit" type="link" label="Bearbeiten" size="small">
+        </app-button>
+      </div>
+    </app-labeled-value>
   </app-container>
 </app-layout>
 
 <ng-template #advanced>
   <app-edit-developer-settings></app-edit-developer-settings>
+</ng-template>
+<ng-template #privacyPolicy>
+  <app-edit-privacy-policy></app-edit-privacy-policy>
+</ng-template>
+<ng-template #directDebitMandate>
+  <app-edit-direct-debit-mandate-contract-text></app-edit-direct-debit-mandate-contract-text>
 </ng-template>

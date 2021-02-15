@@ -1,0 +1,24 @@
+<form [formGroup]="editOrgForm" (ngSubmit)="save()">
+  <app-titled-content
+    label="Lastschriftmandat">
+    <app-markdown-input
+      formControlName="direct_debit_mandate_contract_text"
+      description="Dieser Text wird als Vertragstext für Benutzer, welche einem Lastschriftmandat zustimmen, angezeigt"
+      label="Vertragstext für Lastschriftmandat">
+    </app-markdown-input>
+    <app-input
+      required="true"
+      formControlName="creditor_id"
+      type="text"
+      placeholder=""
+      description="Die Gläubiger-Identifikationsnummer Ihres Vereins wird benötigt, um ein Lastschriftmandat zu erstellen."
+      label="Gläubiger-Identifikationsnummer">
+    </app-input>
+    <div class="flex justify-end w-full">
+      <app-button
+        formButtonType="submit"
+        label="Speichern">
+      </app-button>
+    </div>
+  </app-titled-content>
+</form>

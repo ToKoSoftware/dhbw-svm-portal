@@ -19,6 +19,9 @@ import { PollsComponent } from './polls/polls.component';
 import { StatsComponent } from './stats/stats.component';
 import { NewsComponent } from './news/news.component';
 import {PollAnswerDetailComponent} from './polls/poll-answer-detail/poll-answer-detail.component';
+import {MarkdownToHtmlModule} from 'markdown-to-html-pipe';
+import {TruncatePipe} from '../pipes/truncate.pipe';
+import { DirectDebitMandatesComponent } from './direct-debit-mandates/direct-debit-mandates.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +36,9 @@ import {PollAnswerDetailComponent} from './polls/poll-answer-detail/poll-answer-
     PollsComponent,
     StatsComponent,
     NewsComponent,
-    PollAnswerDetailComponent
+    PollAnswerDetailComponent,
+    TruncatePipe,
+    DirectDebitMandatesComponent
   ],
   imports: [
     adminRoutes,
@@ -46,6 +51,7 @@ import {PollAnswerDetailComponent} from './polls/poll-answer-detail/poll-answer-
     FormsModule,
     ReactiveFormsModule,
     EditCreatePagesModule,
+    MarkdownToHtmlModule,
   ]
 })
 export class AdminModule {

@@ -7,5 +7,4 @@ import {myProfileBreadcrumb, myProfilePages} from "../my-profile.pages";
 })
 export class MyProfileComponent {
   public profilePages = myProfilePages;
-  public breadcrumbs = myProfileBreadcrumb;
 }

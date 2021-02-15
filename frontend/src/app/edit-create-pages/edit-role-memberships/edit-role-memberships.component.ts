@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {UsersService} from '../../services/data/users/users.service';
 import {Subscription} from 'rxjs';
 import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
@@ -10,7 +10,7 @@ import {NotificationService} from '../../services/notification/notification.serv
   selector: 'app-edit-role-memberships',
   templateUrl: './edit-role-memberships.component.html'
 })
-export class EditRoleMembershipsComponent implements OnInit, OnDestroy {
+export class EditRoleMembershipsComponent implements OnDestroy, OnChanges {
   public selectedUsers: UserData[] = [];
   public availableUsers: UserData[] = [];
   @Input() editId: string = '';
@@ -22,10 +22,6 @@ export class EditRoleMembershipsComponent implements OnInit, OnDestroy {
     private readonly loading: LoadingModalService,
     private readonly notification: NotificationService,
   ) {
-  }
-
-  ngOnInit(): void {
-    this.loadData();
   }
 
   private loadData(): void {
@@ -75,10 +71,18 @@ export class EditRoleMembershipsComponent implements OnInit, OnDestroy {
         this.notification.savedSuccessfully();
         this.loadData();
       }, error => {
-        console.log(error)
+        console.log(error);
         this.loading.hideLoading();
         this.notification.savingFailed();
       });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.editId) {
+      if (changes.editId.previousValue !== changes.editId.currentValue) {
+        this.loadData();
+      }
+    }
   }
 
 }
