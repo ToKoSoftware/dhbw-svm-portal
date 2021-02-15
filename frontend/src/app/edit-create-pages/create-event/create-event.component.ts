@@ -59,6 +59,9 @@ export class CreateEventComponent implements OnInit {
       is_active: true
     };
     eventData = setEmptyInputToNull(eventData);
+    eventData.price = eventData.price == null 
+      ? eventData.price 
+      : Math.round(Number(eventData.price.replace(',', '.'))*100 + Number.EPSILON);
     this.events.create(eventData).subscribe(
       data => {
         this.current = data;

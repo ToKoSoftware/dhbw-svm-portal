@@ -67,7 +67,7 @@ export class EditEventComponent implements OnInit, OnChanges {
             {
               title: [d.title],
               description: [d.description],
-              price: [d.price],
+              price: [d.price == null ? d.price : d.price/100],
               start_date: [d.start_date],
               end_date: [d.end_date],
               max_participants: [d.max_participants],
@@ -92,6 +92,9 @@ export class EditEventComponent implements OnInit, OnChanges {
       is_active: true
     };
     eventData = setEmptyInputToNull(eventData);
+    eventData.price = eventData.price == null 
+      ? eventData.price 
+      : Math.round(Number(eventData.price.replace(',', '.'))*100 + Number.EPSILON);
     this.events.update(eventData).subscribe(
       data => {
         this.current = data;
