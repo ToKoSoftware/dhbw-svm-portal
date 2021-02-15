@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {EventData} from '../../interfaces/event.interface';
 import {EventsService} from '../../services/data/events/events.service';
 import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
@@ -18,7 +18,6 @@ export class CreateEventComponent implements OnInit {
   public current: EventData;
   public teamSubscription: Subscription;
   public teamSelectData: [string | number, string | number][] = [];
-  @Input() editId: string = '';
 
   constructor(
     public readonly events: EventsService,
@@ -31,14 +30,10 @@ export class CreateEventComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.events.read(this.editId)
-      .subscribe(
-        d => this.current = d,
-      );
     this.formGroup = this.formBuilder.group(
       {
-        title: [],
-        description: [],
+        title: ['', Validators.required],
+        description: ['', Validators.required],
         price: [],
         start_date: [],
         end_date: [],
