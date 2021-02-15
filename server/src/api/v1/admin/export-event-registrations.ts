@@ -4,7 +4,7 @@ import {wrapResponse} from '../../../functions/response-wrapper';
 import {EventData} from '../../../interfaces/event.interface';
 import {EventRegistration} from '../../../models/event-registration.model';
 import {Vars} from '../../../vars';
-import {Event} from '../../../models/event.model'
+import {Event} from '../../../models/event.model';
 
 export async function exportEventRegistrations(req: Request, res: Response): Promise<Response>  {
     let success = true;
