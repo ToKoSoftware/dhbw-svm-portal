@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { Event } from '../../../models/event.model';
-import jwt from 'jsonwebtoken';
 import { User } from '../../../models/user.model';
 import { EventRegistration } from '../../../models/event-registration.model';
+import { loadDecodedTokenFromHeader } from '../../../functions/load-decoded-token-from-header.func';
 
 export async function registerForPublicEvents(req: Request, res: Response): Promise<Response> {
     let success = true;
@@ -31,20 +31,15 @@ export async function registerForPublicEvents(req: Request, res: Response): Prom
         return res.status(400).send(wrapResponse(false, { error: 'No public Event with given id found!' }));
     }
 
-    const header = req.headers.authorization;
+    const [decodingSuccessful, userDataFromToken] = loadDecodedTokenFromHeader(req);
     let userData: User | null = null;
-    if (header !== undefined) {
-        const [bearer, token] = header.split(' ');
-        const userDataFromToken = jwt.decode(token);
-        if (!(userDataFromToken instanceof Object) || userDataFromToken === null) {
-            return res.status(403).send(wrapResponse(false, { error: 'Error occured during authorization!' }));
-        }
+    if (decodingSuccessful && userDataFromToken !== null && typeof userDataFromToken !== 'string') {
         userData = await User.scope('full').findByPk(userDataFromToken.id);
         if (userData === null) {
-            res.status(401).send(wrapResponse(false, {error: 'Unauthorized!'}));
+            res.status(401).send(wrapResponse(false, { error: 'Unauthorized!' }));
         }
     } else {
-        res.status(401).send(wrapResponse(false, {error: 'Unauthorized!'}));
+        res.status(401).send(wrapResponse(false, { error: 'Unauthorized!' }));
     }
 
     const createdData = await EventRegistration.scope('full').findOrCreate({
