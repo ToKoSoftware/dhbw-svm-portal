@@ -71,6 +71,7 @@ export class DirectDebitMandateComponent implements OnInit, OnDestroy {
     this.api.delete([`/users/${this.currentUser.id}/direct-debit-mandates`, 1]).subscribe(
       () => {
         this.notifications.savedSuccessfully();
+        this.mandates = null;
         this.loadData();
       },
       () => {

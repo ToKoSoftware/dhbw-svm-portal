@@ -38,7 +38,7 @@ export class DirectDebitMandatesComponent implements OnInit, OnDestroy {
 
   public loadData(): void {
     this.loading.showLoading();
-    this.api.get<DirectDebitMandateData[]>('/direct-debit-mandates').subscribe(data => {
+    this.api.get<DirectDebitMandateData[]>('/direct-debit-mandates', {showDeleted: 'true'}).subscribe(data => {
       this.mandates = data.data;
       this.loading.hideLoading();
     });
