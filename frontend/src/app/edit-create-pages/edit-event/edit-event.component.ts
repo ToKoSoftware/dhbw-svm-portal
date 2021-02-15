@@ -6,6 +6,9 @@ import {EventsService} from '../../services/data/events/events.service';
 import {ConfirmModalService} from '../../services/confirm-modal/confirm-modal.service';
 import {NotificationService} from '../../services/notification/notification.service';
 import {setEmptyInputToNull} from '../../functions/input-cleaners.func';
+import { Subscription } from 'rxjs';
+import { TeamService } from 'src/app/services/data/teams/team.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-event',
@@ -14,14 +17,17 @@ import {setEmptyInputToNull} from '../../functions/input-cleaners.func';
 export class EditEventComponent implements OnInit, OnChanges {
   public editEventForm: FormGroup;
   public current: EventData;
+  public teamSubscription: Subscription;
+  public teamSelectData: [string | number, string | number][] = [];
   @Input() editId: string = '';
 
   constructor(
     public readonly events: EventsService,
-    private formBuilder: FormBuilder,
-    private loadingModalService: LoadingModalService,
-    private notificationService: NotificationService,
-    private confirm: ConfirmModalService
+    public readonly teams: TeamService,
+    private readonly formBuilder: FormBuilder,
+    private readonly loadingModalService: LoadingModalService,
+    private readonly router: Router,
+    private readonly notificationService: NotificationService,
   ) {
   }
 
@@ -30,6 +36,10 @@ export class EditEventComponent implements OnInit, OnChanges {
   }
 
   public loadData() {
+    this.events.read(this.editId)
+      .subscribe(
+        d => this.current = d,
+      );
     this.editEventForm = this.formBuilder.group(
       {
         title: [],
@@ -38,9 +48,15 @@ export class EditEventComponent implements OnInit, OnChanges {
         start_date: [],
         end_date: [],
         max_participants: [],
+        allowed_team_id: [],
         is_active: [],
       }
     );
+    this.teamSubscription = this.teams.data$.subscribe(teams => {
+      if (teams) {
+        this.teamSelectData = teams.map(t => [t.id || '', t.title]);
+      }
+    });
     this.events.read(this.editId)
       .subscribe(
         d => {
@@ -54,6 +70,7 @@ export class EditEventComponent implements OnInit, OnChanges {
               start_date: [d.start_date],
               end_date: [d.end_date],
               max_participants: [d.max_participants],
+              allowed_team_id: [d.allowed_team_id],
               is_active: [d.is_active],
             }
           );
@@ -78,6 +95,7 @@ export class EditEventComponent implements OnInit, OnChanges {
       data => {
         this.current = data;
         this.notificationService.savedSuccessfully();
+        this.router.navigate(['/my-team/events', data.id])
       },
       error => {
         this.notificationService.savingFailed(error.error.data.error);

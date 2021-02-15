@@ -39,6 +39,13 @@
         description="Sollte die Veranstaltung keine Teilnehmerbegrenzung haben, so kann dieses Feld leergelassen werden."
         label="Maximale Teilnehmerzahl">
       </app-input>
+      <app-select
+        required="true"
+        label="Teilnehmer-Team wählen"
+        formControlName="allowed_team_id"
+        description="Benutzer dieses Teams dürfen dieses Event sehen uns sich daran anmelden."
+        [items]="teamSelectData">
+      </app-select>
       <div class="flex justify-end w-full">
         <app-button
           formButtonType="submit"

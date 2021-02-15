@@ -1,10 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {EventData} from '../../interfaces/event.interface';
 import {EventsService} from '../../services/data/events/events.service';
 import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
 import {NotificationService} from '../../services/notification/notification.service';
 import {setEmptyInputToNull} from '../../functions/input-cleaners.func';
+import { Subscription } from 'rxjs';
+import { TeamService } from 'src/app/services/data/teams/team.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-event',
@@ -13,16 +16,25 @@ import {setEmptyInputToNull} from '../../functions/input-cleaners.func';
 export class CreateEventComponent implements OnInit {
   public formGroup: FormGroup;
   public current: EventData;
+  public teamSubscription: Subscription;
+  public teamSelectData: [string | number, string | number][] = [];
+  @Input() editId: string = '';
 
   constructor(
     public readonly events: EventsService,
-    private formBuilder: FormBuilder,
-    private loadingModalService: LoadingModalService,
-    private notificationService: NotificationService,
+    public readonly teams: TeamService,
+    private readonly formBuilder: FormBuilder,
+    private readonly loadingModalService: LoadingModalService,
+    private readonly router: Router,
+    private readonly notificationService: NotificationService,
   ) {
   }
 
   ngOnInit(): void {
+    this.events.read(this.editId)
+      .subscribe(
+        d => this.current = d,
+      );
     this.formGroup = this.formBuilder.group(
       {
         title: [],
@@ -31,9 +43,15 @@ export class CreateEventComponent implements OnInit {
         start_date: [],
         end_date: [],
         max_participants: [],
+        allowed_team_id: [],
         is_active: [],
       }
     );
+    this.teamSubscription = this.teams.data$.subscribe(teams => {
+      if (teams) {
+        this.teamSelectData = teams.map(t => [t.id || '', t.title]);
+      }
+    });
   }
 
   public create(): void {
@@ -49,10 +67,16 @@ export class CreateEventComponent implements OnInit {
       data => {
         this.current = data;
         this.notificationService.savedSuccessfully();
+        this.router.navigate(['/my-team/events', data.id])
       },
       error => {
         this.notificationService.savingFailed(error.error.data.error);
       }
     );
   }
+
+  ngOnDestroy(): void {
+    this.teamSubscription.unsubscribe();
+  }
+
 }
