@@ -15,7 +15,7 @@ export async function getEvent(req: Request, res: Response): Promise<Response> {
         .scope(
             Vars.currentUserIsAdmin 
                 ? [{method: ['onlyCurrentOrg', Vars.currentOrganization.id]}]
-                : [{method: ['onlyCurrentOrg', Vars.currentOrganization.id]},{method: ['onlyAllowedTeam', Vars.currentUser.teams.map(t => t.id), Vars.currentOrganization.public_team_id]}]
+                : [{method: ['onlyCurrentOrg', Vars.currentOrganization.id]}, {method: ['onlyAllowedTeam', Vars.currentUser.teams.map(t => t.id), Vars.currentOrganization.public_team_id]}]
         )
         .findOne({
             where: {
