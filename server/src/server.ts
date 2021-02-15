@@ -61,6 +61,7 @@ import { createDirectDebitMandate } from './api/v2/direct-debit-mandate/create-d
 import { getDirectDebitMandate, getDirectDebitMandates } from './api/v2/direct-debit-mandate/get-direct-debit-mandate';
 import { deleteDirectDebitMandate } from './api/v2/direct-debit-mandate/delete-direct-debit-mandate';
 import { exportEventRegistrations } from './api/v1/admin/export-event-registrations';
+import { exportDirectDebitMandates } from './api/v1/admin/export-direct-debit-mandates';
 
 export default function startServer(): void {
 
@@ -202,6 +203,7 @@ export default function startServer(): void {
     //following two routes only via frontend/browser functionable with download
     app.get('/api/v1/admin/export/users', userIsAuthorizedByParam, userIsAdmin, (req, res) => exportUsers(req, res));
     app.get('/api/v1/admin/export/events/:id/registrations', userIsAuthorizedByParam, userIsAdmin, (req, res) => exportEventRegistrations (req, res));
+    app.get('/api/v1/admin/export/direct-debit-mandates', userIsAuthorizedByParam, userIsAdmin, (req, res) => exportDirectDebitMandates (req, res));
 
 
     // handle every other route with index.html, which loads Angular

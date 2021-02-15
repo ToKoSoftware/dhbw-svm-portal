@@ -22,7 +22,7 @@ export async function exportUsers(req: Request, res: Response): Promise<Response
     if (!success) {
         return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
     }
-    if (users === []) {
+    if (users.length === 0) {
         return res.status(404).send(wrapResponse(false, {error: 'No user found'}));
     }
 
