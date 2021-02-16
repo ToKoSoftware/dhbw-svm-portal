@@ -1,4 +1,4 @@
-import {BeforeCreate, BelongsTo, Column, ForeignKey, HasMany, BelongsToMany, Model, NotEmpty, PrimaryKey, Scopes, Table, DefaultScope} from 'sequelize-typescript';
+import {BeforeCreate, BelongsTo, Column, ForeignKey, HasMany, BelongsToMany, Model, NotEmpty, PrimaryKey, Scopes, Table, DefaultScope, HasOne} from 'sequelize-typescript';
 import {v4 as uuidv4} from 'uuid';
 import { Op } from 'sequelize';
 import {RawTeamData} from '../interfaces/team.interface';
@@ -8,6 +8,7 @@ import { Organization } from './organization.model';
 import { Poll } from './poll.model';
 import { Role } from './role.model';
 import { User } from './user.model';
+import { Event } from './event.model';
 
 @DefaultScope(() => ({
     required: false,
@@ -16,7 +17,7 @@ import { User } from './user.model';
 
 @Scopes(() => ({
     full: {
-        include: [Organization, Role, User]
+        include: [{ model: Organization, as: 'organization' }, Role, User]
     },
     ordered: {
         required: false,
@@ -50,8 +51,10 @@ export class Team extends Model {
     @Column
     maintain_role_id: string;
 
-    @BelongsTo(() => Organization)
+    @BelongsTo(() => Organization, 'org_id')
     organization: Organization;
+    @HasOne(() => Organization, 'public_team_id')
+    public_team_of_organization: Organization;
     @BelongsTo(() => Role)
     maintain_role: Role;
     @BelongsToMany(() => User, () => Membership)
@@ -59,6 +62,8 @@ export class Team extends Model {
 
     @HasMany(() => Poll)
     can_answer_polls: Poll[];
+    @HasMany(() => Event)
+    can_participate_events: Event[];
 
     @BeforeCreate
     static addUuid(instance: Team): string {

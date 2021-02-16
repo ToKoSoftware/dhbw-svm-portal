@@ -45,7 +45,6 @@ export class EditPollComponent implements OnInit, OnDestroy {
     this.teamSubscription = this.teams.data$.subscribe(teams => {
       if (teams) {
         this.teamSelectData = teams.map(t => [t.id || '', t.title]);
-        this.teamSelectData.unshift(['empty', 'Alle Benutzer']);
       }
     });
   }
