@@ -4,7 +4,6 @@ import { mapEvent } from '../../../functions/map-events.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { EventDataSnapshot, RawEventData } from '../../../interfaces/event.interface';
 import { Event } from '../../../models/event.model';
-import { Vars } from '../../../vars';
 
 export async function createEvent(req: Request, res: Response): Promise<Response> {
     let success = true;

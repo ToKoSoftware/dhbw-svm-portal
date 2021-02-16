@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import {EventData} from '../../interfaces/event.interface';
 import {EventsService} from '../../services/data/events/events.service';
 import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
