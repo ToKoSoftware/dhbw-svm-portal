@@ -66,6 +66,7 @@ import { deleteDocument, downloadDocument, getDocuments, uploadDocument } from '
 import { getFTPConfiguration, updateFTPConfiguration } from './api/v2/documents/configure';
 import { getPublicEvents } from './api/v2/events/get-public-events';
 import { registerForPublicEvents } from './api/v2/event-registrations/register-for-public-event';
+import { getEventLogs } from './api/v2/event-logs/get-event-logs';
 
 
 export default function startServer(): void {
@@ -217,6 +218,7 @@ export default function startServer(): void {
      */
     app.get('/api/v1/admin/stats', userIsAuthorized, userIsAdmin, (req, res) => getStats(req, res));
     app.get('/api/v1/admin/stats/monthly', userIsAuthorized, userIsAdmin, (req, res) => getMonthlyStats(req, res));
+    app.get('/api/v2/admin/event-logs', userIsAuthorized, userIsAdmin, (req, res) => getEventLogs(req, res));
     //following two routes only via frontend/browser functionable with download
     app.get('/api/v1/admin/export/users', userIsAuthorizedByParam, userIsAdmin, (req, res) => exportUsers(req, res));
     app.get('/api/v1/admin/export/events/:id/registrations', userIsAuthorizedByParam, userIsAdmin, (req, res) => exportEventRegistrations (req, res));

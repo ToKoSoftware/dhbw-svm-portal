@@ -1,12 +1,13 @@
-import {AllowNull, BeforeCreate, BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, IsDate, IsInt, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
-import {v4 as uuidv4} from 'uuid';
-import {RawEventData} from '../interfaces/event.interface';
+import { AllowNull, BeforeCreate, BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, IsDate, IsInt, NotEmpty, PrimaryKey, Scopes, Table } from 'sequelize-typescript';
+import { v4 as uuidv4 } from 'uuid';
+import { RawEventData } from '../interfaces/event.interface';
 import { EventRegistration } from './event-registration.model';
 import { Organization } from './organization.model';
 import { User } from './user.model';
-import {Op} from 'sequelize';
+import { Op } from 'sequelize';
 import { currentOrg } from './current-org.scope';
 import { Team } from './team.model';
+import { LoggedModel } from './logged.model';
 
 @DefaultScope(() => ({
     required: false,
@@ -17,7 +18,7 @@ import { Team } from './team.model';
 }))
 @Scopes(() => ({
     full: {
-        include: [Organization, {model: User, as: 'author'}, {model: User, as: 'registered_users'}]
+        include: [Organization, { model: User, as: 'author' }, { model: User, as: 'registered_users' }]
     },
     active: {
         required: false,
@@ -80,11 +81,12 @@ import { Team } from './team.model';
             allowed_team_id: 'public'
         }
     }
-})) 
+}))
 
 @Table
-export class Event extends Model {
+export class Event extends LoggedModel {
 
+    public static modelName = 'Event';
     @PrimaryKey
     @Column
     id: string;
@@ -126,7 +128,7 @@ export class Event extends Model {
     @BelongsTo(() => Team)
     allowed_team: Team;
     @BelongsToMany(() => User, () => EventRegistration)
-    registered_users: Array<User & {event_registrations: EventRegistration}>;
+    registered_users: Array<User & { event_registrations: EventRegistration }>;
 
     @BeforeCreate
     static addUuid(instance: Event): string {
