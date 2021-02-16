@@ -1,0 +1,45 @@
+<app-layout
+  [sidebarPages]="sidebarPages">
+  <app-container [large]="true">
+    <div class="flex flex-col -ml-5 -mr-2" *ngIf="logs?.length">
+      <div class="overflow-x-auto">
+        <div class="align-middle inline-block min-w-full">
+          <div class="overflow-hidden">
+            <table class="min-w-full">
+              <thead class="bg-gray-100 dark:bg-black w-full">
+              <tr>
+                <th scope="col"
+                    class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  Datum
+                </th>
+                <th scope="col"
+                    class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  Name
+                </th>
+                <th scope="col"
+                    class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  Aktion
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="border-b" *ngFor="let log of logs">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {{log.createdAt | amLocal | amDateFormat: 'DD.MM.YYYY H:mm' }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  <a [routerLink]="'/my-team/users/' + log.user.id">{{log.user.first_name}} {{log.user.last_name}}</a>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {{getTextForFunction(log.called_function)}}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-zero-data *ngIf="!logs?.length"></app-zero-data>
+  </app-container>
+</app-layout>

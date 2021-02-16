@@ -25,6 +25,7 @@ import { DirectDebitMandatesComponent } from './direct-debit-mandates/direct-deb
 import { DocumentsComponent } from './documents/documents.component';
 import { PrivacyComponent } from './privacy/privacy.component';
 import { Oauth2Component } from './oauth2/oauth2.component';
+import { EventLogComponent } from './event-log/event-log.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { Oauth2Component } from './oauth2/oauth2.component';
     DirectDebitMandatesComponent,
     DocumentsComponent,
     PrivacyComponent,
-    Oauth2Component
+    Oauth2Component,
+    EventLogComponent
   ],
   imports: [
     adminRoutes,

@@ -6,7 +6,7 @@ import {
   DownloadCloud, Map, Trash, Key, Save,
   MousePointer, AlertCircle, File, LogOut,
   LogIn, UserPlus, Tool, Activity, Folder,
-  Calendar, UserCheck, Info, Lock, Edit, EyeOff,
+  Calendar, UserCheck, Info, Lock, Edit, EyeOff, List,
   X, PieChart, Plus, ChevronRight, ChevronLeft, Minus,
   Check, Code, Shuffle, Copy, CreditCard, Shield
 } from 'angular-feather/icons';
@@ -18,7 +18,7 @@ const icons = {
   DownloadCloud, Map, Trash, Key, Save,
   MousePointer, AlertCircle, File, LogOut,
   LogIn, UserPlus, Tool, Activity, Folder,
-  Calendar, UserCheck, Info, Lock, Edit, EyeOff,
+  Calendar, UserCheck, Info, Lock, Edit, EyeOff, List,
   X, PieChart, Plus, ChevronRight, ChevronLeft, Minus,
   Check, Code, Shuffle, Copy, CreditCard, Shield
 };

@@ -12,6 +12,7 @@ import {DirectDebitMandatesComponent} from './direct-debit-mandates/direct-debit
 import {DocumentsComponent} from './documents/documents.component';
 import {Oauth2Component} from './oauth2/oauth2.component';
 import {PrivacyComponent} from './privacy/privacy.component';
+import {EventLogComponent} from './event-log/event-log.component';
 
 export const adminRoutes = RouterModule.forChild([
   {path: '', pathMatch: 'full', component: OverviewComponent},
@@ -31,4 +32,5 @@ export const adminRoutes = RouterModule.forChild([
   {path: 'documents', component: DocumentsComponent},
   {path: 'oauth2', component: Oauth2Component},
   {path: 'privacy', component: PrivacyComponent},
+  {path: 'event-log', component: EventLogComponent},
 ]);

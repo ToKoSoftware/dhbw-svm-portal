@@ -43,7 +43,7 @@ export const adminPages: SidebarPageGroup[] = [
       },
       {
         title: 'Single-Sign-On',
-        icon: 'shield',
+        icon: 'log-in',
         url: '/my-team/oauth2',
       },
     ]
@@ -78,6 +78,11 @@ export const adminPages: SidebarPageGroup[] = [
         title: 'Lastschriftmandate',
         icon: 'credit-card',
         url: '/my-team/direct-debit-mandates',
+      },
+      {
+        title: 'Ereignissprotokoll',
+        icon: 'list',
+        url: '/my-team/event-log',
       },
     ]
   }
