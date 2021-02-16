@@ -11,7 +11,7 @@ export class ButtonComponent {
   @Input() icon: string | null = null;
   @Input() type: ButtonType = 'info';
   @Input() formButtonType: 'button' | 'submit' = 'button';
-  @Input() size: ButtonSize = 'normal';
+  @Input() size: ButtonSize = 'small';
 
   @HostListener("click") onClick(){
     if (this.route != null) {
