@@ -6,6 +6,7 @@ import { Organization } from './organization.model';
 import { User } from './user.model';
 import {Op} from 'sequelize';
 import { currentOrg } from './current-org.scope';
+import { Team } from './team.model';
 
 @DefaultScope(() => ({
     required: false,
@@ -56,7 +57,29 @@ import { currentOrg } from './current-org.scope';
             price: null
         }
     },
-    onlyCurrentOrg: (org_id: string) => currentOrg(org_id)
+    onlyCurrentOrg: (org_id: string) => currentOrg(org_id),
+    onlyAllowedTeam: (allowed_team_id: string, public_team_id: string) => ({
+        required: false,
+        where: {
+            [Op.or]: [
+                {
+                    allowed_team_id: allowed_team_id
+                },
+                {
+                    allowed_team_id: public_team_id
+                },
+                {
+                    allowed_team_id: 'public'
+                }
+            ]
+        }
+    }),
+    public: {
+        required: false,
+        where: {
+            allowed_team_id: 'public'
+        }
+    }
 })) 
 
 @Table
@@ -90,6 +113,9 @@ export class Event extends Model {
     @ForeignKey(() => Organization)
     @Column
     org_id: string;
+    @ForeignKey(() => Team)
+    @Column
+    allowed_team_id: string;
     @Column
     is_active: boolean;
 
@@ -97,6 +123,8 @@ export class Event extends Model {
     organization: Organization;
     @BelongsTo(() => User)
     author: User;
+    @BelongsTo(() => Team)
+    allowed_team: Team;
     @BelongsToMany(() => User, () => EventRegistration)
     registered_users: Array<User & {event_registrations: EventRegistration}>;
 
@@ -113,6 +141,7 @@ export class Event extends Model {
             'end_date',
             'is_active',
             'author_id',
+            'allowed_team_id',
             'org_id'
         ];
     }

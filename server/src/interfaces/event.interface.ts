@@ -1,5 +1,6 @@
 import { EventRegistration } from '../models/event-registration.model';
 import { Organization } from '../models/organization.model';
+import { Team } from '../models/team.model';
 import { User } from '../models/user.model';
 
 export interface EventDataSnapshot{
@@ -16,10 +17,12 @@ export interface EventDataSnapshot{
 export interface RawEventData extends EventDataSnapshot{
     author_id?: string;
     org_id?: string;
+    allowed_team_id?: string | null;
 }
 
 export interface EventData extends EventDataSnapshot{
     organization: Organization;
     author: User;
+    allowed_team: Team;
     registered_users: Array<User & {event_registrations: EventRegistration}>
 }

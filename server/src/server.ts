@@ -62,6 +62,8 @@ import { getDirectDebitMandate, getDirectDebitMandates } from './api/v2/direct-d
 import { deleteDirectDebitMandate } from './api/v2/direct-debit-mandate/delete-direct-debit-mandate';
 import {deleteDocument, downloadDocument, getDocuments, uploadDocument} from './api/v2/documents/get-documents';
 import {getFTPConfiguration, updateFTPConfiguration} from './api/v2/documents/configure';
+import { getPublicEvents } from './api/v2/events/get-public-events';
+import { registerForPublicEvents } from './api/v2/event-registrations/register-for-public-event';
 
 export default function startServer(): void {
 
@@ -188,6 +190,8 @@ export default function startServer(): void {
     app.get('/api/v2/access/:code', (req, res) => getOrganizationByAccessCode(req, res));
     app.put('/api/v2/organizations/:id', userIsAuthorized, userIsAdmin, (req, res) => updateOrganization(req, res));
     app.delete('/api/v2/organizations', userIsAuthorized, userIsAdmin, (req, res) => deleteOrganization(req, res));
+    app.get('/api/v2/organizations/:id/public-events', (req, res) => getPublicEvents(req, res));
+    app.get('/api/v2/organizations/:id/public-events/:eventId/register', (req, res) => registerForPublicEvents(req, res));
 
     /**
      * Direct Debit Mandate
