@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import { Vars } from './vars';
 import { wrapResponse } from './functions/response-wrapper';
@@ -60,6 +60,7 @@ import { getOrganizationByAccessCode } from './api/v2/organizations/get-organiza
 import { createDirectDebitMandate } from './api/v2/direct-debit-mandate/create-direct-debit-mandate';
 import { getDirectDebitMandate, getDirectDebitMandates } from './api/v2/direct-debit-mandate/get-direct-debit-mandate';
 import { deleteDirectDebitMandate } from './api/v2/direct-debit-mandate/delete-direct-debit-mandate';
+import { errorHandler } from './middleware/error-handler';
 
 export default function startServer(): void {
 
@@ -165,11 +166,11 @@ export default function startServer(): void {
     app.put('/api/v2/polls/:pollId/answers/:id', userIsAuthorized, userIsAdmin, (req, res) => updatePollAnswer(req, res));
     app.delete('/api/v2/polls/:pollId/answers/:id', userIsAuthorized, userIsAdmin, (req, res) => deletePollAnswer(req, res));
     app.delete('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => deletePollVote(req, res));
-    
+
     /**
      * Role
      */
-    app.get('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => getRoles(req, res)); 
+    app.get('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => getRoles(req, res));
     app.get('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => getRole(req, res));
     app.post('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => createRole(req, res));
     app.post('/api/v2/roles/:id/assignment', userIsAuthorized, userIsAdmin, (req, res) => createRoleAssignment(req, res));
@@ -206,6 +207,12 @@ export default function startServer(): void {
     app.get('*', function (request, response) {
         response.sendFile(path.resolve(__dirname, '../dist/index.html'));
     });
+
+    /**
+     * ErrorHandler
+     */
+    app.use((err: Error, req: Request, res: Response, next: NextFunction) => { errorHandler(err, req, res, next) });
+
     /**
      * Server
      */
