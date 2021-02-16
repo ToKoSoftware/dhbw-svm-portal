@@ -1,0 +1,40 @@
+<div class="file-upload-container transition duration-300 ease-in-out" (click)="fileInput.click()" appDragDrop
+     (onFileDropped)="handleFileChange($event)" *ngIf="files === null && !uploading">
+  <input hidden type="file" #fileInput (change)="handleFileChange($event.target.files)">
+  <div class="text-center pt-10 px-3">
+    <i-feather name="upload-cloud" style="width: 20%; height: 20%"></i-feather>
+    <p class="leading-relaxed">Ziehen Sie die Datei, welche Sie hochladen möchten, in dieses Feld. Klicken Sie auf die
+      gelbe Fläche, um eine Datei auszuwählen.</p>
+  </div>
+</div>
+<div class="pt-5" *ngIf="files !== null && !uploading">
+  <div class="pl-3 pr-4 py-3 flex items-center justify-between text-sm border border-gray-200 rounded-md w-full">
+    <div class="w-0 flex-1 flex items-center">
+      <i-feather class="flex-shrink-0 h-2 w-2 text-gray-400" name="file"></i-feather>
+      <span class="ml-2 flex-1 w-0 truncate">
+          {{ files.item(0)?.name }}
+      </span>
+    </div>
+    <div class="ml-4 flex-shrink-0">
+      <button (click)="deleteAttachment(0)" class="font-medium text-indigo-600 hover:text-indigo-500">
+        <i-feather class="mt-2" name="trash"></i-feather>
+      </button>
+    </div>
+  </div>
+</div>
+<app-loading *ngIf="uploading"></app-loading>
+
+<div class="flex justify-end w-full mt-7" *ngIf="!uploading">
+  <div>
+    <app-button
+      (click)="closeModal()"
+      type="blank"
+      label="Abbrechen"
+      [icon]="null"></app-button>
+  </div>
+  <app-button
+    (click)="saveFile()"
+    type="info"
+    *ngIf="files !== null"
+    label="Hochladen"></app-button>
+</div>

@@ -6,12 +6,12 @@ import {Router} from '@angular/router';
   templateUrl: './button.component.html'
 })
 export class ButtonComponent {
-  @Input() label: string;
+  @Input() label: string = '';
   @Input() route: string | null = null;
   @Input() icon: string | null = null;
   @Input() type: ButtonType = 'info';
   @Input() formButtonType: 'button' | 'submit' = 'button';
-  @Input() size: ButtonSize = 'normal';
+  @Input() size: ButtonSize = 'small';
 
   @HostListener("click") onClick(){
     if (this.route != null) {
@@ -23,5 +23,5 @@ export class ButtonComponent {
   }
 }
 
-export type ButtonType = 'blank' | 'info' | 'danger' | 'transparent'  | 'link';
+export type ButtonType = 'blank' | 'info' | 'danger' | 'transparent'  | 'link' | 'link-danger';
 export type ButtonSize = 'normal' | 'small' | 'full';

@@ -38,6 +38,10 @@ export class NavbarComponent implements OnInit {
           title: 'Meine Anmeldungen',
           url: '/join'
         }, {
+          icon: 'folder',
+          title: 'Dokumente',
+          url: '/documents'
+        }, {
           icon: 'pie-chart',
           title: 'Umfragen',
           url: '/polls'

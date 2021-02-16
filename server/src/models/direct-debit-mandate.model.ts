@@ -2,6 +2,7 @@ import { Table, ForeignKey, Column, BelongsTo, PrimaryKey, Scopes, BeforeCreate 
 import { v4 as uuidv4 } from 'uuid';
 import { RawDirectDebitMandateData } from '../interfaces/direct-debit-mandate.interface';
 import { LoggedModel } from './logged.model';
+import { currentOrg } from './current-org.scope';
 import { Organization } from './organization.model';
 import { User } from './user.model';
 
@@ -9,7 +10,8 @@ import { User } from './user.model';
     full: {
         required: false,
         include: [User, Organization]
-    }
+    },
+    onlyCurrentOrg: (org_id: string) => currentOrg(org_id)
 }))
 
 @Table({
