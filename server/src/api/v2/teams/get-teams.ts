@@ -16,7 +16,7 @@ export async function getTeam(req: Request, res: Response): Promise<Response> {
             where: {
                 id: req.params.id
             },
-            include: [Organization, Role, User]
+            include: [{ model: Organization, as: 'organization' }, Role, User]
         };
     } else {
         const roleIds = Vars.currentUser.assigned_roles.map(r => r.id);

@@ -18,6 +18,7 @@ export interface OrganizationDataSnapshot {
 
 export interface RawOrganizationData extends OrganizationDataSnapshot {
     admin_role_id: string;
+    public_team_id: string
 }
 
 export interface OrganizationData extends OrganizationDataSnapshot {
@@ -28,4 +29,5 @@ export interface OrganizationData extends OrganizationDataSnapshot {
     polls: Poll[];
     roles: Role[];
     teams: Team[];
+    public_team: Team;
 }

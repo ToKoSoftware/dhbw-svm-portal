@@ -32,7 +32,7 @@ import { DirectDebitMandate } from './direct-debit-mandate.model';
 }))
 @Scopes(() => ({
     full: {
-        include: [{ model: Role, as: 'admin_role' }, { model: Role, as: 'roles' }, User, Team, News, Poll, Event]
+        include: [{ model: Role, as: 'admin_role' }, { model: Role, as: 'roles' }, User, { model: Team, as: 'public_team' }, { model: Team, as: 'teams' }, News, Poll, Event]
     },
     active: {
         required: false,
@@ -80,9 +80,15 @@ export class Organization extends Model {
     @ForeignKey(() => Role)
     @Column
     admin_role_id: string;
+    @ForeignKey(() => Team)
+    @Column
+    public_team_id: string;
+
 
     @BelongsTo(() => Role, 'admin_role_id')
     admin_role: Role;
+    @BelongsTo(() => Team, 'public_team_id')
+    public_team: Team;
 
     @HasMany(() => User)
     users: User[];
@@ -94,7 +100,7 @@ export class Organization extends Model {
     polls: Poll[];
     @HasMany(() => Role, 'org_id')
     roles: Role[];
-    @HasMany(() => Team)
+    @HasMany(() => Team, 'org_id')
     teams: Team[];
     @HasMany(() => DirectDebitMandate)
     direct_debit_mandates: DirectDebitMandate[];
