@@ -44,6 +44,8 @@ export async function loginUser(req: Request, res: Response): Promise<Response> 
             // check if any of the user's roles are the current user's organisation's admin role
             Vars.currentUserIsAdmin = userIsAdminCheck(user);
             const token = jwtSign(user);
+            user.last_login = new Date();
+            await user.save();
             return res.send(wrapResponse(true, token));
         }
         return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));

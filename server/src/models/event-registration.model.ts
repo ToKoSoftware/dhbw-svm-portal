@@ -1,7 +1,8 @@
-import {Model, Table, ForeignKey, Column, BelongsTo, PrimaryKey, Scopes, BeforeCreate} from 'sequelize-typescript';
-import {v4 as uuidv4} from 'uuid';
+import { Table, ForeignKey, Column, BelongsTo, PrimaryKey, Scopes, BeforeCreate } from 'sequelize-typescript';
+import { v4 as uuidv4 } from 'uuid';
 import { RawEventRegistrationData } from '../interfaces/event-registration.interface';
 import { Event } from './event.model';
+import { LoggedModel } from './logged.model';
 import { User } from './user.model';
 
 @Scopes(() => ({
@@ -12,8 +13,9 @@ import { User } from './user.model';
 }))
 
 @Table
-export class EventRegistration extends Model {
-    
+export class EventRegistration extends LoggedModel {
+
+    public static modelName = 'EventRegistration';
     @PrimaryKey
     @Column
     id: string;
