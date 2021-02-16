@@ -20,10 +20,6 @@ module.exports = {
                 type: Sequelize.STRING,
                 allowNull: true
             },
-            input_data: {
-                type: Sequelize.STRING(5000),
-                allowNull: true
-            },
             success: {
                 allowNull: false,
                 type: Sequelize.BOOLEAN,

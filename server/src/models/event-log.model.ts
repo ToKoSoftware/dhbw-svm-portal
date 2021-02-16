@@ -1,19 +1,15 @@
-import { Model, Table, ForeignKey, Column, BelongsTo, PrimaryKey, Scopes, BeforeCreate } from 'sequelize-typescript';
+import { Model, Table, ForeignKey, Column, BelongsTo, PrimaryKey, BeforeCreate, DefaultScope } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { RawEventLogData } from '../interfaces/event-log.interface';
 import { Organization } from './organization.model';
 import { User } from './user.model';
 
-@Scopes(() => ({
-    full: {
-        required: false,
-        include: [User, Organization]
-    }
+@DefaultScope(() => ({
+    required: false,
+    include: [User, Organization]
 }))
 
-@Table({
-    paranoid: true
-})
+@Table
 export class EventLog extends Model {
 
     @PrimaryKey
@@ -27,8 +23,6 @@ export class EventLog extends Model {
     org_id: string;
     @Column
     called_function: string;
-    @Column
-    input_data: string;
     @Column
     success: boolean;
 
@@ -47,7 +41,6 @@ export class EventLog extends Model {
             'user_id',
             'org_id',
             'called_function',
-            'input_data',
             'success'
         ];
     }

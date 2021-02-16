@@ -5,7 +5,6 @@ import {
     DefaultScope,
     ForeignKey,
     HasMany,
-    Model,
     NotEmpty,
     PrimaryKey,
     Scopes,
@@ -20,6 +19,7 @@ import { Team } from './team.model';
 import { User } from './user.model';
 import { v4 as uuidv4 } from 'uuid';
 import { DirectDebitMandate } from './direct-debit-mandate.model';
+import { LoggedModel } from './logged.model';
 
 @DefaultScope(() => ({
     required: false,
@@ -55,8 +55,9 @@ import { DirectDebitMandate } from './direct-debit-mandate.model';
 }))
 
 @Table
-export class Organization extends Model {
+export class Organization extends LoggedModel {
 
+    public static modelName = 'Organization';
     @PrimaryKey
     @Column
     id: string;

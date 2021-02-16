@@ -1,8 +1,9 @@
-import {BeforeCreate, BelongsTo, Column, ForeignKey, Model, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
+import { BeforeCreate, BelongsTo, Column, ForeignKey, PrimaryKey, Scopes, Table } from 'sequelize-typescript';
 import { Role } from './role.model';
 import { User } from './user.model';
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import { RawRoleAssignmentData } from '../interfaces/role-assignment.interface';
+import { LoggedModel } from './logged.model';
 
 @Scopes(() => ({
     full: {
@@ -12,8 +13,9 @@ import { RawRoleAssignmentData } from '../interfaces/role-assignment.interface';
 }))
 
 @Table
-export class RoleAssignment extends Model {
+export class RoleAssignment extends LoggedModel {
 
+    public static modelName = 'RoleAssignment';
     @PrimaryKey
     @Column
     id: string;

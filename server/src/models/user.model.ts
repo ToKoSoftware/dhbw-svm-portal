@@ -1,6 +1,6 @@
-import {BeforeCreate, BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, HasMany, IsBefore, IsDate, IsIn, Length, Model, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
-import {v4 as uuidv4} from 'uuid';
-import {genderType, UserDataSnapshot} from '../interfaces/users.interface';
+import { BeforeCreate, BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, HasMany, IsDate, IsIn, Length, Model, PrimaryKey, Scopes, Table } from 'sequelize-typescript';
+import { v4 as uuidv4 } from 'uuid';
+import { genderType, UserDataSnapshot } from '../interfaces/users.interface';
 import { Organization } from './organization.model';
 import { EventRegistration } from './event-registration.model';
 import { Event } from './event.model';
@@ -12,13 +12,13 @@ import { Team } from './team.model';
 import { Membership } from './membership.model';
 import { Role } from './role.model';
 import { RoleAssignment } from './role-assignment.model';
-import {SingleSignOnRequest} from './single-sign-on-request.model';
+import { SingleSignOnRequest } from './single-sign-on-request.model';
 import { DirectDebitMandate } from './direct-debit-mandate.model';
 
 @DefaultScope(() => ({
     required: false,
-    attributes: { 
-        exclude: ['password'] 
+    attributes: {
+        exclude: ['password']
     },
     where: {
         is_active: true
@@ -27,19 +27,19 @@ import { DirectDebitMandate } from './direct-debit-mandate.model';
 @Scopes(() => ({
     full: {
         required: false,
-        attributes: { 
-            exclude: ['password'] 
+        attributes: {
+            exclude: ['password']
         },
-        include: [Organization, {model: Event, as: 'registered_events'}, {model: Event, as: 'created_events'}, PollAnswer, Team, Role, News, Poll]
+        include: [Organization, { model: Event, as: 'registered_events' }, { model: Event, as: 'created_events' }, PollAnswer, Team, Role, News, Poll]
     },
     verification: {
         required: false,
-        include: [Organization, {model: Event, as: 'registered_events'}, {model: Event, as: 'created_events'}, PollAnswer, Team, Role, News, Poll]
+        include: [Organization, { model: Event, as: 'registered_events' }, { model: Event, as: 'created_events' }, PollAnswer, Team, Role, News, Poll]
     },
     active: {
         required: false,
-        attributes: { 
-            exclude: ['password'] 
+        attributes: {
+            exclude: ['password']
         },
         where: {
             is_active: true
@@ -47,8 +47,8 @@ import { DirectDebitMandate } from './direct-debit-mandate.model';
     },
     inactive: {
         required: false,
-        attributes: { 
-            exclude: ['password'] 
+        attributes: {
+            exclude: ['password']
         },
         where: {
             is_active: false
@@ -56,8 +56,8 @@ import { DirectDebitMandate } from './direct-debit-mandate.model';
     },
     onlyCurrentOrg: (org_id: string) => ({
         required: false,
-        attributes: { 
-            exclude: ['password'] 
+        attributes: {
+            exclude: ['password']
         },
         where: {
             org_id: org_id
@@ -65,12 +65,12 @@ import { DirectDebitMandate } from './direct-debit-mandate.model';
     }),
     publicData: {
         required: false,
-        attributes: ['id', 'username', 'first_name', 'last_name'] ,
+        attributes: ['id', 'username', 'first_name', 'last_name'],
         where: {
             is_active: true
         }
     }
-})) 
+}))
 
 @Table
 export class User extends Model {
@@ -98,7 +98,7 @@ export class User extends Model {
     street: string;
     @Column
     street_number: string;
-    @Length({min: 5, max: 5})
+    @Length({ min: 5, max: 5 })
     @Column
     post_code: string;
     @Column
@@ -119,13 +119,13 @@ export class User extends Model {
     @BelongsTo(() => Organization)
     organization: Organization;
     @BelongsToMany(() => Event, () => EventRegistration)
-    registered_events: Array<Event & {event_registrations: EventRegistration}>;
+    registered_events: Array<Event & { event_registrations: EventRegistration }>;
     @BelongsToMany(() => PollAnswer, () => PollVote)
-    voted_poll_answers: Array<PollAnswer & {poll_vote: PollVote}>;
+    voted_poll_answers: Array<PollAnswer & { poll_vote: PollVote }>;
     @BelongsToMany(() => Team, () => Membership)
-    teams: Array<Team & {membership: Membership}>;
+    teams: Array<Team & { membership: Membership }>;
     @BelongsToMany(() => Role, () => RoleAssignment)
-    assigned_roles: Array<Role & {role_assignment: RoleAssignment}>;
+    assigned_roles: Array<Role & { role_assignment: RoleAssignment }>;
 
     @HasMany(() => Event)
     created_events: Event[];
