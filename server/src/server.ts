@@ -62,6 +62,8 @@ import { getDirectDebitMandate, getDirectDebitMandates } from './api/v2/direct-d
 import { deleteDirectDebitMandate } from './api/v2/direct-debit-mandate/delete-direct-debit-mandate';
 import { exportEventRegistrations } from './api/v1/admin/export-event-registrations';
 import { exportDirectDebitMandates } from './api/v1/admin/export-direct-debit-mandates';
+import { deleteDocument, downloadDocument, getDocuments, uploadDocument } from './api/v2/documents/get-documents';
+import { getFTPConfiguration, updateFTPConfiguration } from './api/v2/documents/configure';
 import { getPublicEvents } from './api/v2/events/get-public-events';
 import { registerForPublicEvents } from './api/v2/event-registrations/register-for-public-event';
 
@@ -199,6 +201,16 @@ export default function startServer(): void {
      */
     app.get('/api/v2/direct-debit-mandates', userIsAuthorized, userIsAdmin, (req, res) => getDirectDebitMandates(req, res));
     app.post('/api/v2/direct-debit-mandates', userIsAuthorized, (req, res) => createDirectDebitMandate(req, res));
+
+    /**
+     * Documents
+     */
+    app.get('/api/v2/documents', userIsAuthorized, (req, res) => getDocuments(req, res));
+    app.get('/api/v2/documents/:fileName', userIsAuthorizedByParam, (req, res) => downloadDocument(req, res));
+    app.post('/api/v2/documents', userIsAuthorized, userIsAdmin, (req, res) => uploadDocument(req, res));
+    app.delete('/api/v2/documents/:fileName', userIsAuthorized, userIsAdmin, (req, res) => deleteDocument(req, res));
+    app.get('/api/v2/ftp/configuration', userIsAuthorized, userIsAdmin, (req, res) => getFTPConfiguration(req, res));
+    app.put('/api/v2/ftp/configuration', userIsAuthorized, userIsAdmin, (req, res) => updateFTPConfiguration(req, res));
 
     /**
      * Admin
