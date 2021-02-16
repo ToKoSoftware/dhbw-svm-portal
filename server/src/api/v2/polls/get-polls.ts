@@ -16,7 +16,7 @@ export async function getPoll(req: Request, res: Response): Promise<Response> {
         .scope(
             Vars.currentUserIsAdmin
                 ? [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }]
-                : [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, { method: ['onlyAnswerTeam', Vars.currentUser.teams.map(t => t.id)] }, 'active', { method: ['notExpired', currentDate] }]
+                : [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, { method: ['onlyAnswerTeam', Vars.currentUser.teams.map(t => t.id), Vars.currentOrganization.public_team_id] }, 'active', { method: ['notExpired', currentDate] }]
         )
         .findOne({
             where: {
@@ -67,7 +67,7 @@ export async function getPolls(req: Request, res: Response): Promise<Response> {
                 ? (showExpired == 'true'
                     ? [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, 'ordered']
                     : [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, { method: ['notExpired', currentDate] }, 'ordered'])
-                : [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, { method: ['onlyAnswerTeam', Vars.currentUser.teams.map(t => t.id)] }, 'active', { method: ['notExpired', currentDate] }, 'ordered']
+                : [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, { method: ['onlyAnswerTeam', Vars.currentUser.teams.map(t => t.id), Vars.currentOrganization.public_team_id] }, 'active', { method: ['notExpired', currentDate] }, 'ordered']
         )
         .findAll(
             {

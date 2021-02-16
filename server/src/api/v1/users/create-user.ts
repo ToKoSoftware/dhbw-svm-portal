@@ -9,6 +9,8 @@ import { UserDataSnapshot, UserRegistrationData } from '../../../interfaces/user
 import { Organization } from '../../../models/organization.model';
 import { RoleAssignment } from '../../../models/role-assignment.model';
 import { Role } from '../../../models/role.model';
+import { Team } from '../../../models/team.model';
+import { Membership } from '../../../models/membership.model';
 
 export async function createUser(req: Request, res: Response): Promise<Response> {
     let success = true;
@@ -119,6 +121,35 @@ export async function createUser(req: Request, res: Response): Promise<Response>
                     {
                         user_id: createdData.id,
                         role_id: org?.admin_role_id
+                    })
+                    .catch(() => {
+                        success = false;
+                        return null;
+                    });
+                if (!success) {
+                    return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+                }
+            }
+        }
+        const publicTeamId = org?.public_team_id;
+        if (publicTeamId) {
+            const publicTeam: Team[] = await Team.scope('full').findAll({
+                where: {
+                    id: publicTeamId
+                }
+            })
+                .catch(() => {
+                    success = false;
+                    return [];
+                });
+            if (!success) {
+                return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+            }
+            if (publicTeam !== []) {
+                await Membership.scope('full').create(
+                    {
+                        user_id: createdData.id,
+                        team_id: org?.public_team_id
                     })
                     .catch(() => {
                         success = false;

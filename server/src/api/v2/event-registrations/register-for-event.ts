@@ -17,7 +17,13 @@ export async function registerForEvent(req: Request, res: Response): Promise<Res
         return res.status(400).send(wrapResponse(false, { error: 'Not all required fields have been set' }));
     }
 
-    const event: null | { rows: Event[], count: number } = await Event.scope(['full', { method: ['onlyCurrentOrg', Vars.currentOrganization.id] }]).findAndCountAll(
+    const event: null | { rows: Event[], count: number } = await Event.scope(
+        [
+            'full', 
+            { method: ['onlyCurrentOrg', Vars.currentOrganization.id] },
+            {method: ['onlyAllowedTeam', Vars.currentUser.teams.map(t => t.id), Vars.currentOrganization.public_team_id]}
+        ]
+    ).findAndCountAll(
         {
             where: {
                 id: mappedIncomingData.event_id
