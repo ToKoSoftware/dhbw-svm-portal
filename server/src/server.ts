@@ -60,7 +60,7 @@ import { getOrganizationByAccessCode } from './api/v2/organizations/get-organiza
 import { createDirectDebitMandate } from './api/v2/direct-debit-mandate/create-direct-debit-mandate';
 import { getDirectDebitMandate, getDirectDebitMandates } from './api/v2/direct-debit-mandate/get-direct-debit-mandate';
 import { deleteDirectDebitMandate } from './api/v2/direct-debit-mandate/delete-direct-debit-mandate';
-import { errorHandler } from './middleware/';
+import { customError, errorHandler } from './middleware/error-handler';
 
 export default function startServer(): void {
 
@@ -211,7 +211,7 @@ export default function startServer(): void {
     /**
      * ErrorHandler
      */
-    app.use((err: Error, req: Request, res: Response, next: NextFunction) => { errorHandler(err, req, res, next) });
+    app.use((err: customError, req: Request, res: Response, next: NextFunction) => { errorHandler(err, req, res, next); });
 
     /**
      * Server
