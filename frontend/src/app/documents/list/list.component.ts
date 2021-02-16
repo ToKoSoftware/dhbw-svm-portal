@@ -6,6 +6,9 @@ import {Subscription} from 'rxjs';
 import {TitleBarService} from '../../services/title-bar/title-bar.service';
 import {SlideOverService} from '../../services/slide-over/slide-over.service';
 import {FileUploadService} from '../../services/file-upload/file-upload.service';
+import {NotificationService} from '../../services/notification/notification.service';
+import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
+import {ConfirmModalService} from '../../services/confirm-modal/confirm-modal.service';
 
 @Component({
   selector: 'app-list',
@@ -17,6 +20,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private adminSubscription: Subscription = new Subscription();
   private uploadEventSubscription: Subscription = new Subscription();
   private jwt: string = '';
+  error: boolean = false;
   @ViewChild('upload', {static: true}) upload: TemplateRef<unknown>;
 
   constructor(
@@ -24,7 +28,10 @@ export class ListComponent implements OnInit, OnDestroy {
     private readonly login: LoginService,
     private readonly titleBarService: TitleBarService,
     private readonly slideOver: SlideOverService,
-    private readonly fileUploadService: FileUploadService
+    private readonly fileUploadService: FileUploadService,
+    private readonly notifications: NotificationService,
+    private readonly loading: LoadingModalService,
+    private readonly confirm: ConfirmModalService
   ) {
   }
 
@@ -57,9 +64,11 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   private loadData() {
+    this.error = false;
     this.documents = null;
     this.api.get<DocumentData[]>('/documents').subscribe(
-      documentData => this.documents = documentData.data
+      documentData => this.documents = documentData.data,
+      () => this.error = true
     );
   }
 
@@ -72,6 +81,29 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public getDownloadUrl(document: DocumentData): string {
     return `/api/v2/documents/${document.name}?token=${this.jwt}`;
+  }
+
+  public async deleteDocument(document: DocumentData): Promise<void> {
+    const confirm = await this.confirm.confirm({
+      title: 'Löschen bestätigen',
+      description: `Sind Sie sicher, dass sie die Datei ${document.name} löschen möchten? Dies kann nicht rückgängig gemacht werden.`,
+      confirmText: 'Löschen',
+      confirmButtonType: 'danger'
+    });
+    if (!confirm) {
+      return;
+    }
+    this.loading.showLoading();
+    this.api.delete(`/documents/${document.name}`).subscribe(
+      () => {
+        this.loadData();
+        this.loading.hideLoading();
+      },
+      () => {
+        this.notifications.savingFailed();
+        this.loading.hideLoading();
+      }
+    );
   }
 
 }

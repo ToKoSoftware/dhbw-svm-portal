@@ -15,9 +15,7 @@
             </span>
           </div>
           <div class="ml-4 flex-shrink-0">
-            <a [href]="getDownloadUrl(doc)" target="_blank">
-              <app-button icon="trash" size="small" type="link-danger"></app-button>
-            </a>
+            <app-button (click)="deleteDocument(doc)" icon="trash" size="small" type="link-danger"></app-button>
             <a [href]="getDownloadUrl(doc)" target="_blank">
               <app-button icon="download-cloud" size="small" type="link" label="Download"></app-button>
             </a>
@@ -25,8 +23,14 @@
         </li>
       </ul>
     </app-titled-content>
-
-    <app-loading *ngIf="!documents"></app-loading>
+    <app-zero-data heading="Noch keine Dokumente vorhanden" *ngIf="documents && !documents.length"></app-zero-data>
+    <app-zero-data
+                  image="disabled"
+                  heading="Dokumente deaktiviert oder nicht konfiguriert"
+                  description="Der Dokumenten-Server ist nicht konfiguriert oder hat einen Fehler-Code gesendet. Bitte wenden Sie sich an den Administrator Ihres Vereins."
+                   *ngIf="error">
+    </app-zero-data>
+    <app-loading *ngIf="!documents && !error"></app-loading>
   </app-container>
 </app-scroll>
 <ng-template #upload>
