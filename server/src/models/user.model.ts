@@ -105,6 +105,8 @@ export class User extends Model {
     city: string;
     @Column
     is_active: boolean;
+    @Column
+    last_login: Date;
     @ForeignKey(() => Organization)
     @Column
     org_id: string;
