@@ -34,7 +34,7 @@ export async function uploadDocument(req: Request, res: Response): Promise<Respo
         // needs to be improved in the future
         const allowedFileExtensions = ['csv', 'xls', 'xlsx', 'png', 'jpg', 'pdf', 'doc', 'docx', 'svg', 'zip', 'svg'];
         if (!allowedFileExtensions.includes(fileExtension.toLowerCase())) {
-            throw 'Wrong File Extension, expected csv - got ' + fileExtension;
+            throw 'Wrong File Extension, expected one of the following: csv, xls, xlsx, png, jpg, pdf, doc, docx, svg, zip, svg. Got ' + fileExtension;
         }
 
         // enforce max size of 20mb per file
