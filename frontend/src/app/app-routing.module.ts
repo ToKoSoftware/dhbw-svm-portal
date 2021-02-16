@@ -49,6 +49,12 @@ const routes: Routes = [
     loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
   },
   {
+    path: 'documents',
+    canActivate: [IsLoggedInGuard],
+    canActivateChild: [IsLoggedInGuard],
+    loadChildren: () => import('./documents/documents.module').then(m => m.DocumentsModule)
+  },
+  {
     path: '**',
     component: Error404Component
   },

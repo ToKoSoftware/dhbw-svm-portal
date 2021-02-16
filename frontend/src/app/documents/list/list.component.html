@@ -1,0 +1,38 @@
+<app-scroll>
+  <app-container [center]="true">
+    <app-titled-content
+    label="Dokumente"
+    description="Diese Dateien werden Ihnen vom Verein zur Verfügung gestellt">
+      <ul class="divide-y divide-gray-200">
+        <li class="pl-3 pr-4 py-3 flex items-center justify-between text-sm"
+            *ngFor="let doc of documents">
+          <div class="w-0 flex-1 flex items-center">
+            <div class="flex-shrink-0 h-5 w-5 mr-4 text-gray-400">
+              <feather-icon [style.width]="'1.2rem'" [style.height]="'1.2rem'" name="file"></feather-icon>
+            </div>
+            <span class="ml-2 flex-1 w-0 truncate">
+                {{doc.name}}
+            </span>
+          </div>
+          <div class="ml-4 flex-shrink-0">
+            <app-button (click)="deleteDocument(doc)" icon="trash" size="small" type="link-danger"></app-button>
+            <a [href]="getDownloadUrl(doc)" target="_blank">
+              <app-button icon="download-cloud" size="small" type="link" label="Download"></app-button>
+            </a>
+          </div>
+        </li>
+      </ul>
+    </app-titled-content>
+    <app-zero-data heading="Noch keine Dokumente vorhanden" *ngIf="documents && !documents.length"></app-zero-data>
+    <app-zero-data
+                  image="disabled"
+                  heading="Dokumente deaktiviert oder nicht konfiguriert"
+                  description="Der Dokumenten-Server ist nicht konfiguriert oder hat einen Fehler-Code gesendet. Bitte wenden Sie sich an den Administrator Ihres Vereins."
+                   *ngIf="error">
+    </app-zero-data>
+    <app-loading *ngIf="!documents && !error"></app-loading>
+  </app-container>
+</app-scroll>
+<ng-template #upload>
+  <app-upload></app-upload>
+</ng-template>
