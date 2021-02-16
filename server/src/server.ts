@@ -60,6 +60,13 @@ import { getOrganizationByAccessCode } from './api/v2/organizations/get-organiza
 import { createDirectDebitMandate } from './api/v2/direct-debit-mandate/create-direct-debit-mandate';
 import { getDirectDebitMandate, getDirectDebitMandates } from './api/v2/direct-debit-mandate/get-direct-debit-mandate';
 import { deleteDirectDebitMandate } from './api/v2/direct-debit-mandate/delete-direct-debit-mandate';
+import { exportEventRegistrations } from './api/v1/admin/export-event-registrations';
+import { exportDirectDebitMandates } from './api/v1/admin/export-direct-debit-mandates';
+import { deleteDocument, downloadDocument, getDocuments, uploadDocument } from './api/v2/documents/get-documents';
+import { getFTPConfiguration, updateFTPConfiguration } from './api/v2/documents/configure';
+import { getPublicEvents } from './api/v2/events/get-public-events';
+import { registerForPublicEvents } from './api/v2/event-registrations/register-for-public-event';
+import { getEventLogs } from './api/v2/event-logs/get-event-logs';
 import { customError, errorHandler } from './middleware/error-handler';
 
 export default function startServer(): void {
@@ -187,6 +194,8 @@ export default function startServer(): void {
     app.get('/api/v2/access/:code', (req, res) => getOrganizationByAccessCode(req, res));
     app.put('/api/v2/organizations/:id', userIsAuthorized, userIsAdmin, (req, res) => updateOrganization(req, res));
     app.delete('/api/v2/organizations', userIsAuthorized, userIsAdmin, (req, res) => deleteOrganization(req, res));
+    app.get('/api/v2/organizations/:id/public-events', (req, res) => getPublicEvents(req, res));
+    app.get('/api/v2/organizations/:id/public-events/:eventId/register', (req, res) => registerForPublicEvents(req, res));
 
     /**
      * Direct Debit Mandate
@@ -195,12 +204,25 @@ export default function startServer(): void {
     app.post('/api/v2/direct-debit-mandates', userIsAuthorized, (req, res) => createDirectDebitMandate(req, res));
 
     /**
+     * Documents
+     */
+    app.get('/api/v2/documents', userIsAuthorized, (req, res) => getDocuments(req, res));
+    app.get('/api/v2/documents/:fileName', userIsAuthorizedByParam, (req, res) => downloadDocument(req, res));
+    app.post('/api/v2/documents', userIsAuthorized, userIsAdmin, (req, res) => uploadDocument(req, res));
+    app.delete('/api/v2/documents/:fileName', userIsAuthorized, userIsAdmin, (req, res) => deleteDocument(req, res));
+    app.get('/api/v2/ftp/configuration', userIsAuthorized, userIsAdmin, (req, res) => getFTPConfiguration(req, res));
+    app.put('/api/v2/ftp/configuration', userIsAuthorized, userIsAdmin, (req, res) => updateFTPConfiguration(req, res));
+
+    /**
      * Admin
      */
     app.get('/api/v1/admin/stats', userIsAuthorized, userIsAdmin, (req, res) => getStats(req, res));
     app.get('/api/v1/admin/stats/monthly', userIsAuthorized, userIsAdmin, (req, res) => getMonthlyStats(req, res));
+    app.get('/api/v2/admin/event-logs', userIsAuthorized, userIsAdmin, (req, res) => getEventLogs(req, res));
     //following two routes only via frontend/browser functionable with download
     app.get('/api/v1/admin/export/users', userIsAuthorizedByParam, userIsAdmin, (req, res) => exportUsers(req, res));
+    app.get('/api/v1/admin/export/events/:id/registrations', userIsAuthorizedByParam, userIsAdmin, (req, res) => exportEventRegistrations (req, res));
+    app.get('/api/v1/admin/export/direct-debit-mandates', userIsAuthorizedByParam, userIsAdmin, (req, res) => exportDirectDebitMandates (req, res));
 
 
     // handle every other route with index.html, which loads Angular

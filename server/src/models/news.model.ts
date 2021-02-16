@@ -1,7 +1,8 @@
-import {BeforeCreate, BelongsTo, Column, DefaultScope, ForeignKey, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
-import {v4 as uuidv4} from 'uuid';
-import {RawNewsData} from '../interfaces/news.interface';
+import { BeforeCreate, BelongsTo, Column, DefaultScope, ForeignKey, NotEmpty, PrimaryKey, Scopes, Table } from 'sequelize-typescript';
+import { v4 as uuidv4 } from 'uuid';
+import { RawNewsData } from '../interfaces/news.interface';
 import { currentOrg } from './current-org.scope';
+import { LoggedModel } from './logged.model';
 import { Organization } from './organization.model';
 import { User } from './user.model';
 
@@ -28,11 +29,12 @@ import { User } from './user.model';
         }
     },
     onlyCurrentOrg: (org_id: string) => currentOrg(org_id)
-})) 
+}))
 
 @Table
-export class News extends Model {
-    
+export class News extends LoggedModel {
+
+    public static modelName = 'News';
     @PrimaryKey
     @Column
     id: string;

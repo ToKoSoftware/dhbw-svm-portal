@@ -1,12 +1,13 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable, ReplaySubject} from 'rxjs';
 import {ApiResponse, ApiService} from '../api/api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FileUploadService {
+  public uploadEvent$: ReplaySubject<boolean> = new ReplaySubject();
 
   constructor(
     private readonly http: HttpClient) {

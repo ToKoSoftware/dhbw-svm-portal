@@ -21,6 +21,7 @@ export interface UserDataSnapshot {
     post_code: string;
     city: string;
     is_active?: boolean;
+    last_login?: Date;
 }
 
 export interface RawUserData extends UserDataSnapshot {

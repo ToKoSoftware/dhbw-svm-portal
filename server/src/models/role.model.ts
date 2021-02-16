@@ -1,4 +1,4 @@
-import { BeforeCreate, Model, Table, Column, ForeignKey, BelongsTo, HasOne, HasMany, BelongsToMany, PrimaryKey, NotEmpty, Scopes, DefaultScope } from 'sequelize-typescript';
+import { BeforeCreate, Table, Column, ForeignKey, BelongsTo, HasOne, HasMany, BelongsToMany, PrimaryKey, NotEmpty, Scopes, DefaultScope } from 'sequelize-typescript';
 import { RawRoleData } from '../interfaces/role.interface';
 import { currentOrg } from './current-org.scope';
 import { Organization } from './organization.model';
@@ -6,6 +6,7 @@ import { RoleAssignment } from './role-assignment.model';
 import { Team } from './team.model';
 import { User } from './user.model';
 import { v4 as uuidv4 } from 'uuid';
+import { LoggedModel } from './logged.model';
 
 @DefaultScope(() => ({
     required: false,
@@ -24,8 +25,9 @@ import { v4 as uuidv4 } from 'uuid';
 }))
 
 @Table
-export class Role extends Model {
+export class Role extends LoggedModel {
 
+    public static modelName = 'Role';
     @PrimaryKey
     @Column
     id: string;

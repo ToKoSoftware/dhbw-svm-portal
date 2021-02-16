@@ -3,13 +3,14 @@ import { checkKeysAreNotEmptyOrNotSet } from '../../../functions/check-inputs.fu
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { RawEventData } from '../../../interfaces/event.interface';
 import { Event } from '../../../models/event.model';
+import { Vars } from '../../../vars';
 
 export async function updateEvent(req: Request, res: Response): Promise<Response> {
     let success = true;
     const incomingData: RawEventData = req.body;
     const eventId = req.params.id;
 
-    const eventData: Event | null = await Event.findByPk(eventId)
+    const eventData: Event | null = await Event.scope({method: ['onlyCurrentOrg', Vars.currentOrganization.id]}).findByPk(eventId)
         .catch(() => {
             success = false;
             return null;

@@ -1,11 +1,13 @@
-import {AllowNull, BeforeCreate, BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, IsDate, IsInt, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
-import {v4 as uuidv4} from 'uuid';
-import {RawEventData} from '../interfaces/event.interface';
+import { AllowNull, BeforeCreate, BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, IsDate, IsInt, NotEmpty, PrimaryKey, Scopes, Table } from 'sequelize-typescript';
+import { v4 as uuidv4 } from 'uuid';
+import { RawEventData } from '../interfaces/event.interface';
 import { EventRegistration } from './event-registration.model';
 import { Organization } from './organization.model';
 import { User } from './user.model';
-import {Op} from 'sequelize';
+import { Op } from 'sequelize';
 import { currentOrg } from './current-org.scope';
+import { Team } from './team.model';
+import { LoggedModel } from './logged.model';
 
 @DefaultScope(() => ({
     required: false,
@@ -16,7 +18,7 @@ import { currentOrg } from './current-org.scope';
 }))
 @Scopes(() => ({
     full: {
-        include: [Organization, {model: User, as: 'author'}, {model: User, as: 'registered_users'}]
+        include: [Organization, { model: User, as: 'author' }, { model: User, as: 'registered_users' }]
     },
     active: {
         required: false,
@@ -56,12 +58,35 @@ import { currentOrg } from './current-org.scope';
             price: null
         }
     },
-    onlyCurrentOrg: (org_id: string) => currentOrg(org_id)
-})) 
+    onlyCurrentOrg: (org_id: string) => currentOrg(org_id),
+    onlyAllowedTeam: (allowed_team_id: string, public_team_id: string) => ({
+        required: false,
+        where: {
+            [Op.or]: [
+                {
+                    allowed_team_id: allowed_team_id
+                },
+                {
+                    allowed_team_id: public_team_id
+                },
+                {
+                    allowed_team_id: 'public'
+                }
+            ]
+        }
+    }),
+    public: {
+        required: false,
+        where: {
+            allowed_team_id: 'public'
+        }
+    }
+}))
 
 @Table
-export class Event extends Model {
+export class Event extends LoggedModel {
 
+    public static modelName = 'Event';
     @PrimaryKey
     @Column
     id: string;
@@ -90,6 +115,9 @@ export class Event extends Model {
     @ForeignKey(() => Organization)
     @Column
     org_id: string;
+    @ForeignKey(() => Team)
+    @Column
+    allowed_team_id: string;
     @Column
     is_active: boolean;
 
@@ -97,8 +125,10 @@ export class Event extends Model {
     organization: Organization;
     @BelongsTo(() => User)
     author: User;
+    @BelongsTo(() => Team)
+    allowed_team: Team;
     @BelongsToMany(() => User, () => EventRegistration)
-    registered_users: Array<User & {event_registrations: EventRegistration}>;
+    registered_users: Array<User & { event_registrations: EventRegistration }>;
 
     @BeforeCreate
     static addUuid(instance: Event): string {
@@ -113,6 +143,7 @@ export class Event extends Model {
             'end_date',
             'is_active',
             'author_id',
+            'allowed_team_id',
             'org_id'
         ];
     }

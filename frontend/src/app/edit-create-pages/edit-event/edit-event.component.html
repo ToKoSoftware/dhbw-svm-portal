@@ -10,6 +10,7 @@
         label="Titel">
       </app-input>
       <app-markdown-input
+        required="true"
         label="Beschreibung"
         formControlName="description"
         description="Die Beschreibung kann genutzt werden, um z.B. den Ort Ihrer Veranstaltung festzulegen.">
@@ -40,16 +41,23 @@
         description="Sollte die Veranstaltung keine Teilnehmerbegrenzung haben, so kann dieses Feld leergelassen werden."
         label="Maximale Teilnehmerzahl">
       </app-input>
+      <app-select
+        required="true"
+        label="Teilnehmer-Team wählen"
+        formControlName="allowed_team_id"
+        description="Benutzer dieses Teams dürfen dieses Event sehen und sich anmelden."
+        [items]="teamSelectData">
+      </app-select>
       <small class="text-gray-500">Technische ID: {{current?.id}}</small>
       <div class="flex justify-end w-full">
         <app-button
           formButtonType="submit"
+          icon="save"
           label="Speichern">
         </app-button>
       </div>
     </form>
   </app-titled-content>
 </app-container>
-
 
 

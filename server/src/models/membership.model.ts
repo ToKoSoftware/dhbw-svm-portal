@@ -1,6 +1,7 @@
-import {BelongsTo, Column, ForeignKey, Model, PrimaryKey, Scopes, Table, BeforeCreate} from 'sequelize-typescript';
-import {v4 as uuidv4} from 'uuid';
+import { BelongsTo, Column, ForeignKey, PrimaryKey, Scopes, Table, BeforeCreate } from 'sequelize-typescript';
+import { v4 as uuidv4 } from 'uuid';
 import { RawMembershipData } from '../interfaces/membership.interface';
+import { LoggedModel } from './logged.model';
 import { Team } from './team.model';
 import { User } from './user.model';
 
@@ -12,8 +13,9 @@ import { User } from './user.model';
 }))
 
 @Table
-export class Membership extends Model {
+export class Membership extends LoggedModel {
 
+    public static modelName = 'Membership';
     @PrimaryKey
     @Column
     id: string;

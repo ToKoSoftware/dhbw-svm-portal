@@ -46,6 +46,7 @@
     "@types/temp-dir": "^2.0.2",
     "@types/uuid": "^8.3.0",
     "@types/validator": "^13.1.0",
+    "basic-ftp": "^4.6.3",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",

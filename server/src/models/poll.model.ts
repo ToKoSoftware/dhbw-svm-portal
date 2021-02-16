@@ -1,12 +1,13 @@
-import {BeforeCreate, BelongsTo, Column, DefaultScope, ForeignKey, HasMany, IsDate, Model, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
-import {v4 as uuidv4} from 'uuid';
+import { BeforeCreate, BelongsTo, Column, DefaultScope, ForeignKey, HasMany, IsDate, NotEmpty, PrimaryKey, Scopes, Table } from 'sequelize-typescript';
+import { v4 as uuidv4 } from 'uuid';
 import { RawPollData } from '../interfaces/poll.interface';
 import { Organization } from './organization.model';
 import { PollAnswer } from './poll-answer.model';
 import { Team } from './team.model';
 import { User } from './user.model';
-import {Op} from 'sequelize';
+import { Op } from 'sequelize';
 import { currentOrg } from './current-org.scope';
+import { LoggedModel } from './logged.model';
 
 @DefaultScope(() => ({
     required: false,
@@ -51,19 +52,27 @@ import { currentOrg } from './current-org.scope';
         required: false,
         order: [['closes_at', 'ASC']]
     },
-    onlyAnswerTeam: (teamId: string) => ({
+    onlyAnswerTeam: (teamId: string, publicTeamId: string) => ({
         required: false,
         where: {
-            answer_team_id: teamId
+            [Op.or]: [
+                {
+                    answer_team_id: teamId
+                },
+                {
+                    answer_team_id: publicTeamId
+                }
+            ]
         }
     }),
     onlyCurrentOrg: (org_id: string) => currentOrg(org_id)
-})) 
+}))
 
 
 @Table
-export class Poll extends Model {
+export class Poll extends LoggedModel {
 
+    public static modelName = 'Poll';
     @PrimaryKey
     @Column
     id: string;

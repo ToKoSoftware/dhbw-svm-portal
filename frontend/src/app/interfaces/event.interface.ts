@@ -8,6 +8,7 @@ export interface EventDataSnapshot{
   start_date: string;
   end_date: string;
   max_participants: number | null;
+  allowed_team_id: string;
   is_active?: boolean;
 }
 
