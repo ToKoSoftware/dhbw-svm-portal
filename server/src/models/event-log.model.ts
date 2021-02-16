@@ -6,7 +6,8 @@ import { User } from './user.model';
 
 @DefaultScope(() => ({
     required: false,
-    include: [User, Organization]
+    include: [User],
+    order: [['createdAt', 'DESC']]
 }))
 
 @Table
