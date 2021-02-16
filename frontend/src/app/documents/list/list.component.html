@@ -12,9 +12,12 @@
             </div>
             <span class="ml-2 flex-1 w-0 truncate">
                 {{doc.name}}
-              </span>
+            </span>
           </div>
           <div class="ml-4 flex-shrink-0">
+            <a [href]="getDownloadUrl(doc)" target="_blank">
+              <app-button icon="trash" size="small" type="link-danger"></app-button>
+            </a>
             <a [href]="getDownloadUrl(doc)" target="_blank">
               <app-button icon="download-cloud" size="small" type="link" label="Download"></app-button>
             </a>

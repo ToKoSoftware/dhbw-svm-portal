@@ -6,7 +6,7 @@ import {Router} from '@angular/router';
   templateUrl: './button.component.html'
 })
 export class ButtonComponent {
-  @Input() label: string;
+  @Input() label: string = '';
   @Input() route: string | null = null;
   @Input() icon: string | null = null;
   @Input() type: ButtonType = 'info';
@@ -23,5 +23,5 @@ export class ButtonComponent {
   }
 }
 
-export type ButtonType = 'blank' | 'info' | 'danger' | 'transparent'  | 'link';
+export type ButtonType = 'blank' | 'info' | 'danger' | 'transparent'  | 'link' | 'link-danger';
 export type ButtonSize = 'normal' | 'small' | 'full';
