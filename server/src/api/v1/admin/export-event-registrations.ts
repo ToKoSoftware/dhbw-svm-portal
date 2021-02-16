@@ -42,8 +42,8 @@ export async function exportEventRegistrations(req: Request, res: Response): Pro
         return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
     }
 
-    if (eventRegistration === []) {
-        return res.status(404).send(wrapResponse(false, {error: 'No user found'}));
+    if (eventRegistration.length === 0) {
+        return res.status(404).send(wrapResponse(false, {error: 'No event-registration found'}));
     }
 
     const csvData = convertObjectArrayToCsv(eventRegistration);
