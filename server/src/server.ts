@@ -60,7 +60,7 @@ import { getOrganizationByAccessCode } from './api/v2/organizations/get-organiza
 import { createDirectDebitMandate } from './api/v2/direct-debit-mandate/create-direct-debit-mandate';
 import { getDirectDebitMandate, getDirectDebitMandates } from './api/v2/direct-debit-mandate/get-direct-debit-mandate';
 import { deleteDirectDebitMandate } from './api/v2/direct-debit-mandate/delete-direct-debit-mandate';
-import { errorHandler } from './middleware/error-handler';
+import { errorHandler } from './middleware/';
 
 export default function startServer(): void {
 
