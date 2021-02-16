@@ -14,7 +14,6 @@ export class SlideOverService implements OnDestroy {
   private routerSubscription: Subscription | null = null;
 
   constructor(private router: Router) {
-    this.showSlideOver$.next(true);
     this.routerSubscription = this.router.events.subscribe(val => {
       this.close();
     });
