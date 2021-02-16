@@ -17,9 +17,6 @@ export class OverviewComponent implements OnInit, OnDestroy {
   public sidebarPages = adminPages;
   public editOrgForm: FormGroup;
   private currentOrgSubscription: Subscription;
-  @ViewChild('advanced', {static: true}) advanced: TemplateRef<unknown>;
-  @ViewChild('directDebitMandate', {static: true}) directDebitMandate: TemplateRef<unknown>;
-  @ViewChild('privacyPolicy', {static: true}) privacyPolicy: TemplateRef<unknown>;
 
   constructor(
     public readonly organizations: OrganizationsService,
@@ -32,13 +29,6 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.titleBarService.buttons$.next([{
-      title: 'Entwickler',
-      icon: 'code',
-      function: () => {
-        this.slideOver.showSlideOver('', this.advanced);
-      }
-    }]);
     this.loading.showLoading();
     this.editOrgForm = this.formBuilder.group(
       {
@@ -73,7 +63,6 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.currentOrgSubscription.unsubscribe();
-    this.titleBarService.buttons$.next([]);
   }
 
 

@@ -23,6 +23,8 @@ import {MarkdownToHtmlModule} from 'markdown-to-html-pipe';
 import {TruncatePipe} from '../pipes/truncate.pipe';
 import { DirectDebitMandatesComponent } from './direct-debit-mandates/direct-debit-mandates.component';
 import { DocumentsComponent } from './documents/documents.component';
+import { PrivacyComponent } from './privacy/privacy.component';
+import { Oauth2Component } from './oauth2/oauth2.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,9 @@ import { DocumentsComponent } from './documents/documents.component';
     PollAnswerDetailComponent,
     TruncatePipe,
     DirectDebitMandatesComponent,
-    DocumentsComponent
+    DocumentsComponent,
+    PrivacyComponent,
+    Oauth2Component
   ],
   imports: [
     adminRoutes,

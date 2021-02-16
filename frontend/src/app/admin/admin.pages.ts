@@ -17,6 +17,10 @@ export const adminPages: SidebarPageGroup[] = [
         url: '/my-team/stats',
         matchFull: true
       },
+    ]
+  }, {
+    title: 'Personen & Sicherheit',
+    pages: [
       {
         title: 'Benutzer',
         icon: 'user',
@@ -31,6 +35,16 @@ export const adminPages: SidebarPageGroup[] = [
         title: 'Rollen',
         icon: 'lock',
         url: '/my-team/roles',
+      },
+      {
+        title: 'Datenschutz',
+        icon: 'eye-off',
+        url: '/my-team/privacy',
+      },
+      {
+        title: 'Single-Sign-On',
+        icon: 'shield',
+        url: '/my-team/oauth2',
       },
     ]
   }, {
@@ -66,15 +80,5 @@ export const adminPages: SidebarPageGroup[] = [
         url: '/my-team/direct-debit-mandates',
       },
     ]
-  }
-];
-
-export const adminBreadcrumb: UiBreadcrumb[] = [
-  {
-    title: 'Home',
-    routerLink: '/'
-  }, {
-    title: 'my-team',
-    routerLink: '/my-team'
   }
 ];

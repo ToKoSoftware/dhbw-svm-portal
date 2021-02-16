@@ -6,9 +6,9 @@ import {
   DownloadCloud, Map, Trash, Key, Save,
   MousePointer, AlertCircle, File, LogOut,
   LogIn, UserPlus, Tool, Activity, Folder,
-  Calendar, UserCheck, Info, Lock, Edit,
+  Calendar, UserCheck, Info, Lock, Edit, EyeOff,
   X, PieChart, Plus, ChevronRight, ChevronLeft, Minus,
-  Check, Code, Shuffle, Copy, CreditCard
+  Check, Code, Shuffle, Copy, CreditCard, Shield
 } from 'angular-feather/icons';
 import {CommonModule} from '@angular/common';
 
@@ -18,9 +18,9 @@ const icons = {
   DownloadCloud, Map, Trash, Key, Save,
   MousePointer, AlertCircle, File, LogOut,
   LogIn, UserPlus, Tool, Activity, Folder,
-  Calendar, UserCheck, Info, Lock, Edit,
+  Calendar, UserCheck, Info, Lock, Edit, EyeOff,
   X, PieChart, Plus, ChevronRight, ChevronLeft, Minus,
-  Check, Code, Shuffle, Copy, CreditCard
+  Check, Code, Shuffle, Copy, CreditCard, Shield
 };
 
 @NgModule({

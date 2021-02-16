@@ -10,6 +10,8 @@ import {NewsComponent} from './news/news.component';
 import {PollAnswerDetailComponent} from './polls/poll-answer-detail/poll-answer-detail.component';
 import {DirectDebitMandatesComponent} from './direct-debit-mandates/direct-debit-mandates.component';
 import {DocumentsComponent} from './documents/documents.component';
+import {Oauth2Component} from './oauth2/oauth2.component';
+import {PrivacyComponent} from './privacy/privacy.component';
 
 export const adminRoutes = RouterModule.forChild([
   {path: '', pathMatch: 'full', component: OverviewComponent},
@@ -27,4 +29,6 @@ export const adminRoutes = RouterModule.forChild([
   {path: 'roles', component: RolesComponent},
   {path: 'direct-debit-mandates', component: DirectDebitMandatesComponent},
   {path: 'documents', component: DocumentsComponent},
+  {path: 'oauth2', component: Oauth2Component},
+  {path: 'privacy', component: PrivacyComponent},
 ]);
