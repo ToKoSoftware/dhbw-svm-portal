@@ -119,7 +119,7 @@ export default function startServer(): void {
     app.post('/api/v2/teams/:id/membership', userIsAuthorized, (req, res) => createMembership(req, res));
     app.delete('/api/v2/teams/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteTeam(req, res));
     app.delete('/api/v2/teams/:id/membership', userIsAuthorized, (req, res) => deleteMembership(req, res));
-    app.put('/api/v2/teams/:id', userIsAuthorized, userIsAdmin, (req, res) => updateTeam(req, res));
+    app.put('/api/v2/teams/:id', userIsAuthorized, (req, res) => updateTeam(req, res));
 
     /**
      * News
