@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
 import { checkKeysAreNotEmptyOrNotSet } from '../../../functions/check-inputs.func';
+import { getMaintainedTeamIdsOfCurrentUser } from '../../../functions/get-maintained-team-ids-of-current-user.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { RawPollData } from '../../../interfaces/poll.interface';
 import { Poll } from '../../../models/poll.model';
+import { Vars } from '../../../vars';
 
 export async function updatePoll(req: Request, res: Response): Promise<Response> {
     let success = true;
@@ -25,11 +27,17 @@ export async function updatePoll(req: Request, res: Response): Promise<Response>
     delete incomingData.author_id;
     delete incomingData.org_id;
     delete incomingData.id;
-    
+
     const requiredFields = Poll.requiredFields();
     if (!checkKeysAreNotEmptyOrNotSet(incomingData, requiredFields)) {
         return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty' }));
     }
+
+    const maintainedTeamIds = await getMaintainedTeamIdsOfCurrentUser();
+    if (!maintainedTeamIds.find(id => id == pollData.answer_team_id) && !Vars.currentUserIsAdmin) {
+        return res.status(403).send(wrapResponse(false, { error: 'You are not allowed to update a Poll for a team you are not maintainer of.' }));
+    }
+
 
     pollData.update(incomingData)
         .catch(() => {
