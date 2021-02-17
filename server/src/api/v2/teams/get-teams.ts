@@ -58,7 +58,18 @@ export async function getTeam(req: Request, res: Response): Promise<Response> {
 
 export async function getTeams(req: Request, res: Response): Promise<Response> {
     let success = true;
-    const data = await Team.scope(['full', { method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, 'ordered']).findAll()
+    if (!Vars.currentUserIsAdmin && Vars.currentUser.teams.length === 0) {
+        return res.send(wrapResponse(true, []));
+    }
+    const query = Vars.currentUserIsAdmin 
+        ? {} 
+        : {
+            where: {
+                id: Vars.currentUser.teams.map(t => t.id)
+            }
+        };
+
+    const data = await Team.scope(['full', { method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, 'ordered']).findAll(query)
         .catch(() => {
             success = false;
             return null;
