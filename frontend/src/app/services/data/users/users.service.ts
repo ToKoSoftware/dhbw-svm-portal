@@ -11,7 +11,7 @@ export class UsersService extends DataService<UserData> implements DataServiceFu
 
   reloadData() {
     this.data$.next(null);
-    if (this.login.isLoggedIn$) {
+    if (this.login.isLoggedIn$.value) {
       this.api.get<UserData[]>(['/users', 1])
         .subscribe(
           data => this.data$.next(data.data),
