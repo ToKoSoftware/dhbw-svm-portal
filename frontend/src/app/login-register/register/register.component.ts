@@ -132,7 +132,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   private login(createData: CreateUserData): void {
-    console.log(createData);
     this.api.post<string>(['/login', 1], {
       email: createData.email,
       password: createData.password,
@@ -213,7 +212,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
     const valid = requiredFieldsForNextStep.every(
       // remove fields that are displayed in next step
       field => {
-        console.log(currentlyValidFields.includes(field) || ['email', 'password'].includes(field), field);
         return currentlyValidFields.includes(field) || ['email', 'password'].includes(field);
       });
     if (valid) {
