@@ -38,7 +38,7 @@ export class CreateOrgComponent implements OnInit {
     this.api.post<OrganizationData>('/organizations', this.form.value).subscribe(
       data => {
         this.loading.hideLoading();
-        this.router.navigateByUrl('/login/register?org=' + data.data.id);
+        this.router.navigateByUrl('/login/register?code=' + this.form.value.access_code);
       }, error => {
         this.loading.hideLoading();
         this.error = true;

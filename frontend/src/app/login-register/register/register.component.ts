@@ -116,8 +116,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
       accepted_privacy_policy: true
     };
     this.users.create(data as any).subscribe(
-      (data) => {
-        setTimeout(this.login, 2000);
+      () => {
+        this.login(data);
       }, error => {
         this.loading.hideLoading();
         this.confirm.confirm({
@@ -131,11 +131,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
     );
   }
 
-  private login(): void {
-    this.loading.showLoading();
+  private login(createData: CreateUserData): void {
+    console.log(createData);
     this.api.post<string>(['/login', 1], {
-      email: this.createUserData.email,
-      password: this.createUserData.password,
+      email: createData.email,
+      password: createData.password,
     }).subscribe(
       data => {
         this.loginService.login(data.data);
