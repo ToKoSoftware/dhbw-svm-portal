@@ -41,7 +41,18 @@ export async function getRole(req: Request, res: Response): Promise<Response> {
 
 export async function getRoles(req: Request, res: Response): Promise<Response> {
     let success = true;
-    const data = await Role.scope(['full', {method: ['onlyCurrentOrg', Vars.currentOrganization.id]}, 'ordered']).findAll()
+    if (!Vars.currentUserIsAdmin && Vars.currentUser.assigned_roles.length === 0) {
+        return res.send(wrapResponse(true, []));
+    }
+    const query = Vars.currentUserIsAdmin 
+        ? {} 
+        : {
+            where: {
+                id: Vars.currentUser.assigned_roles.map(r => r.id)
+            }
+        };
+
+    const data = await Role.scope(['full', {method: ['onlyCurrentOrg', Vars.currentOrganization.id]}, 'ordered']).findAll(query)
         .catch(() => {
             success = false;
             return null;
