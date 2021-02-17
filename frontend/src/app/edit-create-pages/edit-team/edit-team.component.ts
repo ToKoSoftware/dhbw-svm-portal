@@ -6,6 +6,7 @@ import {TeamData} from '../../interfaces/team.interface';
 import {TeamService} from '../../services/data/teams/team.service';
 import {RolesService} from '../../services/data/roles/roles.service';
 import {Subscription} from 'rxjs';
+import {LoginService} from '../../services/login/login.service';
 
 @Component({
   selector: 'app-edit-team',
@@ -24,6 +25,7 @@ export class EditTeamComponent implements OnInit, OnChanges {
     private readonly formBuilder: FormBuilder,
     private readonly loadingModalService: LoadingModalService,
     private readonly notificationService: NotificationService,
+    private readonly login: LoginService
   ) {
   }
 
@@ -74,6 +76,7 @@ export class EditTeamComponent implements OnInit, OnChanges {
       data => {
         this.current = data;
         this.notificationService.savedSuccessfully();
+        this.login.reloadJWT();
       },
       error => {
         this.notificationService.savingFailed(error.error.data.error);
