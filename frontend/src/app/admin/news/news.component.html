@@ -1,7 +1,5 @@
 <app-layout
-  [sidebarPages]="sidebarPages"
-  heading="Übersicht"
->
+  [sidebarPages]="sidebarPages">
   <app-container>
     <div class="overflow-hidden pt-3 cursor-pointer md:-ml-2">
       <ul class="divide-y divide-gray-200">
@@ -22,7 +20,7 @@
                   </div>
                 </div>
                 <div class="mt-4 flex-shrink-0 sm:mt-0">
-                  Bearbeiten
+                  <app-button icon="trash" label="Löschen" type="link-danger" (click)="delete($event, news)"></app-button>
                 </div>
               </div>
               <div class="ml-5 flex-shrink-0">

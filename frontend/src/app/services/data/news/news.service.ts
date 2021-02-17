@@ -26,8 +26,12 @@ export class NewsService extends DataService<NewsData> implements DataServiceFun
       }));
   }
 
-  delete(data: CreateAndUpdateData<NewsData>): boolean {
-    return false;
+  delete(data: NewsData): Observable<unknown> {
+    return this.api.delete<NewsData>(`/news/${data.id}`)
+      .pipe(map(res => {
+        this.reloadData();
+        return res;
+      }));
   }
 
   read(id: string): Observable<NewsData> {
