@@ -4,6 +4,8 @@ import {TitleBarService} from '../../services/title-bar/title-bar.service';
 import {SlideOverService} from '../../services/slide-over/slide-over.service';
 import {EventsService} from '../../services/data/events/events.service';
 import {EventData} from '../../interfaces/event.interface';
+import { ConfirmModalService } from 'src/app/services/confirm-modal/confirm-modal.service';
+import { NotificationService } from 'src/app/services/notification/notification.service';
 
 @Component({
   selector: 'app-events',
@@ -15,8 +17,10 @@ export class EventsComponent implements OnInit, OnDestroy {
   @ViewChild('create', {static: true}) create: TemplateRef<unknown>;
   @ViewChild('edit', {static: true}) edit: TemplateRef<unknown>;
 
-  constructor(public readonly data: EventsService,
+  constructor(public readonly events: EventsService,
               private readonly slideOver: SlideOverService,
+              private readonly confirm: ConfirmModalService,
+              private readonly notifications: NotificationService,
               private readonly titleBarService: TitleBarService) { }
 
   ngOnInit(): void {
@@ -38,5 +42,20 @@ export class EventsComponent implements OnInit, OnDestroy {
     this.titleBarService.buttons$.next([]);
   }
 
+  public async delete(event: Event, eventData: EventData): Promise<void> {
+    event.stopPropagation();
+    const confirm = await this.confirm.confirm({
+      title: 'Löschen bestätigen',
+      description: `Sind Sie sicher, dass sie "${eventData.title}" löschen möchten? Dies kann nicht rückgängig gemacht werden.`,
+      confirmText: 'Löschen',
+      confirmButtonType: 'danger'
+    });
+    if (!confirm){
+      return;
+    }
+    this.events.delete(eventData).subscribe(
+      () => this.notifications.savedSuccessfully()
+    );
+  }
 }
 
