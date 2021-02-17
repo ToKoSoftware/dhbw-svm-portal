@@ -29,7 +29,7 @@ export async function createEvent(req: Request, res: Response): Promise<Response
     const maintainedTeams = await Team.findAll(
         {
             where: {
-                maintainer_role_id: maintainedRoleIds
+                maintain_role_id: maintainedRoleIds
             }
         });
     const maintainedTeamIds = maintainedTeams.map(t => t.id);

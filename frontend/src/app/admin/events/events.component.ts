@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {adminPages} from '../admin.pages';
 import {TitleBarService} from '../../services/title-bar/title-bar.service';
 import {SlideOverService} from '../../services/slide-over/slide-over.service';
@@ -9,7 +9,7 @@ import {EventData} from '../../interfaces/event.interface';
   selector: 'app-events',
   templateUrl: './events.component.html'
 })
-export class EventsComponent implements OnInit {
+export class EventsComponent implements OnInit, OnDestroy {
   public sidebarPages = adminPages;
   public current: string;
   @ViewChild('create', {static: true}) create: TemplateRef<unknown>;
