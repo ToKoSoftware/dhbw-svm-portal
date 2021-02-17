@@ -5,6 +5,7 @@ import { mapEvent } from '../../../functions/map-events.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { RawEventData } from '../../../interfaces/event.interface';
 import { Event } from '../../../models/event.model';
+import { Vars } from '../../../vars';
 
 export async function createEvent(req: Request, res: Response): Promise<Response> {
     let success = true;
@@ -25,7 +26,7 @@ export async function createEvent(req: Request, res: Response): Promise<Response
     }
 
     const maintainedTeamIds = await getMaintainedTeamIdsOfCurrentUser();
-    if (!maintainedTeamIds.find(id => id == mappedIncomingData.allowed_team_id) && mappedIncomingData.allowed_team_id !== 'public') {
+    if (!maintainedTeamIds.find(id => id == mappedIncomingData.allowed_team_id) && mappedIncomingData.allowed_team_id !== 'public' && !Vars.currentUserIsAdmin) {
         return res.status(403).send(wrapResponse(false, { error: 'You are not allowed to create an Event for a team you are not maintainer of.' }));
     }
 

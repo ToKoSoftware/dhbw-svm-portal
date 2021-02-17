@@ -39,7 +39,7 @@ export async function createPoll(req: Request, res: Response): Promise<Response>
     }
 
     const maintainedTeamIds = await getMaintainedTeamIdsOfCurrentUser();
-    if (!maintainedTeamIds.find(id => id == mappedIncomingData.answer_team_id)) {
+    if (!maintainedTeamIds.find(id => id == mappedIncomingData.answer_team_id) && !Vars.currentUserIsAdmin) {
         return res.status(403).send(wrapResponse(false, { error: 'You are not allowed to create a Poll for a team you are not maintainer of.' }));
     }
 
