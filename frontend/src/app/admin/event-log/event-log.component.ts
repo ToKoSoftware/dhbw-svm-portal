@@ -51,6 +51,8 @@ export class EventLogComponent implements OnInit {
       ['Organization', 'Ihren Verein'],
       ['PolLVote', 'eine Antwort zu einer Umfrage'],
       ['RoleAssignment', 'eine Zuweisung zu einer Rolle'],
+      ['DirectDebitMandate', 'ein Lastschriftmandat'],
+      ['PollVote', 'eine Stimme zu einer Umfrage'],
       ['Membership', 'eine Zuweisung zu einem Team'],
       ['PollAnswer', 'eine Umfrageantwort'],
     ];
