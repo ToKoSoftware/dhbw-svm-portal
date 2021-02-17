@@ -3,6 +3,7 @@ import { checkKeysAreNotEmptyOrNotSet } from '../../../functions/check-inputs.fu
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { RawTeamData } from '../../../interfaces/team.interface';
 import { Team } from '../../../models/team.model';
+import { Vars } from '../../../vars';
 
 export async function updateTeam(req: Request, res: Response): Promise<Response> {
     let success = true;
@@ -19,6 +20,10 @@ export async function updateTeam(req: Request, res: Response): Promise<Response>
     }
     if (teamData === null) {
         return res.status(400).send(wrapResponse(false, { error: 'No Team with given id found' }));
+    }
+    const role_ids: string[] = Vars.currentUser.assigned_roles.map(t => t.id);
+    if (!role_ids.includes(teamData.maintain_role_id) && !Vars.currentUserIsAdmin) {
+        return res.status(401).send(wrapResponse(false, { error: 'Unauthorized! You are not maintainer of this team and not admin!' }));
     }
 
     // Org_id must not be changed
