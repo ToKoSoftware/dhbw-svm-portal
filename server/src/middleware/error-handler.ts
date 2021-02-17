@@ -5,7 +5,7 @@ import { PortalErrorData } from '../interfaces/error-handler-interface';
 
 export class customError extends Error {
     constructor(public errorEnumMessage: PortalErrors, public statusCode: number) {
-        super(/*errorEnumMessage*/);
+        super();
     }
 }
 
