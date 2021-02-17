@@ -1,4 +1,7 @@
-import { Table, Column, ForeignKey, BelongsTo, BelongsToMany, PrimaryKey, NotEmpty, DefaultScope, Scopes, BeforeCreate } from 'sequelize-typescript';
+import {
+    Table, Column, ForeignKey, BelongsTo, BelongsToMany, PrimaryKey, NotEmpty,
+    DefaultScope, Scopes, BeforeCreate
+} from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { RawPollAnswerData } from '../interfaces/poll-answer.interface';
 import { LoggedModel } from './logged.model';

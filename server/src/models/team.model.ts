@@ -1,4 +1,7 @@
-import { BeforeCreate, BelongsTo, Column, ForeignKey, HasMany, BelongsToMany, NotEmpty, PrimaryKey, Scopes, Table, DefaultScope, HasOne } from 'sequelize-typescript';
+import {
+    BeforeCreate, BelongsTo, Column, ForeignKey, HasMany, BelongsToMany, NotEmpty,
+    PrimaryKey, Scopes, Table, DefaultScope, HasOne
+} from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { Op } from 'sequelize';
 import { RawTeamData } from '../interfaces/team.interface';
@@ -13,21 +16,21 @@ import { LoggedModel } from './logged.model';
 
 @DefaultScope(() => ({
     required: false,
-    order: [['title', 'ASC']]
+    order: [ [ 'title', 'ASC' ] ]
 }))
 
 @Scopes(() => ({
     full: {
-        include: [{ model: Organization, as: 'organization' }, Role, User]
+        include: [ { model: Organization, as: 'organization' }, Role, User ]
     },
     ordered: {
         required: false,
-        order: [['title', 'ASC']]
+        order: [ [ 'title', 'ASC' ] ]
     },
     onlyOwnOrMaintainedTeams: (teamIds: string[], roleIds: string[]) => ({
         required: false,
         where: {
-            [Op.or]: [
+            [ Op.or ]: [
                 { id: teamIds },
                 { maintain_role_id: roleIds }
             ]

@@ -15,23 +15,22 @@ export async function getPoll(req: Request, res: Response): Promise<Response> {
     const pollData: Poll | null = await Poll
         .scope(
             Vars.currentUserIsAdmin
-                ? [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }]
-                : [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, { method: ['onlyAnswerTeam', Vars.currentUser.teams.map(t => t.id), Vars.currentOrganization.public_team_id] }, 'active', { method: ['notExpired', currentDate] }]
+                ? [ { method: [ 'onlyCurrentOrg', Vars.currentOrganization.id ] } ]
+                : [ { method: [ 'onlyCurrentOrg', Vars.currentOrganization.id ] }, {
+                    method: [ 'onlyAnswerTeam',
+                        Vars.currentUser.teams.map(t => t.id), Vars.currentOrganization.public_team_id ]
+                }, 'active', { method: [ 'notExpired', currentDate ] } ]
         )
         .findOne({
             where: {
                 id: req.params.id
             },
-            ...Vars.currentUserIsAdmin ? {
-                include: [Organization, User, Team, PollAnswer.scope(['full', 'active'])]
-            } : {
-                where: {
-                    answer_team_id: Vars.currentUser.teams.map(t => t.id)
-                },
-                include: [User.scope('publicData'), Team, PollAnswer.scope(['full', 'active'])]
-            }
-        })
-        .catch(() => {
+            ...Vars.currentUserIsAdmin ? { include: [ Organization, User, Team, PollAnswer.scope([ 'full', 'active' ]) ] } :
+                {
+                    where: { answer_team_id: Vars.currentUser.teams.map(t => t.id) },
+                    include: [ User.scope('publicData'), Team, PollAnswer.scope([ 'full', 'active' ]) ]
+                }
+        }).catch(() => {
             success = false;
             return null;
         });
@@ -65,13 +64,19 @@ export async function getPolls(req: Request, res: Response): Promise<Response> {
         .scope(
             Vars.currentUserIsAdmin
                 ? (showExpired == 'true'
-                    ? [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, 'ordered']
-                    : [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, { method: ['notExpired', currentDate] }, 'ordered'])
-                : [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, { method: ['onlyAnswerTeam', Vars.currentUser.teams.map(t => t.id), Vars.currentOrganization.public_team_id] }, 'active', { method: ['notExpired', currentDate] }, 'ordered']
+                    ? [ { method: [ 'onlyCurrentOrg', Vars.currentOrganization.id ] }, 'ordered' ]
+                    : [ { method: [ 'onlyCurrentOrg', Vars.currentOrganization.id ] }, {
+                        method: [ 'notExpired',
+                            currentDate ]
+                    }, 'ordered' ])
+                : [ { method: [ 'onlyCurrentOrg', Vars.currentOrganization.id ] }, {
+                    method: [ 'onlyAnswerTeam',
+                        Vars.currentUser.teams.map(t => t.id), Vars.currentOrganization.public_team_id ]
+                }, 'active', { method: [ 'notExpired', currentDate ] }, 'ordered' ]
         )
         .findAll(
             {
-                include: [Organization, User.scope('publicData'), PollAnswer.scope(['full', 'active'])]
+                include: [ Organization, User.scope('publicData'), PollAnswer.scope([ 'full', 'active' ]) ]
             })
         .catch(() => {
             success = false;

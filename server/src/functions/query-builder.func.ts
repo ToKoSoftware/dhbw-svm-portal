@@ -1,8 +1,8 @@
-import {Request} from 'express';
+import { Request } from 'express';
 import isBlank from 'is-blank';
-import {Vars} from '../vars';
-import {FindOptions} from 'sequelize';
-import {Includeable} from 'sequelize/types/lib/model';
+import { Vars } from '../vars';
+import { FindOptions } from 'sequelize';
+import { Includeable } from 'sequelize/types/lib/model';
 
 
 export function buildQuery(config: QueryBuilderConfig, req: Request): QueryBuilderData {
@@ -54,7 +54,7 @@ export function buildOrder(query: QueryBuilderData, req: Request, allowedOrders:
             return {
                 ...query,
                 order: [
-                    [o, direction]
+                    [ o, direction ]
                 ]
             };
         }
@@ -64,11 +64,11 @@ export function buildOrder(query: QueryBuilderData, req: Request, allowedOrders:
 
 export function buildOrLikeSearchQuery(query: QueryBuilderData, needle: string, allowedFields: string[] = []): QueryBuilderData {
     const search = {
-        [Vars.op.or]: allowedFields.map(
+        [ Vars.op.or ]: allowedFields.map(
             field => {
-                const a: { [name: string]: unknown } = {};
-                a[field] = {
-                    [Vars.op.iLike]: '%' + needle + '%'
+                const a: { [ name: string ]: unknown } = {};
+                a[ field ] = {
+                    [ Vars.op.iLike ]: '%' + needle + '%'
                 };
                 return a;
             }
@@ -78,12 +78,13 @@ export function buildOrLikeSearchQuery(query: QueryBuilderData, needle: string, 
     return query;
 }
 
-export function buildFilter(query: QueryBuilderData, req: Request, allowedFields: string[] = [], customResolver: customFilterResolverMap | undefined): QueryBuilderData {
-    const filter: { [name: string]: string } = {};
+export function buildFilter(query: QueryBuilderData,
+    req: Request, allowedFields: string[] = [], customResolver: customFilterResolverMap | undefined): QueryBuilderData {
+    const filter: { [ name: string ]: string } = {};
     allowedFields.forEach(field => {
         let value = '';
-        if (req.query[field] != undefined && !isBlank(req.query[field])) {
-            value = req.query[field] as string;
+        if (req.query[ field ] != undefined && !isBlank(req.query[ field ])) {
+            value = req.query[ field ] as string;
         }
         if (customResolver != undefined) {
             if (customResolver.has(field) && customResolver.get(field) != undefined) {
@@ -94,30 +95,33 @@ export function buildFilter(query: QueryBuilderData, req: Request, allowedFields
             }
         }
         if (value !== '') {
-            filter[field] = value;
+            filter[ field ] = value;
         }
     });
     query = mergeQueryBuilderField(query, filter);
     return query;
 }
 
-function mergeQueryBuilderField<T extends QueryBuilderData, K extends keyof T>(query: T, additionalFieldData: T[K], fieldName: K = 'where' as K): QueryBuilderData {
-    const currentValue = query[fieldName];
+function mergeQueryBuilderField<T extends QueryBuilderData, K extends keyof T>(query: T,
+    additionalFieldData: T[ K ], fieldName: K = 'where' as K): QueryBuilderData {
+    const currentValue = query[ fieldName ];
     if (currentValue !== undefined) {
-        if (typeof currentValue === 'object' && typeof additionalFieldData === 'object' && currentValue !== null && additionalFieldData !== undefined && additionalFieldData !== null) {
-            query[fieldName] = {...(currentValue as any), ...(additionalFieldData as any)};
+        if (typeof currentValue === 'object' && typeof additionalFieldData === 'object' &&
+            currentValue !== null && additionalFieldData !== undefined && additionalFieldData !== null) {
+            // eslint-disable-next-line
+            query[ fieldName ] = { ...(currentValue as any), ...(additionalFieldData as any) };
         } else {
-            query[fieldName] = additionalFieldData;
+            query[ fieldName ] = additionalFieldData;
         }
     } else {
         // !Object.keys(search).length is not working here, don't know why
-        query[fieldName] = additionalFieldData;
+        query[ fieldName ] = additionalFieldData;
     }
     return query;
 }
 
 export function addRelations(query: QueryBuilderData, models: Includeable): QueryBuilderData {
-    const include = {include: models};
+    const include = { include: models };
     return mergeQueryBuilderField(query, include);
 }
 
@@ -126,7 +130,7 @@ export interface QueryBuilderData extends FindOptions {
     limit?: number;
     raw?: boolean;
 }
-
+// eslint-disable-next-line
 export type customFilterValueResolver = ((field: string, req: Request, value: string) => any);
 export type customFilterResolverMap = Map<string, customFilterValueResolver>;
 
