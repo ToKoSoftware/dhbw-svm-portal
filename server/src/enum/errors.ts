@@ -1,4 +1,4 @@
-enum EErrors {
-  PERMISSION_DENIED = 'Permission denied!',
+export enum PortalErrors {
+  // eslint-disable-next-line
+  PERMISSION_DENIED = <any>'Permission denied!',
 }
-export default EErrors; 

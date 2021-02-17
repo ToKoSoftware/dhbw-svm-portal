@@ -1,6 +1,9 @@
+
 export interface PortalErrorData {
   message: string;
   status: number;
-  errorMsg?: any;
+  type: string;
+  // eslint-disable-next-line
+  stacktrace?: any;
   success: false;
 }
