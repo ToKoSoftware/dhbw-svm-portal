@@ -38,17 +38,24 @@ export class EventLogComponent implements OnInit {
   }
 
   public getTextForFunction(functionName: string): string {
-    const splitFunction = functionName.split(/(?=[A-Z])/);
+    let splitFunction = functionName.split(/(?=[A-Z])/);
+    if (splitFunction.length >= 3) {
+      splitFunction = [splitFunction[0], splitFunction.slice(1).join('')];
+    }
     const entities: Array<[string, string]> = [
       ['Team', 'ein Team'],
       ['Event', 'eine Veranstaltung'],
       ['Poll', 'eine Umfrage'],
       ['Role', 'eine Rolle'],
       ['News', 'eine Nachricht'],
-      ['Organization', 'ihren Verein'],
+      ['Organization', 'Ihren Verein'],
+      ['PolLVote', 'eine Antwort zu einer Umfrage'],
+      ['RoleAssignment', 'eine Zuweisung zu einer Rolle'],
+      ['Membership', 'eine Zuweisung zu einem Team'],
+      ['PollAnswer', 'eine Umfrageantwort'],
     ];
     const foundEntity: [string, string] | undefined = entities.find(f => f[0] === splitFunction[1]);
-    const entity: string = foundEntity?.length === 2 ? foundEntity[1] : '';
+    const entity: string = foundEntity?.length === 2 ? foundEntity[1] : splitFunction[1];
 
     switch (splitFunction[0]) {
       case 'update':

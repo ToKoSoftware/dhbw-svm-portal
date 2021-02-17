@@ -80,7 +80,7 @@ export const adminPages: SidebarPageGroup[] = [
         url: '/my-team/direct-debit-mandates',
       },
       {
-        title: 'Ereignissprotokoll',
+        title: 'Ereignisprotokoll',
         icon: 'list',
         url: '/my-team/event-log',
       },
