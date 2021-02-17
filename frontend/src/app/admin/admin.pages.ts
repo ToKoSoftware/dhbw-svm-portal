@@ -1,5 +1,4 @@
 import {SidebarPageGroup} from '../ui/sidebar/sidebar.component';
-import {UiBreadcrumb} from '../ui/ui.interface';
 
 export const adminPages: SidebarPageGroup[] = [
   {

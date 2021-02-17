@@ -1,1 +1,49 @@
-<p>overview works!</p>
+<app-layout
+  [sidebarPages]="sidebarPages"
+>
+  <app-container>
+    <div class="overflow-hidden pt-3 cursor-pointer md:-ml-2">
+      <ul class="divide-y divide-gray-200">
+        <li *ngFor="let team of currentOrgService.currentMaintainTeams$ | async">
+          <div (click)="editSlide(team)" class="block hover:bg-gray-50">
+            <div class="px-4 py-4 flex items-center sm:px-6">
+              <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
+                <div>
+                  <div class="flex font-medium text-black truncate">
+                    <p>{{team.title}}</p>
+                  </div>
+                  <div class="mt-2 flex">
+                    <div class="flex items-center text-sm text-gray-500">
+                      <p>
+                        Erstellt {{ team.createdAt | amLocal | amTimeAgo }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-4 flex-shrink-0 sm:mt-0">
+                  <app-button (click)="updateUsersSlide($event, team)"
+                              icon="user-plus"
+                              size="small"
+                              label="Mitglieder"
+                              class="pt-1 text-gray-400"></app-button>
+                </div>
+              </div>
+              <div class="ml-5 flex-shrink-0">
+                <feather-icon name="chevron-right" class="pt-1 text-gray-400"></feather-icon>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </app-container>
+  <ng-template #create>
+    <app-create-team></app-create-team>
+  </ng-template>
+  <ng-template #edit>
+    <app-edit-team [editId]="current"></app-edit-team>
+  </ng-template>
+  <ng-template #updateUsers>
+    <app-edit-team-memberships [editId]="current"></app-edit-team-memberships>
+  </ng-template>
+</app-layout>

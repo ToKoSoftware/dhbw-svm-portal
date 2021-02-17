@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, HostListener} from '@angular/core';
-import {LoginService} from "./services/login/login.service";
+import {LoginService} from './services/login/login.service';
 
 @Component({
   selector: 'app-root',
@@ -22,8 +22,12 @@ export class AppComponent implements AfterViewInit  {
   }
 
   calculateHeight(): void {
-    const bodyHeight = document.body.clientHeight;
-    const topBarHeight = document.getElementById("topBar")?.offsetHeight || 60;
-    this.height = bodyHeight - topBarHeight + 'px';
+    setTimeout(
+      () => {
+        const bodyHeight = document.body.clientHeight;
+        const topBarHeight = document.getElementById('topBar')?.offsetHeight || 60;
+        this.height = bodyHeight - topBarHeight + 'px';
+      }
+    );
   }
 }

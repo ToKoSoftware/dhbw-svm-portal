@@ -23,11 +23,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isAdminSubscription = this.login.isAdmin$.subscribe(isAdmin => {
-      this.currentOrgSubscription = this.currentOrg.currentUser$.subscribe(
-        user => {
-          if (!user) {
-            return;
-          }
+      this.currentOrgSubscription = this.currentOrg.currentMaintainTeams$.subscribe(
+        teams => {
           this.sidebarPageGroups = [{
             title: 'Portal',
             pages: [{
@@ -53,13 +50,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
               url: '/polls'
             }]
           }];
-          const maintainTeams: TeamData[] = [];
-          user.assigned_roles.forEach(role => {
-            if (role.maintained_teams.length) {
-              role.maintained_teams.forEach(team => maintainTeams.push(team));
-            }
-          });
-          if (maintainTeams.length) {
+          if (teams?.length) {
             this.sidebarPageGroups.push({
               title: 'Meine Teams',
               pages: [{

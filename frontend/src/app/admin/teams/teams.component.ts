@@ -5,7 +5,6 @@ import {TitleBarService} from '../../services/title-bar/title-bar.service';
 import {TeamService} from '../../services/data/teams/team.service';
 import {TeamData} from '../../interfaces/team.interface';
 import {SlideOverService} from '../../services/slide-over/slide-over.service';
-import {RoleData} from '../../interfaces/role.interface';
 
 @Component({
   selector: 'app-teams',
