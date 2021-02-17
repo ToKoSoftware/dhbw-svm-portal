@@ -1,7 +1,7 @@
-import { EventDataSnapshot, RawEventData } from '../interfaces/event.interface';
+import { RawEventData } from '../interfaces/event.interface';
 import { Vars } from '../vars';
 
-export function mapEvent(incomingData: EventDataSnapshot): RawEventData {
+export function mapEvent(incomingData: RawEventData): RawEventData {
     return {
         ...incomingData,
         start_date: new Date(incomingData.start_date),

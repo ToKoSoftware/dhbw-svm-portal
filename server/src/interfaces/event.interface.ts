@@ -17,7 +17,7 @@ export interface EventDataSnapshot{
 export interface RawEventData extends EventDataSnapshot{
     author_id?: string;
     org_id?: string;
-    allowed_team_id?: string | null;
+    allowed_team_id: string;
 }
 
 export interface EventData extends EventDataSnapshot{

@@ -110,7 +110,7 @@ export default function startServer(): void {
     /**
      * User
      */
-    app.get('/api/v1/users', userIsAuthorized, userIsAdmin, (req, res) => getUsers(req, res));
+    app.get('/api/v1/users', userIsAuthorized, (req, res) => getUsers(req, res));
     app.get('/api/v1/users/:id', userIsAuthorized, (req, res) => getUser(req, res));
     app.get('/api/v1/users/:id/direct-debit-mandates', userIsAuthorized, (req, res) => getDirectDebitMandate(req, res));
     app.delete('/api/v1/users/:id/direct-debit-mandates', userIsAuthorized, (req, res) => deleteDirectDebitMandate(req, res));
@@ -149,7 +149,7 @@ export default function startServer(): void {
     app.get('/api/v2/events/:event_id/eventregistrations', userIsAuthorized, userIsAdmin, (req, res) => getEventRegistrationsFromEvent(req, res));
     // Get all event registrations for one user (or own registrations as non-admin)
     app.get('/api/v2/eventregistrations', userIsAuthorized, (req, res) => getEventRegistrationsFromUser(req, res));
-    app.post('/api/v2/events', userIsAuthorized, userIsAdmin, (req, res) => createEvent(req, res));
+    app.post('/api/v2/events', userIsAuthorized, (req, res) => createEvent(req, res));
     app.post('/api/v2/events/:id/register', (req, res) => registerForEvent(req, res));
     app.delete('/api/v2/events/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteEvent(req, res));
     app.delete('/api/v2/events/:event_id/eventregistrations/:id', userIsAuthorized, (req, res) => deleteEventRegistration(req, res));
@@ -177,7 +177,7 @@ export default function startServer(): void {
     /**
      * Role
      */
-    app.get('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => getRoles(req, res)); 
+    app.get('/api/v2/roles', userIsAuthorized, (req, res) => getRoles(req, res)); 
     app.get('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => getRole(req, res));
     app.post('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => createRole(req, res));
     app.post('/api/v2/roles/:id/assignment', userIsAuthorized, userIsAdmin, (req, res) => createRoleAssignment(req, res));

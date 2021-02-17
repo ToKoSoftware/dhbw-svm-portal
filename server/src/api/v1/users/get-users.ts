@@ -48,7 +48,12 @@ export async function getUsers(req: Request, res: Response): Promise<Response> {
     query = buildQuery(queryConfig, req);
 
     let success = true;
-    const data = await User.scope(['full', { method: ['onlyCurrentOrg', Vars.currentOrganization.id] }]).findAll(query)
+    const data = await User.scope(
+        Vars.currentUserIsAdmin 
+            ? ['full', { method: ['onlyCurrentOrg', Vars.currentOrganization.id] }]
+            : [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, 'publicData']
+    )
+        .findAll()
         .catch(() => {
             success = false;
             return null;
