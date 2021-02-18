@@ -4,6 +4,6 @@ export interface PortalErrorData {
   status: number;
   type: string;
   // eslint-disable-next-line
-  stacktrace?: any;
+  stacktrace?: string[];
   success: false;
 }
