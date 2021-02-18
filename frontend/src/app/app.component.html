@@ -7,7 +7,7 @@
   <div class="h-screen flex-1 overflow-y-hidden focus:outline-none" tabindex="0">
     <div class="flex flex-col h-full">
       <app-top-bar *ngIf="session.isLoggedIn$ | async"></app-top-bar>
-      <div class="md:flex md:h-full w-full" [style.height]="height">
+      <div class="md:flex md:h-full w-full" [style.height]="(session.isLoggedIn$ | async) ? height : '100%'">
         <router-outlet></router-outlet>
       </div>
     </div>
