@@ -15,7 +15,6 @@ export class PollsComponent implements OnInit, OnDestroy {
   public sidebarPages = adminPages;
   public current: string;
   @ViewChild('pollCreate', {static: true}) pollCreate: TemplateRef<unknown>;
-  @ViewChild('pollEdit', {static: true}) pollEdit: TemplateRef<unknown>;
 
   constructor(public readonly polls: PollsService,
               private readonly slideOver: SlideOverService,
@@ -32,10 +31,6 @@ export class PollsComponent implements OnInit, OnDestroy {
         this.slideOver.showSlideOver('', this.pollCreate);
       }
     }]);
-  }
-  public edit(poll: PollData) {
-    this.current = poll.id || '';
-    this.slideOver.showSlideOver('', this.pollEdit);
   }
 
   ngOnDestroy() {

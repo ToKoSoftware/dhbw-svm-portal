@@ -15,7 +15,6 @@ export class PollsComponent implements OnInit, OnDestroy {
   public sidebarPages = teamPages;
   public current: string;
   @ViewChild('pollCreate', {static: true}) pollCreate: TemplateRef<unknown>;
-  @ViewChild('pollEdit', {static: true}) pollEdit: TemplateRef<unknown>;
 
   constructor(public readonly polls: PollsService,
               private readonly slideOver: SlideOverService,
@@ -34,17 +33,13 @@ export class PollsComponent implements OnInit, OnDestroy {
     }]);
   }
 
-  public edit(poll: PollData) {
-    this.current = poll.id || '';
-    this.slideOver.showSlideOver('', this.pollEdit);
-  }
-
   ngOnDestroy() {
     this.titleBarService.buttons$.next([]);
   }
 
-  public async delete(event: Event, poll: PollData): Promise<void> {
+  public async delete(event: Event, poll: PollData): Promise<boolean> {
     event.stopPropagation();
+    event.preventDefault();
     const confirm = await this.confirm.confirm({
       title: 'Löschen bestätigen',
       description: `Sind Sie sicher, dass sie "${poll.title}" löschen möchten? Dies kann nicht rückgängig gemacht werden.`,
@@ -52,11 +47,12 @@ export class PollsComponent implements OnInit, OnDestroy {
       confirmButtonType: 'danger'
     });
     if (!confirm){
-      return;
+      return false;
     }
     this.polls.delete(poll).subscribe(
       () => this.notifications.deletedSuccessfully()
     );
+    return false;
   }
 
 }

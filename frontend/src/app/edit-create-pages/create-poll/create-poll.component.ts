@@ -19,6 +19,7 @@ export class CreatePollComponent implements OnInit, OnDestroy {
   public teamSubscription: Subscription;
   public teamSelectData: [string | number, string | number][] = [];
   @Input() editId: string = '';
+  @Input() redirectUrl: string = '/my-team/polls';
 
   constructor(
     public readonly polls: PollsService,
@@ -67,7 +68,7 @@ export class CreatePollComponent implements OnInit, OnDestroy {
           description: 'Fügen Sie nun Antwortmöglichkeiten hinzu.',
           type: 'warning'
         }, null);
-        this.router.navigate(['/my-team/polls', data.id])
+        this.router.navigate([this.redirectUrl, data.id])
       },
       error => {
         this.loadingModalService.hideLoading();
