@@ -55,6 +55,12 @@ const routes: Routes = [
     loadChildren: () => import('./documents/documents.module').then(m => m.DocumentsModule)
   },
   {
+    path: 'teams',
+    canActivate: [IsLoggedInGuard],
+    canActivateChild: [IsLoggedInGuard],
+    loadChildren: () => import('./teams/teams.module').then(m => m.TeamsModule)
+  },
+  {
     path: '**',
     component: Error404Component
   },

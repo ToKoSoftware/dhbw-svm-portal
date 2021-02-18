@@ -5,9 +5,8 @@ import {EventsService} from '../../services/data/events/events.service';
 import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
 import {NotificationService} from '../../services/notification/notification.service';
 import {setEmptyInputToNull} from '../../functions/input-cleaners.func';
-import { Subscription } from 'rxjs';
-import { TeamService } from 'src/app/services/data/teams/team.service';
-import { Router } from '@angular/router';
+import {Subscription} from 'rxjs';
+import {TeamService} from 'src/app/services/data/teams/team.service';
 
 @Component({
   selector: 'app-create-event',
@@ -24,7 +23,6 @@ export class CreateEventComponent implements OnInit {
     public readonly teams: TeamService,
     private readonly formBuilder: FormBuilder,
     private readonly loadingModalService: LoadingModalService,
-    private readonly router: Router,
     private readonly notificationService: NotificationService,
   ) {
   }
@@ -59,14 +57,13 @@ export class CreateEventComponent implements OnInit {
       is_active: true
     };
     eventData = setEmptyInputToNull(eventData);
-    eventData.price = eventData.price == null 
-      ? eventData.price 
+    eventData.price = eventData.price == null
+      ? eventData.price
       : Math.round(Number(eventData.price.replace(',', '.'))*100 + Number.EPSILON);
     this.events.create(eventData).subscribe(
       data => {
         this.current = data;
         this.notificationService.savedSuccessfully();
-        this.router.navigate(['/my-team/events', data.id])
       },
       error => {
         this.notificationService.savingFailed(error.error.data.error);

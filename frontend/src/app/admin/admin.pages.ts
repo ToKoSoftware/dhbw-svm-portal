@@ -1,5 +1,4 @@
 import {SidebarPageGroup} from '../ui/sidebar/sidebar.component';
-import {UiBreadcrumb} from '../ui/ui.interface';
 
 export const adminPages: SidebarPageGroup[] = [
   {
@@ -17,6 +16,10 @@ export const adminPages: SidebarPageGroup[] = [
         url: '/my-team/stats',
         matchFull: true
       },
+    ]
+  }, {
+    title: 'Personen & Sicherheit',
+    pages: [
       {
         title: 'Benutzer',
         icon: 'user',
@@ -31,6 +34,16 @@ export const adminPages: SidebarPageGroup[] = [
         title: 'Rollen',
         icon: 'lock',
         url: '/my-team/roles',
+      },
+      {
+        title: 'Datenschutz',
+        icon: 'eye-off',
+        url: '/my-team/privacy',
+      },
+      {
+        title: 'Single-Sign-On',
+        icon: 'log-in',
+        url: '/my-team/oauth2',
       },
     ]
   }, {
@@ -65,16 +78,11 @@ export const adminPages: SidebarPageGroup[] = [
         icon: 'credit-card',
         url: '/my-team/direct-debit-mandates',
       },
+      {
+        title: 'Ereignisprotokoll',
+        icon: 'list',
+        url: '/my-team/event-log',
+      },
     ]
-  }
-];
-
-export const adminBreadcrumb: UiBreadcrumb[] = [
-  {
-    title: 'Home',
-    routerLink: '/'
-  }, {
-    title: 'my-team',
-    routerLink: '/my-team'
   }
 ];

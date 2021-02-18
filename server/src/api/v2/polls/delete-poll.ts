@@ -3,6 +3,8 @@ import { wrapResponse } from '../../../functions/response-wrapper';
 import { Poll } from '../../../models/poll.model';
 import { PollAnswer } from '../../../models/poll-answer.model';
 import { PollVote } from '../../../models/poll-vote.model';
+import { Vars } from '../../../vars';
+import { getMaintainedTeamIdsOfCurrentUser } from '../../../functions/get-maintained-team-ids-of-current-user.func';
 
 export async function deletePoll(req: Request, res: Response): Promise<Response> {
     let success = true;
@@ -18,6 +20,11 @@ export async function deletePoll(req: Request, res: Response): Promise<Response>
     }
     if (pollData === null) {
         return res.status(400).send(wrapResponse(false, { error: 'No poll with given id found!' }));
+    }
+
+    const maintainedTeamIds = await getMaintainedTeamIdsOfCurrentUser();
+    if (!maintainedTeamIds.find(id => id == pollData.answer_team_id) && !Vars.currentUserIsAdmin) {
+        return res.status(403).send(wrapResponse(false, { error: 'You are not allowed to delete a Poll for a team you are not maintainer of.' }));
     }
 
     await pollData.update(

@@ -26,7 +26,7 @@ export class LoginService {
     this.reloadJWT();
   }
 
-  private reloadJWT(): void {
+  public reloadJWT(): void {
     const jwt: string | null = localStorage.getItem('jwt');
     try {
       const decodedJWT = jwt_decode<JWT>(jwt || '');

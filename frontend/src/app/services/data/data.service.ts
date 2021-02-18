@@ -39,7 +39,7 @@ export interface DataServiceFunctions<Single> {
   create: (data: CreateAndUpdateData<Single>) => Observable<Single>;
   read: (id: string) => Observable<Single>;
   update: (data: CreateAndUpdateData<Single>) => Observable<Single>;
-  delete: (data: CreateAndUpdateData<Single>) => boolean;
+  delete: (data: CreateAndUpdateData<Single> | Single) => unknown;
 }
 
 export type CreateAndUpdateData<Type> = { [d in keyof Type]: string | number | null }

@@ -7,6 +7,7 @@ import {PollsService} from '../../services/data/polls/polls.service';
 import {ModalService} from '../../services/modal/modal.service';
 import {Subscription} from 'rxjs';
 import {TeamService} from '../../services/data/teams/team.service';
+import { ConfirmModalService } from 'src/app/services/confirm-modal/confirm-modal.service';
 
 @Component({
   selector: 'app-edit-poll',
@@ -27,6 +28,7 @@ export class EditPollComponent implements OnInit, OnDestroy {
     public readonly customModalService: ModalService,
     private readonly formBuilder: FormBuilder,
     private readonly teams: TeamService,
+    private readonly confirm: ConfirmModalService,
     private readonly loadingModalService: LoadingModalService,
     private readonly notificationService: NotificationService) {
   }
@@ -93,5 +95,21 @@ export class EditPollComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.pollSubscription.unsubscribe();
     this.teamSubscription.unsubscribe();
+  }
+
+  public async deleteAnswer(event: Event, pollAnswer: PollAnswerData): Promise<void> {
+    event.stopPropagation();
+    const confirm = await this.confirm.confirm({
+      title: 'Löschen bestätigen',
+      description: `Sind Sie sicher, dass sie "${pollAnswer.title}" löschen möchten? Dies kann nicht rückgängig gemacht werden.`,
+      confirmText: 'Löschen',
+      confirmButtonType: 'danger'
+    });
+    if (!confirm){
+      return;
+    }
+    this.polls.deleteAnswer(this.current, pollAnswer).subscribe(
+      () => this.notificationService.savedSuccessfully()
+    );
   }
 }

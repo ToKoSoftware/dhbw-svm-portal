@@ -26,8 +26,12 @@ export class PollsService extends DataService<PollData> implements DataServiceFu
       }));
   }
 
-  delete(data: CreateAndUpdateData<PollData>): boolean {
-    return false;
+  delete(data: PollData): Observable<unknown> {
+    return this.api.delete<PollData>(`/polls/${data.id}`)
+      .pipe(map(res => {
+        this.reloadData();
+        return res;
+      }));
   }
 
   read(id: string): Observable<PollData> {
@@ -70,6 +74,15 @@ export class PollsService extends DataService<PollData> implements DataServiceFu
         this.notifications.savedSuccessfully();
         this.reloadData();
         return res.data;
+      }));
+  }
+
+  deleteAnswer(poll: PollData, pollAnswerData: PollAnswerData) {
+    return this.api.delete<PollData>(`/polls/${poll.id}/${pollAnswerData.id}`)
+      .pipe(map(res => {
+        this.notifications.savedSuccessfully();
+        this.reloadData();
+        return res;
       }));
   }
 }

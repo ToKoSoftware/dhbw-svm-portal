@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { checkKeysAreNotEmptyOrNotSet } from '../../../functions/check-inputs.func';
+import { getMaintainedTeamIdsOfCurrentUser } from '../../../functions/get-maintained-team-ids-of-current-user.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { RawEventData } from '../../../interfaces/event.interface';
 import { Event } from '../../../models/event.model';
@@ -10,7 +11,7 @@ export async function updateEvent(req: Request, res: Response): Promise<Response
     const incomingData: RawEventData = req.body;
     const eventId = req.params.id;
 
-    const eventData: Event | null = await Event.scope({method: ['onlyCurrentOrg', Vars.currentOrganization.id]}).findByPk(eventId)
+    const eventData: Event | null = await Event.scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }).findByPk(eventId)
         .catch(() => {
             success = false;
             return null;
@@ -30,6 +31,17 @@ export async function updateEvent(req: Request, res: Response): Promise<Response
     if (!checkKeysAreNotEmptyOrNotSet(incomingData, requiredFields)) {
         return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty' }));
     }
+
+    const maintainedTeamIds = await getMaintainedTeamIdsOfCurrentUser();
+    if (
+        !maintainedTeamIds.find(id => id == eventData.allowed_team_id) 
+        && !Vars.currentUserIsAdmin 
+        && eventData.allowed_team_id !== 'public' 
+        && !maintainedTeamIds.length
+    ) {
+        return res.status(403).send(wrapResponse(false, { error: 'You are not allowed to update an Event for a team you are not maintainer of.' }));
+    }
+
 
     eventData.update(incomingData)
         .catch(() => {

@@ -1,0 +1,57 @@
+<app-scroll>
+  <app-container [large]="true" center="true">
+    <div class="flex justify-end w-full">
+      <div class="mr-3">
+        <app-select
+          (valueChange)="changeView($event)"
+          label="Ansicht konfigurieren"
+          [items]="availableViews">
+        </app-select>
+      </div>
+    </div>
+
+    <div [ngSwitch]="view">
+      <mwl-calendar-month-view
+        *ngSwitchCase="'month'"
+        [viewDate]="viewDate"
+        [events]="events$ | async"
+        (eventClicked)="eventClicked($event)"
+        [cellTemplate]="customCellTemplate"
+      >
+      </mwl-calendar-month-view>
+      <mwl-calendar-week-view
+        *ngSwitchCase="'week'"
+        [viewDate]="viewDate"
+        [events]="events$ | async"
+        (eventClicked)="eventClicked($event)"
+      >
+      </mwl-calendar-week-view>
+      <mwl-calendar-day-view
+        *ngSwitchCase="'day'"
+        [viewDate]="viewDate"
+        [events]="events$ | async"
+        (eventClicked)="eventClicked($event)"
+      >
+      </mwl-calendar-day-view>
+    </div>
+
+    <ng-template #customCellTemplate let-day="day" let-locale="locale">
+      <div class="cal-cell-top">
+        <span class="cal-day-badge" *ngIf="day.badgeTotal > 0" style="background-color: #1bd565">
+          {{ day.badgeTotal }} Events
+        </span>
+        <span class="cal-day-number">
+          {{ day.date | calendarDate:'monthViewDayNumber':locale }}
+        </span>
+      </div>
+      <small style="margin: -1px;" *ngFor="let event of day.events" class="text-white">
+        <div [style.background-color]="event.allDay ? event.color.primary : ''">
+          <ng-container *ngIf="!event.allDay || isOnSameDay(event.start, day.date)">
+            {{event.start | amFromUtc | amDateFormat: 'H:mm'}}
+          </ng-container>
+          {{event.title}}<br>
+        </div>
+      </small>
+    </ng-template>
+  </app-container>
+</app-scroll>
