@@ -12,7 +12,8 @@ export async function loginUser(req: Request, res: Response): Promise<Response> 
 
     const incomingData: UserLoginData = req.body;
 
-    if (!checkKeysAreNotEmptyOrNotSet(incomingData, ['email', 'password']) || !checkKeysAreNotEmptyOrNotSet(incomingData, ['user', 'password'])) {
+    if (!checkKeysAreNotEmptyOrNotSet(incomingData,
+        [ 'email', 'password' ]) || !checkKeysAreNotEmptyOrNotSet(incomingData, [ 'user', 'password' ])) {
         return res.status(400).send(wrapResponse(false, { error: 'Not all required fields have been set' }));
     }
 

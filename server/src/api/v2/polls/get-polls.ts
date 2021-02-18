@@ -70,7 +70,12 @@ export async function getPolls(req: Request, res: Response): Promise<Response> {
                 ? (showExpired == 'true'
                     ? [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, 'ordered']
                     : [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, { method: ['notExpired', currentDate] }, 'ordered'])
-                : [{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, { method: ['onlyAnswerTeam', Vars.currentUser.teams.map(t => t.id), Vars.currentOrganization.public_team_id] }, { method: ['notExpired', currentDate] }, 'ordered']
+                : [
+                    { method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, 
+                    { method: ['onlyAnswerTeam', Vars.currentUser.teams.map(t => t.id), Vars.currentOrganization.public_team_id] },
+                    { method: ['notExpired', currentDate] }, 
+                    'ordered'
+                ]
         )
         .findAll(
             {
