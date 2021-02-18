@@ -5,6 +5,7 @@ import {OrganizationData} from './organization.interface';
 export interface PollData {
   total_user_votes_count: number;
   user_has_voted: boolean;
+  expired: boolean;
   createdAt: string;
   id?: string;
   title: string;

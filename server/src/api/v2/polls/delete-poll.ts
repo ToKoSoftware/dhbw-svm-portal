@@ -27,46 +27,37 @@ export async function deletePoll(req: Request, res: Response): Promise<Response>
         return res.status(403).send(wrapResponse(false, { error: 'You are not allowed to delete a Poll for a team you are not maintainer of.' }));
     }
 
-    await pollData.update(
-        {
-            is_active: false,
-        },
-        {
-            where: {
-                id: req.params.id,
-                is_active: true
-            }
-        })
+    await pollData.destroy()
         .catch(() => {
             success = false;
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Could not deactivate poll with id ' + pollId }));
+        return res.status(500).send(wrapResponse(false, { error: 'Could not delete poll with id ' + pollId }));
     }
 
-    const updatedPollAnswers: [number, PollAnswer[]] | null = await PollAnswer.update(
-        {
-            is_active: false,
-        },
+    const pollAnswerData: PollAnswer[] = await PollAnswer.findAll(
         {
             where: {
-                poll_id: pollId,
-                is_active: true
+                poll_id: pollId
             }
         })
         .catch(() => {
             success = false;
-            return null;
+            return [];
         });
-    if (!success || updatedPollAnswers === null) {
-        return res.status(500).send(wrapResponse(false, { error: 'Could not deactivate pollanswer belonging to poll with id ' + pollId }));
+    if (!success || pollAnswerData === []) {
+        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
     }
+
+    const pollAnswerIds = pollAnswerData.map(p => p.id);
+
+    pollAnswerData.forEach(pollAnswer => pollAnswer.destroy());
 
     await PollVote.destroy(
         {
             where: {
-                poll_answer_id: updatedPollAnswers[1].map(p => p.id)
+                poll_answer_id: pollAnswerIds
             }
         })
         .catch(() => {
