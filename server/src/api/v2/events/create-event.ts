@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import { objectHasRequiredAndNotEmptyKeys } from '../../../functions/check-inputs.func';
+import { getMaintainedTeamIdsOfCurrentUser } from '../../../functions/get-maintained-team-ids-of-current-user.func';
 import { mapEvent } from '../../../functions/map-events.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { RawEventData } from '../../../interfaces/event.interface';
 import { Event } from '../../../models/event.model';
-import { Team } from '../../../models/team.model';
 import { Vars } from '../../../vars';
 
 export async function createEvent(req: Request, res: Response): Promise<Response> {
@@ -25,15 +25,8 @@ export async function createEvent(req: Request, res: Response): Promise<Response
         return res.status(400).send(wrapResponse(false, { error: 'Start_date has to be before end_date!' }));
     }
 
-    const maintainedRoleIds = Vars.currentUser.assigned_roles.map(r => r.id);
-    const maintainedTeams = await Team.findAll(
-        {
-            where: {
-                maintain_role_id: maintainedRoleIds
-            }
-        });
-    const maintainedTeamIds = maintainedTeams.map(t => t.id);
-    if (!maintainedTeamIds.find(id => id == mappedIncomingData.allowed_team_id) && mappedIncomingData.allowed_team_id !== 'public') {
+    const maintainedTeamIds = await getMaintainedTeamIdsOfCurrentUser();
+    if (!maintainedTeamIds.find(id => id == mappedIncomingData.allowed_team_id) && mappedIncomingData.allowed_team_id !== 'public' && !Vars.currentUserIsAdmin) {
         return res.status(403).send(wrapResponse(false, { error: 'You are not allowed to create an Event for a team you are not maintainer of.' }));
     }
 
