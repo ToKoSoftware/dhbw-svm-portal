@@ -48,8 +48,7 @@ export class EditEventComponent implements OnInit, OnChanges {
         start_date: [],
         end_date: [],
         max_participants: [],
-        allowed_team_id: [],
-        is_active: [],
+        allowed_team_id: []
       }
     );
     this.teamSubscription = this.teams.data$.subscribe(teams => {
@@ -71,8 +70,7 @@ export class EditEventComponent implements OnInit, OnChanges {
               start_date: [d.start_date],
               end_date: [d.end_date],
               max_participants: [d.max_participants],
-              allowed_team_id: [d.allowed_team_id],
-              is_active: [d.is_active],
+              allowed_team_id: [d.allowed_team_id]
             }
           );
         }, error => {
@@ -88,8 +86,7 @@ export class EditEventComponent implements OnInit, OnChanges {
     }
     let eventData = {
       ...this.current,
-      ...this.editEventForm.value,
-      is_active: true
+      ...this.editEventForm.value
     };
     eventData = setEmptyInputToNull(eventData);
     eventData.price = eventData.price == null 

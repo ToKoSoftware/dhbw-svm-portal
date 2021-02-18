@@ -52,7 +52,7 @@ export class EditCreatePollAnswerComponent implements OnChanges {
         },
       );
     } else if (this.poll) {
-      this.polls.createAnswer(this.poll, {...this.formGroup.value, is_active: true}).subscribe(
+      this.polls.createAnswer(this.poll, {...this.formGroup.value}).subscribe(
         data => {
           this.loadingModalService.hideLoading();
           this.customModalService.close();

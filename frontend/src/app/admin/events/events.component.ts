@@ -54,7 +54,7 @@ export class EventsComponent implements OnInit, OnDestroy {
       return;
     }
     this.events.delete(eventData).subscribe(
-      () => this.notifications.savedSuccessfully()
+      () => this.notifications.deletedSuccessfully()
     );
   }
 }

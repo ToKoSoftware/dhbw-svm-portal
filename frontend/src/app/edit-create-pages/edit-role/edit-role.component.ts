@@ -55,8 +55,7 @@ export class EditRoleComponent implements OnInit {
     if (this.formGroup.dirty && !this.formGroup.valid) {
       return;
     }
-    console.log({...this.current, ...this.formGroup.value, is_active: true});
-    this.roles.update({id: this.current.id, ...this.formGroup.value, is_active: true}).subscribe(
+    this.roles.update({id: this.current.id, ...this.formGroup.value}).subscribe(
       data => {
         this.current = data;
         this.slideOver.close();

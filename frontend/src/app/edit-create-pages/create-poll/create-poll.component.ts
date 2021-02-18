@@ -56,7 +56,7 @@ export class CreatePollComponent implements OnInit, OnDestroy {
       return;
     }
     this.loadingModalService.showLoading();
-    this.polls.create({...this.formGroup.value, is_active: true}).subscribe(
+    this.polls.create({...this.formGroup.value}).subscribe(
       data => {
         this.current = data;
         this.loadingModalService.hideLoading();

@@ -54,7 +54,7 @@ export class PollsComponent implements OnInit, OnDestroy {
       return;
     }
     this.polls.delete(poll).subscribe(
-      () => this.notifications.savedSuccessfully()
+      () => this.notifications.deletedSuccessfully()
     );
   }
 }
