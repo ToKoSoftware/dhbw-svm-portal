@@ -1,6 +1,4 @@
 import { Request, Response } from 'express';
-import { FindOptions} from 'sequelize';
-import { buildQuery, QueryBuilderConfig } from '../../../functions/query-builder.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { News } from '../../../models/news.model';
 import { Vars } from '../../../vars';
@@ -13,18 +11,20 @@ export async function getSingleNews(req: Request, res: Response): Promise<Respon
     let success = true;
 
     const newsData: NewsData | null = await News
-        .scope({method: ['onlyCurrentOrg', Vars.currentOrganization.id]})
+        .scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] })
         .findOne({
             where: {
-                id: req.params.id   
+                id: req.params.id
             },
-            ... Vars.currentUserIsAdmin ? {
-                include: [Organization, User]
-            } : {
-                include: {
-                    model: User.scope('publicData')
+            ...Vars.currentUserIsAdmin
+                ? {
+                    include: [Organization, User]
                 }
-            }
+                : {
+                    include: {
+                        model: User.scope('publicData')
+                    }
+                }
         })
         .catch(() => {
             success = false;
@@ -40,20 +40,8 @@ export async function getSingleNews(req: Request, res: Response): Promise<Respon
 }
 
 export async function getAllNews(req: Request, res: Response): Promise<Response> {
-    let query: FindOptions = {};
-    const allowedSearchFilterAndOrderFields = ['title'];
-    const queryConfig: QueryBuilderConfig = {
-        query: query,
-        searchString: req.query.search as string || '',
-        allowLimitAndOffset: true,
-        allowedFilterFields: allowedSearchFilterAndOrderFields,
-        allowedSearchFields: allowedSearchFilterAndOrderFields,
-        allowedOrderFields: allowedSearchFilterAndOrderFields
-    };
-    query = buildQuery(queryConfig, req);
-
     let success = true;
-    const data = await News.scope(['full', {method: ['onlyCurrentOrg', Vars.currentOrganization.id]}]).findAll(query)
+    const data = await News.scope(['full', { method: ['onlyCurrentOrg', Vars.currentOrganization.id] }]).findAll()
         .catch(() => {
             success = false;
             return null;

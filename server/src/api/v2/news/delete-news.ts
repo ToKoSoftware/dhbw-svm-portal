@@ -7,9 +7,7 @@ import { Vars } from '../../../vars';
 export async function deleteNews(req: Request, res: Response): Promise<Response> {
     let success = true;
 
-    //TODO check necessary?
-    //check if currentUser is admin oder author of news
-    const newsToDelete = await News.scope('active').findByPk(req.params.id)
+    const newsToDelete = await News.findByPk(req.params.id)
         .catch(() => {
             success = false;
             return null;
@@ -26,15 +24,12 @@ export async function deleteNews(req: Request, res: Response): Promise<Response>
         return res.status(403).send(wrapResponse(false, {error: 'Unauthorized!'}));
     }
 
-    await newsToDelete.update(
-        {
-            is_active: false,
-        })
+    await newsToDelete.destroy()
         .catch(() => {
             success = false;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Could not deactivate News with id ' + req.params.id }));
+        return res.status(500).send(wrapResponse(false, { error: 'Could not delete News with id ' + req.params.id }));
     }
 
     return res.status(204).send(wrapResponse(true));
