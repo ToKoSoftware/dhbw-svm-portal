@@ -37,7 +37,8 @@ export class PollsComponent implements OnInit, OnDestroy {
     this.titleBarService.buttons$.next([]);
   }
 
-  public async delete(event: Event, poll: PollData): Promise<void> {
+  public async delete(event: Event, poll: PollData): Promise<false> {
+    event.preventDefault();
     event.stopPropagation();
     const confirm = await this.confirm.confirm({
       title: 'Löschen bestätigen',
@@ -46,10 +47,11 @@ export class PollsComponent implements OnInit, OnDestroy {
       confirmButtonType: 'danger'
     });
     if (!confirm){
-      return;
+       return false;
     }
     this.polls.delete(poll).subscribe(
       () => this.notifications.deletedSuccessfully()
     );
+    return false;
   }
 }
