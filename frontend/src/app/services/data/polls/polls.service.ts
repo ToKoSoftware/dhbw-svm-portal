@@ -76,4 +76,13 @@ export class PollsService extends DataService<PollData> implements DataServiceFu
         return res.data;
       }));
   }
+
+  deleteAnswer(poll: PollData, pollAnswerData: PollAnswerData) {
+    return this.api.delete<PollData>(`/polls/${poll.id}/${pollAnswerData.id}`)
+      .pipe(map(res => {
+        this.notifications.savedSuccessfully();
+        this.reloadData();
+        return res;
+      }));
+  }
 }

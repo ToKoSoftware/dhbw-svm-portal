@@ -9,7 +9,7 @@ import { Vars } from '../../../vars';
 export async function deletePollAnswer(req: Request, res: Response): Promise<Response> {
     let success = true;
 
-    const pollAnswerData: PollAnswer | null = await PollAnswer.scope('includePoll').findByPk(req.params.id)
+    const pollAnswerData: PollAnswer | null = await PollAnswer.findByPk(req.params.id)
         .catch(() => {
             success = false;
             return null;
@@ -20,11 +20,9 @@ export async function deletePollAnswer(req: Request, res: Response): Promise<Res
     if (pollAnswerData === null) {
         return res.status(400).send(wrapResponse(false, { error: 'There is no active PollAnswer with the given id!'}));
     }
-    if (pollAnswerData.poll.org_id !== Vars.currentOrganization.id) {
-        return res.status(403).send(wrapResponse(false, { error: 'Forbidden!'}));
-    }
+    
 
-    const pollData: Poll | null = await Poll.findByPk(pollAnswerData.poll_id)
+    const pollData: Poll | null = await Poll.unscoped().findByPk(pollAnswerData.poll_id)
         .catch(() => {
             success = false;
             return null;
@@ -34,6 +32,10 @@ export async function deletePollAnswer(req: Request, res: Response): Promise<Res
     }
     if (pollData === null) {
         return res.status(400).send(wrapResponse(false, { error: 'No Poll with given id found' }));
+    }
+
+    if (pollData.org_id !== Vars.currentOrganization.id) {
+        return res.status(403).send(wrapResponse(false, { error: 'Forbidden!'}));
     }
 
     const maintainedTeamIds = await getMaintainedTeamIdsOfCurrentUser();

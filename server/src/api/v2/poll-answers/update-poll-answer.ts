@@ -12,7 +12,7 @@ export async function updatePollAnswer(req: Request, res: Response): Promise<Res
     const incomingData: RawPollAnswerData = req.body;
     const pollAnswerId = req.params.id;
 
-    const pollAnswerData: PollAnswer | null = await PollAnswer.scope('includePoll').findByPk(pollAnswerId)
+    const pollAnswerData: PollAnswer | null = await PollAnswer.findByPk(pollAnswerId)
         .catch(() => {
             success = false;
             return null;
@@ -23,16 +23,13 @@ export async function updatePollAnswer(req: Request, res: Response): Promise<Res
     if (pollAnswerData === null) {
         return res.status(400).send(wrapResponse(false, { error: 'No PollAnswer with given id found' }));
     }
-    if (pollAnswerData.poll.org_id !== Vars.currentOrganization.id) {
-        return res.status(403).send(wrapResponse(false, { error: 'Forbidden!'}));
-    }
     
     const requiredFields = PollAnswer.requiredFields();
     if (!checkKeysAreNotEmptyOrNotSet(incomingData, requiredFields)) {
         return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty' }));
     }
 
-    const pollData: Poll | null = await Poll.findByPk(pollAnswerData.poll_id)
+    const pollData: Poll | null = await Poll.unscoped().findByPk(pollAnswerData.poll_id)
         .catch(() => {
             success = false;
             return null;
@@ -44,6 +41,9 @@ export async function updatePollAnswer(req: Request, res: Response): Promise<Res
         return res.status(400).send(wrapResponse(false, { error: 'No Poll with given id found' }));
     }
 
+    if (pollData.org_id !== Vars.currentOrganization.id) {
+        return res.status(403).send(wrapResponse(false, { error: 'Forbidden!'}));
+    }
     const maintainedTeamIds = await getMaintainedTeamIdsOfCurrentUser();
     if (!maintainedTeamIds.find(id => id == pollData.answer_team_id) && !Vars.currentUserIsAdmin) {
         return res.status(403).send(wrapResponse(false, { error: 'You are not allowed to create a PollAnswers for a team you are not maintainer of.' }));

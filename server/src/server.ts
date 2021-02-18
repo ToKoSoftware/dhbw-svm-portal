@@ -170,8 +170,8 @@ export default function startServer(): void {
      */
     app.post('/api/v2/polls/:id/answers', userIsAuthorized, (req, res) => createPollAnswer(req, res));
     app.post('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res));
-    app.put('/api/v2/polls/:pollId/answers/:id', userIsAuthorized, (req, res) => updatePollAnswer(req, res));
-    app.delete('/api/v2/polls/:pollId/answers/:id', userIsAuthorized, (req, res) => deletePollAnswer(req, res));
+    app.put('/api/v2/polls/:pollId/:id', userIsAuthorized, (req, res) => updatePollAnswer(req, res));
+    app.delete('/api/v2/polls/:pollId/:id', userIsAuthorized, (req, res) => deletePollAnswer(req, res));
     app.delete('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => deletePollVote(req, res));
 
     /**
