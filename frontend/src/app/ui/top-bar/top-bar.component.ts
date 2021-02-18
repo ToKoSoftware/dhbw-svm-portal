@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TitleBarService} from '../../services/title-bar/title-bar.service';
 import {UiButton, UiButtonType} from '../ui.interface';
 import {BehaviorSubject, Subscription} from 'rxjs';
+import {CurrentOrgService} from '../../services/current-org/current-org.service';
 
 @Component({
   selector: 'app-top-bar',
@@ -11,7 +12,8 @@ export class TopBarComponent implements OnInit, OnDestroy {
   private titleBarButtonsSubscription: Subscription;
   public buttons$: BehaviorSubject<UiButton[]> = new BehaviorSubject([]);
 
-  constructor(public readonly titleBar: TitleBarService) {
+  constructor(public readonly titleBar: TitleBarService,
+              public readonly currentOrg: CurrentOrgService) {
   }
 
   ngOnInit(): void {

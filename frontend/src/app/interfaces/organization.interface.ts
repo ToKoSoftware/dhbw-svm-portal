@@ -22,3 +22,14 @@ export interface OrganizationData {
   roles: RoleData;
   teams: TeamData;
 }
+
+export interface OrganizationConfigurationData {
+  colors: ColorConfig
+}
+
+export interface ColorConfig {
+  titleBarBackgroundColor: string;
+  titleBarBorderColor: string;
+  titleBarTextColor: string;
+  sidebarLinkTextColor: string;
+}

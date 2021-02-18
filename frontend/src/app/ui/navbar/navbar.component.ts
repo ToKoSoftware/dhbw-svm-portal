@@ -1,9 +1,7 @@
-import {Component, ElementRef, HostBinding, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Router} from '@angular/router';
+import {Component, HostBinding, OnDestroy, OnInit} from '@angular/core';
 import {LoginService} from '../../services/login/login.service';
 import {SidebarPageGroup} from '../sidebar/sidebar.component';
 import {CurrentOrgService} from '../../services/current-org/current-org.service';
-import {TeamData} from '../../interfaces/team.interface';
 import {Subscription} from 'rxjs';
 
 @Component({
@@ -18,7 +16,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   constructor(
     public readonly login: LoginService,
-    private readonly currentOrg: CurrentOrgService) {
+    public readonly currentOrg: CurrentOrgService) {
   }
 
   ngOnInit(): void {

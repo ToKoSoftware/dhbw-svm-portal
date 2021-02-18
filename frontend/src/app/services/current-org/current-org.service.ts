@@ -2,7 +2,7 @@ import {Injectable, OnDestroy} from '@angular/core';
 import {LoginService} from '../login/login.service';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {UserData} from '../../interfaces/user.interface';
-import {OrganizationData} from '../../interfaces/organization.interface';
+import {OrganizationConfigurationData, OrganizationData} from '../../interfaces/organization.interface';
 import {UsersService} from '../data/users/users.service';
 import {OrganizationsService} from '../data/organizations/organizations.service';
 import {TeamData} from '../../interfaces/team.interface';
@@ -14,6 +14,7 @@ export class CurrentOrgService implements OnDestroy {
   private userSubscription: Subscription;
   public currentOrg$: BehaviorSubject<null | OrganizationData> = new BehaviorSubject(null);
   public currentUser$: BehaviorSubject<null | UserData> = new BehaviorSubject(null);
+  public currentConfig$: BehaviorSubject<null | OrganizationConfigurationData> = new BehaviorSubject(null);
   public currentMaintainTeams$: BehaviorSubject<null | TeamData[]> = new BehaviorSubject(null);
 
   constructor(
@@ -40,6 +41,15 @@ export class CurrentOrgService implements OnDestroy {
             this.currentMaintainTeams$.next(maintainTeams);
           }
         );
+        setTimeout(() =>
+        this.currentConfig$.next({
+          colors: {
+            titleBarBackgroundColor: '#ff2e17',
+            titleBarBorderColor: '#ffeb3d',
+            titleBarTextColor: '#ffeb3d',
+            sidebarLinkTextColor: '#ffeb3d',
+          }
+        }), 3000);
       } else {
         this.currentUser$.next(null);
         this.currentOrg$.next(null);
