@@ -62,7 +62,7 @@ module.exports = {
             updatedAt: date
 
         }];
-       await queryInterface.bulkInsert('Roles', roles, {});
+        await queryInterface.bulkInsert('Roles', roles, {});
 
         const teams = [{
             id: team_id_svm_outdoor,
@@ -87,7 +87,6 @@ module.exports = {
             title: 'Neue SVM-Website',
             org_id: org_id_svm,
             author_id: user_id_svm_admin ,
-            is_active: true,
             createdAt: dt,
             updatedAt: dt,
             body: 'Die Dualen Wirtschaftsinformatik-Studenten der Kusre WWI19A und B arbeiten derzeit in einzelnen Gruppen jeweils an einer möglichen Website für den SV-Mergelstetten.'
@@ -112,7 +111,6 @@ module.exports = {
             start_date: past_event_start_date,
             end_date: past_event_end_date,
             max_participants: null,
-            is_active: true,
             author_id: user_id_svm_admin,
             org_id: org_id_svm,
             createdAt: date,
@@ -127,7 +125,6 @@ module.exports = {
             start_date: future_date,
             end_date: future_event_end_date,
             max_participants: null,
-            is_active: true,
             author_id: user_id_svm_admin,
             org_id: org_id_svm,
             createdAt: date,
@@ -140,7 +137,6 @@ module.exports = {
             title: 'Würdet ihr an Online-Sportangeboten teilnehmen?',
             body: 'Wir wollen uns ein Meinungsbild schaffen, wie ihr zu dem Thema Online-Sportangebote steht.',
             closes_at: future_date,
-            is_active: true,
             author_id: user_id_svm_admin,
             org_id: org_id_svm,
             answer_team_id: team_id_svm_outdoor,
@@ -153,7 +149,6 @@ module.exports = {
             id: pollanswer_id_svm_1,
             title: 'Ja.',
             poll_id: poll_id_svm,
-            is_active: true,
             createdAt: date,
             updatedAt: date
         },
@@ -161,7 +156,6 @@ module.exports = {
             id: pollanswer_id_svm_2,
             title: 'Nein.',
             poll_id: poll_id_svm,
-            is_active: true,
             createdAt: date,
             updatedAt: date
         }];
@@ -320,7 +314,7 @@ module.exports = {
                 createdAt: date,
                 updatedAt: date
             });
-             diverseTurnenFitnessmemberships.push({
+            diverseTurnenFitnessmemberships.push({
                 id: v4(),
                 user_id: diverseusers[i].id,
                 team_id: team_id_svm_turnen_fitness,

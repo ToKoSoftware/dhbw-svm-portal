@@ -3,9 +3,9 @@ import {adminPages} from '../admin.pages';
 import {SlideOverService} from '../../services/slide-over/slide-over.service';
 import {TitleBarService} from '../../services/title-bar/title-bar.service';
 import {PollsService} from '../../services/data/polls/polls.service';
-import { ConfirmModalService } from 'src/app/services/confirm-modal/confirm-modal.service';
-import { NotificationService } from 'src/app/services/notification/notification.service';
-import { PollData } from 'src/app/interfaces/poll.interface';
+import {ConfirmModalService} from 'src/app/services/confirm-modal/confirm-modal.service';
+import {NotificationService} from 'src/app/services/notification/notification.service';
+import {PollData} from 'src/app/interfaces/poll.interface';
 
 @Component({
   selector: 'app-polls',
@@ -15,7 +15,6 @@ export class PollsComponent implements OnInit, OnDestroy {
   public sidebarPages = adminPages;
   public current: string;
   @ViewChild('pollCreate', {static: true}) pollCreate: TemplateRef<unknown>;
-  @ViewChild('pollEdit', {static: true}) pollEdit: TemplateRef<unknown>;
 
   constructor(public readonly polls: PollsService,
               private readonly slideOver: SlideOverService,
@@ -33,16 +32,13 @@ export class PollsComponent implements OnInit, OnDestroy {
       }
     }]);
   }
-  public edit(poll: PollData) {
-    this.current = poll.id || '';
-    this.slideOver.showSlideOver('', this.pollEdit);
-  }
 
   ngOnDestroy() {
     this.titleBarService.buttons$.next([]);
   }
 
-  public async delete(event: Event, poll: PollData): Promise<void> {
+  public async delete(event: Event, poll: PollData): Promise<false> {
+    event.preventDefault();
     event.stopPropagation();
     const confirm = await this.confirm.confirm({
       title: 'Löschen bestätigen',
@@ -51,10 +47,11 @@ export class PollsComponent implements OnInit, OnDestroy {
       confirmButtonType: 'danger'
     });
     if (!confirm){
-      return;
+       return false;
     }
     this.polls.delete(poll).subscribe(
-      () => this.notifications.savedSuccessfully()
+      () => this.notifications.deletedSuccessfully()
     );
+    return false;
   }
 }

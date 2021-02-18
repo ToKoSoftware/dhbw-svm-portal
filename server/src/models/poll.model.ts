@@ -14,26 +14,11 @@ import { LoggedModel } from './logged.model';
 
 @DefaultScope(() => ({
     required: false,
-    where: {
-        is_active: true
-    },
-    order: [ [ 'closes_at', 'ASC' ] ]
+    order: [['closes_at', 'ASC']]
 }))
 @Scopes(() => ({
     full: {
         include: [ Organization, User, Team, PollAnswer ]
-    },
-    active: {
-        required: false,
-        where: {
-            is_active: true
-        }
-    },
-    inactive: {
-        required: false,
-        where: {
-            is_active: false
-        }
     },
     expired: (date: Date) => ({
         required: false,
@@ -87,8 +72,6 @@ export class Poll extends LoggedModel {
     @IsDate
     @Column
     closes_at: Date;
-    @Column
-    is_active: boolean;
     @ForeignKey(() => User)
     @Column
     author_id: string;
@@ -119,8 +102,7 @@ export class Poll extends LoggedModel {
             'title',
             'body',
             'closes_at',
-            'answer_team_id',
-            'is_active'
+            'answer_team_id'
         ];
     }
 }

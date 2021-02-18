@@ -29,10 +29,7 @@ export async function deleteEvent(req: Request, res: Response): Promise<Response
         return res.status(403).send(wrapResponse(false, { error: 'You are not allowed to delete an Event for a team you are not maintainer of.' }));
     }
 
-    event.update(
-        {
-            is_active: false,
-        })
+    event.destroy()
         .catch(() => {
             success = false;
             return null;

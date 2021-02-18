@@ -14,26 +14,11 @@ import { LoggedModel } from './logged.model';
 
 @DefaultScope(() => ({
     required: false,
-    where: {
-        is_active: true
-    },
-    order: [ [ 'start_date', 'ASC' ] ]
+    order: [['start_date', 'ASC']]
 }))
 @Scopes(() => ({
     full: {
         include: [ Organization, { model: User, as: 'author' }, { model: User, as: 'registered_users' } ]
-    },
-    active: {
-        required: false,
-        where: {
-            is_active: true
-        }
-    },
-    inactive: {
-        required: false,
-        where: {
-            is_active: false
-        }
     },
     expired: (date: Date) => ({
         required: false,
@@ -97,7 +82,7 @@ export class Event extends LoggedModel {
     @Column
     title: string;
     @Column
-    description: string; // 5000 chars long
+    description: string; // 10000 chars long
     @IsInt
     @AllowNull
     @Column
@@ -121,8 +106,6 @@ export class Event extends LoggedModel {
     @ForeignKey(() => Team)
     @Column
     allowed_team_id: string;
-    @Column
-    is_active: boolean;
 
     @BelongsTo(() => Organization)
     organization: Organization;
@@ -144,7 +127,6 @@ export class Event extends LoggedModel {
             'description',
             'start_date',
             'end_date',
-            'is_active',
             'author_id',
             'allowed_team_id',
             'org_id'

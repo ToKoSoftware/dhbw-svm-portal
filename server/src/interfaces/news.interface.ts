@@ -5,7 +5,6 @@ export interface NewsDataSnapshot{
     id?: string;
     title: string;
     body: string;
-    is_active?: boolean;
 }
 
 export interface RawNewsData extends NewsDataSnapshot{

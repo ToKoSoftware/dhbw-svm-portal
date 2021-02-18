@@ -25,7 +25,7 @@ export const teamPages: SidebarPageGroup[] = [
         title: 'Umfragen',
         icon: 'pie-chart',
         url: '/teams/polls',
-        matchFull: true
+        matchFull: false
       },
     ]
   }

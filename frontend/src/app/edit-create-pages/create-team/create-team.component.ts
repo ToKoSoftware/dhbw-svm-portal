@@ -49,8 +49,7 @@ export class CreateTeamComponent implements OnInit {
       return;
     }
     let data = {
-      ...this.formGroup.value,
-      is_active: true
+      ...this.formGroup.value
     };
     this.teams.create(data).subscribe(
       data => {

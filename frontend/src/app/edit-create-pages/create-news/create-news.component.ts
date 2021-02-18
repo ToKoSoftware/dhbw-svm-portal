@@ -40,9 +40,8 @@ export class CreateNewsComponent implements OnInit {
     if (this.formGroup.dirty && !this.formGroup.valid) {
       return;
     }
-    console.log({...this.formGroup.value, is_active: true});
     this.loadingModalService.showLoading();
-    this.news.create({...this.formGroup.value, is_active: true}).subscribe(
+    this.news.create({...this.formGroup.value}).subscribe(
       data => {
         this.current = data;
         this.loadingModalService.hideLoading();

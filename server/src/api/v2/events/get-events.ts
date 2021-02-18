@@ -48,11 +48,10 @@ export async function getEvents(req: Request, res: Response): Promise<Response> 
         Vars.currentUserIsAdmin
             ? [ { method: [ 'onlyCurrentOrg', Vars.currentOrganization.id ] }, 'ordered', 'full' ]
             : [
-                'full',
-                { method: [ 'onlyCurrentOrg', Vars.currentOrganization.id ] },
-                { method: [ 'onlyAllowedTeam', Vars.currentUser.teams.map(t => t.id), Vars.currentOrganization.public_team_id ] },
-                'active',
-                { method: [ 'notExpired', currentDate ] },
+                'full', 
+                {method: ['onlyCurrentOrg', Vars.currentOrganization.id]}, 
+                {method: ['onlyAllowedTeam', Vars.currentUser.teams.map(t => t.id), Vars.currentOrganization.public_team_id]},
+                {method: ['notExpired', currentDate]}, 
                 'ordered'
             ]
     )

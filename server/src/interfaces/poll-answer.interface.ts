@@ -5,7 +5,6 @@ import { User } from '../models/user.model';
 export interface PollAnswerDataSnapshot{
     id?: string;
     title: string;
-    is_active?: boolean;
 }
 
 export interface RawPollAnswerData extends PollAnswerDataSnapshot{

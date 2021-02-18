@@ -57,6 +57,17 @@ export class NotificationService {
     );
   }
 
+  public deletedSuccessfully(): void {
+    this.createNotification(
+      {
+        id: Math.random().toString(36).substring(7),
+        title: 'Löschen erfolgreich',
+        description: 'Ihre Änderungen wurden übernommen',
+        type: 'info'
+      }
+    );
+  }
+
 }
 
 export interface Notification {
