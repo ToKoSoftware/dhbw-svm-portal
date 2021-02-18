@@ -57,7 +57,8 @@ export class Form extends LoggedModel {
     public static requiredFields(): Array<keyof Form> {
         return [
             'title',
-            'description'
+            'description',
+            'config'
         ];
     }
 }

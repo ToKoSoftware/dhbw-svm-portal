@@ -67,6 +67,10 @@ import { getFTPConfiguration, updateFTPConfiguration } from './api/v2/documents/
 import { getPublicEvents } from './api/v2/events/get-public-events';
 import { registerForPublicEvents } from './api/v2/event-registrations/register-for-public-event';
 import { getEventLogs } from './api/v2/event-logs/get-event-logs';
+import {getForm, getForms} from './api/v2/forms/get-form';
+import {createForm} from './api/v2/forms/create-form';
+import {deleteForm} from './api/v2/forms/delete-form';
+import {updateForm} from './api/v2/forms/update-form';
 
 
 export default function startServer(): void {
@@ -223,6 +227,15 @@ export default function startServer(): void {
     app.get('/api/v1/admin/export/users', userIsAuthorizedByParam, userIsAdmin, (req, res) => exportUsers(req, res));
     app.get('/api/v1/admin/export/events/:id/registrations', userIsAuthorizedByParam, userIsAdmin, (req, res) => exportEventRegistrations(req, res));
     app.get('/api/v1/admin/export/direct-debit-mandates', userIsAuthorizedByParam, userIsAdmin, (req, res) => exportDirectDebitMandates(req, res));
+
+    /**
+     * News
+     */
+    app.get('/api/v2/forms', userIsAuthorized, (req, res) => getForms(req, res));
+    app.get('/api/v2/forms/:id', userIsAuthorized, (req, res) => getForm(req, res));
+    app.post('/api/v2/forms', userIsAuthorized, userIsAdmin, (req, res) => createForm(req, res));
+    app.delete('/api/v2/forms/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteForm(req, res));
+    app.put('/api/v2/forms/:id', userIsAuthorized, userIsAdmin, (req, res) => updateForm(req, res));
 
 
     // handle every other route with index.html, which loads Angular
