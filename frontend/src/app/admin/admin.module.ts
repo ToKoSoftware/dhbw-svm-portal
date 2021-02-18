@@ -26,6 +26,7 @@ import { DocumentsComponent } from './documents/documents.component';
 import { PrivacyComponent } from './privacy/privacy.component';
 import { Oauth2Component } from './oauth2/oauth2.component';
 import { EventLogComponent } from './event-log/event-log.component';
+import { FormsComponent } from './forms/forms.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { EventLogComponent } from './event-log/event-log.component';
     DocumentsComponent,
     PrivacyComponent,
     Oauth2Component,
-    EventLogComponent
+    EventLogComponent,
+    FormsComponent
   ],
   imports: [
     adminRoutes,

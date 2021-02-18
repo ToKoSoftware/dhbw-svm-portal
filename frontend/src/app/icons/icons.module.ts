@@ -5,7 +5,7 @@ import {
   User, Users, BarChart2, UploadCloud,
   DownloadCloud, Map, Trash, Key, Save,
   MousePointer, AlertCircle, File, LogOut,
-  LogIn, UserPlus, Tool, Activity, Folder,
+  LogIn, UserPlus, Tool, Activity, Folder, FileText,
   Calendar, UserCheck, Info, Lock, Edit, EyeOff, List,
   X, PieChart, Plus, ChevronRight, ChevronLeft, Minus,
   Check, Code, Shuffle, Copy, CreditCard, Shield
@@ -17,7 +17,7 @@ const icons = {
   User, Users, BarChart2, UploadCloud,
   DownloadCloud, Map, Trash, Key, Save,
   MousePointer, AlertCircle, File, LogOut,
-  LogIn, UserPlus, Tool, Activity, Folder,
+  LogIn, UserPlus, Tool, Activity, Folder, FileText,
   Calendar, UserCheck, Info, Lock, Edit, EyeOff, List,
   X, PieChart, Plus, ChevronRight, ChevronLeft, Minus,
   Check, Code, Shuffle, Copy, CreditCard, Shield

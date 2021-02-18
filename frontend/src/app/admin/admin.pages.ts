@@ -69,6 +69,11 @@ export const adminPages: SidebarPageGroup[] = [
         icon: 'pie-chart',
         url: '/my-team/polls',
       },
+      {
+        title: 'Formulare',
+        icon: 'file-text',
+        url: '/my-team/forms',
+      },
     ]
   }, {
     title: 'Erweitert',
