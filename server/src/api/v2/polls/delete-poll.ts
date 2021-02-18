@@ -10,7 +10,7 @@ export async function deletePoll(req: Request, res: Response): Promise<Response>
     let success = true;
     const pollId: string = req.params.id;
 
-    const pollData: Poll | null = await Poll.scope('active').findByPk(pollId)
+    const pollData: Poll | null = await Poll.findByPk(pollId)
         .catch(() => {
             success = false;
             return null;

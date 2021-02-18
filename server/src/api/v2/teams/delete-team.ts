@@ -42,8 +42,7 @@ export async function deleteTeam(req: Request, res: Response): Promise<Response>
     const deletePoll: Poll[] = await Poll.findAll(
         {
             where: {
-                answer_team_id: req.params.id,
-                is_active: true
+                answer_team_id: req.params.id
             }
         })
         .catch(() => {
@@ -57,35 +56,27 @@ export async function deleteTeam(req: Request, res: Response): Promise<Response>
         return res.status(404).send(wrapResponse(false, { error: 'No poll with given id' }));
     }
 
-    deletePoll.forEach(async el => await el.update(
-        {
-            is_active: false,
-        })
+    deletePoll.forEach(async el => await el.destroy()
         .catch(() => {
             success = false;
             return null;
         })
     );
     if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Could not deactivate polls belonging to team with id ' + req.params.id }));
+        return res.status(500).send(wrapResponse(false, { error: 'Could not delete polls belonging to team with id ' + req.params.id }));
     }
 
-    await PollAnswer.update(
-        {
-            is_active: false,
-        },
-        {
-            where: {
-                poll_id: deletePoll.map(t => t.id),
-                is_active: true
-            }
-        })
+    await PollAnswer.destroy({
+        where: {
+            poll_id: deletePoll.map(t => t.id)
+        }
+    })
         .catch(() => {
             success = false;
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Could not deactivate pollanswers belonging to team with id ' + req.params.id }));
+        return res.status(500).send(wrapResponse(false, { error: 'Could not delete pollanswers belonging to team with id ' + req.params.id }));
     }
     // await transaction.commit();
     return res.status(204).send(wrapResponse(true));
