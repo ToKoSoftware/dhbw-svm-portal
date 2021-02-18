@@ -55,8 +55,7 @@
             {{mandate.createdAt | amLocal | amDateFormat: 'DD.MM.YYYY H:mm' }}
           </app-labeled-value>
           <app-labeled-value class="flex-1" label="Lastschriftmandat widerrufen">
-            <app-button type="danger" (click)="cancelMandate()" size="small"
-                        label="Widerrufen"></app-button>
+            <app-button type="link-danger" (click)="cancelMandate()" label="Widerrufen"></app-button>
           </app-labeled-value>
         </div>
       </ng-container>

@@ -61,7 +61,10 @@ export class DirectDebitMandateComponent implements OnInit, OnDestroy {
 
   public createMandate(): void {
     this.api.post('/direct-debit-mandates', this.formGroup.value).subscribe(
-      () => this.notifications.savedSuccessfully(),
+      () => {
+        this.loadData();
+        this.notifications.savedSuccessfully();
+      },
       () => this.notifications.savingFailed()
     );
   }
