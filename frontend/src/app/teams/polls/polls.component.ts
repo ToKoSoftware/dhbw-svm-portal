@@ -6,6 +6,8 @@ import {PollsService} from '../../services/data/polls/polls.service';
 import {SlideOverService} from '../../services/slide-over/slide-over.service';
 import {TitleBarService} from '../../services/title-bar/title-bar.service';
 import {teamPages} from '../teams.pages';
+import {BehaviorSubject, Subscription} from 'rxjs';
+import {CurrentOrgService} from '../../services/current-org/current-org.service';
 
 @Component({
   selector: 'app-polls',
@@ -14,16 +16,38 @@ import {teamPages} from '../teams.pages';
 export class PollsComponent implements OnInit, OnDestroy {
   public sidebarPages = teamPages;
   public current: string;
+  private maintainTeamSubscription: Subscription = new Subscription();
+  private pollsSubscription: Subscription = new Subscription();
+  public data$: BehaviorSubject<PollData[] | null> = new BehaviorSubject(null);
   @ViewChild('create', {static: true}) pollCreate: TemplateRef<unknown>;
 
   constructor(public readonly polls: PollsService,
               private readonly slideOver: SlideOverService,
+              private readonly currentOrg: CurrentOrgService,
               private readonly confirm: ConfirmModalService,
               private readonly notifications: NotificationService,
               private readonly titleBarService: TitleBarService) {
   }
 
   ngOnInit(): void {
+    this.maintainTeamSubscription = this.currentOrg.currentMaintainTeams$.subscribe(
+      teams => {
+        if (!teams) {
+          return this.data$.next(null);
+        }
+        this.pollsSubscription = this.polls.data$.subscribe(
+          data => {
+            if (!data) {
+              return this.data$.next(null);
+            }
+            const polls = data.filter((pollData: PollData) => teams.find(team => team.id === pollData.answer_team_id) !== undefined);
+            this.data$.next(
+              polls
+            );
+          }
+        );
+      }
+    );
     this.titleBarService.buttons$.next([{
       title: 'Neue Umfrage',
       icon: 'plus',

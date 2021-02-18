@@ -17,7 +17,7 @@
                       </p>
                     </div>
                   </div>
-                  <div *ngIf="true" class="mt-2 flex"><!-- TODO: backend: return expired: true/false on every Poll-->
+                  <div *ngIf="poll.expired" class="mt-2 flex">
                     <div class="flex items-center text-sm text-red-500">
                       <p>
                         Diese Umfrage ist bereits abgelaufen.

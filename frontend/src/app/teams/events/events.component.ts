@@ -6,8 +6,8 @@ import {EventData} from '../../interfaces/event.interface';
 import {teamPages} from '../teams.pages';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {CurrentOrgService} from '../../services/current-org/current-org.service';
-import { ConfirmModalService } from 'src/app/services/confirm-modal/confirm-modal.service';
-import { NotificationService } from 'src/app/services/notification/notification.service';
+import {ConfirmModalService} from 'src/app/services/confirm-modal/confirm-modal.service';
+import {NotificationService} from 'src/app/services/notification/notification.service';
 
 @Component({
   selector: 'app-events',

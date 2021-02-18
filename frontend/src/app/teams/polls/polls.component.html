@@ -2,7 +2,7 @@
   <app-container>
     <div class="overflow-hidden pt-3 cursor-pointer md:-ml-2">
       <ul class="divide-y divide-gray-200">
-        <li *ngFor="let poll of polls.data$ | async">
+        <li *ngFor="let poll of data$ | async">
           <a [routerLink]="'/teams/polls/' + poll.id" class="block hover:bg-gray-50">
             <div class="px-4 py-4 flex items-center sm:px-6">
               <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
@@ -14,6 +14,13 @@
                     <div class="flex items-center text-sm text-gray-500">
                       <p>
                         Erstellt {{ poll.createdAt | amLocal | amTimeAgo }}
+                      </p>
+                    </div>
+                  </div>
+                  <div *ngIf="poll.expired" class="mt-2 flex">
+                    <div class="flex items-center text-sm text-red-500">
+                      <p>
+                        Diese Umfrage ist bereits abgelaufen.
                       </p>
                     </div>
                   </div>

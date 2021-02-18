@@ -3,9 +3,9 @@ import {adminPages} from '../admin.pages';
 import {SlideOverService} from '../../services/slide-over/slide-over.service';
 import {TitleBarService} from '../../services/title-bar/title-bar.service';
 import {PollsService} from '../../services/data/polls/polls.service';
-import { ConfirmModalService } from 'src/app/services/confirm-modal/confirm-modal.service';
-import { NotificationService } from 'src/app/services/notification/notification.service';
-import { PollData } from 'src/app/interfaces/poll.interface';
+import {ConfirmModalService} from 'src/app/services/confirm-modal/confirm-modal.service';
+import {NotificationService} from 'src/app/services/notification/notification.service';
+import {PollData} from 'src/app/interfaces/poll.interface';
 
 @Component({
   selector: 'app-polls',
