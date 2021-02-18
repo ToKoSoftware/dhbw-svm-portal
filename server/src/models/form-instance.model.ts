@@ -1,10 +1,10 @@
 import {BeforeCreate, BelongsTo, Column, ForeignKey, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
 import {v4 as uuidv4} from 'uuid';
-import {RawEventRegistrationData} from '../interfaces/event-registration.interface';
 import {LoggedModel} from './logged.model';
 import {User} from './user.model';
 import {Form} from './form.model';
 import {currentOrg} from './current-org.scope';
+import {Organization} from './organization.model';
 
 @Scopes(() => ({
     full: {
@@ -31,6 +31,9 @@ export class FormInstance extends LoggedModel {
     form_id: string;
     @Column
     value: string;
+    @ForeignKey(() => Organization)
+    @Column
+    org_id: string;
 
     @BelongsTo(() => User)
     user: User;
@@ -42,7 +45,7 @@ export class FormInstance extends LoggedModel {
         return instance.id = uuidv4();
     }
 
-    public static requiredFields(): Array<keyof RawEventRegistrationData> {
+    public static requiredFields(): Array<keyof FormInstance> {
         return [];
     }
 }

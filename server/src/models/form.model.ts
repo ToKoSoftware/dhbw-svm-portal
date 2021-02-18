@@ -1,10 +1,10 @@
 import {BeforeCreate, BelongsTo, Column, ForeignKey, HasMany, NotEmpty, PrimaryKey, Scopes, Table} from 'sequelize-typescript';
-import {Event} from './event.model';
 import {User} from './user.model';
 import {v4 as uuidv4} from 'uuid';
 import {LoggedModel} from './logged.model';
 import {currentOrg} from './current-org.scope';
 import {Organization} from './organization.model';
+import {FormInstance} from './form-instance.model';
 
 @Scopes(() => ({
     full: {
@@ -36,6 +36,9 @@ export class Form extends LoggedModel {
     @ForeignKey(() => User)
     @Column
     author_id: string;
+    @ForeignKey(() => Organization)
+    @Column
+    org_id: string;
 
     @BelongsTo(() => Organization)
     organization: Organization;
@@ -43,8 +46,8 @@ export class Form extends LoggedModel {
     @BelongsTo(() => User, 'author_id')
     author: User;
 
-    @HasMany(() => Event)
-    events: Event[];
+    @HasMany(() => FormInstance)
+    instances: FormInstance[];
 
     @BeforeCreate
     static addUuid(instance: Form): string {
