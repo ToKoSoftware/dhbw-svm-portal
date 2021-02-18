@@ -17,6 +17,13 @@
                       </p>
                     </div>
                   </div>
+                  <div *ngIf="true" class="mt-2 flex"><!-- TODO: backend: return expired: true/false on every Poll-->
+                    <div class="flex items-center text-sm text-red-500">
+                      <p>
+                        Diese Umfrage ist bereits abgelaufen.
+                      </p>
+                    </div>
+                  </div>
                 </div>
                 <div class="mt-4 flex-shrink-0 sm:mt-0">
                   <app-button icon="trash" label="Löschen" type="link-danger" (click)="delete($event, poll)"></app-button>

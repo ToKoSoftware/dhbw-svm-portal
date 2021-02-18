@@ -94,7 +94,7 @@ export class Event extends LoggedModel {
     @Column
     title: string;
     @Column
-    description: string; // 5000 chars long
+    description: string; // 10000 chars long
     @IsInt
     @AllowNull
     @Column
@@ -118,8 +118,6 @@ export class Event extends LoggedModel {
     @ForeignKey(() => Team)
     @Column
     allowed_team_id: string;
-    @Column
-    is_active: boolean;
 
     @BelongsTo(() => Organization)
     organization: Organization;
