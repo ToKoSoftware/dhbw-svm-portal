@@ -4,6 +4,8 @@ import {NewsService} from '../../services/data/news/news.service';
 import {TitleBarService} from '../../services/title-bar/title-bar.service';
 import {SlideOverService} from '../../services/slide-over/slide-over.service';
 import {NewsData} from '../../interfaces/news.interface';
+import {ConfirmModalService} from '../../services/confirm-modal/confirm-modal.service';
+import {NotificationService} from '../../services/notification/notification.service';
 
 @Component({
   selector: 'app-news',
@@ -17,6 +19,8 @@ export class NewsComponent implements OnInit, OnDestroy {
 
   constructor(public readonly news: NewsService,
               private readonly slideOver: SlideOverService,
+              private readonly confirm: ConfirmModalService,
+              private readonly notifications: NotificationService,
               private readonly titleBarService: TitleBarService) { }
 
   ngOnInit(): void {
@@ -39,4 +43,19 @@ export class NewsComponent implements OnInit, OnDestroy {
     this.titleBarService.buttons$.next([]);
   }
 
+  public async delete(event: Event, news: NewsData): Promise<void> {
+    event.stopPropagation();
+    const confirm = await this.confirm.confirm({
+      title: 'Löschen bestätigen',
+      description: `Sind Sie sicher, dass sie "${news.title}" löschen möchten? Dies kann nicht rückgängig gemacht werden.`,
+      confirmText: 'Löschen',
+      confirmButtonType: 'danger'
+    });
+    if (!confirm){
+      return;
+    }
+    this.news.delete(news).subscribe(
+      () => this.notifications.savedSuccessfully()
+    );
+  }
 }

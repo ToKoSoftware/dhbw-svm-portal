@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { wrapResponse } from '../../../functions/response-wrapper';
-import {User} from '../../../models/user.model';
+import { User } from '../../../models/user.model';
+import { Vars } from '../../../vars';
 
 export async function getStats(req: Request, res: Response): Promise<Response> {
     const usersCount = await countTotalEntities(User);
@@ -13,7 +14,7 @@ export async function getStats(req: Request, res: Response): Promise<Response> {
 }
 
 async function countTotalEntities(model: typeof User, is_active = true): Promise<number> {
-    return await model.count({
+    return await model.scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }).count({
         where: {
             is_active: is_active
         }

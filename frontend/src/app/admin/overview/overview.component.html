@@ -31,47 +31,5 @@
         </div>
       </app-titled-content>
     </form>
-    <app-labeled-value label="Vereinseigene Datenschutzerklärung">
-      <div class="flex justify-between">
-        <p class="pt-1 truncate">
-          <ng-container *ngIf="(currentOrg.currentOrg$ | async)?.privacy_policy_text">
-            <span
-              [innerHTML]="((currentOrg.currentOrg$ | async)?.privacy_policy_text) | truncate : ['80'] | MarkdownToHtml">
-            </span>
-          </ng-container>
-          <ng-container *ngIf="!(currentOrg.currentOrg$ | async)?.privacy_policy_text">
-            Nicht konfiguriert
-          </ng-container>
-        </p>
-        <app-button (click)="slideOver.showSlideOver('', privacyPolicy)" icon="edit" type="link" label="Bearbeiten" size="small">
-        </app-button>
-      </div>
-    </app-labeled-value>
-    <app-labeled-value label="Lastschriftmandate">
-      <div class="flex justify-between">
-        <p class="pt-1 truncate">
-          <ng-container *ngIf="(currentOrg.currentOrg$ | async)?.direct_debit_mandate_contract_text">
-            <span
-              [innerHTML]="((currentOrg.currentOrg$ | async)?.direct_debit_mandate_contract_text) | truncate : ['80'] | MarkdownToHtml">
-            </span>
-          </ng-container>
-          <ng-container *ngIf="!(currentOrg.currentOrg$ | async)?.direct_debit_mandate_contract_text">
-            Nicht konfiguriert
-          </ng-container>
-        </p>
-        <app-button (click)="slideOver.showSlideOver('', directDebitMandate)" icon="edit" type="link" label="Bearbeiten" size="small">
-        </app-button>
-      </div>
-    </app-labeled-value>
   </app-container>
 </app-layout>
-
-<ng-template #advanced>
-  <app-edit-developer-settings></app-edit-developer-settings>
-</ng-template>
-<ng-template #privacyPolicy>
-  <app-edit-privacy-policy></app-edit-privacy-policy>
-</ng-template>
-<ng-template #directDebitMandate>
-  <app-edit-direct-debit-mandate-contract-text></app-edit-direct-debit-mandate-contract-text>
-</ng-template>

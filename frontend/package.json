@@ -24,6 +24,7 @@
     "@tailwindcss/ui": "0.6.2",
     "@types/is-blank": "^2.1.0",
     "@types/simplemde": "^1.11.7",
+    "angular-calendar": "^0.28.22",
     "angular-feather": "^6.1.0",
     "autoprefixer": "^10.2.0",
     "browser-cookies": "^1.2.0",

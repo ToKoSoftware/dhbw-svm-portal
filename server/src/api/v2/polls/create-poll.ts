@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { objectHasRequiredAndNotEmptyKeys } from '../../../functions/check-inputs.func';
+import { getMaintainedTeamIdsOfCurrentUser } from '../../../functions/get-maintained-team-ids-of-current-user.func';
 import { mapPoll } from '../../../functions/map-polls.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { RawPollData } from '../../../interfaces/poll.interface';
@@ -24,7 +25,7 @@ export async function createPoll(req: Request, res: Response): Promise<Response>
     const team: Team | null = await Team.scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }).findOne({
         where: {
             id: mappedIncomingData.answer_team_id
-        } 
+        }
     })
         .catch(() => {
             success = false;
@@ -35,6 +36,11 @@ export async function createPoll(req: Request, res: Response): Promise<Response>
     }
     if (team === null) {
         return res.status(400).send(wrapResponse(false, { error: 'There is no team in your organization with given answer_team_id' }));
+    }
+
+    const maintainedTeamIds = await getMaintainedTeamIdsOfCurrentUser();
+    if (!maintainedTeamIds.find(id => id == mappedIncomingData.answer_team_id) && !Vars.currentUserIsAdmin) {
+        return res.status(403).send(wrapResponse(false, { error: 'You are not allowed to create a Poll for a team you are not maintainer of.' }));
     }
 
     const createdData = await Poll.create(mappedIncomingData)

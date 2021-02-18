@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {adminBreadcrumb, adminPages} from '../admin.pages';
+import {adminPages} from '../admin.pages';
 import {TitleBarService} from '../../services/title-bar/title-bar.service';
 import {RolesService} from '../../services/data/roles/roles.service';
 import {SlideOverService} from '../../services/slide-over/slide-over.service';
@@ -11,7 +11,6 @@ import {RoleData} from '../../interfaces/role.interface';
 })
 export class RolesComponent implements OnInit, OnDestroy {
   public sidebarPages = adminPages;
-  public breadcrumb = adminBreadcrumb;
   public loading = false;
   public current: string;
   @ViewChild('create', {static: true}) create: TemplateRef<unknown>;

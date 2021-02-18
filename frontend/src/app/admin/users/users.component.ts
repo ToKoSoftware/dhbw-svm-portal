@@ -1,15 +1,14 @@
 import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {UiButtonGroup} from '../../ui/ui.interface';
 import {ApiService} from '../../services/api/api.service';
 import {UserData} from '../../interfaces/user.interface';
-import {adminBreadcrumb, adminPages} from '../admin.pages';
+import {adminPages} from '../admin.pages';
 import {ConfirmModalService} from '../../services/confirm-modal/confirm-modal.service';
 import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
 import {ModalService} from '../../services/modal/modal.service';
 import {AvailableFilter, FilterValue} from '../../ui/filter/filter.component';
 import {LoginService} from '../../services/login/login.service';
-import {ActivatedRoute, Router} from "@angular/router";
-import {Subscription} from "rxjs";
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs';
 import {UsersService} from '../../services/data/users/users.service';
 
 @Component({

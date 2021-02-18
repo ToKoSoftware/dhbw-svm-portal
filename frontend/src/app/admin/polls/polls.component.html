@@ -1,16 +1,13 @@
-<app-layout
-  [sidebarPages]="sidebarPages"
-  heading="Übersicht"
->
+<app-layout [sidebarPages]="sidebarPages">
   <app-container>
     <div class="overflow-hidden pt-3 cursor-pointer md:-ml-2">
       <ul class="divide-y divide-gray-200">
         <li *ngFor="let poll of polls.data$ | async">
-          <a [routerLink]="'/my-team/polls/' + poll.id" class="block hover:bg-gray-50">
+          <div (click)="edit(poll)" class="block hover:bg-gray-50 dark:hover:bg-gray-700">
             <div class="px-4 py-4 flex items-center sm:px-6">
               <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
                 <div>
-                  <div class="flex font-medium text-black truncate">
+                  <div class="flex font-medium text-black dark:text-white truncate">
                     <p>{{poll.title}}</p>
                   </div>
                   <div class="mt-2 flex">
@@ -22,22 +19,22 @@
                   </div>
                 </div>
                 <div class="mt-4 flex-shrink-0 sm:mt-0">
-                  Bearbeiten
+                  <app-button icon="trash" label="Löschen" type="link-danger" (click)="delete($event, poll)"></app-button>
                 </div>
               </div>
               <div class="ml-5 flex-shrink-0">
                 <feather-icon name="chevron-right" class="pt-1 text-gray-400"></feather-icon>
               </div>
             </div>
-          </a>
+          </div>
         </li>
       </ul>
     </div>
   </app-container>
-  <ng-template #create>
+  <ng-template #pollCreate>
     <app-create-poll></app-create-poll>
   </ng-template>
-  <ng-template #edit>
+  <ng-template #pollEdit>
     <app-edit-poll [editId]="current"></app-edit-poll>
   </ng-template>
 </app-layout>

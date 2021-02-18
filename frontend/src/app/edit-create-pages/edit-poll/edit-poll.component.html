@@ -59,6 +59,9 @@
                 <div class="mt-4 flex-shrink-0 sm:mt-0">
                   {{answer?.user_votes_count}} Stimmen
                 </div>
+                <div class="mt-4 flex-shrink-0 sm:mt-0">
+                  <app-button (click)="deleteAnswer($event, answer)" icon="trash" type="link-danger" label="Löschen"></app-button>
+                </div>
               </div>
               <div class="ml-5 mt-3 flex-shrink-0">
                 <feather-icon name="chevron-right" class="pt-1 text-gray-400"></feather-icon>
