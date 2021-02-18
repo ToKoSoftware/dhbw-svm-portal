@@ -11,7 +11,6 @@ export async function getPublicEvents(req: Request, res: Response): Promise<Resp
         [
             {method: ['onlyCurrentOrg', orgId]},
             'public',
-            'active', 
             {method: ['notExpired', currentDate]}, 
             'ordered'
         ]

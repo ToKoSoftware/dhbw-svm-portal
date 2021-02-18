@@ -11,26 +11,11 @@ import { LoggedModel } from './logged.model';
 
 @DefaultScope(() => ({
     required: false,
-    where: {
-        is_active: true
-    },
     order: [['start_date', 'ASC']]
 }))
 @Scopes(() => ({
     full: {
         include: [Organization, { model: User, as: 'author' }, { model: User, as: 'registered_users' }]
-    },
-    active: {
-        required: false,
-        where: {
-            is_active: true
-        }
-    },
-    inactive: {
-        required: false,
-        where: {
-            is_active: false
-        }
     },
     expired: (date: Date) => ({
         required: false,
@@ -139,7 +124,6 @@ export class Event extends LoggedModel {
             'description',
             'start_date',
             'end_date',
-            'is_active',
             'author_id',
             'allowed_team_id',
             'org_id'
