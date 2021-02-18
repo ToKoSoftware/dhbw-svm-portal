@@ -6,14 +6,14 @@ import {PollData} from '../../../interfaces/poll.interface';
 import {NotificationService} from '../../../services/notification/notification.service';
 import {SlideOverService} from '../../../services/slide-over/slide-over.service';
 import {TitleBarService} from '../../../services/title-bar/title-bar.service';
-import { teamPages } from 'src/app/teams/teams.pages';
+import {adminPages} from '../../admin.pages';
 
 @Component({
   selector: 'app-overview',
   templateUrl: './poll-answer-detail.component.html'
 })
 export class PollAnswerDetailComponent implements OnInit, OnDestroy {
-  public sidebarPages = teamPages;
+  public sidebarPages = adminPages;
   private routeSubscription: Subscription = new Subscription();
   pollId: string | null = null;
   currentPoll: PollData;
