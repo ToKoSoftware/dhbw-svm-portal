@@ -1,8 +1,8 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {ApiService} from '../../services/api/api.service';
 import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
 import {LoginService} from '../../services/login/login.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ConfirmModalService} from '../../services/confirm-modal/confirm-modal.service';
 import {UsersService} from '../../services/data/users/users.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -10,6 +10,7 @@ import {OrganizationsService} from '../../services/data/organizations/organizati
 import {NotificationService} from '../../services/notification/notification.service';
 import {OrganizationData} from '../../interfaces/organization.interface';
 import {SlideOverService} from '../../services/slide-over/slide-over.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -20,13 +21,14 @@ import {SlideOverService} from '../../services/slide-over/slide-over.service';
     }
   `]
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
   public currentOrg: OrganizationData | null = null;
   @ViewChild('privacy', {static: true}) privacy: TemplateRef<unknown>;
   public availableGenderOptions: [string | number, string | number][] = [['M', 'Männlich'], ['W', 'Weiblich'], ['D', 'Divers']];
   public step = 1;
   public error = false;
   public formGroup: FormGroup;
+  private subscription: Subscription = new Subscription();
   public createUserData: CreateUserData = {
     email: '',
     access_code: '',
@@ -52,6 +54,7 @@ export class RegisterComponent implements OnInit {
     private readonly loginService: LoginService,
     private readonly notificationService: NotificationService,
     private readonly confirm: ConfirmModalService,
+    private readonly activatedRoute: ActivatedRoute,
     private readonly loading: LoadingModalService) {
   }
 
@@ -73,6 +76,12 @@ export class RegisterComponent implements OnInit {
         accepted_privacy_policy: [],
       }
     );
+    this.subscription = this.activatedRoute.queryParams.subscribe(params => {
+      if (params.code) {
+        this.formGroup.patchValue({access_code: params.code});
+        this.checkOrganization();
+      }
+    });
   }
 
   public createUser(): void {
@@ -107,8 +116,8 @@ export class RegisterComponent implements OnInit {
       accepted_privacy_policy: true
     };
     this.users.create(data as any).subscribe(
-      (data) => {
-        setTimeout(this.login, 2000);
+      () => {
+        this.login(data);
       }, error => {
         this.loading.hideLoading();
         this.confirm.confirm({
@@ -122,11 +131,10 @@ export class RegisterComponent implements OnInit {
     );
   }
 
-  private login(): void {
-    this.loading.showLoading();
+  private login(createData: CreateUserData): void {
     this.api.post<string>(['/login', 1], {
-      email: this.createUserData.email,
-      password: this.createUserData.password,
+      email: createData.email,
+      password: createData.password,
     }).subscribe(
       data => {
         this.loginService.login(data.data);
@@ -204,7 +212,6 @@ export class RegisterComponent implements OnInit {
     const valid = requiredFieldsForNextStep.every(
       // remove fields that are displayed in next step
       field => {
-        console.log(currentlyValidFields.includes(field) || ['email', 'password'].includes(field), field);
         return currentlyValidFields.includes(field) || ['email', 'password'].includes(field);
       });
     if (valid) {
@@ -233,6 +240,10 @@ export class RegisterComponent implements OnInit {
       return;
     }
     this.slideOver.showSlideOver('Datenschutzbestimmungen des Vereins "' + this.currentOrg.title + '"', this.privacy);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
 }

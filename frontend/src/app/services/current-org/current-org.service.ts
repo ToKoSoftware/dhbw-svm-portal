@@ -5,6 +5,7 @@ import {UserData} from '../../interfaces/user.interface';
 import {OrganizationData} from '../../interfaces/organization.interface';
 import {UsersService} from '../data/users/users.service';
 import {OrganizationsService} from '../data/organizations/organizations.service';
+import {TeamData} from '../../interfaces/team.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class CurrentOrgService implements OnDestroy {
   private userSubscription: Subscription;
   public currentOrg$: BehaviorSubject<null | OrganizationData> = new BehaviorSubject(null);
   public currentUser$: BehaviorSubject<null | UserData> = new BehaviorSubject(null);
+  public currentMaintainTeams$: BehaviorSubject<null | TeamData[]> = new BehaviorSubject(null);
 
   constructor(
     private readonly login: LoginService,
@@ -29,6 +31,13 @@ export class CurrentOrgService implements OnDestroy {
                 org => this.currentOrg$.next(org)
               );
             }
+            const maintainTeams: TeamData[] = [];
+            user.assigned_roles.forEach(role => {
+              if (role.maintained_teams.length) {
+                role.maintained_teams.forEach(team => maintainTeams.push(team));
+              }
+            });
+            this.currentMaintainTeams$.next(maintainTeams);
           }
         );
       } else {

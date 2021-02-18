@@ -13,7 +13,8 @@ import { LoggedModel } from './logged.model';
 
 @DefaultScope(() => ({
     required: false,
-    order: [ [ 'title', 'ASC' ] ]
+    order: [['title', 'ASC']],
+    include: Team
 }))
 
 @Scopes(() => ({

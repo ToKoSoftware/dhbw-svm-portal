@@ -26,8 +26,12 @@ export class EventsService extends DataService<EventData> implements DataService
       }));
   }
 
-  delete(data: CreateAndUpdateData<EventData>): boolean {
-    return false;
+  delete(data: EventData): Observable<unknown> {
+    return this.api.delete<EventData>(`/events/${data.id}`)
+      .pipe(map(res => {
+        this.reloadData();
+        return res;
+      }));
   }
 
   read(id: string): Observable<EventData> {

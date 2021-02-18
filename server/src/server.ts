@@ -113,7 +113,7 @@ export default function startServer(): void {
     /**
      * User
      */
-    app.get('/api/v1/users', userIsAuthorized, userIsAdmin, (req, res) => getUsers(req, res));
+    app.get('/api/v1/users', userIsAuthorized, (req, res) => getUsers(req, res));
     app.get('/api/v1/users/:id', userIsAuthorized, (req, res) => getUser(req, res));
     app.get('/api/v1/users/:id/direct-debit-mandates', userIsAuthorized, (req, res) => getDirectDebitMandate(req, res));
     app.delete('/api/v1/users/:id/direct-debit-mandates', userIsAuthorized, (req, res) => deleteDirectDebitMandate(req, res));
@@ -130,7 +130,7 @@ export default function startServer(): void {
     app.post('/api/v2/teams/:id/membership', userIsAuthorized, (req, res) => createMembership(req, res));
     app.delete('/api/v2/teams/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteTeam(req, res));
     app.delete('/api/v2/teams/:id/membership', userIsAuthorized, (req, res) => deleteMembership(req, res));
-    app.put('/api/v2/teams/:id', userIsAuthorized, userIsAdmin, (req, res) => updateTeam(req, res));
+    app.put('/api/v2/teams/:id', userIsAuthorized, (req, res) => updateTeam(req, res));
 
     /**
      * News
@@ -147,41 +147,42 @@ export default function startServer(): void {
     app.get('/api/v2/events', userIsAuthorized, (req, res) => getEvents(req, res));
     app.get('/api/v2/events/:id', userIsAuthorized, (req, res) => getEvent(req, res));
     // Get a single event registration by eventId and userId
-    app.get('/api/v2/events/:event_id/eventregistration', userIsAuthorized, (req, res) => getEventRegistration(req, res));
+    app.get('/api/v2/events/:event_id/event-registration', userIsAuthorized, (req, res) => getEventRegistration(req, res));
     // Get all event registrations for one eventId
+
     app.get('/api/v2/events/:event_id/eventregistrations', userIsAuthorized, userIsAdmin,
         (req, res) => getEventRegistrationsFromEvent(req, res));
     // Get all event registrations for one user (or own registrations as non-admin)
-    app.get('/api/v2/eventregistrations', userIsAuthorized, (req, res) => getEventRegistrationsFromUser(req, res));
-    app.post('/api/v2/events', userIsAuthorized, userIsAdmin, (req, res) => createEvent(req, res));
+    app.get('/api/v2/event-registrations', userIsAuthorized, (req, res) => getEventRegistrationsFromUser(req, res));
+    app.post('/api/v2/events', userIsAuthorized, (req, res) => createEvent(req, res));
     app.post('/api/v2/events/:id/register', (req, res) => registerForEvent(req, res));
-    app.delete('/api/v2/events/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteEvent(req, res));
-    app.delete('/api/v2/events/:event_id/eventregistrations/:id', userIsAuthorized, (req, res) => deleteEventRegistration(req, res));
-    app.put('/api/v2/events/:id', userIsAuthorized, userIsAdmin, (req, res) => updateEvent(req, res));
-    app.put('/api/v2/events/:event_id/eventregistrations', userIsAuthorized, (req, res) => updateEventRegistration(req, res));
+    app.delete('/api/v2/events/:id', userIsAuthorized, (req, res) => deleteEvent(req, res));
+    app.delete('/api/v2/events/:event_id/event-registrations/:id', userIsAuthorized, (req, res) => deleteEventRegistration(req, res));
+    app.put('/api/v2/events/:id', userIsAuthorized, (req, res) => updateEvent(req, res));
+    app.put('/api/v2/events/:event_id/event-registrations', userIsAuthorized, (req, res) => updateEventRegistration(req, res));
 
     /**
      * Poll
      */
     app.get('/api/v2/polls', userIsAuthorized, (req, res) => getPolls(req, res));
     app.get('/api/v2/polls/:id', userIsAuthorized, (req, res) => getPoll(req, res));
-    app.post('/api/v2/polls', userIsAuthorized, userIsAdmin, (req, res) => createPoll(req, res));
-    app.delete('/api/v2/polls/:id', userIsAuthorized, userIsAdmin, (req, res) => deletePoll(req, res));
-    app.put('/api/v2/polls/:id', userIsAuthorized, userIsAdmin, (req, res) => updatePoll(req, res));
+    app.post('/api/v2/polls', userIsAuthorized, (req, res) => createPoll(req, res));
+    app.delete('/api/v2/polls/:id', userIsAuthorized, (req, res) => deletePoll(req, res));
+    app.put('/api/v2/polls/:id', userIsAuthorized, (req, res) => updatePoll(req, res));
 
     /**
      * PollAnswer
      */
-    app.post('/api/v2/polls/:id/answers', userIsAuthorized, userIsAdmin, (req, res) => createPollAnswer(req, res));
+    app.post('/api/v2/polls/:id/answers', userIsAuthorized, (req, res) => createPollAnswer(req, res));
     app.post('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res));
-    app.put('/api/v2/polls/:pollId/answers/:id', userIsAuthorized, userIsAdmin, (req, res) => updatePollAnswer(req, res));
-    app.delete('/api/v2/polls/:pollId/answers/:id', userIsAuthorized, userIsAdmin, (req, res) => deletePollAnswer(req, res));
+    app.put('/api/v2/polls/:pollId/:id', userIsAuthorized, (req, res) => updatePollAnswer(req, res));
+    app.delete('/api/v2/polls/:pollId/:id', userIsAuthorized, (req, res) => deletePollAnswer(req, res));
     app.delete('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => deletePollVote(req, res));
 
     /**
      * Role
      */
-    app.get('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => getRoles(req, res));
+    app.get('/api/v2/roles', userIsAuthorized, (req, res) => getRoles(req, res));
     app.get('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => getRole(req, res));
     app.post('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => createRole(req, res));
     app.post('/api/v2/roles/:id/assignment', userIsAuthorized, userIsAdmin, (req, res) => createRoleAssignment(req, res));
@@ -229,6 +230,7 @@ export default function startServer(): void {
         (req, res) => exportEventRegistrations(req, res));
     app.get('/api/v1/admin/export/direct-debit-mandates', userIsAuthorizedByParam, userIsAdmin,
         (req, res) => exportDirectDebitMandates(req, res));
+
 
 
     // handle every other route with index.html, which loads Angular
