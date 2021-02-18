@@ -52,6 +52,9 @@ export class EventLogComponent implements OnInit {
       ['PolLVote', 'eine Antwort zu einer Umfrage'],
       ['RoleAssignment', 'eine Zuweisung zu einer Rolle'],
       ['DirectDebitMandate', 'ein Lastschriftmandat'],
+      ['PolLAnswer', 'eine Antwort zu einer Umfrage'],
+      ['Form', 'ein Formular'],
+      ['FormInstance', 'eine Formular-Ausfüllung'], // ???
       ['PollVote', 'eine Stimme zu einer Umfrage'],
       ['Membership', 'eine Zuweisung zu einem Team'],
       ['PollAnswer', 'eine Umfrageantwort'],
