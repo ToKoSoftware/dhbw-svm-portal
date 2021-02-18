@@ -7,7 +7,7 @@ import { Vars } from '../../../vars';
 export async function deleteNews(req: Request, res: Response): Promise<Response> {
     let success = true;
 
-    const newsToDelete = await News.findByPk(req.params.id)
+    const newsToDelete = await News.scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }).findByPk(req.params.id)
         .catch(() => {
             success = false;
             return null;
