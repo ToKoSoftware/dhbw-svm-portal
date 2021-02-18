@@ -14,7 +14,7 @@ import {teamPages} from '../teams.pages';
 export class PollsComponent implements OnInit, OnDestroy {
   public sidebarPages = teamPages;
   public current: string;
-  @ViewChild('pollCreate', {static: true}) pollCreate: TemplateRef<unknown>;
+  @ViewChild('create', {static: true}) pollCreate: TemplateRef<unknown>;
 
   constructor(public readonly polls: PollsService,
               private readonly slideOver: SlideOverService,

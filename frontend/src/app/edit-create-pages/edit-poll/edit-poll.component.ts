@@ -108,8 +108,6 @@ export class EditPollComponent implements OnInit, OnDestroy {
     if (!confirm){
       return;
     }
-    this.polls.deleteAnswer(this.current, pollAnswer).subscribe(
-      () => this.notificationService.deletedSuccessfully()
-    );
+    this.polls.deleteAnswer(this.current, pollAnswer).subscribe();
   }
 }
