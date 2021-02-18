@@ -13,8 +13,8 @@ export class customError extends Error {
 
 type IErrorHandler = (err: customError, req: Request, res: Response, next: NextFunction) => unknown;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const errorHandler: IErrorHandler = (err, req, res, next) => {
+
+export const errorHandler: IErrorHandler = (err, req, res,) => {
     const error: PortalErrorData = {
         message: err.errorEnumMessage.toString() || 'Es ist ein Fehler aufgetreten',
         status: err.statusCode || 500,
