@@ -1,16 +1,13 @@
-<app-layout
-  [sidebarPages]="sidebarPages"
-  heading="Übersicht"
->
+<app-layout [sidebarPages]="sidebarPages">
   <app-container>
     <div class="overflow-hidden pt-3 cursor-pointer md:-ml-2">
       <ul class="divide-y divide-gray-200">
-        <li *ngFor="let event of data$ | async">
-          <div (click)="editSlide(event)" class="block hover:bg-gray-50">
+        <li *ngFor="let event of data.data$ | async">
+          <div (click)="editSlide(event)" class="block hover:bg-gray-50 dark:hover:bg-gray-700">
             <div class="px-4 py-4 flex items-center sm:px-6">
               <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
                 <div>
-                  <div class="flex font-medium text-black truncate">
+                  <div class="flex font-medium text-black dark:text-white truncate">
                     <p>{{event.title}}</p>
                   </div>
                   <div class="mt-2 flex">
@@ -22,7 +19,7 @@
                   </div>
                 </div>
                 <div class="mt-4 flex-shrink-0 sm:mt-0">
-                  Bearbeiten
+                  <app-button icon="trash" label="Löschen" type="link-danger" (click)="delete($event, event)"></app-button>
                 </div>
               </div>
               <div class="ml-5 flex-shrink-0">
