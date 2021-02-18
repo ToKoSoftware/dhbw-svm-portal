@@ -69,8 +69,7 @@ export class EditTeamComponent implements OnInit, OnChanges {
     }
     let data = {
       ...this.current,
-      ...this.formGroup.value,
-      is_active: true
+      ...this.formGroup.value
     };
     this.teams.update(data).subscribe(
       data => {

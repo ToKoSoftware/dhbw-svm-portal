@@ -77,7 +77,7 @@ export class EditPollComponent implements OnInit, OnDestroy {
     if (this.formGroup.dirty && !this.formGroup.valid) {
       return;
     }
-    this.polls.update({...this.current, ...this.formGroup.value, is_active: true}).subscribe(
+    this.polls.update({...this.current, ...this.formGroup.value}).subscribe(
       data => {
         this.current = data;
       },
@@ -108,8 +108,6 @@ export class EditPollComponent implements OnInit, OnDestroy {
     if (!confirm){
       return;
     }
-    this.polls.deleteAnswer(this.current, pollAnswer).subscribe(
-      () => this.notificationService.savedSuccessfully()
-    );
+    this.polls.deleteAnswer(this.current, pollAnswer).subscribe();
   }
 }

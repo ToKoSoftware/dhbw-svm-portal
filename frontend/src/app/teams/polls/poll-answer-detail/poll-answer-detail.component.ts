@@ -1,19 +1,19 @@
-import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {Subscription} from 'rxjs';
-import {ActivatedRoute} from '@angular/router';
-import {PollsService} from '../../../services/data/polls/polls.service';
-import {PollData} from '../../../interfaces/poll.interface';
-import {NotificationService} from '../../../services/notification/notification.service';
-import {SlideOverService} from '../../../services/slide-over/slide-over.service';
-import {TitleBarService} from '../../../services/title-bar/title-bar.service';
-import {adminPages} from '../../admin.pages';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { PollData } from 'src/app/interfaces/poll.interface';
+import { PollsService } from 'src/app/services/data/polls/polls.service';
+import { NotificationService } from 'src/app/services/notification/notification.service';
+import { SlideOverService } from 'src/app/services/slide-over/slide-over.service';
+import { TitleBarService } from 'src/app/services/title-bar/title-bar.service';
+import { teamPages } from '../../teams.pages';
 
 @Component({
-  selector: 'app-overview',
+  selector: 'app-team-poll-answer-detail',
   templateUrl: './poll-answer-detail.component.html'
 })
 export class PollAnswerDetailComponent implements OnInit, OnDestroy {
-  public sidebarPages = adminPages;
+  public sidebarPages = teamPages;
   private routeSubscription: Subscription = new Subscription();
   pollId: string | null = null;
   currentPoll: PollData;
@@ -25,8 +25,7 @@ export class PollAnswerDetailComponent implements OnInit, OnDestroy {
     private readonly notifications: NotificationService,
     private readonly slideOver: SlideOverService,
     private readonly titleBarService: TitleBarService
-  ) {
-  }
+  ) { }
 
   ngOnInit(): void {
     this.routeSubscription = this.activatedRoute.paramMap.subscribe(params => {
@@ -52,4 +51,5 @@ export class PollAnswerDetailComponent implements OnInit, OnDestroy {
   public calculateProgress(numerator: number, denominator: number): number {
     return !isNaN(numerator / denominator) ? numerator / denominator * 100 : 100;
   }
+
 }

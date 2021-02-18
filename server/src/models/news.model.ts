@@ -7,26 +7,12 @@ import { Organization } from './organization.model';
 import { User } from './user.model';
 
 @DefaultScope(() => ({
-    required: false,
-    where: {
-        is_active: true
-    }
+    required: false, 
+    include: User.scope('publicData')
 }))
 @Scopes(() => ({
     full: {
         include: [Organization, User]
-    },
-    active: {
-        required: false,
-        where: {
-            is_active: true
-        }
-    },
-    inactive: {
-        required: false,
-        where: {
-            is_active: false
-        }
     },
     onlyCurrentOrg: (org_id: string) => currentOrg(org_id)
 }))
@@ -49,8 +35,6 @@ export class News extends LoggedModel {
     @ForeignKey(() => User)
     @Column
     author_id: string;
-    @Column
-    is_active: boolean;
 
     @BelongsTo(() => Organization)
     organization: Organization;
@@ -66,7 +50,6 @@ export class News extends LoggedModel {
         return [
             'title',
             'body',
-            'is_active'
         ];
     }
 }

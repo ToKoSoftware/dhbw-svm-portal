@@ -6,6 +6,8 @@ import {EventData} from '../../interfaces/event.interface';
 import {teamPages} from '../teams.pages';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {CurrentOrgService} from '../../services/current-org/current-org.service';
+import {ConfirmModalService} from 'src/app/services/confirm-modal/confirm-modal.service';
+import {NotificationService} from 'src/app/services/notification/notification.service';
 
 @Component({
   selector: 'app-events',
@@ -23,6 +25,8 @@ export class EventsComponent implements OnInit, OnDestroy {
   constructor(public readonly data: EventsService,
               private readonly currentOrg: CurrentOrgService,
               private readonly slideOver: SlideOverService,
+              private readonly confirm: ConfirmModalService,
+              private readonly notifications: NotificationService,
               private readonly titleBarService: TitleBarService) {
   }
 
@@ -62,6 +66,21 @@ export class EventsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.maintainTeamSubscription.unsubscribe();
     this.titleBarService.buttons$.next([]);
+  }
+  public async delete(event: Event, eventData: EventData): Promise<void> {
+    event.stopPropagation();
+    const confirm = await this.confirm.confirm({
+      title: 'Löschen bestätigen',
+      description: `Sind Sie sicher, dass sie "${eventData.title}" löschen möchten? Dies kann nicht rückgängig gemacht werden.`,
+      confirmText: 'Löschen',
+      confirmButtonType: 'danger'
+    });
+    if (!confirm){
+      return;
+    }
+    this.data.delete(eventData).subscribe(
+      () => this.notifications.deletedSuccessfully()
+    );
   }
 
 }

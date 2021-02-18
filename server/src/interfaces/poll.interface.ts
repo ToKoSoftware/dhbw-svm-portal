@@ -7,7 +7,6 @@ export interface PollDataSnapshot{
     title: string;
     body: string;
     closes_at: Date;
-    is_active?: boolean;
 }
 
 export interface RawPollData extends PollDataSnapshot{

@@ -8,11 +8,12 @@ import { PollsComponent } from './polls/polls.component';
 import {MomentModule} from 'ngx-moment';
 import {EditCreatePagesModule} from '../edit-create-pages/edit-create-pages.module';
 import {IconsModule} from '../icons/icons.module';
+import { PollAnswerDetailComponent } from './polls/poll-answer-detail/poll-answer-detail.component';
 
 
 
 @NgModule({
-  declarations: [OverviewComponent, EventsComponent, PollsComponent],
+  declarations: [OverviewComponent, EventsComponent, PollsComponent, PollAnswerDetailComponent],
   imports: [
     CommonModule,
     teamsRoutes,

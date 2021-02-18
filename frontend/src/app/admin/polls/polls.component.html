@@ -3,7 +3,7 @@
     <div class="overflow-hidden pt-3 cursor-pointer md:-ml-2">
       <ul class="divide-y divide-gray-200">
         <li *ngFor="let poll of polls.data$ | async">
-          <div (click)="edit(poll)" class="block hover:bg-gray-50 dark:hover:bg-gray-700">
+          <a [routerLink]="'/my-team/polls/' + poll.id" class="block hover:bg-gray-50 dark:hover:bg-gray-700">
             <div class="px-4 py-4 flex items-center sm:px-6">
               <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
                 <div>
@@ -17,6 +17,13 @@
                       </p>
                     </div>
                   </div>
+                  <div *ngIf="poll.expired" class="mt-2 flex">
+                    <div class="flex items-center text-sm text-red-500">
+                      <p>
+                        Diese Umfrage ist bereits abgelaufen.
+                      </p>
+                    </div>
+                  </div>
                 </div>
                 <div class="mt-4 flex-shrink-0 sm:mt-0">
                   <app-button icon="trash" label="Löschen" type="link-danger" (click)="delete($event, poll)"></app-button>
@@ -26,15 +33,12 @@
                 <feather-icon name="chevron-right" class="pt-1 text-gray-400"></feather-icon>
               </div>
             </div>
-          </div>
+          </a>
         </li>
       </ul>
     </div>
   </app-container>
   <ng-template #pollCreate>
     <app-create-poll></app-create-poll>
-  </ng-template>
-  <ng-template #pollEdit>
-    <app-edit-poll [editId]="current"></app-edit-poll>
   </ng-template>
 </app-layout>

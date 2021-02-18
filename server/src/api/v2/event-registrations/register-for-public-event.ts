@@ -15,7 +15,6 @@ export async function registerForPublicEvents(req: Request, res: Response): Prom
         [
             { method: ['onlyCurrentOrg', orgId] },
             'public',
-            'active',
             { method: ['notExpired', currentDate] }
         ]
     )

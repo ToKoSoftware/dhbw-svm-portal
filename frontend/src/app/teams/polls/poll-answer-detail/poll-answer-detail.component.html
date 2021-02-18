@@ -1,0 +1,46 @@
+<app-layout
+[sidebarPages]="sidebarPages"
+heading="Übersicht"
+>
+<app-container>
+  <div class="overflow-hidden pt-3 cursor-pointer md:-ml-2" *ngIf="pollId !== null">
+    <app-edit-poll [editId]="pollId"></app-edit-poll>
+  </div>
+</app-container>
+<ng-template #results>
+  <ng-container *ngIf="currentPoll">
+    <div *ngFor="let pollAnswer of currentPoll.poll_answers">
+      <app-titled-content
+        [label]="pollAnswer.title">
+        <div class="flex">
+          <app-labeled-value class="flex-1 w-1/2" label="Anzahl Stimmen">
+            {{pollAnswer.user_votes_count}} / {{currentPoll.total_user_votes_count}}
+          </app-labeled-value>
+          <app-progress-bar
+            class="flex-1 w-1/2 mt-6"
+            [progress]="calculateProgress(pollAnswer.user_votes_count, currentPoll.total_user_votes_count)">
+          </app-progress-bar>
+        </div>
+        <div class="block p-3 px-0
+          group font-medium
+          hover:text-gray-900 hover:bg-gray-100 dark:hover:text-malachite-600
+          focus:outline-none focus:bg-gray-200 transition
+          dark:hover:bg-gray-700 ease-in-out duration-150"
+           [routerLink]="'/my-team/users/' + user.id"
+           *ngFor="let user of pollAnswer.voted_users">
+          <app-labeled-value class="flex-1 w-1/2" [label]="user.first_name + ' ' + user.last_name">
+            <ng-container *ngIf="user.PollVote.title">
+              {{user.PollVote.title}}
+            </ng-container>
+            <ng-container *ngIf="!user.PollVote.title">
+              Keine Begründung / Kommentar angegeben.
+            </ng-container>
+          </app-labeled-value>
+        </div>
+      </app-titled-content>
+    </div>
+    <app-zero-data *ngIf="!currentPoll.poll_answers.length" heading="Keine Antwortmöglichkeiten vorhanden.">
+    </app-zero-data>
+  </ng-container>
+</ng-template>
+</app-layout>
