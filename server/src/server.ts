@@ -144,17 +144,17 @@ export default function startServer(): void {
     app.get('/api/v2/events', userIsAuthorized, (req, res) => getEvents(req, res));
     app.get('/api/v2/events/:id', userIsAuthorized, (req, res) => getEvent(req, res));
     // Get a single event registration by eventId and userId
-    app.get('/api/v2/events/:event_id/eventregistration', userIsAuthorized, (req, res) => getEventRegistration(req, res));
+    app.get('/api/v2/events/:event_id/event-registration', userIsAuthorized, (req, res) => getEventRegistration(req, res));
     // Get all event registrations for one eventId
-    app.get('/api/v2/events/:event_id/eventregistrations', userIsAuthorized, userIsAdmin, (req, res) => getEventRegistrationsFromEvent(req, res));
+    app.get('/api/v2/events/:event_id/event-registrations', userIsAuthorized, userIsAdmin, (req, res) => getEventRegistrationsFromEvent(req, res));
     // Get all event registrations for one user (or own registrations as non-admin)
-    app.get('/api/v2/eventregistrations', userIsAuthorized, (req, res) => getEventRegistrationsFromUser(req, res));
+    app.get('/api/v2/event-registrations', userIsAuthorized, (req, res) => getEventRegistrationsFromUser(req, res));
     app.post('/api/v2/events', userIsAuthorized, (req, res) => createEvent(req, res));
     app.post('/api/v2/events/:id/register', (req, res) => registerForEvent(req, res));
     app.delete('/api/v2/events/:id', userIsAuthorized, (req, res) => deleteEvent(req, res));
-    app.delete('/api/v2/events/:event_id/eventregistrations/:id', userIsAuthorized, (req, res) => deleteEventRegistration(req, res));
+    app.delete('/api/v2/events/:event_id/event-registrations/:id', userIsAuthorized, (req, res) => deleteEventRegistration(req, res));
     app.put('/api/v2/events/:id', userIsAuthorized, (req, res) => updateEvent(req, res));
-    app.put('/api/v2/events/:event_id/eventregistrations', userIsAuthorized, (req, res) => updateEventRegistration(req, res));
+    app.put('/api/v2/events/:event_id/event-registrations', userIsAuthorized, (req, res) => updateEventRegistration(req, res));
 
     /**
      * Poll
