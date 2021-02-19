@@ -1,8 +1,26 @@
-import { Table, PrimaryKey, Column, NotEmpty, IsInt, ForeignKey, BeforeCreate, BelongsTo } from 'sequelize-typescript';
+import { Table, PrimaryKey, Column, NotEmpty, IsInt, ForeignKey, BeforeCreate, BelongsTo, Scopes, DefaultScope } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { RawItemData } from '../interfaces/item.interface';
+import { currentOrg } from './current-org.scope';
 import { LoggedModel } from './logged.model';
 import { Organization } from './organization.model';
+
+@DefaultScope(() => ({
+    required: false,
+    order: [['title', 'ASC']]
+}))
+
+@Scopes(() => ({
+    full: {
+        required: false,
+        include: [Organization]
+    },
+    onlyCurrentOrg: (org_id: string) => currentOrg(org_id),
+    ordered: {
+        required: false,
+        order: [['title', 'ASC']]
+    }
+}))
 
 @Table
 export class Item extends LoggedModel {
