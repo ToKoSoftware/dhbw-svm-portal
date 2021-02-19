@@ -16,9 +16,9 @@ type IErrorHandler = (err: customError, req: Request, res: Response, next: NextF
 
 export const errorHandler: IErrorHandler = (err, req, res,) => {
     const error: PortalErrorData = {
-        message: err.errorEnumMessage.toString() || 'Es ist ein Fehler aufgetreten',
+        message: err.errorEnumMessage?.toString() || 'Es ist ein Fehler aufgetreten',
         status: err.statusCode || 500,
-        type: PortalErrors[ err.errorEnumMessage ].toString(),
+        type: PortalErrors[ err.errorEnumMessage ],
         success: false,
     };
 
