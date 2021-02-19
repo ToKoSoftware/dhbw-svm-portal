@@ -23,7 +23,13 @@ export class OverviewComponent implements OnInit, OnDestroy {
   private currentOrgSubscription: Subscription = new Subscription();
   private currentConfigSubscription: Subscription = new Subscription();
   private colorsSubscription: Subscription = new Subscription();
-  private themeChanged = false;
+  private  colorFields: { [k: string]: keyof ColorConfig } = {
+    title_bar_background_color: 'titleBarBackgroundColor',
+    title_bar_border_color: 'titleBarBorderColor',
+    title_bar_text_color: 'titleBarTextColor',
+    sidebar_link_color: 'sidebarLinkTextColor',
+    accent_color: 'accentColor',
+  };
 
   constructor(
     public readonly organizations: OrganizationsService,
@@ -81,15 +87,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
             }
           );
           this.colorsSubscription = this.themeForm.valueChanges.subscribe((value) => {
-            const colorFields: { [k: string]: keyof ColorConfig } = {
-              title_bar_background_color: 'titleBarBackgroundColor',
-              title_bar_border_color: 'titleBarBorderColor',
-              title_bar_text_color: 'titleBarTextColor',
-              sidebar_link_color: 'sidebarLinkTextColor',
-              accent_color: 'accentColor',
-            };
-            Object.keys(colorFields).forEach(key => {
-              const colorName = colorFields[key];
+            Object.keys(this.colorFields).forEach(key => {
+              const colorName = this.colorFields[key];
               let config = this.currentOrg.currentConfig$.value;
               if (!config) {
                 config = {
@@ -114,11 +113,31 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
+    this.loading.showLoading();
     if (this.editOrgForm.dirty && !this.editOrgForm.valid) {
       return;
     }
     const data = {...this.editOrgForm.value, id: this.currentOrg.currentOrg$.getValue()?.id}
-    this.organizations.update(data).subscribe(updatedOrg => this.currentOrg.currentOrg$.next(updatedOrg));
+    this.organizations.update(data).subscribe(updatedOrg => {
+      this.currentOrg.currentOrg$.next(updatedOrg)
+      this.loading.hideLoading();
+    });
+  }
+
+  public saveColors(): void {
+    this.loading.showLoading();
+    if (this.editOrgForm.dirty && !this.editOrgForm.valid) {
+      return;
+    }
+    const colors: { [k: string]: string } = {};
+    Object.keys(this.colorFields).forEach(key => {
+      const colorName = this.colorFields[key];
+      colors[colorName] = this.themeForm.value[key] === ""? undefined: this.themeForm.value[key];
+    });
+    const data = {id: this.currentOrg.currentOrg$.getValue()?.id || '', colors: colors}
+    this.organizations.updateConfig(data).subscribe(
+      () => this.loading.hideLoading()
+    );
   }
 
   ngOnDestroy(): void {

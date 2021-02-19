@@ -53,7 +53,7 @@ export async function loadOrgSettingsForPermission(permission: ConfigProtectionT
     return assertedConfig;
 }
 
-export type OrganizationConfiguration = { [key: string]: SingleConfiguration<unknown> }
+export type OrganizationConfiguration = { [key in availableConfigurationKey | string]: SingleConfiguration<unknown> }
 
 export interface SingleConfiguration<T> {
     data: T;
@@ -61,3 +61,4 @@ export interface SingleConfiguration<T> {
 }
 
 export type ConfigProtectionType = 'system' | 'admin' | 'login' | 'public';
+export type availableConfigurationKey = 'oauth2' | 'ftp' | 'colors';

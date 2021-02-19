@@ -1,8 +1,10 @@
-import { Request, Response } from 'express';
-import { checkKeysAreNotEmptyOrNotSet } from '../../../functions/check-inputs.func';
-import { wrapResponse } from '../../../functions/response-wrapper';
-import { RawOrganizationData } from '../../../interfaces/organization.interface';
-import { Organization } from '../../../models/organization.model';
+import {Request, Response} from 'express';
+import {checkKeysAreNotEmptyOrNotSet} from '../../../functions/check-inputs.func';
+import {wrapResponse} from '../../../functions/response-wrapper';
+import {RawOrganizationData} from '../../../interfaces/organization.interface';
+import {Organization} from '../../../models/organization.model';
+import {SingleConfiguration, updateOrgSetting} from '../../../functions/settings.func';
+import {checkColorConfig, OrganizationColorConfiguration} from '../../../functions/check-configuration-input.func';
 
 export async function updateOrganization(req: Request, res: Response): Promise<Response> {
     let success = true;
@@ -32,11 +34,28 @@ export async function updateOrganization(req: Request, res: Response): Promise<R
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+        return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
     }
     if (organizationData === null) {
-        return res.send(wrapResponse(true, { info: 'Nothing updated' }));
+        return res.send(wrapResponse(true, {info: 'Nothing updated'}));
     }
 
     return res.send(wrapResponse(true, organizationData));
+}
+
+export async function updateOrganizationConfiguration(req: Request, res: Response): Promise<Response> {
+    const updateConfig = req.body;
+    const attemptedConfig: SingleConfiguration<OrganizationColorConfiguration> = {
+        data: updateConfig,
+        protection: ['login']
+    };
+    if (!checkColorConfig(updateConfig)) {
+        return res.status(400).send(wrapResponse(false, {error: 'Wrong format'}));
+    }
+
+    const updatedConfig = await updateOrgSetting<OrganizationColorConfiguration>('colors', attemptedConfig);
+    if (!updatedConfig) {
+        return res.status(500).send(wrapResponse(false, {error: 'Database error.'}));
+    }
+    return res.send(wrapResponse(true, req.body));
 }
