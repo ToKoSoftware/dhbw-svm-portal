@@ -1,12 +1,12 @@
 <ng-container>
   <a [routerLink]="item.url" class="mt-1 group flex items-center px-3 py-2 my-2
     text-sm leading-5 font-medium rounded-md
-    hover:bg-gray-100 focus:outline-none focus:bg-gray-200 transition
+    hover:bg-gray-100 focus:outline-none transition
     dark:hover:bg-gray-700 ease-in-out duration-150"
      [routerLinkActive]="['bg-gray-200', 'dark:bg-gray-900', 'dark:hover:bg-gray-700', 'text-theme-sidebar-text-color']"
      [routerLinkActiveOptions]="{exact: item?.matchFull}">
     <i
-      class="fa flex-shrink-0 -ml-1 mr-3 h-6 w-6 text-gray-500 group-hover:text-gray-500 group-focus:text-gray-600 transition ease-in-out duration-150">
+      class="fa flex-shrink-0 -ml-1 mr-3 h-6 w-6 text-gray-500 group-hover:text-gray-500 transition ease-in-out duration-150">
       <i-feather
         [routerLinkActive]="['text-theme-sidebar-text-color']"
         [routerLinkActiveOptions]="{exact: item?.matchFull}"
