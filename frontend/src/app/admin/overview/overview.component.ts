@@ -18,7 +18,8 @@ import {ColorConfig} from '../../interfaces/organization.interface';
 export class OverviewComponent implements OnInit, OnDestroy {
   public sidebarPages = adminPages;
   public editOrgForm: FormGroup;
-  private currentOrgSubscription: Subscription = new Subscription();
+  public themeForm: FormGroup;
+  private currentConfigSubscription: Subscription = new Subscription();
   private colorsSubscription: Subscription = new Subscription();
 
   constructor(
@@ -37,26 +38,26 @@ export class OverviewComponent implements OnInit, OnDestroy {
       {
         title: [],
         access_code: [],
-        privacy_policy_text: [],
+      }
+    );
+    this.themeForm = this.formBuilder.group(
+      {
         title_bar_background_color: [],
         title_bar_border_color: [],
         title_bar_text_color: [],
         sidebar_link_color: [],
       }
     );
-    this.currentOrgSubscription = this.currentOrg.currentOrg$.subscribe(
-      org => {
-        if (org) {
+    this.currentConfigSubscription = this.currentOrg.currentConfig$.subscribe(
+      config => {
+        if (config) {
           this.loading.hideLoading();
-          this.editOrgForm = this.formBuilder.group(
+          this.themeForm = this.formBuilder.group(
             {
-              title: [org.title],
-              access_code: [org.access_code],
-              privacy_policy_text: [org.privacy_policy_text],
-              title_bar_background_color: [],
-              title_bar_border_color: [],
-              title_bar_text_color: [],
-              sidebar_link_color: [],
+              title_bar_background_color: [config.colors.titleBarBackgroundColor || ''],
+              title_bar_border_color: [config.colors.titleBarBorderColor || ''],
+              title_bar_text_color: [config.colors.titleBarTextColor || ''],
+              sidebar_link_color: [config.colors.sidebarLinkTextColor || ''],
             }
           );
           this.colorsSubscription = this.editOrgForm.valueChanges.subscribe((value) => {
@@ -101,7 +102,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.currentOrgSubscription.unsubscribe();
+    this.currentConfigSubscription.unsubscribe();
     this.colorsSubscription.unsubscribe();
   }
 

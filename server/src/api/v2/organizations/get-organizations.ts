@@ -1,8 +1,9 @@
-import { Request, Response } from 'express';
-import { wrapResponse } from '../../../functions/response-wrapper';
-import { Vars } from '../../../vars';
-import { User } from '../../../models/user.model';
-import { Organization } from '../../../models/organization.model';
+import {Request, Response} from 'express';
+import {wrapResponse} from '../../../functions/response-wrapper';
+import {Vars} from '../../../vars';
+import {User} from '../../../models/user.model';
+import {Organization} from '../../../models/organization.model';
+import {loadOrgSettingsForPermission, OrganizationConfiguration} from '../../../functions/settings.func';
 
 export async function getOrganization(req: Request, res: Response): Promise<Response> {
     let success = true;
@@ -12,12 +13,12 @@ export async function getOrganization(req: Request, res: Response): Promise<Resp
         .findOne({
             where: {
                 id: req.params.id
-            }, 
+            },
             ...!Vars.currentUserIsAdmin ? {
                 include: {
                     model: User.scope('publicData')
                 }
-            }: {}
+            } : {}
         })
         .catch(() => {
             success = false;
@@ -49,8 +50,18 @@ export async function getOrganizations(req: Request, res: Response): Promise<Res
             });
     }
     if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+        return res.status(500).send(wrapResponse(false, {error: 'Database error'}));
     }
 
     return res.send(wrapResponse(true, data));
+}
+
+export async function getOrganizationConfiguration(req: Request, res: Response): Promise<Response> {
+    const settings: OrganizationConfiguration | null = await loadOrgSettingsForPermission('login');
+    if (!settings) {
+        return res.send(wrapResponse(true, null));
+    }
+    const output: { [k: string]: unknown } = {};
+    Object.keys(settings).forEach(key => output[key] = settings[key].data);
+    return res.send(wrapResponse(true, output));
 }

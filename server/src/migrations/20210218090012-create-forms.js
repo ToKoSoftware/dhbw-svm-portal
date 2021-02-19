@@ -17,8 +17,13 @@ module.exports = {
                 type: Sequelize.STRING(5000),
             },
             config: {
-                type: Sequelize.STRING,
+                type: Sequelize.STRING(20000),
                 allowNull: false
+            },
+            is_internal: {
+                type: Sequelize.BOOLEAN,
+                allowNull: false,
+                defaultValue: false
             },
             allowed_team_id: {
                 type: Sequelize.STRING,
@@ -54,7 +59,7 @@ module.exports = {
                 defaultValue: Sequelize.UUIDV4
             },
             value: {
-                type: Sequelize.STRING,
+                type: Sequelize.STRING(20000),
                 allowNull: false
             },
             user_id: {

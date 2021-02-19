@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {CreateAndUpdateData, DataService, DataServiceFunctions} from '../data.service';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {OrganizationData} from '../../../interfaces/organization.interface';
+import {OrganizationConfigurationData, OrganizationData} from '../../../interfaces/organization.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -54,4 +54,12 @@ export class OrganizationsService extends DataService<OrganizationData> implemen
         return res.data;
       }));
   }
+
+  getConfig(id: string): Observable<OrganizationConfigurationData> {
+    return this.api.get<OrganizationConfigurationData>(`/organizations/${id}/config`)
+      .pipe(map(res => {
+        return res.data;
+      }));
+  }
+
 }

@@ -28,11 +28,13 @@
           </app-button>
         </div>
       </app-titled-content>
+    </form>
+    <form [formGroup]="themeForm" (ngSubmit)="save()">
       <app-titled-content
         label="Erscheinungsbild"
         description="Konfigurieren Sie das Erscheinungsbild Ihres Portals nach Ihren Vereinsvorlieben, zum Beispiel mit Ihren Vereinsfarben. Es werden sämliche HTML-Farbcodes unterstützt.">
         <p class="text-sm text-gray-500 my-3 block">
-          Sie können diese Farbcodes auch unter folgender Adresse konfigurieren: <a href="https://htmlcolorcodes.com/" class="text-malachite-600" target="_blank">htmlcolorcodes.com</a>
+          Sie können diese Farbcodes auch unter folgender Adresse erstellen: <a href="https://htmlcolorcodes.com/" class="text-malachite-600" target="_blank">htmlcolorcodes.com</a>.
         </p>
         <div class="flex space-x-2">
           <div class="flex space-x-2 flex-1 items-end">
@@ -44,7 +46,7 @@
               description="Geben Sie eine Farbe ein, welche für den Hintergrund der Titelleiste verwendet werden soll.">
             </app-input>
             <div class="h-10 w-10 flex-shrink-0 border border-transparent border-gray-200 px-3 rounded-md mb-4"
-                 [style.background]="editOrgForm.value.title_bar_background_color">
+                 [style.background]="themeForm.value.title_bar_background_color">
             </div>
           </div>
           <div class="flex space-x-2 flex-1 items-end">
@@ -56,7 +58,7 @@
               description="Geben Sie eine Farbe ein, welche für den Text und das Logo in der Titelleiste verwendet werden soll.">
             </app-input>
             <div class="h-10 w-10 flex-shrink-0 border border-transparent border-gray-200 px-3 rounded-md mb-4"
-                 [style.background]="editOrgForm.value.title_bar_border_color">
+                 [style.background]="themeForm.value.title_bar_border_color">
             </div>
           </div>
         </div>
@@ -71,7 +73,7 @@
               description="Geben Sie eine Farbe ein, welche verwendet werden soll für">
             </app-input>
             <div class="h-10 w-10 flex-shrink-0 border border-transparent border-gray-200 px-3 rounded-md mb-4"
-                 [style.background]="editOrgForm.value.title_bar_text_color">
+                 [style.background]="themeForm.value.title_bar_text_color">
             </div>
           </div>
           <div class="flex space-x-2 flex-1 items-end">
@@ -84,7 +86,7 @@
               description="Geben Sie eine Farbe ein, welche verwendet werden soll für">
             </app-input>
             <div class="h-10 w-10 flex-shrink-0 border border-transparent border-gray-200 px-3 rounded-md mb-4"
-                 [style.background]="editOrgForm.value.sidebar_link_color">
+                 [style.background]="themeForm.value.sidebar_link_color">
             </div>
           </div>
         </div>

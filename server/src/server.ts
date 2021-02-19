@@ -23,7 +23,7 @@ import { getAllNews, getSingleNews } from './api/v2/news/get-news';
 import { getEvent, getEvents } from './api/v2/events/get-events';
 import { getPoll, getPolls } from './api/v2/polls/get-polls';
 import { getRole, getRoles } from './api/v2/roles/get-roles';
-import { getOrganization, getOrganizations } from './api/v2/organizations/get-organizations';
+import {getOrganization, getOrganizationConfiguration, getOrganizations} from './api/v2/organizations/get-organizations';
 import { createPoll } from './api/v2/polls/create-poll';
 import { createPollAnswer } from './api/v2/poll-answers/create-poll-answer';
 import { createEvent } from './api/v2/events/create-event';
@@ -206,6 +206,11 @@ export default function startServer(): void {
     app.get('/api/v2/organizations/:id/public-events/:eventId/register', (req, res) => registerForPublicEvents(req, res));
 
     /**
+     * Config
+     */
+    app.get('/api/v2/organizations/:id/config', userIsAuthorized, (req, res) => getOrganizationConfiguration(req, res));
+
+    /**
      * Direct Debit Mandate
      */
     app.get('/api/v2/direct-debit-mandates', userIsAuthorized, userIsAdmin, (req, res) => getDirectDebitMandates(req, res));
@@ -236,7 +241,7 @@ export default function startServer(): void {
 
 
     /**
-     * News
+     * Forms
      */
     app.get('/api/v2/forms', userIsAuthorized, (req, res) => getForms(req, res));
     app.get('/api/v2/forms/:id', userIsAuthorized, (req, res) => getForm(req, res));

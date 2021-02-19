@@ -3,7 +3,6 @@ import {wrapResponse} from '../../../functions/response-wrapper';
 import {Form} from '../../../models/form.model';
 import {Vars} from '../../../vars';
 import {objectHasRequiredAndNotEmptyKeys} from '../../../functions/check-inputs.func';
-import {PollAnswer} from '../../../models/poll-answer.model';
 
 export async function createForm(req: Request, res: Response): Promise<Response> {
 
@@ -15,7 +14,8 @@ export async function createForm(req: Request, res: Response): Promise<Response>
     const formData = req.body;
     const formConfig = req.body.config;
     if (!validateSchema(formConfig)) {
-        return res.status(400).send(wrapResponse(false, { error: 'Not all required fields have been set or the json schema is not correct' }));
+        return res.status(400).send(wrapResponse(false,
+            { error: 'Not all required fields have been set or the json schema is not correct' }));
     }
     const form = await Form.create({
         title: formData.title,
@@ -35,7 +35,7 @@ function validateSchema(json: unknown): boolean {
     const schema: FormSchemaField[] = json;
     const availableTypes = ['checkbox', 'markdown', 'number', 'select', 'text'];
     const requiredFields: Array<keyof FormSchemaField> = ['label', 'required', 'id', 'type',];
-    let ids = [];
+    const ids = [];
     for (const formItem of schema) {
         if (!availableTypes.includes(formItem.type)) {
             return false;
@@ -49,7 +49,7 @@ function validateSchema(json: unknown): boolean {
 }
 
 function arrayIsUnique(values: string[]) : boolean {
-    return values.some((val, i) => values.indexOf(val) !== i);
+    return !values.some((val, i) => values.indexOf(val) !== i);
 }
 
 export interface FormSchemaMetaData {
