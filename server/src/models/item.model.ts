@@ -1,4 +1,4 @@
-import { Table, PrimaryKey, Column, NotEmpty, IsInt, AllowNull, ForeignKey, BeforeCreate, BelongsTo } from 'sequelize-typescript';
+import { Table, PrimaryKey, Column, NotEmpty, IsInt, ForeignKey, BeforeCreate, BelongsTo } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { RawItemData } from '../interfaces/item.interface';
 import { LoggedModel } from './logged.model';
@@ -17,12 +17,8 @@ export class Item extends LoggedModel {
     @Column
     description: string; // 10000 chars long
     @IsInt
-    @AllowNull
     @Column
     price: number; //In cent
-    @IsInt
-    @Column
-    stock: number;
     @ForeignKey(() => Organization)
     @Column
     org_id: string;
@@ -40,7 +36,6 @@ export class Item extends LoggedModel {
             'title',
             'description',
             'price',
-            'stock',
             'org_id'
         ];
     }

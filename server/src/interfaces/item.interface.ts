@@ -5,7 +5,6 @@ export interface ItemDataSnapshot{
     title: string;
     description: string;
     price: number;
-    stock: number;
 }
 
 export interface RawItemData extends ItemDataSnapshot{
