@@ -14,27 +14,30 @@ export async function createOrganization(req: Request, res: Response): Promise<R
 
     const requiredFields = Organization.requiredFields();
     if (!objectHasRequiredAndNotEmptyKeys(mappedIncomingData, requiredFields)) {
-        return handleError(res, 400, 'Fields must not be empty', [null]);
+        return handleError(res, 400, 'Fields must not be empty', [ null ]);
     }
     const createdOrg = await Organization.create(mappedIncomingData).catch(() => null);
     if (!createdOrg) {
-        return handleError(res, 500, 'Organization could not be created', [null]);
+        return handleError(res, 500, 'Organization could not be created', [ null ]);
     }
     // create a new admin role
     const createdRole = await Role.create({ title: 'Administratoren', user_deletable: false, org_id: createdOrg.id }).catch(() => null);
     if (!createdRole) {
-        return handleError(res, 500, 'Role could not be created', [createdOrg]);
+        return handleError(res, 500, 'Role could not be created', [ createdOrg ]);
     }
     createdOrg.admin_role_id = createdRole.id;
     // create a new public Team
-    const createdTeam = await Team.create({ title: 'Alle Vereinsmitglieder', org_id: createdOrg.id, maintain_role_id: createdRole.id }).catch(() => null);
+    const createdTeam = await Team.create({
+        title: 'Alle Vereinsmitglieder',
+        org_id: createdOrg.id, maintain_role_id: createdRole.id
+    }).catch(() => null);
     if (!createdTeam) {
-        return handleError(res, 500, 'Team could not be created', [createdOrg]);
+        return handleError(res, 500, 'Team could not be created', [ createdOrg ]);
     }
     createdOrg.public_team_id = createdTeam.id;
     const updateSuccess = createdOrg.save().then(() => true).catch(() => false);
     if (!updateSuccess) {
-        return handleError(res, 400, 'Organization could not be created', [createdRole, createdTeam, createdOrg]);
+        return handleError(res, 400, 'Organization could not be created', [ createdRole, createdTeam, createdOrg ]);
     }
     // todo create more demo data models
     return res.send(wrapResponse(true, createdOrg));

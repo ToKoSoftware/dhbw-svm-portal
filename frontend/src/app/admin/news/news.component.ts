@@ -55,7 +55,7 @@ export class NewsComponent implements OnInit, OnDestroy {
       return;
     }
     this.news.delete(news).subscribe(
-      () => this.notifications.savedSuccessfully()
+      () => this.notifications.deletedSuccessfully()
     );
   }
 }

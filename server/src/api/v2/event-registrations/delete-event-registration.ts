@@ -20,7 +20,8 @@ export async function deleteEventRegistration(req: Request, res: Response): Prom
 
     if (eventRegistrationToDelete === null) {
         return res.status(404).send(wrapResponse(false, { error: 'No event-registration with given id' }));
-    } else if (eventRegistrationToDelete.user_id !== null && !currentUserIsAdminOrMatchesId(eventRegistrationToDelete.user_id)  && !Vars.currentUserIsAdmin) {
+    } else if (eventRegistrationToDelete.user_id !== null &&
+        !currentUserIsAdminOrMatchesId(eventRegistrationToDelete.user_id) && !Vars.currentUserIsAdmin) {
         return res.status(403).send(wrapResponse(false, { error: 'Unauthorized!' }));
     }
 

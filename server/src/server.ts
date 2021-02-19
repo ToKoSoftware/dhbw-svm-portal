@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import { Vars } from './vars';
 import { wrapResponse } from './functions/response-wrapper';
@@ -53,7 +53,10 @@ import { updateOrganization } from './api/v2/organizations/update-organization';
 import { oauth2Authentication, oauth2Token, oauth2User } from './api/oauth2/authenticate';
 import { getOauth2Configuration, updateOauth2Configuration } from './api/oauth2/configure';
 import { createOrganization } from './api/v2/organizations/create-organization';
-import { getEventRegistration, getEventRegistrationsFromEvent, getEventRegistrationsFromUser } from './api/v2/event-registrations/get-event-registrations';
+import {
+    getEventRegistration, getEventRegistrationsFromEvent,
+    getEventRegistrationsFromUser
+} from './api/v2/event-registrations/get-event-registrations';
 import { updateEventRegistration } from './api/v2/event-registrations/update-event-registration';
 import { deleteOrganization } from './api/v2/organizations/delete-organization';
 import { getOrganizationByAccessCode } from './api/v2/organizations/get-organization-by-access_code';
@@ -67,6 +70,7 @@ import { getFTPConfiguration, updateFTPConfiguration } from './api/v2/documents/
 import { getPublicEvents } from './api/v2/events/get-public-events';
 import { registerForPublicEvents } from './api/v2/event-registrations/register-for-public-event';
 import { getEventLogs } from './api/v2/event-logs/get-event-logs';
+import { customError, errorHandler } from './middleware/error-handler';
 import {getForm, getForms} from './api/v2/forms/get-form';
 import {createForm} from './api/v2/forms/create-form';
 import {deleteForm} from './api/v2/forms/delete-form';
@@ -225,8 +229,11 @@ export default function startServer(): void {
     app.get('/api/v2/admin/event-logs', userIsAuthorized, userIsAdmin, (req, res) => getEventLogs(req, res));
     //following two routes only via frontend/browser functionable with download
     app.get('/api/v1/admin/export/users', userIsAuthorizedByParam, userIsAdmin, (req, res) => exportUsers(req, res));
-    app.get('/api/v1/admin/export/events/:id/registrations', userIsAuthorizedByParam, userIsAdmin, (req, res) => exportEventRegistrations(req, res));
-    app.get('/api/v1/admin/export/direct-debit-mandates', userIsAuthorizedByParam, userIsAdmin, (req, res) => exportDirectDebitMandates(req, res));
+    app.get('/api/v1/admin/export/events/:id/registrations', userIsAuthorizedByParam, userIsAdmin,
+        (req, res) => exportEventRegistrations(req, res));
+    app.get('/api/v1/admin/export/direct-debit-mandates', userIsAuthorizedByParam, userIsAdmin,
+        (req, res) => exportDirectDebitMandates(req, res));
+
 
     /**
      * News
@@ -242,6 +249,12 @@ export default function startServer(): void {
     app.get('*', function (request, response) {
         response.sendFile(path.resolve(__dirname, '../dist/index.html'));
     });
+
+    /**
+     * ErrorHandler
+     */
+    app.use((err: customError, req: Request, res: Response, next: NextFunction) => { errorHandler(err, req, res, next); });
+
     /**
      * Server
      */

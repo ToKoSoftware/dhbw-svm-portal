@@ -11,7 +11,6 @@ export interface EventDataSnapshot{
     start_date: Date;
     end_date: Date;
     max_participants?: number | null;
-    is_active?: boolean;
 }
 
 export interface RawEventData extends EventDataSnapshot{

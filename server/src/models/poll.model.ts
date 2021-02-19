@@ -1,4 +1,7 @@
-import { BeforeCreate, BelongsTo, Column, DefaultScope, ForeignKey, HasMany, IsDate, NotEmpty, PrimaryKey, Scopes, Table } from 'sequelize-typescript';
+import {
+    BeforeCreate, BelongsTo, Column, DefaultScope, ForeignKey, HasMany, IsDate,
+    NotEmpty, PrimaryKey, Scopes, Table
+} from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { RawPollData } from '../interfaces/poll.interface';
 import { Organization } from './organization.model';
@@ -11,32 +14,17 @@ import { LoggedModel } from './logged.model';
 
 @DefaultScope(() => ({
     required: false,
-    where: {
-        is_active: true
-    },
     order: [['closes_at', 'ASC']]
 }))
 @Scopes(() => ({
     full: {
-        include: [Organization, User, Team, PollAnswer]
-    },
-    active: {
-        required: false,
-        where: {
-            is_active: true
-        }
-    },
-    inactive: {
-        required: false,
-        where: {
-            is_active: false
-        }
+        include: [ Organization, User, Team, PollAnswer ]
     },
     expired: (date: Date) => ({
         required: false,
         where: {
             closes_at: {
-                [Op.lte]: date
+                [ Op.lte ]: date
             }
         }
     }),
@@ -44,18 +32,18 @@ import { LoggedModel } from './logged.model';
         required: false,
         where: {
             closes_at: {
-                [Op.gte]: date
+                [ Op.gte ]: date
             }
         }
     }),
     ordered: {
         required: false,
-        order: [['closes_at', 'ASC']]
+        order: [ [ 'closes_at', 'ASC' ] ]
     },
     onlyAnswerTeam: (teamId: string, publicTeamId: string) => ({
         required: false,
         where: {
-            [Op.or]: [
+            [ Op.or ]: [
                 {
                     answer_team_id: teamId
                 },
@@ -84,8 +72,6 @@ export class Poll extends LoggedModel {
     @IsDate
     @Column
     closes_at: Date;
-    @Column
-    is_active: boolean;
     @ForeignKey(() => User)
     @Column
     author_id: string;
@@ -116,8 +102,7 @@ export class Poll extends LoggedModel {
             'title',
             'body',
             'closes_at',
-            'answer_team_id',
-            'is_active'
+            'answer_team_id'
         ];
     }
 }

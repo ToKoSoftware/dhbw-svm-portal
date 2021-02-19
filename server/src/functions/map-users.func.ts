@@ -4,7 +4,8 @@ import * as bcrypt from 'bcryptjs';
 export async function mapUser(incomingData: UserDataSnapshot): Promise<UserDataSnapshot> {
 
     const SALT_FACTOR = 10;
-    const hashedPassword = incomingData.password !== undefined ? await bcrypt.hash(incomingData.password, SALT_FACTOR) : incomingData.password;
+    const hashedPassword = incomingData.password !== undefined ?
+        await bcrypt.hash(incomingData.password, SALT_FACTOR) : incomingData.password;
     const birthday = incomingData.birthday !== undefined ? new Date(incomingData.birthday) : incomingData.birthday;
 
     return {

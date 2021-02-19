@@ -36,8 +36,7 @@ export class CreateEventComponent implements OnInit {
         start_date: [],
         end_date: [],
         max_participants: [],
-        allowed_team_id: [],
-        is_active: [],
+        allowed_team_id: []
       }
     );
     this.teamSubscription = this.teams.data$.subscribe(teams => {
@@ -53,8 +52,7 @@ export class CreateEventComponent implements OnInit {
       return;
     }
     let eventData = {
-      ...this.formGroup.value,
-      is_active: true
+      ...this.formGroup.value
     };
     eventData = setEmptyInputToNull(eventData);
     eventData.price = eventData.price == null

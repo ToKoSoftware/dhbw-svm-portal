@@ -80,7 +80,7 @@ export class PollsService extends DataService<PollData> implements DataServiceFu
   deleteAnswer(poll: PollData, pollAnswerData: PollAnswerData) {
     return this.api.delete<PollData>(`/polls/${poll.id}/${pollAnswerData.id}`)
       .pipe(map(res => {
-        this.notifications.savedSuccessfully();
+        this.notifications.deletedSuccessfully();
         this.reloadData();
         return res;
       }));

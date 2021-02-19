@@ -1,4 +1,7 @@
-import { AllowNull, BeforeCreate, BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, IsDate, IsInt, NotEmpty, PrimaryKey, Scopes, Table } from 'sequelize-typescript';
+import {
+    AllowNull, BeforeCreate, BelongsTo, BelongsToMany, Column, DefaultScope,
+    ForeignKey, IsDate, IsInt, NotEmpty, PrimaryKey, Scopes, Table
+} from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { RawEventData } from '../interfaces/event.interface';
 import { EventRegistration } from './event-registration.model';
@@ -11,32 +14,17 @@ import { LoggedModel } from './logged.model';
 
 @DefaultScope(() => ({
     required: false,
-    where: {
-        is_active: true
-    },
     order: [['start_date', 'ASC']]
 }))
 @Scopes(() => ({
     full: {
-        include: [Organization, { model: User, as: 'author' }, { model: User, as: 'registered_users' }]
-    },
-    active: {
-        required: false,
-        where: {
-            is_active: true
-        }
-    },
-    inactive: {
-        required: false,
-        where: {
-            is_active: false
-        }
+        include: [ Organization, { model: User, as: 'author' }, { model: User, as: 'registered_users' } ]
     },
     expired: (date: Date) => ({
         required: false,
         where: {
             end_date: {
-                [Op.lte]: date
+                [ Op.lte ]: date
             }
         }
     }),
@@ -44,13 +32,13 @@ import { LoggedModel } from './logged.model';
         required: false,
         where: {
             end_date: {
-                [Op.gt]: date
+                [ Op.gt ]: date
             }
         }
     }),
     ordered: {
         required: false,
-        order: [['start_date', 'ASC']]
+        order: [ [ 'start_date', 'ASC' ] ]
     },
     free: {
         required: false,
@@ -62,7 +50,7 @@ import { LoggedModel } from './logged.model';
     onlyAllowedTeam: (allowed_team_id: string, public_team_id: string) => ({
         required: false,
         where: {
-            [Op.or]: [
+            [ Op.or ]: [
                 {
                     allowed_team_id: allowed_team_id
                 },
@@ -94,7 +82,7 @@ export class Event extends LoggedModel {
     @Column
     title: string;
     @Column
-    description: string; // 5000 chars long
+    description: string; // 10000 chars long
     @IsInt
     @AllowNull
     @Column
@@ -118,8 +106,6 @@ export class Event extends LoggedModel {
     @ForeignKey(() => Team)
     @Column
     allowed_team_id: string;
-    @Column
-    is_active: boolean;
 
     @BelongsTo(() => Organization)
     organization: Organization;
@@ -141,7 +127,6 @@ export class Event extends LoggedModel {
             'description',
             'start_date',
             'end_date',
-            'is_active',
             'author_id',
             'allowed_team_id',
             'org_id'

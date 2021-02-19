@@ -1,12 +1,15 @@
-import {NextFunction, Request, Response} from 'express';
-import {wrapResponse} from '../functions/response-wrapper';
-import {Vars} from '../vars';
+import { NextFunction, Request, Response } from 'express';
+import { Vars } from '../vars';
+import { customError } from './error-handler';
+import { PortalErrors } from '../enum/errors';
 
 export function userIsAdmin(req: Request, res: Response, next: NextFunction): void {
     if (Vars.currentUserIsAdmin) {
         next();
     } else {
-        res.status(403).send(wrapResponse(false, {error: 'Permission denied!'}));
+        next(new customError(PortalErrors.PERMISSION_DENIED, 403));
+
+        //res.status(403).send(wrapResponse(false, { error: 'Permission denied!' }));
         return;
     }
 }

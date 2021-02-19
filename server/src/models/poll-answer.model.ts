@@ -1,4 +1,7 @@
-import { Table, Column, ForeignKey, BelongsTo, BelongsToMany, PrimaryKey, NotEmpty, DefaultScope, Scopes, BeforeCreate } from 'sequelize-typescript';
+import {
+    Table, Column, ForeignKey, BelongsTo, BelongsToMany, PrimaryKey, NotEmpty,
+    DefaultScope, Scopes, BeforeCreate
+} from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { RawPollAnswerData } from '../interfaces/poll-answer.interface';
 import { LoggedModel } from './logged.model';
@@ -8,25 +11,12 @@ import { User } from './user.model';
 
 @DefaultScope(() => ({
     required: false,
-    where: {
-        is_active: true
-    }
+    include: User.scope('publicData')
 }))
 @Scopes(() => ({
     full: {
+        required: false,
         include: User.scope('publicData')
-    },
-    active: {
-        required: false,
-        where: {
-            is_active: true
-        }
-    },
-    inactive: {
-        required: false,
-        where: {
-            is_active: false
-        }
     }
 }))
 
@@ -40,8 +30,6 @@ export class PollAnswer extends LoggedModel {
     @NotEmpty
     @Column
     title: string;
-    @Column
-    is_active: boolean;
     @ForeignKey(() => Poll)
     @Column
     poll_id: string;
@@ -60,7 +48,6 @@ export class PollAnswer extends LoggedModel {
         return [
             'title',
             'poll_id',
-            'is_active',
         ];
     }
 }

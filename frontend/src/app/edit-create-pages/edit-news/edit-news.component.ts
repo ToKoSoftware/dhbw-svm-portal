@@ -54,7 +54,7 @@ export class EditNewsComponent implements OnInit, OnChanges {
     if (this.formGroup.dirty && !this.formGroup.valid) {
       return;
     }
-    this.news.update({...this.current, ...this.formGroup.value, is_active: true}).subscribe(
+    this.news.update({...this.current, ...this.formGroup.value}).subscribe(
       data => {
         this.current = data;
         this.notificationService.savedSuccessfully();

@@ -30,6 +30,12 @@
         "semi": [
             "error",
             "always"
+        ],
+        "max-len":[
+            1,
+            {
+                "code":140
+            }
         ]
     }
 }

@@ -40,26 +40,23 @@ export async function deletePollAnswer(req: Request, res: Response): Promise<Res
 
     const maintainedTeamIds = await getMaintainedTeamIdsOfCurrentUser();
     if (!maintainedTeamIds.find(id => id == pollData.answer_team_id) && !Vars.currentUserIsAdmin) {
-        return res.status(403).send(wrapResponse(false, { error: 'You are not allowed to create a PollAnswers for a team you are not maintainer of.' }));
+        return res.status(403).send(wrapResponse(false, { error: 'You are not allowed to delete a PollAnswers for a team you are not maintainer of.' }));
     }
 
 
-    await pollAnswerData.update(
-        {
-            is_active: false,
-        })
+    await pollAnswerData.destroy()
         .catch(() => {
             success = false;
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, {error: 'Could not deactivate pollanswer with id ' + req.params.id}));
+        return res.status(500).send(wrapResponse(false, {error: 'Could not delete pollanswer with id ' + req.params.id}));
     }
 
     await PollVote.destroy(
         {
             where: {
-                poll_answer_id: pollAnswerData.id
+                poll_answer_id: req.params.id
             }
         })
         .catch(() => {
