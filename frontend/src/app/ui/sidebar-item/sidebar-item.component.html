@@ -4,12 +4,12 @@
      hover:text-gray-900 hover:bg-gray-100 dark:hover:text-malachite-600
     focus:outline-none focus:bg-gray-200 transition
     dark:hover:bg-gray-700 ease-in-out duration-150"
-     [routerLinkActive]="['bg-gray-200', 'dark:bg-gray-900', 'dark:hover:bg-gray-700', 'text-malachite-600', 'hover:text-malachite-600']"
+     [routerLinkActive]="['bg-gray-200', 'dark:bg-gray-900', 'dark:hover:bg-gray-700', 'text-theme-sidebar-text-color']"
      [routerLinkActiveOptions]="{exact: item?.matchFull}">
     <i
       class="fa flex-shrink-0 -ml-1 mr-3 h-6 w-6 text-gray-500 group-hover:text-gray-500 group-focus:text-gray-600 transition ease-in-out duration-150">
       <i-feather
-        [routerLinkActive]="['text-malachite-600']"
+        [routerLinkActive]="['text-theme-sidebar-text-color']"
         [routerLinkActiveOptions]="{exact: item?.matchFull}"
         name="{{item.icon}}"></i-feather>
     </i>

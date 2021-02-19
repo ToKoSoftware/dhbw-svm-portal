@@ -1,10 +1,8 @@
-<div class="w-full border-b-2 dark:bg-black bg-white border-malachite-600
- h-15 flex flex-wrap justify-between content-center px-3 transition ease-in-out duration-150"
-     [style.border-color]="(currentOrg.currentConfig$ | async)?.colors.titleBarBorderColor"
-     [style.background-color]="(currentOrg.currentConfig$ | async)?.colors.titleBarBackgroundColor"
+<div class="w-full border-b-2 border-malachite-600
+ h-15 flex flex-wrap justify-between content-center px-3 transition ease-in-out duration-150
+ bg-theme-title-bar border-theme-title-bar"
      id="topBar">
-  <div class="text-lg text-malachite-600 pt-1.5 font-light transition ease-in-out duration-150"
-       [style.color]="(currentOrg.currentConfig$ | async)?.colors.titleBarTextColor">
+  <div class="text-lg text-theme-title-bar-text-color pt-1.5 font-light transition ease-in-out duration-150 ">
     {{titleBar.title$ | async}}
   </div>
   <div>

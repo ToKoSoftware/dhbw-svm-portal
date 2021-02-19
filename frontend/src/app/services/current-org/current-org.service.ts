@@ -1,12 +1,12 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import {LoginService} from '../login/login.service';
-import {BehaviorSubject, of, Subscription} from 'rxjs';
+import {BehaviorSubject, Subscription} from 'rxjs';
 import {UserData} from '../../interfaces/user.interface';
-import {OrganizationConfigurationData, OrganizationData} from '../../interfaces/organization.interface';
+import {ColorConfig, OrganizationConfigurationData, OrganizationData} from '../../interfaces/organization.interface';
 import {UsersService} from '../data/users/users.service';
 import {OrganizationsService} from '../data/organizations/organizations.service';
 import {TeamData} from '../../interfaces/team.interface';
-import isBlank from 'is-blank';
+import {ThemeService} from '../theme/theme.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +22,7 @@ export class CurrentOrgService implements OnDestroy {
     private readonly login: LoginService,
     private readonly users: UsersService,
     private readonly organizations: OrganizationsService,
+    private readonly theme: ThemeService
   ) {
     this.userSubscription = this.login.decodedJwt$.subscribe(jwt => {
       if (jwt) {
@@ -36,9 +37,8 @@ export class CurrentOrgService implements OnDestroy {
               );
               this.organizations.getConfig(user.organization.id || '').subscribe(
                 config => {
-                  if (!config.colors){
-                    config.colors = {};
-                  }
+                  this.theme.theme = config;
+                  this.theme.updateTheme(config);
                   this.currentConfig$.next(config);
                 }
               );
@@ -63,3 +63,5 @@ export class CurrentOrgService implements OnDestroy {
     this.userSubscription.unsubscribe();
   }
 }
+
+type availableColorConfigKeys = 'titleBarBackgroundColor' | 'titleBarBorderColor' | 'titleBarTextColor' | 'sidebarLinkTextColor';

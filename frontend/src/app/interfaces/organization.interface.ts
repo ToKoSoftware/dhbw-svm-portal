@@ -32,4 +32,5 @@ export interface ColorConfig {
   titleBarBorderColor?: string;
   titleBarTextColor?: string;
   sidebarLinkTextColor?: string;
+  accentColor?: string;
 }

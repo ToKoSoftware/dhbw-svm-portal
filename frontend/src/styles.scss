@@ -6,3 +6,47 @@
 router-outlet + * {
   width: 100%;
 }
+
+:root {
+  --accent-color: #18c05c;
+  --title-bar-background-color: #fff;
+  --title-bar-border-color: #18c05c;
+  --title-bar-text-color: #18c05c;
+  --sidebar-text-color: #18c05c;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --title-bar-background-color: #000;
+  }
+}
+
+.text-accent {
+  color: var(--accent-color);
+}
+
+.bg-accent {
+  background-color: var(--accent-color);
+}
+
+.bg-accent-hover:hover {
+  opacity: 0.8;
+}
+
+.bg-theme-title-bar {
+  --tw-bg-opacity: 1;
+  background-color: var(--title-bar-background-color);
+}
+
+.border-theme-title-bar {
+  border-color: var(--title-bar-border-color);
+}
+
+.text-theme-title-bar-text-color {
+  color: var(--title-bar-text-color);
+}
+
+.text-theme-sidebar-text-color {
+  color: var(--sidebar-text-color);
+}

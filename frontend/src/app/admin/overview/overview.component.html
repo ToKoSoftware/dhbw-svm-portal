@@ -46,7 +46,7 @@
               description="Geben Sie eine Farbe ein, welche für den Hintergrund der Titelleiste verwendet werden soll.">
             </app-input>
             <div class="h-10 w-10 flex-shrink-0 border border-transparent border-gray-200 px-3 rounded-md mb-4"
-                 [style.background]="themeForm.value.title_bar_background_color">
+                 style="background-color: var(--title-bar-background-color)">
             </div>
           </div>
           <div class="flex space-x-2 flex-1 items-end">
@@ -58,7 +58,7 @@
               description="Geben Sie eine Farbe ein, welche für den Text und das Logo in der Titelleiste verwendet werden soll.">
             </app-input>
             <div class="h-10 w-10 flex-shrink-0 border border-transparent border-gray-200 px-3 rounded-md mb-4"
-                 [style.background]="themeForm.value.title_bar_border_color">
+                 style="background-color: var(--title-bar-border-color)">
             </div>
           </div>
         </div>
@@ -70,10 +70,10 @@
               class="flex-1"
               placeholder="#ffeb3d"
               label="Textfarbe der Titelleiste"
-              description="Geben Sie eine Farbe ein, welche verwendet werden soll für">
+              description="Geben Sie eine Farbe ein, welche verwendet werden soll für Schriften und das Logo in der Titelleiste verwendet werden soll.">
             </app-input>
             <div class="h-10 w-10 flex-shrink-0 border border-transparent border-gray-200 px-3 rounded-md mb-4"
-                 [style.background]="themeForm.value.title_bar_text_color">
+                 style="background-color: var(--title-bar-text-color)">
             </div>
           </div>
           <div class="flex space-x-2 flex-1 items-end">
@@ -83,12 +83,28 @@
               class="flex-1"
               placeholder="#ffeb3d"
               label="Seitenleistenfarbe"
-              description="Geben Sie eine Farbe ein, welche verwendet werden soll für">
+              description="Geben Sie eine Farbe ein, welche für aktive Links in der Seitennavigationsleiste verwendet werden soll.">
             </app-input>
             <div class="h-10 w-10 flex-shrink-0 border border-transparent border-gray-200 px-3 rounded-md mb-4"
-                 [style.background]="themeForm.value.sidebar_link_color">
+                 style="background-color: var(--sidebar-text-color)">
             </div>
           </div>
+        </div>
+        <div class="flex space-x-2">
+          <div class="flex space-x-2 flex-1 items-end">
+            <app-input
+              formControlName="accent_color"
+              type="text"
+              class="flex-1"
+              placeholder="#ffeb3d"
+              label="Akzentfarbe"
+              description="Geben Sie eine Farbe ein, welche als Kontrastfarbe verwendet werden soll.">
+            </app-input>
+            <div class="h-10 w-10 flex-shrink-0 border border-transparent border-gray-200 px-3 rounded-md mb-4"
+                 style="background-color: var(--accent-color)">
+            </div>
+          </div>
+          <div class="flex-1"></div>
         </div>
         <div class="flex justify-end w-full">
           <app-button

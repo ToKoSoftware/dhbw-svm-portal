@@ -10,6 +10,7 @@ import {TitleBarService} from '../../services/title-bar/title-bar.service';
 import {SlideOverService} from '../../services/slide-over/slide-over.service';
 import validateColor from 'validate-color';
 import {ColorConfig} from '../../interfaces/organization.interface';
+import {ThemeService} from '../../services/theme/theme.service';
 
 @Component({
   selector: 'app-overview',
@@ -19,8 +20,10 @@ export class OverviewComponent implements OnInit, OnDestroy {
   public sidebarPages = adminPages;
   public editOrgForm: FormGroup;
   public themeForm: FormGroup;
+  private currentOrgSubscription: Subscription = new Subscription();
   private currentConfigSubscription: Subscription = new Subscription();
   private colorsSubscription: Subscription = new Subscription();
+  private themeChanged = false;
 
   constructor(
     public readonly organizations: OrganizationsService,
@@ -29,6 +32,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
     private readonly loading: LoadingModalService,
     private readonly titleBarService: TitleBarService,
     private readonly formBuilder: FormBuilder,
+    private readonly theme: ThemeService,
     public readonly slideOver: SlideOverService) {
   }
 
@@ -46,6 +50,21 @@ export class OverviewComponent implements OnInit, OnDestroy {
         title_bar_border_color: [],
         title_bar_text_color: [],
         sidebar_link_color: [],
+        accent_color: [],
+      }
+    );
+
+    this.currentOrgSubscription = this.currentOrg.currentOrg$.subscribe(
+      org => {
+        if (org) {
+          this.loading.hideLoading();
+          this.editOrgForm = this.formBuilder.group(
+            {
+              title: [org.title || ''],
+              access_code: [org.access_code || ''],
+            }
+          );
+        }
       }
     );
     this.currentConfigSubscription = this.currentOrg.currentConfig$.subscribe(
@@ -58,14 +77,16 @@ export class OverviewComponent implements OnInit, OnDestroy {
               title_bar_border_color: [config.colors.titleBarBorderColor || ''],
               title_bar_text_color: [config.colors.titleBarTextColor || ''],
               sidebar_link_color: [config.colors.sidebarLinkTextColor || ''],
+              accent_color: [config.colors.accentColor || ''],
             }
           );
-          this.colorsSubscription = this.editOrgForm.valueChanges.subscribe((value) => {
+          this.colorsSubscription = this.themeForm.valueChanges.subscribe((value) => {
             const colorFields: { [k: string]: keyof ColorConfig } = {
               title_bar_background_color: 'titleBarBackgroundColor',
               title_bar_border_color: 'titleBarBorderColor',
               title_bar_text_color: 'titleBarTextColor',
               sidebar_link_color: 'sidebarLinkTextColor',
+              accent_color: 'accentColor',
             };
             Object.keys(colorFields).forEach(key => {
               const colorName = colorFields[key];
@@ -84,8 +105,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
               } else {
                 delete config.colors[colorName];
               }
-                console.log(config);
-                this.currentOrg.currentConfig$.next(config);
+              this.theme.updateTheme({...config})
             });
           });
         }
@@ -102,8 +122,10 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.currentOrgSubscription.unsubscribe();
     this.currentConfigSubscription.unsubscribe();
     this.colorsSubscription.unsubscribe();
+    this.theme.resetTheme()
   }
 
 
