@@ -1,11 +1,9 @@
-<app-layout
-  [sidebarPages]="sidebarPages"
-  heading="Übersicht"
->
+<app-layout [sidebarPages]="sidebarPages">
   <app-container>
     <form [formGroup]="editOrgForm" (ngSubmit)="save()">
       <app-titled-content
-        label="Allgemeine Einstellungen">
+        label="Allgemeine Einstellungen"
+        description="Hier finden Sie Einstellungen, welche Ihren Verein betreffen.">
         <app-input
           required="true"
           type="text"
@@ -21,24 +19,75 @@
           description="Dieser Code muss von neuen Nutzern angegeben werden, um sich bei der Plattform zu registrieren."
           label="Zugangscode">
         </app-input>
+        <small class="text-gray-500">Technische ID: {{(currentOrg.currentOrg$ | async)?.id}}</small>
+        <div class="flex justify-end w-full">
+          <app-button
+            formButtonType="submit"
+            label="Speichern"
+            icon="save">
+          </app-button>
+        </div>
       </app-titled-content>
       <app-titled-content
-        label="Erscheinungsbild">
-        <app-input
-          required="true"
-          formControlName="title_bar_background_color"
-          type="text"
-          placeholder="#FFFFFF"
-          label="Hintergrundfarbe der Titelleiste">
-        </app-input>
-        <app-input
-          required="true"
-          formControlName="title_bar_border_color"
-          type="text"
-          placeholder="#1bd566"
-          label="Randfarbe der Titelleiste">
-        </app-input>
-        <small class="text-gray-500">Technische ID: {{(currentOrg.currentOrg$ | async)?.id}}</small>
+        label="Erscheinungsbild"
+        description="Konfigurieren Sie das Erscheinungsbild Ihres Portals nach Ihren Vereinsvorlieben, zum Beispiel mit Ihren Vereinsfarben. Es werden sämliche HTML-Farbcodes unterstützt.">
+        <p class="text-sm text-gray-500 my-3 block">
+          Sie können diese Farbcodes auch unter folgender Adresse konfigurieren: <a href="https://htmlcolorcodes.com/" class="text-malachite-600" target="_blank">htmlcolorcodes.com</a>
+        </p>
+        <div class="flex space-x-2">
+          <div class="flex space-x-2 flex-1 items-end">
+            <app-input
+              formControlName="title_bar_background_color"
+              type="text"
+              placeholder="#ff2e17"
+              label="Hintergrundfarbe der Titelleiste"
+              description="Geben Sie eine Farbe ein, welche für den Hintergrund der Titelleiste verwendet werden soll.">
+            </app-input>
+            <div class="h-10 w-10 flex-shrink-0 border border-transparent border-gray-200 px-3 rounded-md mb-4"
+                 [style.background]="editOrgForm.value.title_bar_background_color">
+            </div>
+          </div>
+          <div class="flex space-x-2 flex-1 items-end">
+            <app-input
+              formControlName="title_bar_border_color"
+              type="text"
+              placeholder="#ffeb3d"
+              label="Randfarbe der Titelleiste"
+              description="Geben Sie eine Farbe ein, welche für den Text und das Logo in der Titelleiste verwendet werden soll.">
+            </app-input>
+            <div class="h-10 w-10 flex-shrink-0 border border-transparent border-gray-200 px-3 rounded-md mb-4"
+                 [style.background]="editOrgForm.value.title_bar_border_color">
+            </div>
+          </div>
+        </div>
+        <div class="flex space-x-2">
+          <div class="flex space-x-2 flex-1 items-end">
+            <app-input
+              formControlName="title_bar_text_color"
+              type="text"
+              class="flex-1"
+              placeholder="#ffeb3d"
+              label="Textfarbe der Titelleiste"
+              description="Geben Sie eine Farbe ein, welche verwendet werden soll für">
+            </app-input>
+            <div class="h-10 w-10 flex-shrink-0 border border-transparent border-gray-200 px-3 rounded-md mb-4"
+                 [style.background]="editOrgForm.value.title_bar_text_color">
+            </div>
+          </div>
+          <div class="flex space-x-2 flex-1 items-end">
+            <app-input
+              formControlName="sidebar_link_color"
+              type="text"
+              class="flex-1"
+              placeholder="#ffeb3d"
+              label="Seitenleistenfarbe"
+              description="Geben Sie eine Farbe ein, welche verwendet werden soll für">
+            </app-input>
+            <div class="h-10 w-10 flex-shrink-0 border border-transparent border-gray-200 px-3 rounded-md mb-4"
+                 [style.background]="editOrgForm.value.sidebar_link_color">
+            </div>
+          </div>
+        </div>
         <div class="flex justify-end w-full">
           <app-button
             formButtonType="submit"

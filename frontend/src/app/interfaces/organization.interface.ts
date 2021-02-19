@@ -28,8 +28,8 @@ export interface OrganizationConfigurationData {
 }
 
 export interface ColorConfig {
-  titleBarBackgroundColor: string;
-  titleBarBorderColor: string;
-  titleBarTextColor: string;
-  sidebarLinkTextColor: string;
+  titleBarBackgroundColor?: string;
+  titleBarBorderColor?: string;
+  titleBarTextColor?: string;
+  sidebarLinkTextColor?: string;
 }

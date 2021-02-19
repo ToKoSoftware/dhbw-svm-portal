@@ -41,15 +41,6 @@ export class CurrentOrgService implements OnDestroy {
             this.currentMaintainTeams$.next(maintainTeams);
           }
         );
-        setTimeout(() =>
-        this.currentConfig$.next({
-          colors: {
-            titleBarBackgroundColor: '#ff2e17',
-            titleBarBorderColor: '#ffeb3d',
-            titleBarTextColor: '#ffeb3d',
-            sidebarLinkTextColor: '#ffeb3d',
-          }
-        }), 3000);
       } else {
         this.currentUser$.next(null);
         this.currentOrg$.next(null);
