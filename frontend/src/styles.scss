@@ -26,6 +26,10 @@ router-outlet + * {
   color: var(--accent-color);
 }
 
+.text-accent-hover:hover {
+  color: var(--accent-color);
+}
+
 .bg-accent {
   background-color: var(--accent-color);
 }
@@ -48,5 +52,9 @@ router-outlet + * {
 }
 
 .text-theme-sidebar-text-color {
+  color: var(--sidebar-text-color);
+}
+
+.text-theme-sidebar-text-color-hover:hover {
   color: var(--sidebar-text-color);
 }
