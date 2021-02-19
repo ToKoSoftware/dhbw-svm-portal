@@ -8,16 +8,24 @@ export async function getOrganization(req: Request, res: Response): Promise<Resp
     let success = true;
 
     const organizationData: Organization | null = await Organization
-        .scope([Vars.currentUserIsAdmin ? 'full' : 'active']) //  todo permission check in #98
+        .scope(
+            [
+                Vars.currentUserIsAdmin && (Vars.currentUser.org_id == req.params.id)  
+                    ? 'full' 
+                    : 'active'
+            ]
+        )
         .findOne({
             where: {
                 id: req.params.id
             }, 
-            ...!Vars.currentUserIsAdmin ? {
-                include: {
-                    model: User.scope('publicData')
+            ...!Vars.currentUserIsAdmin && (Vars.currentUser.org_id == req.params.id) 
+                ? {
+                    include: {
+                        model: User.scope('publicData')
+                    }
                 }
-            }: {}
+                : {}
         })
         .catch(() => {
             success = false;
