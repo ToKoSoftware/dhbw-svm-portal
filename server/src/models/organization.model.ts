@@ -33,7 +33,7 @@ import { Item } from './item.model';
 }))
 @Scopes(() => ({
     full: {
-        include: [{ model: Role, as: 'admin_role' }, { model: Role, as: 'roles' }, User, { model: Team, as: 'public_team' }, { model: Team, as: 'teams' }, News, Poll, Event]
+        include: [{ model: Role, as: 'admin_role' }, { model: Role, as: 'roles' }, User, { model: Team, as: 'public_team' }, { model: Team, as: 'teams' }, News, Poll, Event, Item]
     },
     active: {
         required: false,

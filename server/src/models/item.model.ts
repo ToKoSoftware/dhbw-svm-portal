@@ -1,9 +1,11 @@
-import { Table, PrimaryKey, Column, NotEmpty, IsInt, ForeignKey, BeforeCreate, BelongsTo, Scopes, DefaultScope } from 'sequelize-typescript';
+import { Table, PrimaryKey, Column, NotEmpty, IsInt, ForeignKey, BeforeCreate, BelongsTo, Scopes, DefaultScope, BelongsToMany } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { RawItemData } from '../interfaces/item.interface';
 import { currentOrg } from './current-org.scope';
 import { LoggedModel } from './logged.model';
+import { Order } from './order.model';
 import { Organization } from './organization.model';
+import { User } from './user.model';
 
 @DefaultScope(() => ({
     required: false,
@@ -13,7 +15,7 @@ import { Organization } from './organization.model';
 @Scopes(() => ({
     full: {
         required: false,
-        include: [Organization]
+        include: [Organization, User]
     },
     onlyCurrentOrg: (org_id: string) => currentOrg(org_id),
     ordered: {
@@ -43,6 +45,8 @@ export class Item extends LoggedModel {
 
     @BelongsTo(() => Organization)
     organization: Organization;
+    @BelongsToMany(() => User, () => Order)
+    sold_to_users: Array<User & { order: Order }>;
 
     @BeforeCreate
     static addUuid(instance: Item): string {
