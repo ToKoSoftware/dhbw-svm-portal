@@ -1,4 +1,7 @@
-import { BeforeCreate, Table, Column, ForeignKey, BelongsTo, HasOne, HasMany, BelongsToMany, PrimaryKey, NotEmpty, Scopes, DefaultScope } from 'sequelize-typescript';
+import {
+    BeforeCreate, Table, Column, ForeignKey, BelongsTo, HasOne, HasMany,
+    BelongsToMany, PrimaryKey, NotEmpty, Scopes, DefaultScope
+} from 'sequelize-typescript';
 import { RawRoleData } from '../interfaces/role.interface';
 import { currentOrg } from './current-org.scope';
 import { Organization } from './organization.model';
@@ -16,11 +19,11 @@ import { LoggedModel } from './logged.model';
 
 @Scopes(() => ({
     full: {
-        include: [{ model: Organization, as: 'organization' }, { model: Organization, as: 'admin_of_organization' }, Team, User]
+        include: [ { model: Organization, as: 'organization' }, { model: Organization, as: 'admin_of_organization' }, Team, User ]
     },
     ordered: {
         required: false,
-        order: [['title', 'ASC']]
+        order: [ [ 'title', 'ASC' ] ]
     },
     onlyCurrentOrg: (org_id: string) => currentOrg(org_id)
 }))

@@ -1,4 +1,7 @@
-import { BeforeCreate, BelongsTo, Column, DefaultScope, ForeignKey, HasMany, IsDate, NotEmpty, PrimaryKey, Scopes, Table } from 'sequelize-typescript';
+import {
+    BeforeCreate, BelongsTo, Column, DefaultScope, ForeignKey, HasMany, IsDate,
+    NotEmpty, PrimaryKey, Scopes, Table
+} from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { RawPollData } from '../interfaces/poll.interface';
 import { Organization } from './organization.model';
@@ -15,13 +18,13 @@ import { LoggedModel } from './logged.model';
 }))
 @Scopes(() => ({
     full: {
-        include: [Organization, User, Team, PollAnswer]
+        include: [ Organization, User, Team, PollAnswer ]
     },
     expired: (date: Date) => ({
         required: false,
         where: {
             closes_at: {
-                [Op.lte]: date
+                [ Op.lte ]: date
             }
         }
     }),
@@ -29,18 +32,18 @@ import { LoggedModel } from './logged.model';
         required: false,
         where: {
             closes_at: {
-                [Op.gte]: date
+                [ Op.gte ]: date
             }
         }
     }),
     ordered: {
         required: false,
-        order: [['closes_at', 'ASC']]
+        order: [ [ 'closes_at', 'ASC' ] ]
     },
     onlyAnswerTeam: (teamId: string, publicTeamId: string) => ({
         required: false,
         where: {
-            [Op.or]: [
+            [ Op.or ]: [
                 {
                     answer_team_id: teamId
                 },

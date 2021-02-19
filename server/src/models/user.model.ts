@@ -1,4 +1,7 @@
-import { BeforeCreate, BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, HasMany, IsDate, IsIn, Length, Model, PrimaryKey, Scopes, Table } from 'sequelize-typescript';
+import {
+    BeforeCreate, BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey,
+    HasMany, IsDate, IsIn, Length, Model, PrimaryKey, Scopes, Table
+} from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { genderType, UserDataSnapshot } from '../interfaces/users.interface';
 import { Organization } from './organization.model';
@@ -20,7 +23,7 @@ import { Order } from './order.model';
 @DefaultScope(() => ({
     required: false,
     attributes: {
-        exclude: ['password']
+        exclude: [ 'password' ]
     },
     where: {
         is_active: true
@@ -30,18 +33,24 @@ import { Order } from './order.model';
     full: {
         required: false,
         attributes: {
-            exclude: ['password']
+            exclude: [ 'password' ]
         },
-        include: [Organization, { model: Event, as: 'registered_events' }, { model: Event, as: 'created_events' }, PollAnswer, Team, Role, News, Poll, Item]
+        include: [ Organization, { model: Event, as: 'registered_events' }, {
+            model: Event,
+            as: 'created_events'
+        }, PollAnswer, Team, Role, News, Poll, Item ]
     },
     verification: {
         required: false,
-        include: [Organization, { model: Event, as: 'registered_events' }, { model: Event, as: 'created_events' }, PollAnswer, Team, Role, News, Poll, Item]
+        include: [ Organization, { model: Event, as: 'registered_events' }, {
+            model: Event,
+            as: 'created_events'
+        }, PollAnswer, Team, Role, News, Poll, Item ]
     },
     active: {
         required: false,
         attributes: {
-            exclude: ['password']
+            exclude: [ 'password' ]
         },
         where: {
             is_active: true
@@ -50,7 +59,7 @@ import { Order } from './order.model';
     inactive: {
         required: false,
         attributes: {
-            exclude: ['password']
+            exclude: [ 'password' ]
         },
         where: {
             is_active: false
@@ -59,7 +68,7 @@ import { Order } from './order.model';
     onlyCurrentOrg: (org_id: string) => ({
         required: false,
         attributes: {
-            exclude: ['password']
+            exclude: [ 'password' ]
         },
         where: {
             org_id: org_id
@@ -67,7 +76,7 @@ import { Order } from './order.model';
     }),
     publicData: {
         required: false,
-        attributes: ['id', 'username', 'first_name', 'last_name'],
+        attributes: [ 'id', 'username', 'first_name', 'last_name' ],
         where: {
             is_active: true
         }
@@ -90,7 +99,7 @@ export class User extends Model {
     first_name: string;
     @Column
     last_name: string;
-    @IsIn([['M', 'W', 'D']])
+    @IsIn([ [ 'M', 'W', 'D' ] ])
     @Column
     gender: genderType;
     @IsDate

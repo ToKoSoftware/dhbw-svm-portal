@@ -25,7 +25,7 @@ import { Item } from './item.model';
 @DefaultScope(() => ({
     required: false,
     attributes: {
-        exclude: ['access_code', 'config']
+        exclude: [ 'access_code', 'config' ]
     },
     where: {
         is_active: true
@@ -33,12 +33,13 @@ import { Item } from './item.model';
 }))
 @Scopes(() => ({
     full: {
-        include: [{ model: Role, as: 'admin_role' }, { model: Role, as: 'roles' }, User, { model: Team, as: 'public_team' }, { model: Team, as: 'teams' }, News, Poll, Event, Item]
+        include: [ { model: Role, as: 'admin_role' }, { model: Role, as: 'roles' },
+            User, { model: Team, as: 'public_team' }, { model: Team, as: 'teams' }, News, Poll, Event, Item ]
     },
     active: {
         required: false,
         attributes: {
-            exclude: ['access_code', 'config']
+            exclude: [ 'access_code', 'config' ]
         },
         where: {
             is_active: true
@@ -47,7 +48,7 @@ import { Item } from './item.model';
     inactive: {
         required: false,
         attributes: {
-            exclude: ['access_code', 'config']
+            exclude: [ 'access_code', 'config' ]
         },
         where: {
             is_active: false

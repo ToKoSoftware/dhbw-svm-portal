@@ -63,7 +63,10 @@ export async function deleteTeam(req: Request, res: Response): Promise<Response>
         })
     );
     if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Could not delete polls belonging to team with id ' + req.params.id }));
+        return res.status(500).send(wrapResponse(
+            false, 
+            { error: 'Could not delete polls belonging to team with id ' + req.params.id }
+        ));
     }
 
     await PollAnswer.destroy({
@@ -76,7 +79,8 @@ export async function deleteTeam(req: Request, res: Response): Promise<Response>
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Could not delete pollanswers belonging to team with id ' + req.params.id }));
+        return res.status(500).send(wrapResponse(
+            false, { error: 'Could not delete pollanswers belonging to team with id ' + req.params.id }));
     }
     // await transaction.commit();
     return res.status(204).send(wrapResponse(true));

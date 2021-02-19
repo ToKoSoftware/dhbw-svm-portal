@@ -16,7 +16,12 @@ export async function voteForPollAnswer(req: Request, res: Response): Promise<Re
     // allow polls that expire today to be shown
     currentDate.setDate(currentDate.getDate() - 1);
     const pollData: Poll | null = await Poll
-        .scope([{ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, { method: ['onlyAnswerTeam', Vars.currentUser.teams.map(t => t.id), Vars.currentOrganization.public_team_id] }, { method: ['notExpired', currentDate] }])
+        .scope(
+            [
+                { method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, 
+                { method: ['onlyAnswerTeam', Vars.currentUser.teams.map(t => t.id), Vars.currentOrganization.public_team_id] }, 
+                { method: ['notExpired', currentDate] }
+            ])
         .findByPk(incomingParams.pollId)
         .catch(() => {
             success = false;

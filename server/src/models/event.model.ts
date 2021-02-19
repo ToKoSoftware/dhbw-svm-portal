@@ -1,4 +1,7 @@
-import { AllowNull, BeforeCreate, BelongsTo, BelongsToMany, Column, DefaultScope, ForeignKey, IsDate, IsInt, NotEmpty, PrimaryKey, Scopes, Table } from 'sequelize-typescript';
+import {
+    AllowNull, BeforeCreate, BelongsTo, BelongsToMany, Column, DefaultScope,
+    ForeignKey, IsDate, IsInt, NotEmpty, PrimaryKey, Scopes, Table
+} from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { RawEventData } from '../interfaces/event.interface';
 import { EventRegistration } from './event-registration.model';
@@ -15,13 +18,13 @@ import { LoggedModel } from './logged.model';
 }))
 @Scopes(() => ({
     full: {
-        include: [Organization, { model: User, as: 'author' }, { model: User, as: 'registered_users' }]
+        include: [ Organization, { model: User, as: 'author' }, { model: User, as: 'registered_users' } ]
     },
     expired: (date: Date) => ({
         required: false,
         where: {
             end_date: {
-                [Op.lte]: date
+                [ Op.lte ]: date
             }
         }
     }),
@@ -29,13 +32,13 @@ import { LoggedModel } from './logged.model';
         required: false,
         where: {
             end_date: {
-                [Op.gt]: date
+                [ Op.gt ]: date
             }
         }
     }),
     ordered: {
         required: false,
-        order: [['start_date', 'ASC']]
+        order: [ [ 'start_date', 'ASC' ] ]
     },
     free: {
         required: false,
@@ -47,7 +50,7 @@ import { LoggedModel } from './logged.model';
     onlyAllowedTeam: (allowed_team_id: string, public_team_id: string) => ({
         required: false,
         where: {
-            [Op.or]: [
+            [ Op.or ]: [
                 {
                     allowed_team_id: allowed_team_id
                 },

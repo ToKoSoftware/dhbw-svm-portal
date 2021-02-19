@@ -17,7 +17,10 @@ export async function createTeam(req: Request, res: Response): Promise<Response>
         return res.status(400).send(wrapResponse(false, { error: 'Not all required fields have been set' }));
     }
 
-    const role: Role | null = await Role.scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }).findByPk(mappedIncomingData.maintain_role_id)
+    const role: Role | null = await Role.scope({
+        method: [ 'onlyCurrentOrg',
+            Vars.currentOrganization.id ]
+    }).findByPk(mappedIncomingData.maintain_role_id)
         .catch(() => {
             success = false;
             return null;
