@@ -70,7 +70,7 @@ import { getFTPConfiguration, updateFTPConfiguration } from './api/v2/documents/
 import { getPublicEvents } from './api/v2/events/get-public-events';
 import { registerForPublicEvents } from './api/v2/event-registrations/register-for-public-event';
 import { getEventLogs } from './api/v2/event-logs/get-event-logs';
-import { customError, errorHandler } from './middleware/error-handler';
+import { CustomError, errorHandler } from './middleware/error-handler';
 
 export default function startServer(): void {
 
@@ -182,7 +182,7 @@ export default function startServer(): void {
     /**
      * Role
      */
-    app.get('/api/v2/roles', userIsAuthorized, (req, res) => getRoles(req, res));
+    app.get('/api/v2/roles', userIsAdmin, (req, res) => getRoles(req, res));
     app.get('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => getRole(req, res));
     app.post('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => createRole(req, res));
     app.post('/api/v2/roles/:id/assignment', userIsAuthorized, userIsAdmin, (req, res) => createRoleAssignment(req, res));
@@ -241,7 +241,7 @@ export default function startServer(): void {
     /**
      * ErrorHandler
      */
-    app.use((err: customError, req: Request, res: Response, next: NextFunction) => { errorHandler(err, req, res, next); });
+    app.use((err: CustomError, req: Request, res: Response, next: NextFunction) => { errorHandler(err, req, res, next); });
 
     /**
      * Server
