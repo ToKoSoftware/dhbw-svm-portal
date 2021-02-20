@@ -5,19 +5,15 @@ import { objectHasRequiredAndNotEmptyKeys } from '../../../functions/check-input
 import { CustomError } from '../../../middleware/error-handler';
 import { PortalErrors } from '../../../enum/errors';
 
-export async function getFTPConfiguration(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
-    try {
-        const config = await loadOrgSetting<FTPClientConfiguration>('ftp');
-        if (!config) {
-            await createDefaultFTPConfig();
-            // reload data
-            return getFTPConfiguration(req, res, next);
-        }
-        const d = { ...config.data };
-        return res.send(wrapResponse(true, d));
-    } catch (error) {
-        next(new CustomError(PortalErrors.INTERNAL_SERVER_ERROR, 500, error));
+export async function getFTPConfiguration(req: Request, res: Response): Promise<Response> {
+    const config = await loadOrgSetting<FTPClientConfiguration>('ftp');
+    if (!config) {
+        await createDefaultFTPConfig();
+        // reload data
+        return getFTPConfiguration(req, res);
     }
+    const d = { ...config.data };
+    return res.send(wrapResponse(true, d));
 }
 
 export async function updateFTPConfiguration(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
@@ -46,21 +42,17 @@ export async function updateFTPConfiguration(req: Request, res: Response, next: 
 }
 
 async function createDefaultFTPConfig(): Promise<void> {
-    try {
-        await updateOrgSetting<FTPClientConfiguration>('ftp',
-            {
-                data: {
-                    password: Math.random().toString(36).substring(7),
-                    host: 'example.com',
-                    user: 'example',
-                    enabled: false
-                },
-                protection: [ 'system', 'admin' ]
-            }
-        );
-    } catch (error) {
-        throw new CustomError(PortalErrors.INTERNAL_SERVER_ERROR, 500, error);
-    }
+    await updateOrgSetting<FTPClientConfiguration>('ftp',
+        {
+            data: {
+                password: Math.random().toString(36).substring(7),
+                host: 'example.com',
+                user: 'example',
+                enabled: false
+            },
+            protection: [ 'system', 'admin' ]
+        }
+    );
 }
 
 export interface FTPClientConfiguration {

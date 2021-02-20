@@ -50,11 +50,7 @@ export async function createOrganization(req: Request, res: Response, next: Next
 }
 
 function handleError(res: Response, code: number, reason: string, dataToDelete: Array<Model | null>): Response {
-    try {
-        // clean up
-        dataToDelete.forEach(model => model?.destroy());
-        return res.status(code).send(wrapResponse(false, { error: reason }));
-    } catch (error) {
-        throw new CustomError(PortalErrors.INTERNAL_SERVER_ERROR, 500, error);
-    }
+    // clean up
+    dataToDelete.forEach(model => model?.destroy());
+    return res.status(code).send(wrapResponse(false, { error: reason }));
 }

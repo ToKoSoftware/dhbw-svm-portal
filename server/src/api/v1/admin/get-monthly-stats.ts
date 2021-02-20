@@ -19,16 +19,12 @@ export async function getMonthlyStats(req: Request, res: Response, next: NextFun
 }
 
 async function countMonthlyEntities(model: typeof User) {
-    try {
-        const count = await model.scope({ method: [ 'onlyCurrentOrg', Vars.currentOrganization.id ] }).count(
-            {
-                group: [ Sequelize.fn('date_trunc', 'month', Sequelize.col('createdAt')) ]
-            })
-            .catch(() => 0);
+    const count = await model.scope({ method: [ 'onlyCurrentOrg', Vars.currentOrganization.id ] }).count(
+        {
+            group: [ Sequelize.fn('date_trunc', 'month', Sequelize.col('createdAt')) ]
+        })
+        .catch(() => 0);
 
-        return count;
-    } catch (error) {
-        throw new CustomError(PortalErrors.INTERNAL_SERVER_ERROR, 500, error);
-    }
+    return count;
 }
 

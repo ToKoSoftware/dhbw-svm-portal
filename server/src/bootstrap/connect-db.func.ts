@@ -39,7 +39,5 @@ export function connectToDatabase(): void {
         );
     } catch (error) {
         Vars.loggy.error('Unable to connect to the database:', error);
-        throw error;
-
     }
 }

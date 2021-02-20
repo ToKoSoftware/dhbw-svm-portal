@@ -18,13 +18,9 @@ export async function getStats(req: Request, res: Response, next: NextFunction):
 }
 
 async function countTotalEntities(model: typeof User, is_active = true): Promise<number | void> {
-    try {
-        return await model.scope({ method: [ 'onlyCurrentOrg', Vars.currentOrganization.id ] }).count({
-            where: {
-                is_active: is_active
-            }
-        }).catch(() => 0);
-    } catch (error) {
-        throw new CustomError(PortalErrors.INTERNAL_SERVER_ERROR, 500, error);
-    }
+    return await model.scope({ method: [ 'onlyCurrentOrg', Vars.currentOrganization.id ] }).count({
+        where: {
+            is_active: is_active
+        }
+    }).catch(() => 0);
 }
