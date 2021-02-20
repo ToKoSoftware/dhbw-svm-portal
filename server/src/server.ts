@@ -101,7 +101,7 @@ export default function startServer(): void {
     /**
      * Authentication
      */
-    app.post('/api/v1/login', (req, res) => loginUser(req, res));
+    app.post('/api/v1/login', loginUser);
 
     // OAuth2
     app.get('/api/v2/oauth2', userIsAuthorizedByParam, (req, res) => oauth2Authentication(req, res));
@@ -113,123 +113,121 @@ export default function startServer(): void {
     /**
      * User
      */
-    app.get('/api/v1/users', userIsAuthorized, (req, res) => getUsers(req, res));
-    app.get('/api/v1/users/:id', userIsAuthorized, (req, res) => getUser(req, res));
-    app.get('/api/v1/users/:id/direct-debit-mandates', userIsAuthorized, (req, res) => getDirectDebitMandate(req, res));
-    app.delete('/api/v1/users/:id/direct-debit-mandates', userIsAuthorized, (req, res) => deleteDirectDebitMandate(req, res));
-    app.post('/api/v1/users', (req, res) => createUser(req, res));
-    app.put('/api/v1/users/:id', userIsAuthorized, (req, res) => updateUser(req, res));
-    app.delete('/api/v1/users/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteUser(req, res));
+    app.get('/api/v1/users', userIsAuthorized, getUsers);
+    app.get('/api/v1/users/:id', userIsAuthorized, getUser);
+    app.get('/api/v1/users/:id/direct-debit-mandates', userIsAuthorized, getDirectDebitMandate);
+    app.delete('/api/v1/users/:id/direct-debit-mandates', userIsAuthorized, deleteDirectDebitMandate);
+    app.post('/api/v1/users', createUser);
+    app.put('/api/v1/users/:id', userIsAuthorized, updateUser);
+    app.delete('/api/v1/users/:id', userIsAuthorized, userIsAdmin, deleteUser);
 
     /**
      * Team
      */
-    app.get('/api/v2/teams', userIsAuthorized, (req, res) => getTeams(req, res));
-    app.get('/api/v2/teams/:id', userIsAuthorized, (req, res) => getTeam(req, res));
-    app.post('/api/v2/teams', userIsAuthorized, userIsAdmin, (req, res) => createTeam(req, res));
-    app.post('/api/v2/teams/:id/membership', userIsAuthorized, (req, res) => createMembership(req, res));
-    app.delete('/api/v2/teams/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteTeam(req, res));
-    app.delete('/api/v2/teams/:id/membership', userIsAuthorized, (req, res) => deleteMembership(req, res));
-    app.put('/api/v2/teams/:id', userIsAuthorized, (req, res) => updateTeam(req, res));
+    app.get('/api/v2/teams', userIsAuthorized, getTeams);
+    app.get('/api/v2/teams/:id', userIsAuthorized, getTeam);
+    app.post('/api/v2/teams', userIsAuthorized, userIsAdmin, createTeam);
+    app.post('/api/v2/teams/:id/membership', userIsAuthorized, createMembership);
+    app.delete('/api/v2/teams/:id', userIsAuthorized, userIsAdmin, deleteTeam);
+    app.delete('/api/v2/teams/:id/membership', userIsAuthorized, deleteMembership);
+    app.put('/api/v2/teams/:id', userIsAuthorized, updateTeam);
 
     /**
      * News
      */
-    app.get('/api/v2/news', userIsAuthorized, (req, res) => getAllNews(req, res));
-    app.get('/api/v2/news/:id', userIsAuthorized, (req, res) => getSingleNews(req, res));
-    app.post('/api/v2/news', userIsAuthorized, userIsAdmin, (req, res) => createNews(req, res));
-    app.delete('/api/v2/news/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteNews(req, res));
-    app.put('/api/v2/news/:id', userIsAuthorized, userIsAdmin, (req, res) => updateNews(req, res));
+    app.get('/api/v2/news', userIsAuthorized, getAllNews);
+    app.get('/api/v2/news/:id', userIsAuthorized, getSingleNews);
+    app.post('/api/v2/news', userIsAuthorized, userIsAdmin, createNews);
+    app.delete('/api/v2/news/:id', userIsAuthorized, userIsAdmin, deleteNews);
+    app.put('/api/v2/news/:id', userIsAuthorized, userIsAdmin, updateNews);
 
     /**
      * Event
      */
-    app.get('/api/v2/events', userIsAuthorized, (req, res) => getEvents(req, res));
-    app.get('/api/v2/events/:id', userIsAuthorized, (req, res) => getEvent(req, res));
+    app.get('/api/v2/events', userIsAuthorized, getEvents);
+    app.get('/api/v2/events/:id', userIsAuthorized, getEvent);
     // Get a single event registration by eventId and userId
-    app.get('/api/v2/events/:event_id/event-registration', userIsAuthorized, (req, res) => getEventRegistration(req, res));
+    app.get('/api/v2/events/:event_id/event-registration', userIsAuthorized, getEventRegistration);
     // Get all event registrations for one eventId
 
-    app.get('/api/v2/events/:event_id/eventregistrations', userIsAuthorized, userIsAdmin,
-        (req, res) => getEventRegistrationsFromEvent(req, res));
+    app.get('/api/v2/events/:event_id/eventregistrations', userIsAuthorized, userIsAdmin, getEventRegistrationsFromEvent);
     // Get all event registrations for one user (or own registrations as non-admin)
-    app.get('/api/v2/event-registrations', userIsAuthorized, (req, res) => getEventRegistrationsFromUser(req, res));
-    app.post('/api/v2/events', userIsAuthorized, (req, res) => createEvent(req, res));
-    app.post('/api/v2/events/:id/register', (req, res) => registerForEvent(req, res));
-    app.delete('/api/v2/events/:id', userIsAuthorized, (req, res) => deleteEvent(req, res));
-    app.delete('/api/v2/events/:event_id/event-registrations/:id', userIsAuthorized, (req, res) => deleteEventRegistration(req, res));
-    app.put('/api/v2/events/:id', userIsAuthorized, (req, res) => updateEvent(req, res));
-    app.put('/api/v2/events/:event_id/event-registrations', userIsAuthorized, (req, res) => updateEventRegistration(req, res));
+    app.get('/api/v2/event-registrations', userIsAuthorized, getEventRegistrationsFromUser);
+    app.post('/api/v2/events', userIsAuthorized, createEvent);
+    app.post('/api/v2/events/:id/register', registerForEvent);
+    app.delete('/api/v2/events/:id', userIsAuthorized, deleteEvent);
+    app.delete('/api/v2/events/:event_id/event-registrations/:id', userIsAuthorized, deleteEventRegistration);
+    app.put('/api/v2/events/:id', userIsAuthorized, updateEvent);
+    app.put('/api/v2/events/:event_id/event-registrations', userIsAuthorized, updateEventRegistration);
 
     /**
      * Poll
      */
-    app.get('/api/v2/polls', userIsAuthorized, (req, res) => getPolls(req, res));
-    app.get('/api/v2/polls/:id', userIsAuthorized, (req, res) => getPoll(req, res));
-    app.post('/api/v2/polls', userIsAuthorized, (req, res) => createPoll(req, res));
-    app.delete('/api/v2/polls/:id', userIsAuthorized, (req, res) => deletePoll(req, res));
-    app.put('/api/v2/polls/:id', userIsAuthorized, (req, res) => updatePoll(req, res));
+    app.get('/api/v2/polls', userIsAuthorized, getPolls);
+    app.get('/api/v2/polls/:id', userIsAuthorized, getPoll);
+    app.post('/api/v2/polls', userIsAuthorized, createPoll);
+    app.delete('/api/v2/polls/:id', userIsAuthorized, deletePoll);
+    app.put('/api/v2/polls/:id', userIsAuthorized, updatePoll);
 
     /**
      * PollAnswer
      */
-    app.post('/api/v2/polls/:id/answers', userIsAuthorized, (req, res) => createPollAnswer(req, res));
-    app.post('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => voteForPollAnswer(req, res));
-    app.put('/api/v2/polls/:pollId/:id', userIsAuthorized, (req, res) => updatePollAnswer(req, res));
-    app.delete('/api/v2/polls/:pollId/:id', userIsAuthorized, (req, res) => deletePollAnswer(req, res));
-    app.delete('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, (req, res) => deletePollVote(req, res));
+    app.post('/api/v2/polls/:id/answers', userIsAuthorized, createPollAnswer);
+    app.post('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, voteForPollAnswer);
+    app.put('/api/v2/polls/:pollId/:id', userIsAuthorized, updatePollAnswer);
+    app.delete('/api/v2/polls/:pollId/:id', userIsAuthorized, deletePollAnswer);
+    app.delete('/api/v2/polls/:pollId/:pollAnswerId/vote', userIsAuthorized, deletePollVote);
 
     /**
      * Role
      */
-    app.get('/api/v2/roles', userIsAuthorized, (req, res) => getRoles(req, res));
-    app.get('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => getRole(req, res));
-    app.post('/api/v2/roles', userIsAuthorized, userIsAdmin, (req, res) => createRole(req, res));
-    app.post('/api/v2/roles/:id/assignment', userIsAuthorized, userIsAdmin, (req, res) => createRoleAssignment(req, res));
-    app.delete('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => deleteRole(req, res));
-    app.delete('/api/v2/roles/:id/assignment', userIsAuthorized, userIsAdmin, (req, res) => deleteRoleAssignment(req, res));
-    app.put('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, (req, res) => updateRole(req, res));
+    app.get('/api/v2/roles', userIsAuthorized, getRoles);
+    app.get('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, getRole);
+    app.post('/api/v2/roles', userIsAuthorized, userIsAdmin, createRole);
+    app.post('/api/v2/roles/:id/assignment', userIsAuthorized, userIsAdmin, createRoleAssignment);
+    app.delete('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, deleteRole);
+    app.delete('/api/v2/roles/:id/assignment', userIsAuthorized, userIsAdmin, deleteRoleAssignment);
+    app.put('/api/v2/roles/:id', userIsAuthorized, userIsAdmin, updateRole);
 
     /**
      * Organization
      */
-    app.get('/api/v2/organizations', userIsAuthorized, (req, res) => getOrganizations(req, res));
-    app.post('/api/v2/organizations', (req, res) => createOrganization(req, res));
-    app.get('/api/v2/organizations/:id', userIsAuthorized, (req, res) => getOrganization(req, res));
-    app.get('/api/v2/access/:code', (req, res) => getOrganizationByAccessCode(req, res));
-    app.put('/api/v2/organizations/:id', userIsAuthorized, userIsAdmin, (req, res) => updateOrganization(req, res));
-    app.delete('/api/v2/organizations', userIsAuthorized, userIsAdmin, (req, res) => deleteOrganization(req, res));
-    app.get('/api/v2/organizations/:id/public-events', (req, res) => getPublicEvents(req, res));
-    app.get('/api/v2/organizations/:id/public-events/:eventId/register', (req, res) => registerForPublicEvents(req, res));
+    app.get('/api/v2/organizations', userIsAuthorized, getOrganizations);
+    app.post('/api/v2/organizations', createOrganization);
+    app.get('/api/v2/organizations/:id', userIsAuthorized, getOrganization);
+    app.get('/api/v2/access/:code', getOrganizationByAccessCode);
+    app.put('/api/v2/organizations/:id', userIsAuthorized, userIsAdmin, updateOrganization);
+    app.delete('/api/v2/organizations', userIsAuthorized, userIsAdmin, deleteOrganization);
+    app.get('/api/v2/organizations/:id/public-events', getPublicEvents);
+    app.get('/api/v2/organizations/:id/public-events/:eventId/register', registerForPublicEvents);
 
     /**
      * Direct Debit Mandate
      */
-    app.get('/api/v2/direct-debit-mandates', userIsAuthorized, userIsAdmin, (req, res) => getDirectDebitMandates(req, res));
-    app.post('/api/v2/direct-debit-mandates', userIsAuthorized, (req, res) => createDirectDebitMandate(req, res));
+    app.get('/api/v2/direct-debit-mandates', userIsAuthorized, userIsAdmin, getDirectDebitMandates);
+    app.post('/api/v2/direct-debit-mandates', userIsAuthorized, createDirectDebitMandate);
 
     /**
      * Documents
      */
-    app.get('/api/v2/documents', userIsAuthorized, (req, res) => getDocuments(req, res));
-    app.get('/api/v2/documents/:fileName', userIsAuthorizedByParam, (req, res) => downloadDocument(req, res));
-    app.post('/api/v2/documents', userIsAuthorized, userIsAdmin, (req, res) => uploadDocument(req, res));
-    app.delete('/api/v2/documents/:fileName', userIsAuthorized, userIsAdmin, (req, res) => deleteDocument(req, res));
-    app.get('/api/v2/ftp/configuration', userIsAuthorized, userIsAdmin, (req, res) => getFTPConfiguration(req, res));
-    app.put('/api/v2/ftp/configuration', userIsAuthorized, userIsAdmin, (req, res) => updateFTPConfiguration(req, res));
+    app.get('/api/v2/documents', userIsAuthorized, getDocuments);
+    app.get('/api/v2/documents/:fileName', userIsAuthorizedByParam, downloadDocument);
+    app.post('/api/v2/documents', userIsAuthorized, userIsAdmin, uploadDocument);
+    app.delete('/api/v2/documents/:fileName', userIsAuthorized, userIsAdmin, deleteDocument);
+    app.get('/api/v2/ftp/configuration', userIsAuthorized, userIsAdmin, getFTPConfiguration);
+    app.put('/api/v2/ftp/configuration', userIsAuthorized, userIsAdmin, updateFTPConfiguration);
 
     /**
      * Admin
      */
-    app.get('/api/v1/admin/stats', userIsAuthorized, userIsAdmin, (req, res) => getStats(req, res));
-    app.get('/api/v1/admin/stats/monthly', userIsAuthorized, userIsAdmin, (req, res) => getMonthlyStats(req, res));
-    app.get('/api/v2/admin/event-logs', userIsAuthorized, userIsAdmin, (req, res) => getEventLogs(req, res));
+    app.get('/api/v1/admin/stats', userIsAuthorized, userIsAdmin, getStats);
+    app.get('/api/v1/admin/stats/monthly', userIsAuthorized, userIsAdmin, getMonthlyStats);
+    app.get('/api/v2/admin/event-logs', userIsAuthorized, userIsAdmin, getEventLogs);
     //following two routes only via frontend/browser functionable with download
-    app.get('/api/v1/admin/export/users', userIsAuthorizedByParam, userIsAdmin, (req, res) => exportUsers(req, res));
-    app.get('/api/v1/admin/export/events/:id/registrations', userIsAuthorizedByParam, userIsAdmin,
-        (req, res) => exportEventRegistrations(req, res));
+    app.get('/api/v1/admin/export/users', userIsAuthorizedByParam, userIsAdmin, exportUsers);
+    app.get('/api/v1/admin/export/events/:id/registrations', userIsAuthorizedByParam, userIsAdmin, exportEventRegistrations);
     app.get('/api/v1/admin/export/direct-debit-mandates', userIsAuthorizedByParam, userIsAdmin,
-        (req, res) => exportDirectDebitMandates(req, res));
+        exportDirectDebitMandates);
 
 
 

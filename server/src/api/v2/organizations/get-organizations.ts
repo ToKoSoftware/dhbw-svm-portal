@@ -1,64 +1,74 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { Vars } from '../../../vars';
 import { User } from '../../../models/user.model';
 import { Organization } from '../../../models/organization.model';
+import { CustomError } from '../../../middleware/error-handler';
+import { PortalErrors } from '../../../enum/errors';
 
-export async function getOrganization(req: Request, res: Response): Promise<Response> {
-    let success = true;
+export async function getOrganization(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    try {
+        let success = true;
 
-    const organizationData: Organization | null = await Organization
-        .scope(
-            [
-                Vars.currentUserIsAdmin && (Vars.currentUser.org_id == req.params.id)  
-                    ? 'full' 
-                    : 'active'
-            ]
-        )
-        .findOne({
-            where: {
-                id: req.params.id
-            }, 
-            ...!Vars.currentUserIsAdmin && (Vars.currentUser.org_id == req.params.id) 
-                ? {
-                    include: {
-                        model: User.scope('publicData')
+        const organizationData: Organization | null = await Organization
+            .scope(
+                [
+                    Vars.currentUserIsAdmin && (Vars.currentUser.org_id == req.params.id)
+                        ? 'full'
+                        : 'active'
+                ]
+            )
+            .findOne({
+                where: {
+                    id: req.params.id
+                },
+                ...!Vars.currentUserIsAdmin && (Vars.currentUser.org_id == req.params.id)
+                    ? {
+                        include: {
+                            model: User.scope('publicData')
+                        }
                     }
-                }
-                : {}
-        })
-        .catch(() => {
-            success = false;
-            return null;
-        });
-    if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+                    : {}
+            })
+            .catch(() => {
+                success = false;
+                return null;
+            });
+        if (!success) {
+            return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+        }
+        if (organizationData === null) {
+            return res.status(404).send(wrapResponse(false));
+        }
+        return res.send(wrapResponse(true, organizationData));
+    } catch (error) {
+        next(new CustomError(PortalErrors.INTERNAL_SERVER_ERROR, 500, error));
     }
-    if (organizationData === null) {
-        return res.status(404).send(wrapResponse(false));
-    }
-    return res.send(wrapResponse(true, organizationData));
 }
 
-export async function getOrganizations(req: Request, res: Response): Promise<Response> {
-    let success = true;
-    let data: Organization | null;
-    if (Vars.currentUserIsAdmin) {
-        data = await Organization.scope('full').findByPk(Vars.currentOrganization.id)
-            .catch(() => {
-                success = false;
-                return null;
-            });
-    } else {
-        data = await Organization.findByPk(Vars.currentOrganization.id)
-            .catch(() => {
-                success = false;
-                return null;
-            });
-    }
-    if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
-    }
+export async function getOrganizations(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    try {
+        let success = true;
+        let data: Organization | null;
+        if (Vars.currentUserIsAdmin) {
+            data = await Organization.scope('full').findByPk(Vars.currentOrganization.id)
+                .catch(() => {
+                    success = false;
+                    return null;
+                });
+        } else {
+            data = await Organization.findByPk(Vars.currentOrganization.id)
+                .catch(() => {
+                    success = false;
+                    return null;
+                });
+        }
+        if (!success) {
+            return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+        }
 
-    return res.send(wrapResponse(true, data));
+        return res.send(wrapResponse(true, data));
+    } catch (error) {
+        next(new CustomError(PortalErrors.INTERNAL_SERVER_ERROR, 500, error));
+    }
 }
