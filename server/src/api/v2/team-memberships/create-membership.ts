@@ -1,45 +1,48 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
+import { PortalErrors } from '../../../enum/errors';
 import { objectHasRequiredAndNotEmptyKeys } from '../../../functions/check-inputs.func';
 import { mapMembership } from '../../../functions/map-membership.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { RawMembershipData } from '../../../interfaces/membership.interface';
+import { CustomError } from '../../../middleware/error-handler';
 import { Membership } from '../../../models/membership.model';
 import { Team } from '../../../models/team.model';
 import { User } from '../../../models/user.model';
 import { Vars } from '../../../vars';
 
-export async function createMembership(req: Request, res: Response): Promise<Response> {
+export async function createMembership(req: Request, res: Response, next: NextFunction): Promise<Response> {
     let success = true;
     const incomingData: RawMembershipData = req.body;
     const mappedIncomingData: RawMembershipData = mapMembership(incomingData, req.params.id);
 
     const requiredFields = Membership.requiredFields();
     if (!objectHasRequiredAndNotEmptyKeys(mappedIncomingData, requiredFields)) {
-        return res.status(400).send(wrapResponse(false, { error: 'Not all required fields have been set' }));
+        next(new CustomError(PortalErrors.NOT_ALL_REQUIRED_FIELDS_HAVE_BEEN_SET, 400));
     }
-    const user = await User.scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }).findByPk(mappedIncomingData.user_id)
+    const user = await User.scope({ method: [ 'onlyCurrentOrg', Vars.currentOrganization.id ] }).findByPk(mappedIncomingData.user_id)
         .catch(() => {
             success = false;
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+        next(new CustomError(PortalErrors.DATABASE_ERROR, 500));
     }
-    const team = await Team.scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }).findByPk(mappedIncomingData.team_id)
+    const team = await Team.scope({ method: [ 'onlyCurrentOrg', Vars.currentOrganization.id ] }).findByPk(mappedIncomingData.team_id)
         .catch(() => {
             success = false;
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+        next(new CustomError(PortalErrors.DATABASE_ERROR, 500));
     }
     if (team === null || user === null) {
         return res.status(404).send(wrapResponse(false, { error: 'Invalid input data!' }));
+        //next(new CustomError(PortalErrors.INVALID_INPUT_DATA, 404));
     }
 
     const role_ids: string[] = Vars.currentUser.assigned_roles.map(t => t.id);
     if (!role_ids.includes(team.maintain_role_id) && !Vars.currentUserIsAdmin) {
-        return res.status(401).send(wrapResponse(false, { error: 'Unauthorized! You are not maintainer of this team and not admin!' }));
+        next(new CustomError(PortalErrors.UNAUTHORIZED_YOU_ARE_NOT_MAINTAINER_OF_THIS_TEAM_AND_NOT_ADMIN, 401));
     }
 
     // Check if user is already member of team. If not, create entry.
@@ -55,7 +58,7 @@ export async function createMembership(req: Request, res: Response): Promise<Res
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+        next(new CustomError(PortalErrors.DATABASE_ERROR, 500));
     }
 
     return res.send(wrapResponse(true, createdData));

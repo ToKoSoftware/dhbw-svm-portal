@@ -5,24 +5,24 @@ import { PortalErrorData } from '../interfaces/error-handler-interface';
 import { Vars } from '../vars';
 
 
-export class customError extends Error {
-    constructor(public errorEnumMessage: PortalErrors, public statusCode: number) {
+export class CustomError extends Error {
+    constructor(public errorEnumMessage: PortalErrors, public statusCode: number, public catchException?: Error) {
         super();
     }
 }
 
-type IErrorHandler = (err: customError, req: Request, res: Response, next: NextFunction) => unknown;
+type IErrorHandler = (err: CustomError, req: Request, res: Response, next: NextFunction) => unknown;
 
 
 export const errorHandler: IErrorHandler = (err, req, res,) => {
     const error: PortalErrorData = {
-        message: err.errorEnumMessage.toString() || 'Es ist ein Fehler aufgetreten',
+        message: err.errorEnumMessage?.toString() || 'Es ist ein Fehler aufgetreten',
         status: err.statusCode || 500,
-        type: PortalErrors[ err.errorEnumMessage ].toString(),
+        type: PortalErrors[ err.errorEnumMessage ],
         success: false,
     };
 
-    if (Vars.config.logging) error.stacktrace = err.stack?.split('\n    ');
+    if (Vars.config.logging) error.stacktrace = err.catchException?.stack?.split('\n    ') || err.stack?.split('\n    ');
 
     res.status(error.status).send(wrapResponse(false, error));
 };

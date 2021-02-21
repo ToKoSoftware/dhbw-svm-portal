@@ -1,10 +1,12 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
+import { PortalErrors } from '../../../enum/errors';
 import { checkKeysAreNotEmptyOrNotSet } from '../../../functions/check-inputs.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { RawOrganizationData } from '../../../interfaces/organization.interface';
+import { CustomError } from '../../../middleware/error-handler';
 import { Organization } from '../../../models/organization.model';
 
-export async function updateOrganization(req: Request, res: Response): Promise<Response> {
+export async function updateOrganization(req: Request, res: Response, next: NextFunction): Promise<Response> {
     let success = true;
     const incomingData: RawOrganizationData = req.body;
     const organizationId = req.params.id;
@@ -32,7 +34,7 @@ export async function updateOrganization(req: Request, res: Response): Promise<R
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+        next(new CustomError(PortalErrors.DATABASE_ERROR, 500));
     }
     if (organizationData === null) {
         return res.send(wrapResponse(true, { info: 'Nothing updated' }));

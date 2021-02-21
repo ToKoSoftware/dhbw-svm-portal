@@ -1,12 +1,14 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
+import { PortalErrors } from '../../../enum/errors';
 import { mapPollVote } from '../../../functions/map-poll-vote.func';
 import { wrapResponse } from '../../../functions/response-wrapper';
+import { CustomError } from '../../../middleware/error-handler';
 import { PollAnswer } from '../../../models/poll-answer.model';
 import { PollVote } from '../../../models/poll-vote.model';
 import { Poll } from '../../../models/poll.model';
 import { Vars } from '../../../vars';
 
-export async function voteForPollAnswer(req: Request, res: Response): Promise<Response> {
+export async function voteForPollAnswer(req: Request, res: Response, next: NextFunction): Promise<Response> {
     let success = true;
     const incomingData = req.body;
     const incomingParams = req.params;
@@ -18,9 +20,9 @@ export async function voteForPollAnswer(req: Request, res: Response): Promise<Re
     const pollData: Poll | null = await Poll
         .scope(
             [
-                { method: ['onlyCurrentOrg', Vars.currentOrganization.id] }, 
-                { method: ['onlyAnswerTeam', Vars.currentUser.teams.map(t => t.id), Vars.currentOrganization.public_team_id] }, 
-                { method: ['notExpired', currentDate] }
+                { method: [ 'onlyCurrentOrg', Vars.currentOrganization.id ] },
+                { method: [ 'onlyAnswerTeam', Vars.currentUser.teams.map(t => t.id), Vars.currentOrganization.public_team_id ] },
+                { method: [ 'notExpired', currentDate ] }
             ])
         .findByPk(incomingParams.pollId)
         .catch(() => {
@@ -28,10 +30,11 @@ export async function voteForPollAnswer(req: Request, res: Response): Promise<Re
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+        next(new CustomError(PortalErrors.DATABASE_ERROR, 500));
     }
     if (pollData === null) {
         return res.status(404).send(wrapResponse(false));
+        //next(new CustomError(PortalErrors.NOT_FOUND, 404));
     }
     const pollAnswerData: PollAnswer | null = await PollAnswer.findOne(
         {
@@ -45,13 +48,13 @@ export async function voteForPollAnswer(req: Request, res: Response): Promise<Re
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+        next(new CustomError(PortalErrors.DATABASE_ERROR, 500));
     }
     if (pollAnswerData === null) {
-        return res.status(404).send(wrapResponse(false));
+        next(new CustomError(PortalErrors.NOT_FOUND, 404));
     }
     if (Vars.currentUser.voted_poll_answers.map(p => p.poll_id).find(el => el === pollData.id)) {
-        return res.status(404).send(wrapResponse(false, { error: 'You already voted!' }));
+        next(new CustomError(PortalErrors.YOU_ALREADY_VOTED, 404));
     }
 
     const createdData = await PollVote.create(mappedIncomingData)
@@ -60,7 +63,7 @@ export async function voteForPollAnswer(req: Request, res: Response): Promise<Re
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Could not create PollVote' }));
+        next(new CustomError(PortalErrors.COULD_NOT_CREATE_POLLVOTE, 500));
     }
 
     return res.send(wrapResponse(true, createdData));

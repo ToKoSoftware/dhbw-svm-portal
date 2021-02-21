@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import { wrapResponse } from '../functions/response-wrapper';
+import { PortalErrors } from '../enum/errors';
 import { verifyToken } from '../functions/verify-token.func';
+import { CustomError } from './error-handler';
 
 export async function userIsAuthorized(req: Request, res: Response, next: NextFunction): Promise<void> {
     const header = req.headers.authorization;
@@ -9,6 +10,6 @@ export async function userIsAuthorized(req: Request, res: Response, next: NextFu
         const [ bearer, token ] = header.split(' ');
         verifyToken(res, token, next);
     } else {
-        res.status(401).send(wrapResponse(false, { error: 'Unauthorized!' }));
+        next(new CustomError(PortalErrors.UNAUTHORIZED, 401));
     }
 }

@@ -1,34 +1,37 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { Vars } from '../../../vars';
 import { Membership } from '../../../models/membership.model';
 import { RawMembershipData } from '../../../interfaces/membership.interface';
 import { Team } from '../../../models/team.model';
 import { User } from '../../../models/user.model';
+import { PortalErrors } from '../../../enum/errors';
+import { CustomError } from '../../../middleware/error-handler';
 
-export async function deleteMembership(req: Request, res: Response): Promise<Response> {
+export async function deleteMembership(req: Request, res: Response, next: NextFunction): Promise<Response> {
     let success = true;
     const incomingData: RawMembershipData = req.body;
     const teamId = req.params.id;
 
-    const teamData: Team | null = await Team.scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }).findByPk(teamId)
+    const teamData: Team | null = await Team.scope({ method: [ 'onlyCurrentOrg', Vars.currentOrganization.id ] }).findByPk(teamId)
         .catch(() => {
             success = false;
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+        next(new CustomError(PortalErrors.DATABASE_ERROR, 500));
     }
-    const user = await User.scope({ method: ['onlyCurrentOrg', Vars.currentOrganization.id] }).findByPk(incomingData.user_id)
+    const user = await User.scope({ method: [ 'onlyCurrentOrg', Vars.currentOrganization.id ] }).findByPk(incomingData.user_id)
         .catch(() => {
             success = false;
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+        next(new CustomError(PortalErrors.DATABASE_ERROR, 500));
     }
     if (teamData === null || user === null) {
         return res.status(400).send(wrapResponse(false, { error: 'Invalid input data!' }));
+        next(new CustomError(PortalErrors.INVALID_INPUT_DATA, 400));
     }
 
 
@@ -37,7 +40,7 @@ export async function deleteMembership(req: Request, res: Response): Promise<Res
         if (!Vars.currentUserIsAdmin) {
             const roleIds = Vars.currentUser.assigned_roles.map(r => r.id);
             if (!roleIds.find(el => el === teamData.maintain_role_id)) {
-                return res.status(403).send(wrapResponse(false, { error: 'Forbidden!' }));
+                next(new CustomError(PortalErrors.FORBIDDEN, 403));
             }
         }
     }
@@ -54,11 +57,12 @@ export async function deleteMembership(req: Request, res: Response): Promise<Res
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+        next(new CustomError(PortalErrors.DATABASE_ERROR, 500));
     }
 
     if (membershipData === null) {
         return res.status(404).send(wrapResponse(false, { error: 'No membership with given data' }));
+        //next(new CustomError(PortalErrors.NO_MEMBERSHIP_WITH_GIVEN_DATA, 404));
     }
 
     //Hard delete
@@ -68,7 +72,7 @@ export async function deleteMembership(req: Request, res: Response): Promise<Res
             return null;
         });
     if (!success) {
-        return res.status(500).send(wrapResponse(false, { error: 'Database error' }));
+        next(new CustomError(PortalErrors.DATABASE_ERROR, 500));
     }
     return res.status(204).send(wrapResponse(true));
 }
