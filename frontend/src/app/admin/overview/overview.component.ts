@@ -21,15 +21,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   public editOrgForm: FormGroup;
   public themeForm: FormGroup;
   private currentOrgSubscription: Subscription = new Subscription();
-  private currentConfigSubscription: Subscription = new Subscription();
   private colorsSubscription: Subscription = new Subscription();
-  private  colorFields: { [k: string]: keyof ColorConfig } = {
-    title_bar_background_color: 'titleBarBackgroundColor',
-    title_bar_border_color: 'titleBarBorderColor',
-    title_bar_text_color: 'titleBarTextColor',
-    sidebar_link_color: 'sidebarLinkTextColor',
-    accent_color: 'accentColor',
-  };
 
   constructor(
     public readonly organizations: OrganizationsService,
@@ -73,43 +65,6 @@ export class OverviewComponent implements OnInit, OnDestroy {
         }
       }
     );
-    this.currentConfigSubscription = this.currentOrg.currentConfig$.subscribe(
-      config => {
-        if (config) {
-          this.loading.hideLoading();
-          this.themeForm = this.formBuilder.group(
-            {
-              title_bar_background_color: [config.colors.titleBarBackgroundColor || ''],
-              title_bar_border_color: [config.colors.titleBarBorderColor || ''],
-              title_bar_text_color: [config.colors.titleBarTextColor || ''],
-              sidebar_link_color: [config.colors.sidebarLinkTextColor || ''],
-              accent_color: [config.colors.accentColor || ''],
-            }
-          );
-          this.colorsSubscription = this.themeForm.valueChanges.subscribe((value) => {
-            Object.keys(this.colorFields).forEach(key => {
-              const colorName = this.colorFields[key];
-              let config = this.currentOrg.currentConfig$.value;
-              if (!config) {
-                config = {
-                  colors: {}
-                };
-              } else {
-                if (!Object.keys(config).includes('colors')) {
-                  config.colors = {};
-                }
-              }
-              if (validateColor(value[key])) {
-                config.colors[colorName] = value[key];
-              } else {
-                delete config.colors[colorName];
-              }
-              this.theme.updateTheme({...config})
-            });
-          });
-        }
-      }
-    );
   }
 
   public save(): void {
@@ -124,25 +79,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
     });
   }
 
-  public saveColors(): void {
-    this.loading.showLoading();
-    if (this.editOrgForm.dirty && !this.editOrgForm.valid) {
-      return;
-    }
-    const colors: { [k: string]: string } = {};
-    Object.keys(this.colorFields).forEach(key => {
-      const colorName = this.colorFields[key];
-      colors[colorName] = this.themeForm.value[key] === ""? undefined: this.themeForm.value[key];
-    });
-    const data = {id: this.currentOrg.currentOrg$.getValue()?.id || '', colors: colors}
-    this.organizations.updateConfig(data).subscribe(
-      () => this.loading.hideLoading()
-    );
-  }
-
   ngOnDestroy(): void {
     this.currentOrgSubscription.unsubscribe();
-    this.currentConfigSubscription.unsubscribe();
     this.colorsSubscription.unsubscribe();
     this.theme.resetTheme()
   }
