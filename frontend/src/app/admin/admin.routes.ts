@@ -13,6 +13,7 @@ import {DocumentsComponent} from './documents/documents.component';
 import {Oauth2Component} from './oauth2/oauth2.component';
 import {PrivacyComponent} from './privacy/privacy.component';
 import {EventLogComponent} from './event-log/event-log.component';
+import {FormsComponent} from './forms/forms.component';
 
 export const adminRoutes = RouterModule.forChild([
   {path: '', pathMatch: 'full', component: OverviewComponent},
@@ -25,6 +26,8 @@ export const adminRoutes = RouterModule.forChild([
   {path: 'teams/:id', component: TeamsComponent},
   {path: 'news', component: NewsComponent},
   {path: 'news/:id', component: NewsComponent},
+  {path: 'forms', component: FormsComponent},
+  {path: 'forms/:id', component: FormsComponent},
   {path: 'polls', component: PollsComponent},
   {path: 'polls/:id', component: PollAnswerDetailComponent},
   {path: 'roles', component: RolesComponent},

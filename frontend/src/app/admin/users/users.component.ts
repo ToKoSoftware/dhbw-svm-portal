@@ -54,6 +54,13 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   public applyFilter(filterValue: FilterValue[]): void {
+    this.confirmService.confirm({
+      confirmButtonType: 'info',
+      title: 'Diese Funktion ist noch nicht implementiert',
+      description: '',
+      confirmText: 'Ok',
+      showCancelButton: false
+    })
     let f: { [k: string]: string } = {};
     filterValue.forEach(val => {
       f[val.name] = val.value;
