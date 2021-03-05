@@ -27,6 +27,11 @@ import { PrivacyComponent } from './privacy/privacy.component';
 import { Oauth2Component } from './oauth2/oauth2.component';
 import { EventLogComponent } from './event-log/event-log.component';
 import { FormsComponent } from './forms/forms.component';
+import { CreateInputComponent } from './forms/create-input/create-input.component';
+import { CreateSelectInputComponent } from './forms/create-select-input/create-select-input.component';
+import { CreateTextInputComponent } from './forms/create-text-input/create-text-input.component';
+import { ShopComponent } from './shop/shop.component';
+import { ThemeComponent } from './theme/theme.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +53,12 @@ import { FormsComponent } from './forms/forms.component';
     PrivacyComponent,
     Oauth2Component,
     EventLogComponent,
-    FormsComponent
+    FormsComponent,
+    CreateInputComponent,
+    CreateSelectInputComponent,
+    CreateTextInputComponent,
+    ShopComponent,
+    ThemeComponent
   ],
   imports: [
     adminRoutes,

@@ -11,6 +11,12 @@ export const adminPages: SidebarPageGroup[] = [
         matchFull: true
       },
       {
+        title: 'Vereinsfarben',
+        icon: 'layers',
+        url: '/my-team/theme',
+        matchFull: true
+      },
+      {
         title: 'Statistiken',
         icon: 'bar-chart-2',
         url: '/my-team/stats',
@@ -68,6 +74,16 @@ export const adminPages: SidebarPageGroup[] = [
         title: 'Umfragen',
         icon: 'pie-chart',
         url: '/my-team/polls',
+      },
+      {
+        title: 'Shop',
+        icon: 'shopping-bag',
+        url: '/my-team/shop',
+      },
+      {
+        title: 'Inventar',
+        icon: 'clipboard',
+        url: '/my-team/shop',
       },
       {
         title: 'Formulare',

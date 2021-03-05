@@ -14,9 +14,11 @@ import {Oauth2Component} from './oauth2/oauth2.component';
 import {PrivacyComponent} from './privacy/privacy.component';
 import {EventLogComponent} from './event-log/event-log.component';
 import {FormsComponent} from './forms/forms.component';
+import {ThemeComponent} from './theme/theme.component';
 
 export const adminRoutes = RouterModule.forChild([
   {path: '', pathMatch: 'full', component: OverviewComponent},
+  {path: 'theme', component: ThemeComponent},
   {path: 'stats', component: StatsComponent},
   {path: 'users', component: UsersComponent},
   {path: 'users/:id', component: UsersComponent},
