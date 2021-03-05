@@ -3,6 +3,7 @@ import {LoginService} from '../../services/login/login.service';
 import {SidebarPageGroup} from '../sidebar/sidebar.component';
 import {CurrentOrgService} from '../../services/current-org/current-org.service';
 import {Subscription} from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-navbar',
@@ -13,6 +14,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public sidebarPageGroups: SidebarPageGroup[] = [];
   private currentOrgSubscription: Subscription = new Subscription();
   private isAdminSubscription: Subscription = new Subscription();
+  public environment = environment;
 
   constructor(
     public readonly login: LoginService,
@@ -46,6 +48,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
               icon: 'pie-chart',
               title: 'Umfragen',
               url: '/polls'
+            }, {
+              icon: 'shopping-bag',
+              title: 'Shop',
+              url: '/shop'
+            }, {
+              icon: 'file-text',
+              title: 'Formulare',
+              url: '/forms'
             }]
           }];
           if (teams?.length) {

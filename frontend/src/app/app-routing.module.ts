@@ -37,6 +37,12 @@ const routes: Routes = [
     loadChildren: () => import('./sso/sso.module').then(m => m.SsoModule)
   },
   {
+    path: 'about',
+    canActivate: [IsLoggedInGuard],
+    canActivateChild: [IsLoggedInGuard],
+    loadChildren: () => import('./about/about.module').then(m => m.AboutModule)
+  },
+  {
     path: 'polls',
     canActivate: [IsLoggedInGuard],
     canActivateChild: [IsLoggedInGuard],
