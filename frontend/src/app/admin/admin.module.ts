@@ -32,6 +32,8 @@ import { CreateSelectInputComponent } from './forms/create-select-input/create-s
 import { CreateTextInputComponent } from './forms/create-text-input/create-text-input.component';
 import { ShopComponent } from './shop/shop.component';
 import { ThemeComponent } from './theme/theme.component';
+import { InventoryComponent } from './inventory/inventory.component';
+import { TrainingComponent } from './training/training.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +60,9 @@ import { ThemeComponent } from './theme/theme.component';
     CreateSelectInputComponent,
     CreateTextInputComponent,
     ShopComponent,
-    ThemeComponent
+    ThemeComponent,
+    InventoryComponent,
+    TrainingComponent
   ],
   imports: [
     adminRoutes,

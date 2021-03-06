@@ -15,6 +15,8 @@ import {PrivacyComponent} from './privacy/privacy.component';
 import {EventLogComponent} from './event-log/event-log.component';
 import {FormsComponent} from './forms/forms.component';
 import {ThemeComponent} from './theme/theme.component';
+import {ShopComponent} from './shop/shop.component';
+import {InventoryComponent} from './inventory/inventory.component';
 
 export const adminRoutes = RouterModule.forChild([
   {path: '', pathMatch: 'full', component: OverviewComponent},
@@ -30,6 +32,12 @@ export const adminRoutes = RouterModule.forChild([
   {path: 'news/:id', component: NewsComponent},
   {path: 'forms', component: FormsComponent},
   {path: 'forms/:id', component: FormsComponent},
+  {path: 'shop', component: ShopComponent},
+  {path: 'shop/:id', component: ShopComponent},
+  {path: 'inventory', component: InventoryComponent},
+  {path: 'inventory/:id', component: InventoryComponent},
+  {path: 'training', component: InventoryComponent},
+  {path: 'training/:id', component: InventoryComponent},
   {path: 'polls', component: PollsComponent},
   {path: 'polls/:id', component: PollAnswerDetailComponent},
   {path: 'roles', component: RolesComponent},

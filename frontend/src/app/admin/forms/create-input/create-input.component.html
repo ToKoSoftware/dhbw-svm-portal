@@ -1,1 +1,16 @@
-<p>create-input works!</p>
+<form (ngSubmit)="addField()" [formGroup]="formGroup">
+  <app-input
+    required="true"
+    formControlName="title"
+    description="Titel des Feldes"
+    placeholder="Titel"
+    label="Titel">
+  </app-input>
+  <app-select
+    required="true"
+    label="Feldtyp"
+    [items]="answerOptions"
+    formControlName="field_type">
+  </app-select>
+
+</form>

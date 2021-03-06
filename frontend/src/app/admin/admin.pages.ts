@@ -83,7 +83,12 @@ export const adminPages: SidebarPageGroup[] = [
       {
         title: 'Inventar',
         icon: 'clipboard',
-        url: '/my-team/shop',
+        url: '/my-team/inventory',
+      },
+      {
+        title: 'Trainingspläne',
+        icon: 'watch',
+        url: '/my-team/training',
       },
       {
         title: 'Formulare',

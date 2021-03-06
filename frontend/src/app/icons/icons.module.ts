@@ -4,7 +4,7 @@ import {FeatherModule} from 'angular-feather';
 import {
   User, Users, BarChart2, UploadCloud, Layers,
   DownloadCloud, Map, Trash, Key, Save, Clipboard,
-  MousePointer, AlertCircle, File, LogOut,
+  MousePointer, AlertCircle, File, LogOut, Watch,
   LogIn, UserPlus, Tool, Activity, Folder, FileText,
   Calendar, UserCheck, Info, Lock, Edit, EyeOff, List,
   X, PieChart, Plus, ChevronRight, ChevronLeft, Minus,
@@ -16,7 +16,7 @@ import {CommonModule} from '@angular/common';
 const icons = {
   User, Users, BarChart2, UploadCloud, Layers,
   DownloadCloud, Map, Trash, Key, Save, Clipboard,
-  MousePointer, AlertCircle, File, LogOut,
+  MousePointer, AlertCircle, File, LogOut, Watch,
   LogIn, UserPlus, Tool, Activity, Folder, FileText,
   Calendar, UserCheck, Info, Lock, Edit, EyeOff, List,
   X, PieChart, Plus, ChevronRight, ChevronLeft, Minus,
