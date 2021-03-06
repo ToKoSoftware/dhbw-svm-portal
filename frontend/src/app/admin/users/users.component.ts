@@ -18,7 +18,6 @@ import {UsersService} from '../../services/data/users/users.service';
 export class UsersComponent implements OnInit, OnDestroy {
   private routeSubscription: Subscription;
   public sidebarPages = adminPages;
-  @ViewChild('relatedCustomersModal', {static: true}) relatedCustomersModal: TemplateRef<unknown>;
   public loading = false;
   public currentEditUserId: string = '';
   public filters: AvailableFilter[] = [{
