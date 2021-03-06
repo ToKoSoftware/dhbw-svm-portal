@@ -1,0 +1,77 @@
+<app-layout
+  [sidebarPages]="sidebarPages">
+  <app-container [large]="true">
+    <div class="py-10 mb-10" *ngIf="event">
+      <div class="mt-2 md:flex md:items-center md:justify-between">
+        <div class="flex-1 min-w-0">
+          <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:leading-9 truncate">
+            Anmeldungen: {{event.title}}
+          </h2>
+        </div>
+        <div class="text-right text-leading flex-1" *ngIf="event.max_participants">
+          <span class="text-xs leading-4 font-semibold text-gray-500 tracking-wider">
+            {{event.registered_users.length}} von {{event.max_participants}} Plätzen belegt
+          </span>
+          <app-progress-bar
+            [progress]="calculateProgress(event.registered_users.length, event.max_participants || 0)">
+          </app-progress-bar>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-col -ml-5 -mr-2" *ngIf="eventRegistrations?.length">
+      <div class="overflow-x-auto">
+        <div class="align-middle inline-block min-w-full">
+          <div class="overflow-hidden">
+            <table class="min-w-full">
+              <thead class="bg-gray-100 dark:bg-gray-800">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-white uppercase tracking-wider">
+                  Angemeldet am
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-white uppercase tracking-wider">
+                  Name
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-white uppercase tracking-wider">
+                  Zahlungsstatus
+                </th>
+                <th scope="col" class="relative px-6 py-3">
+
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="border-b" *ngFor="let registration of eventRegistrations">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {{registration.createdAt | amLocal | amDateFormat: 'DD.MM.YYYY H:mm' }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                  {{registration.user.first_name}} {{registration.user.last_name}}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                  <span class="text-malachite-600" *ngIf="registration.payment_done">
+                    Gebühr bezahlt
+                  </span>
+                  <span class="text-red-600" *ngIf="!registration.payment_done">
+                    Zahlung ausstehend
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <app-button
+                    (click)="togglePayment(registration)"
+                    label="Zahlungsstatus ändern" size="small" type="link"></app-button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-zero-data *ngIf="!eventRegistrations?.length"></app-zero-data>
+  </app-container>
+
+</app-layout>
+
+<ng-template #edit>
+  <app-edit-direct-debit-mandate-contract-text></app-edit-direct-debit-mandate-contract-text>
+</ng-template>

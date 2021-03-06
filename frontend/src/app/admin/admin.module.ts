@@ -34,6 +34,7 @@ import { ShopComponent } from './shop/shop.component';
 import { ThemeComponent } from './theme/theme.component';
 import { InventoryComponent } from './inventory/inventory.component';
 import { TrainingComponent } from './training/training.component';
+import { EventRegistrationsComponent } from './events/event-registrations/event-registrations.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { TrainingComponent } from './training/training.component';
     ShopComponent,
     ThemeComponent,
     InventoryComponent,
-    TrainingComponent
+    TrainingComponent,
+    EventRegistrationsComponent
   ],
   imports: [
     adminRoutes,

@@ -17,6 +17,7 @@ import {FormsComponent} from './forms/forms.component';
 import {ThemeComponent} from './theme/theme.component';
 import {ShopComponent} from './shop/shop.component';
 import {InventoryComponent} from './inventory/inventory.component';
+import {EventRegistrationsComponent} from './events/event-registrations/event-registrations.component';
 
 export const adminRoutes = RouterModule.forChild([
   {path: '', pathMatch: 'full', component: OverviewComponent},
@@ -26,6 +27,7 @@ export const adminRoutes = RouterModule.forChild([
   {path: 'users/:id', component: UsersComponent},
   {path: 'events', component: EventsComponent},
   {path: 'events/:id', component: EventsComponent},
+  {path: 'events/:id/registrations', component: EventRegistrationsComponent},
   {path: 'teams', component: TeamsComponent},
   {path: 'teams/:id', component: TeamsComponent},
   {path: 'news', component: NewsComponent},

@@ -6,6 +6,7 @@ import {EventsService} from '../../services/data/events/events.service';
 import {EventData} from '../../interfaces/event.interface';
 import { ConfirmModalService } from 'src/app/services/confirm-modal/confirm-modal.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-events',
@@ -18,6 +19,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   @ViewChild('edit', {static: true}) edit: TemplateRef<unknown>;
 
   constructor(public readonly events: EventsService,
+              private readonly router: Router,
               private readonly slideOver: SlideOverService,
               private readonly confirm: ConfirmModalService,
               private readonly notifications: NotificationService,
@@ -56,6 +58,11 @@ export class EventsComponent implements OnInit, OnDestroy {
     this.events.delete(eventData).subscribe(
       () => this.notifications.deletedSuccessfully()
     );
+  }
+
+  public openRegistrations(event: Event, eventData: EventData): void {
+    event.stopPropagation();
+    this.router.navigate(['my-team/events/', eventData.id, 'registrations']);
   }
 }
 

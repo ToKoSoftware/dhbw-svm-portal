@@ -9,6 +9,8 @@ export interface EventRegistrationData {
   event_id: string;
   user: UserData;
   event: EventData;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface EventRegistrationCreationData {

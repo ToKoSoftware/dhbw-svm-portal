@@ -2,7 +2,7 @@
  h-15 flex flex-wrap justify-between content-center px-3 transition ease-in-out duration-150
  bg-theme-title-bar border-theme-title-bar"
      id="topBar">
-  <div class="text-lg text-theme-title-bar-text-color pt-1.5 font-light transition ease-in-out duration-150 truncate">
+  <div class="text-lg text-theme-title-bar-text-color font-medium pt-1.5 font-light transition ease-in-out duration-150 truncate">
     {{titleBar.title$ | async}} - {{(currentOrg.currentOrg$ | async)?.title}}
   </div>
   <div>
