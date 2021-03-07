@@ -20,9 +20,21 @@ router-outlet + * {
   :root {
     --title-bar-background-color: #000;
   }
-  .prose h1, .prose h2, .prose h3, .prose h4 {
-    color: #fff;
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose strong,
+  .prose p,
+  .prose *,
+  .editor-toolbar a.fa {
+    color: #fff !important;
   }
+
+  .editor-toolbar a.active, .editor-toolbar a:hover{
+    background-color: #000 !important;
+  }
+
 }
 
 .text-accent {
