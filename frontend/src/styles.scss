@@ -20,6 +20,9 @@ router-outlet + * {
   :root {
     --title-bar-background-color: #000;
   }
+  .prose h1, .prose h2, .prose h3, .prose h4 {
+    color: #fff;
+  }
 }
 
 .text-accent {
