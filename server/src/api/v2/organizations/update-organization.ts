@@ -28,6 +28,18 @@ export async function updateOrganization(req: Request, res: Response): Promise<R
         return res.status(400).send(wrapResponse(false, { error: 'Fields must not be empty' }));
     }
 
+    if (incomingData.access_code !== undefined) {
+        const foundOrg = await Organization.findOne(
+            {
+                where: {
+                    access_code: incomingData.access_code
+                }
+            }).catch(() => null);
+        if (foundOrg){
+            return res.status(400).send(wrapResponse(false, { error: 'Invalid access_code!' }));
+        }
+    }
+
     organizationData.update(incomingData)
         .catch(() => {
             success = false;
