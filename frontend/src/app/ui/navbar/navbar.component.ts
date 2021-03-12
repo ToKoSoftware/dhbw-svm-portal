@@ -52,11 +52,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
               icon: 'shopping-bag',
               title: 'Shop',
               url: '/shop'
-            }, {
+            }/*, {
               icon: 'file-text',
               title: 'Formulare',
               url: '/forms'
-            }]
+            }*/]
           }];
           if (teams?.length) {
             this.sidebarPageGroups.push({

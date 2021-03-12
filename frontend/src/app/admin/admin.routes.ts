@@ -18,6 +18,7 @@ import {ThemeComponent} from './theme/theme.component';
 import {ShopComponent} from './shop/shop.component';
 import {InventoryComponent} from './inventory/inventory.component';
 import {EventRegistrationsComponent} from './events/event-registrations/event-registrations.component';
+import {TrainingComponent} from './training/training.component';
 
 export const adminRoutes = RouterModule.forChild([
   {path: '', pathMatch: 'full', component: OverviewComponent},
@@ -38,8 +39,8 @@ export const adminRoutes = RouterModule.forChild([
   {path: 'shop/:id', component: ShopComponent},
   {path: 'inventory', component: InventoryComponent},
   {path: 'inventory/:id', component: InventoryComponent},
-  {path: 'training', component: InventoryComponent},
-  {path: 'training/:id', component: InventoryComponent},
+  {path: 'training', component: TrainingComponent},
+  {path: 'training/:id', component: TrainingComponent},
   {path: 'polls', component: PollsComponent},
   {path: 'polls/:id', component: PollAnswerDetailComponent},
   {path: 'roles', component: RolesComponent},
