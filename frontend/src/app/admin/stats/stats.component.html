@@ -7,7 +7,7 @@
         <div class="mb-10 px-4 py-6" *ngFor="let tile of tiles">
           <ng-container *ngIf="!tile.loading">
             <i-feather [name]="tile.icon" class="text-accent" style="width: 40%; height: 40%"></i-feather>
-            <h2 class="title-font font-medium text-3xl text-gray-900">{{tile.count}}</h2>
+            <h2 class="title-font font-medium text-3xl text-gray-900 dark:text-white">{{tile.count}}</h2>
           </ng-container>
           <ng-container *ngIf="tile.loading">
             <app-loading></app-loading>

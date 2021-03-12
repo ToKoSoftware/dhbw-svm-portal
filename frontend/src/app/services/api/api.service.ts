@@ -64,7 +64,7 @@ export class ApiService {
 
   public put<Data>(
     path: string | [string, number],
-    body?: { [key: string]: string | string[] | number | null | undefined },
+    body?: { [key: string]: string | string[] | number | boolean | null | undefined },
   ): Observable<ApiResponse<Data>> {
     const jwt = ApiService.getJwt();
 

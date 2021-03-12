@@ -75,12 +75,16 @@ export class EventRegistrationsComponent implements OnInit {
     });
   }
 
-  public togglePayment(event: EventRegistrationData |null): void {
-    if(!event) {
-      return
+  public togglePayment(eventRegistration: EventRegistrationData | null): void {
+    if (!eventRegistration) {
+      return;
     }
     this.loading.showLoading();
-    this.api.delete([`/users/${event.id}/direct-debit-mandates`, 1]).subscribe(
+    const eventId = this.event?.id || '';
+    this.api.put<EventRegistrationData>(`/events/${eventId}/event-registrations`, {
+      user_id: eventRegistration.user.id,
+      payment_done: !eventRegistration.payment_done
+    }).subscribe(
       () => {
         this.notification.savedSuccessfully();
         this.loadData();
