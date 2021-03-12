@@ -69,7 +69,7 @@ export class JoinComponent implements OnInit, OnDestroy {
         this.router.navigate(['/join']);
       }, error => {
         this.loading.hideLoading();
-        this.notifications.savingFailed();
+        this.notifications.savingFailed(error.error.data.error);
       }
     );
   }
