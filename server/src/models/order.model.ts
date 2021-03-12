@@ -15,13 +15,19 @@ import { User } from './user.model';
 @Scopes(() => ({
     full: {
         required: false,
-        include: [Organization]
+        include: [Organization, User, Item]
     },
     onlyCurrentOrg: (org_id: string) => currentOrg(org_id),
     ordered: {
         required: false,
         order: [['createdAt', 'DESC']]
-    }
+    },
+    onlyOwnOrder: (user_id: string) => ({
+        required: false,
+        where: {
+            user_id: user_id
+        }
+    }),
 }))
 
 @Table({
