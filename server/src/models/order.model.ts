@@ -17,7 +17,6 @@ import { User } from './user.model';
         required: false,
         include: [Organization, User, Item]
     },
-    onlyCurrentOrg: (org_id: string) => currentOrg(org_id),
     ordered: {
         required: false,
         order: [['createdAt', 'DESC']]
