@@ -115,6 +115,10 @@ export class EditEventComponent implements OnInit, OnChanges {
     this.clipboardService.copy(`${this.hostname}/guest/${this.currentOrg.currentOrg$.value?.id}/events/${this.current.id}/join`);
   }
 
+  public copyListUrl(): void {
+    this.clipboardService.copy(`${this.hostname}/guest/${this.currentOrg.currentOrg$.value?.id}/events/`);
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (this.editId !== this.current?.id)
       this.loadData();

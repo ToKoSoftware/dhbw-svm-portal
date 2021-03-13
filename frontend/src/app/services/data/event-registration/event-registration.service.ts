@@ -12,7 +12,7 @@ export class EventRegistrationService extends DataService<EventRegistrationData>
   reloadData() {
     this.data$.next(null);
     if (this.login.isLoggedIn$.value) {
-      this.api.get<EventRegistrationData[]>('/event-registrations')
+      this.api.get<EventRegistrationData[]>('/events')
         .subscribe(
           data => this.data$.next(data.data),
           error => this.notifications.loadingFailed()

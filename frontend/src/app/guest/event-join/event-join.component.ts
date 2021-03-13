@@ -26,14 +26,12 @@ export class EventJoinComponent implements OnInit, OnDestroy {
     private readonly eventRegistrations: EventRegistrationService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly api: ApiService,
-    private readonly titleBar: TitleBarService,
     private readonly notifications: NotificationService,
     private readonly loading: LoadingModalService,
     private readonly formBuilder: FormBuilder) {
   }
 
   ngOnInit(): void {
-    this.titleBar.title$.next('Anmelden für öffentliche Veranstaltung');
     this.routeSubscription = this.activatedRoute.paramMap.subscribe(params => {
       this.eventId = params.get('eventId') || '';
       const currentOrg = params.get('id') || '';
