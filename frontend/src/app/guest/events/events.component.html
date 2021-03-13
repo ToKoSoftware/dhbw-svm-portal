@@ -1,0 +1,42 @@
+<app-scroll>
+  <app-top-bar></app-top-bar>
+  <div class="h-auto w-full">
+    <app-container center="true">
+      <div class="mt-5"></div>
+      <app-card *ngFor="let group of (data$ | async)">
+        <h1 class="text-3xl mb-3">{{group.title}}</h1>
+        <div class="overflow-hidden cursor-pointer">
+          <ul class="divide-y divide-gray-200">
+            <li *ngFor="let event of group.events">
+              <div [routerLink]="'/guest/' + this.orgId + '/events/'+ event.id + '/join'"
+                   class="block hover:bg-gray-50 dark:hover:bg-gray-700">
+                <div class="py-4 flex items-center">
+                  <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
+                    <div>
+                      <div class="flex font-medium text-black dark:text-white truncate">
+                        <p>{{ event.start_date | amFromUtc | amDateFormat: 'DD.MM. H:mm' }} - <span
+                          class="text-gray-800 dark:text-gray-300">{{event.title}}</span></p>
+                      </div>
+                      <div class="mt-2 flex">
+                        <div class="flex items-center text-sm dark:text-white text-gray-500">
+                          <p>
+                            Erstellt {{ event.createdAt | amLocal | amTimeAgo }}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mt-4 flex-shrink-0 sm:mt-0">
+                      <app-button label="Mehr" size="small"></app-button>
+                    </div>
+                  </div>
+                  <div class="ml-5 flex-shrink-0">
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </app-card>
+    </app-container>
+  </div>
+</app-scroll>

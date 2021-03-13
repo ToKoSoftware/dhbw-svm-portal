@@ -23,6 +23,10 @@ const routes: Routes = [
     loadChildren: () => import('./join/join.module').then(m => m.JoinModule)
   },
   {
+    path: 'guest',
+    loadChildren: () => import('./guest/guest.module').then(m => m.GuestModule)
+  },
+  {
     path: 'events',
     canActivate: [IsLoggedInGuard],
     canActivateChild: [IsLoggedInGuard],

@@ -3,7 +3,7 @@
  bg-theme-title-bar border-theme-title-bar"
      id="topBar">
   <div class="text-lg text-theme-title-bar-text-color font-medium pt-1.5 font-light transition ease-in-out duration-150 truncate">
-    {{titleBar.title$ | async}} - {{(currentOrg.currentOrg$ | async)?.title}}
+    {{titleBar.title$ | async}}{{(currentOrg.currentOrg$ | async)?.title? ' - ' + (currentOrg.currentOrg$ | async)?.title : '' }}
   </div>
   <div>
     <ng-container *ngFor="let b of (buttons$ | async)">

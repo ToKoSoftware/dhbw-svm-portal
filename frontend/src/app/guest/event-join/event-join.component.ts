@@ -1,19 +1,20 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {EventData} from '../../interfaces/event.interface';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
-import {EventsService} from '../../services/data/events/events.service';
-import {EventData} from '../../interfaces/event.interface';
-import {NotificationService} from '../../services/notification/notification.service';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {EventRegistrationService} from '../../services/data/event-registration/event-registration.service';
-import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
 import {LoginService} from '../../services/login/login.service';
+import {EventRegistrationService} from '../../services/data/event-registration/event-registration.service';
+import {NotificationService} from '../../services/notification/notification.service';
+import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
+import {ApiService} from '../../services/api/api.service';
+import {TitleBarService} from '../../services/title-bar/title-bar.service';
 
 @Component({
-  selector: 'app-join',
-  templateUrl: './join.component.html'
+  selector: 'app-event-join',
+  templateUrl: './event-join.component.html'
 })
-export class JoinComponent implements OnInit, OnDestroy {
+export class EventJoinComponent implements OnInit, OnDestroy {
   public formGroup: FormGroup;
   public currentEvent: EventData | null = null;
   private routeSubscription: Subscription;
@@ -24,16 +25,22 @@ export class JoinComponent implements OnInit, OnDestroy {
     private readonly loginService: LoginService,
     private readonly eventRegistrations: EventRegistrationService,
     private readonly activatedRoute: ActivatedRoute,
-    private readonly events: EventsService,
+    private readonly api: ApiService,
+    private readonly titleBar: TitleBarService,
     private readonly notifications: NotificationService,
     private readonly loading: LoadingModalService,
     private readonly formBuilder: FormBuilder) {
   }
 
   ngOnInit(): void {
+    this.titleBar.title$.next('Anmelden für öffentliche Veranstaltung');
     this.routeSubscription = this.activatedRoute.paramMap.subscribe(params => {
-      this.eventId = params.get('id') || '';
-      this.events.read(this.eventId).subscribe(event => this.currentEvent = event, () => this.notifications.loadingFailed());
+      this.eventId = params.get('eventId') || '';
+      const currentOrg = params.get('id') || '';
+      this.api.get<EventData[]>(`/organizations/${currentOrg}/public-events/`).subscribe(
+        event => this.currentEvent = event.data.find(el => el.id === this.eventId) || null,
+        () => this.notifications.loadingFailed()
+      );
     });
     this.formGroup = this.formBuilder.group(
       {
