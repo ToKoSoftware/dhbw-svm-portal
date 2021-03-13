@@ -58,6 +58,18 @@
       </div>
     </form>
   </app-titled-content>
+  <app-titled-content
+    *ngIf="editEventForm.value.allowed_team_id === 'public'"
+    label="Öffentliche Anmelde-Url"
+    description="Diese Veranstaltung ist öffentlich. Dies bedeutet, dass sich jede Person unter nachfolgendem Link zu dieser Veranstaltung anmelden kann.">
+    <div class="flex justify-between">
+      <p class="pt-1 text-sm">
+        {{hostname}}/guest/{{currentOrg.currentOrg$.value?.id}}/events/{{current.id}}/join
+      </p>
+      <app-button icon="copy" (click)="copyPublicUrl()" type="link" label="Kopieren"
+                  size="small"></app-button>
+    </div>
+  </app-titled-content>
 </app-container>
 
 
