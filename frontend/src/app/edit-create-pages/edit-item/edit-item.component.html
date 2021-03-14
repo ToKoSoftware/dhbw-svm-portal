@@ -1,0 +1,34 @@
+<app-container>
+    <app-titled-content
+      label="Artikel anlegen">
+      <form (ngSubmit)="update()" [formGroup]="formGroup">
+        <app-input
+          required="true"
+          formControlName="title"
+          description="Name des Artikels"
+          placeholder="Startpass 2020"
+          label="Titel">
+        </app-input>
+        <app-markdown-input
+          label="Beschreibung"
+          placeholder=""
+          [formControl]="formGroup.controls['description']"
+          description="Beschreiben Sie hier den Artikel.">
+        </app-markdown-input>
+        <app-input
+          required="true"
+          formControlName="price"
+          description="Preis des Artikels"
+          placeholder="19,95"
+          label="Preis">
+        </app-input>
+        <div class="flex justify-end w-full">
+          <app-button
+            formButtonType="submit"
+            icon="save"
+            label="Speichern">
+          </app-button>
+        </div>
+      </form>
+    </app-titled-content>
+  </app-container>

@@ -25,6 +25,8 @@ import {RouterModule} from '@angular/router';
 import { EditPrivacyPolicyComponent } from './edit-privacy-policy/edit-privacy-policy.component';
 import { EditDirectDebitMandateContractTextComponent } from './edit-direct-debit-mandate-contract-text/edit-direct-debit-mandate-contract-text.component';
 import { EditFtpConfigComponent } from './edit-ftp-config/edit-ftp-config.component';
+import { CreateItemComponent } from './create-item/create-item.component';
+import { EditItemComponent } from './edit-item/edit-item.component';
 
 @NgModule({
   declarations: [
@@ -47,11 +49,14 @@ import { EditFtpConfigComponent } from './edit-ftp-config/edit-ftp-config.compon
     EditPrivacyPolicyComponent,
     EditDirectDebitMandateContractTextComponent,
     EditFtpConfigComponent,
-    EditFtpConfigComponent
+    EditFtpConfigComponent,
+    CreateItemComponent,
+    EditItemComponent
   ],
   exports: [EditUserComponent, EditEventComponent, CreateNewsComponent, EditNewsComponent, EditPollComponent, CreatePollComponent,
     CreateEventComponent, CreateRoleComponent, EditRoleComponent, EditTeamComponent, CreateTeamComponent, EditRoleMembershipsComponent,
-    EditTeamMembershipsComponent, EditDeveloperSettingsComponent, EditUserPermissionsComponent, EditDirectDebitMandateContractTextComponent, EditPrivacyPolicyComponent, EditFtpConfigComponent],
+    EditTeamMembershipsComponent, EditDeveloperSettingsComponent, EditUserPermissionsComponent, EditDirectDebitMandateContractTextComponent, 
+    EditPrivacyPolicyComponent, EditFtpConfigComponent, CreateItemComponent, EditItemComponent],
   imports: [
     CommonModule,
     ClipboardModule,
