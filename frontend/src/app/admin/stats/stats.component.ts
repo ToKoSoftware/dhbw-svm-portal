@@ -27,12 +27,12 @@ export class StatsComponent implements OnInit {
         const stats = data.data;
         this.tiles[0].count = stats.users;
         this.tiles[0].loading = false;
-        this.tiles[1].count = stats.activeCustomers;
+        /*this.tiles[1].count = stats.activeCustomers;
         this.tiles[1].loading = false;
         this.tiles[2].count = stats.activeOrders;
         this.tiles[2].loading = false;
         this.tiles[3].count = stats.activePlans;
-        this.tiles[3].loading = false;
+        this.tiles[3].loading = false;*/
       },
       error => {
 

@@ -7,6 +7,7 @@ import {NotificationService} from '../../services/notification/notification.serv
 import {setEmptyInputToNull} from '../../functions/input-cleaners.func';
 import {Subscription} from 'rxjs';
 import {TeamService} from 'src/app/services/data/teams/team.service';
+import {SlideOverService} from '../../services/slide-over/slide-over.service';
 
 @Component({
   selector: 'app-create-event',
@@ -24,6 +25,7 @@ export class CreateEventComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly loadingModalService: LoadingModalService,
     private readonly notificationService: NotificationService,
+    private readonly slideOver: SlideOverService
   ) {
   }
 
@@ -62,6 +64,7 @@ export class CreateEventComponent implements OnInit {
       data => {
         this.current = data;
         this.notificationService.savedSuccessfully();
+        this.slideOver.close();
       },
       error => {
         this.notificationService.savingFailed(error.error.data.error);

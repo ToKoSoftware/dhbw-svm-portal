@@ -6,6 +6,7 @@ import {SlideOverService} from '../../services/slide-over/slide-over.service';
 import {DirectDebitMandateData} from '../../interfaces/direct-debit-mandate.interface';
 import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
 import {NotificationService} from '../../services/notification/notification.service';
+import {LoginService} from '../../services/login/login.service';
 
 @Component({
   selector: 'app-direct-debit-mandates',
@@ -22,6 +23,7 @@ export class DirectDebitMandatesComponent implements OnInit, OnDestroy {
     private readonly titleBarService: TitleBarService,
     private readonly loading: LoadingModalService,
     private readonly notification: NotificationService,
+    private readonly login: LoginService
   ) {
   }
 
@@ -32,7 +34,15 @@ export class DirectDebitMandatesComponent implements OnInit, OnDestroy {
       function: () => {
         this.slideOver.showSlideOver('', this.edit);
       }
-    }]);
+    },
+      {
+        title: 'Mandate exportieren',
+        icon: 'download-cloud',
+        function: () => {
+          const jwt = this.login.jwt$.value;
+          window.location.assign(`/api/v1/admin/export/direct-debit-mandates?token=${jwt}`);
+        }
+      }]);
     this.loadData();
   }
 

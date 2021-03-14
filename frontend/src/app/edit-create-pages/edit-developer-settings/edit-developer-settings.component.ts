@@ -51,7 +51,7 @@ export class EditDeveloperSettingsComponent implements OnInit {
   }
 
   get hostname(): string {
-    return window.location.hostname;
+    return window.location.origin;
   }
 
   public saveData(): void {

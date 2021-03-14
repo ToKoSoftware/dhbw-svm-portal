@@ -7,13 +7,13 @@
       <div class="md:block hidden" *ngIf="!loading">
         <a class="block p-3 border-t
             group font-medium
-            hover:text-gray-900 hover:bg-gray-100 dark:hover:text-malachite-600
+            text-accent-hover hover:bg-gray-100
             focus:outline-none focus:bg-gray-200 transition
             dark:hover:bg-gray-700 ease-in-out duration-150"
            [routerLink]="'/my-team/users/' + user.id"
            *ngFor="let user of users.data$ | async"
            [routerLinkActive]="['bg-gray-200', 'dark:bg-gray-900',
-            'dark:hover:bg-gray-700', 'text-malachite-600', 'hover:text-malachite-600']">
+            'dark:hover:bg-gray-700', 'text-accent']">
           <div class="text-md font-medium w-full">
             {{user.first_name}} {{user.last_name}}
           </div>

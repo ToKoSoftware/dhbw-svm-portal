@@ -1,0 +1,21 @@
+<app-scroll>
+  <app-container [center]="true" class="bg-gray-100 dark:bg-gray-800">
+    <div class="mt-5"></div>
+    <app-card>
+      <app-titled-content label="Kontakt">
+        <p>
+          Sollten Sie inhaltliche Probleme haben, wenden Sie sich bitte an den Administrator Ihres Vereins.
+        </p>
+        <p>
+          Sollten Sie technische Probleme haben, kontaktieren Sie bitte den <a class="text-accent" target="_blank" href="https://tomaskostadinov.com/kontakt">Support</a>.
+        </p>
+      </app-titled-content>
+      <app-titled-content class="w-full" label="Entwickler-Informationen"
+                          description="Diese Informationen müssen bei technischen Problemen dem Support mitgeteilt werden.">
+        <div class="prose prose-sm w-full">
+          <pre><code>{{window.navigator.userAgent}}</code></pre>
+        </div>
+      </app-titled-content>
+    </app-card>
+  </app-container>
+</app-scroll>

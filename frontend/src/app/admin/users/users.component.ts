@@ -18,7 +18,6 @@ import {UsersService} from '../../services/data/users/users.service';
 export class UsersComponent implements OnInit, OnDestroy {
   private routeSubscription: Subscription;
   public sidebarPages = adminPages;
-  @ViewChild('relatedCustomersModal', {static: true}) relatedCustomersModal: TemplateRef<unknown>;
   public loading = false;
   public currentEditUserId: string = '';
   public filters: AvailableFilter[] = [{
@@ -54,6 +53,13 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   public applyFilter(filterValue: FilterValue[]): void {
+    this.confirmService.confirm({
+      confirmButtonType: 'info',
+      title: 'Diese Funktion ist noch nicht implementiert',
+      description: '',
+      confirmText: 'Ok',
+      showCancelButton: false
+    })
     let f: { [k: string]: string } = {};
     filterValue.forEach(val => {
       f[val.name] = val.value;

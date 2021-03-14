@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ApiService} from '../../services/api/api.service';
 import {adminPages} from '../admin.pages';
 import {FormBuilder, FormGroup} from '@angular/forms';
@@ -8,6 +8,9 @@ import {LoadingModalService} from '../../services/loading-modal/loading-modal.se
 import {Subscription} from 'rxjs';
 import {TitleBarService} from '../../services/title-bar/title-bar.service';
 import {SlideOverService} from '../../services/slide-over/slide-over.service';
+import validateColor from 'validate-color';
+import {ColorConfig} from '../../interfaces/organization.interface';
+import {ThemeService} from '../../services/theme/theme.service';
 
 @Component({
   selector: 'app-overview',
@@ -16,7 +19,9 @@ import {SlideOverService} from '../../services/slide-over/slide-over.service';
 export class OverviewComponent implements OnInit, OnDestroy {
   public sidebarPages = adminPages;
   public editOrgForm: FormGroup;
-  private currentOrgSubscription: Subscription;
+  public themeForm: FormGroup;
+  private currentOrgSubscription: Subscription = new Subscription();
+  private colorsSubscription: Subscription = new Subscription();
 
   constructor(
     public readonly organizations: OrganizationsService,
@@ -25,6 +30,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
     private readonly loading: LoadingModalService,
     private readonly titleBarService: TitleBarService,
     private readonly formBuilder: FormBuilder,
+    private readonly theme: ThemeService,
     public readonly slideOver: SlideOverService) {
   }
 
@@ -34,18 +40,26 @@ export class OverviewComponent implements OnInit, OnDestroy {
       {
         title: [],
         access_code: [],
-        privacy_policy_text: [],
       }
     );
+    this.themeForm = this.formBuilder.group(
+      {
+        title_bar_background_color: [],
+        title_bar_border_color: [],
+        title_bar_text_color: [],
+        sidebar_link_color: [],
+        accent_color: [],
+      }
+    );
+
     this.currentOrgSubscription = this.currentOrg.currentOrg$.subscribe(
       org => {
         if (org) {
           this.loading.hideLoading();
           this.editOrgForm = this.formBuilder.group(
             {
-              title: [org.title],
-              access_code: [org.access_code],
-              privacy_policy_text: [org.privacy_policy_text],
+              title: [org.title || ''],
+              access_code: [org.access_code || ''],
             }
           );
         }
@@ -54,15 +68,21 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
+    this.loading.showLoading();
     if (this.editOrgForm.dirty && !this.editOrgForm.valid) {
       return;
     }
     const data = {...this.editOrgForm.value, id: this.currentOrg.currentOrg$.getValue()?.id}
-    this.organizations.update(data).subscribe(updatedOrg => this.currentOrg.currentOrg$.next(updatedOrg));
+    this.organizations.update(data).subscribe(updatedOrg => {
+      this.currentOrg.currentOrg$.next(updatedOrg)
+      this.loading.hideLoading();
+    });
   }
 
   ngOnDestroy(): void {
     this.currentOrgSubscription.unsubscribe();
+    this.colorsSubscription.unsubscribe();
+    this.theme.resetTheme()
   }
 
 

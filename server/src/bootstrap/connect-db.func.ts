@@ -16,6 +16,8 @@ import {Op} from 'sequelize';
 import {SingleSignOnRequest} from '../models/single-sign-on-request.model';
 import { DirectDebitMandate } from '../models/direct-debit-mandate.model';
 import { EventLog } from '../models/event-log.model';
+import {Form} from '../models/form.model';
+import {FormInstance} from '../models/form-instance.model';
 
 
 export function connectToDatabase(): void {
@@ -30,7 +32,7 @@ export function connectToDatabase(): void {
             models: [User, Organization, EventRegistration,
                 Membership, News, Poll, PollAnswer, PollVote,
                 RoleAssignment, Role, Team, Event, SingleSignOnRequest,
-                DirectDebitMandate, EventLog]
+                DirectDebitMandate, EventLog, Form, FormInstance]
         });
         Vars.db = sequelize;
         Vars.op = Op;

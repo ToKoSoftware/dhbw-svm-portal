@@ -9,6 +9,8 @@ import {setEmptyInputToNull} from '../../functions/input-cleaners.func';
 import { Subscription } from 'rxjs';
 import { TeamService } from 'src/app/services/data/teams/team.service';
 import { Router } from '@angular/router';
+import {ClipboardService} from 'ngx-clipboard';
+import {CurrentOrgService} from '../../services/current-org/current-org.service';
 
 @Component({
   selector: 'app-edit-event',
@@ -22,6 +24,8 @@ export class EditEventComponent implements OnInit, OnChanges {
   @Input() editId: string = '';
 
   constructor(
+    public readonly currentOrg: CurrentOrgService,
+    private readonly clipboardService: ClipboardService,
     public readonly events: EventsService,
     public readonly teams: TeamService,
     private readonly formBuilder: FormBuilder,
@@ -33,6 +37,10 @@ export class EditEventComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.loadData();
+  }
+
+  get hostname(): string {
+    return window.location.origin;
   }
 
   public loadData() {
@@ -101,6 +109,14 @@ export class EditEventComponent implements OnInit, OnChanges {
         this.notificationService.savingFailed(error.error.data.error);
       }
     );
+  }
+
+  public copyPublicUrl(): void {
+    this.clipboardService.copy(`${this.hostname}/guest/${this.currentOrg.currentOrg$.value?.id}/events/${this.current.id}/join`);
+  }
+
+  public copyListUrl(): void {
+    this.clipboardService.copy(`${this.hostname}/guest/${this.currentOrg.currentOrg$.value?.id}/events/`);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

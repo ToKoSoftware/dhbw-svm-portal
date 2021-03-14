@@ -95,7 +95,7 @@ function mapReturnedFiles(files: FileInfo[]): Document[] {
 async function getFTPClientForOrg(): Promise<Client> {
     const client = new Client();
     const ftpConfig = await loadOrgSetting<FTPClientConfiguration>('ftp');
-    if (!ftpConfig) {
+    if (!ftpConfig || ftpConfig.data.host === 'example.com') {
         throw 'Not configured';
     }
 
