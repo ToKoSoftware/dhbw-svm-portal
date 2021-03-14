@@ -18,8 +18,8 @@
                     </div>
                   </div>
                 </div>
-                {{item.price/100}}€
                 <div class="mt-4 flex-shrink-0 sm:mt-0">
+                  {{roundToTwoDigits(item.price/100)}}€
                   <app-button icon="trash" label="Löschen" type="link-danger" (click)="delete($event, item)"></app-button>
                 </div>
               </div>

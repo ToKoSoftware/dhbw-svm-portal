@@ -1,0 +1,35 @@
+<app-scroll>
+    <app-container center="true">
+        <app-titled-content
+        label="Shop"
+        description="Hier sehen sie alle Aritkel, die aktuell bestellt werden können.">
+      <div class="overflow-hidden pt-3 cursor-pointer md:-ml-2">
+        <ul class="divide-y divide-gray-200">
+          <li *ngFor="let item of items.data$ | async">
+            <div (click)="order(item)" class="block hover:bg-gray-50 dark:hover:bg-gray-700">
+              <div class="px-4 py-4 flex items-center sm:px-6">
+                <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
+                  <div>
+                    <div class="flex font-medium text-black dark:text-white truncate">
+                      <p>{{item.title}}</p>
+                    </div>
+                    <div class="mt-2 flex">
+                      <div class="flex items-center text-sm text-gray-500">
+                        <p>
+                          {{item.description}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-4 flex-shrink-0 sm:mt-0">
+                    {{roundToTwoDigits(item.price/100)}}€
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      </app-titled-content>
+    </app-container>
+</app-scroll>

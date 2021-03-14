@@ -2,12 +2,14 @@ import { Request, Response } from 'express';
 import { wrapResponse } from '../../../functions/response-wrapper';
 import { RawItemData } from '../../../interfaces/item.interface';
 import { Item } from '../../../models/item.model';
+import { Vars } from '../../../vars';
 
 export async function createItem(req: Request, res: Response): Promise<Response> {
     let success = true;
     const incomingData: RawItemData = req.body;
+    
 
-    const item: Item | null = await Item.create(incomingData)
+    const item: Item | null = await Item.create({...incomingData, org_id: Vars.currentOrganization.id})
         .catch(() => {
             success = false;
             return null;

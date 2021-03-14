@@ -62,4 +62,8 @@ export class ShopComponent implements OnInit, OnDestroy {
     );
   }
 
+  public roundToTwoDigits(n: number): string {
+    return (Math.round(n * 100) / 100).toFixed(2).toString().replace('.', ',');
+  }
+
 }
