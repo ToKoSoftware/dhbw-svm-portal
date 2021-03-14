@@ -75,6 +75,14 @@ import {getForm, getForms} from './api/v2/forms/get-form';
 import {createForm} from './api/v2/forms/create-form';
 import {deleteForm} from './api/v2/forms/delete-form';
 import {updateForm} from './api/v2/forms/update-form';
+import { getOrder, getOrders } from './api/v2/orders/get-orders';
+import { createOrder } from './api/v2/orders/create-order';
+import { deleteOrder } from './api/v2/orders/delete-order';
+import { updateOrder } from './api/v2/orders/update-order';
+import { createItem } from './api/v2/items/create-item';
+import { deleteItem } from './api/v2/items/delete-item';
+import { updateItem } from './api/v2/items/update-item';
+import { getItem, getItems } from './api/v2/items/get-items';
 
 
 export default function startServer(): void {
@@ -248,6 +256,23 @@ export default function startServer(): void {
     app.delete('/api/v2/forms/:id', userIsAuthorized, userIsAdmin, deleteForm);
     app.put('/api/v2/forms/:id', userIsAuthorized, userIsAdmin, updateForm);
 
+    /**
+     * Orders
+     */
+    app.get('/api/v2/orders', userIsAuthorized, getOrders);
+    app.get('/api/v2/orders/:id', userIsAuthorized, getOrder);
+    app.post('/api/v2/orders', userIsAuthorized, createOrder);
+    app.delete('/api/v2/orders/:id', userIsAuthorized, deleteOrder);
+    app.put('/api/v2/orders/:id', userIsAuthorized, userIsAdmin, updateOrder);
+
+    /**
+     * Items
+     */
+    app.get('/api/v2/items', userIsAuthorized, getItems);
+    app.get('/api/v2/items/:id', userIsAuthorized, getItem);
+    app.post('/api/v2/items', userIsAuthorized, userIsAdmin, createItem);
+    app.delete('/api/v2/items/:id', userIsAuthorized, userIsAdmin, deleteItem);
+    app.put('/api/v2/items/:id', userIsAuthorized, userIsAdmin, updateItem);
 
     // handle every other route with index.html, which loads Angular
     app.get('*', function (request, response) {

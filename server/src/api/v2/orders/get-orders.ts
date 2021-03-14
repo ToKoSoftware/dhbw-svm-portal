@@ -7,13 +7,30 @@ import { Vars } from '../../../vars';
 export async function getOrder(req: Request, res: Response): Promise<Response> {
     let success = true;
 
+    const users: User[] = await User.findAll(
+        {
+            where: {
+                org_id: Vars.currentUser.org_id
+            }
+        })
+        .catch(() => {
+            success = false;
+            return [];
+        });
+    const userIds = users.map(el => el.id);
+
     const orderData: Order | null = await Order
         .scope(
             Vars.currentUserIsAdmin
                 ? ['full', 'ordered']
                 : [{ method: ['onlyOwnOrder', Vars.currentUser.id] }, 'ordered']
         )
-        .findByPk(req.params.id)
+        .findOne({
+            where: {
+                id: req.params.id,
+                user_id: userIds
+            }
+        })
         .catch(() => {
             success = false;
             return null;
