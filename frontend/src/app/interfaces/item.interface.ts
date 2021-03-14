@@ -1,5 +1,5 @@
 export interface ItemDataSnapshot{
-    id?: string;
+    id: string;
     title: string;
     description: string;
     price: number;

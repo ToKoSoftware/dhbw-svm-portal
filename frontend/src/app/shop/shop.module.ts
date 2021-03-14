@@ -4,6 +4,7 @@ import { OverviewComponent } from './overview/overview.component';
 import { UiModule } from '../ui/ui.module';
 import { shopRoutes } from './shop.routes';
 import { RouterModule } from '@angular/router';
+import { MarkdownToHtmlModule } from 'markdown-to-html-pipe';
 
 
 
@@ -12,7 +13,8 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     UiModule,
-    shopRoutes
+    shopRoutes,
+    MarkdownToHtmlModule
   ],
   exports: [RouterModule],
 })

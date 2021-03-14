@@ -6,19 +6,13 @@
       <div class="overflow-hidden pt-3 cursor-pointer md:-ml-2">
         <ul class="divide-y divide-gray-200">
           <li *ngFor="let item of items.data$ | async">
-            <div (click)="order(item)" class="block hover:bg-gray-50 dark:hover:bg-gray-700">
+            <div (click)="current = item; slideOver.showSlideOver('Details - ' + item.title, details)" 
+            class="block hover:bg-gray-50 dark:hover:bg-gray-700">
               <div class="px-4 py-4 flex items-center sm:px-6">
                 <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
                   <div>
                     <div class="flex font-medium text-black dark:text-white truncate">
                       <p>{{item.title}}</p>
-                    </div>
-                    <div class="mt-2 flex">
-                      <div class="flex items-center text-sm text-gray-500">
-                        <p>
-                          {{item.description}}
-                        </p>
-                      </div>
                     </div>
                   </div>
                   <div class="mt-4 flex-shrink-0 sm:mt-0">
@@ -33,3 +27,15 @@
       </app-titled-content>
     </app-container>
 </app-scroll>
+<ng-template #details>
+  <ng-container *ngIf="current != null">
+    <h1 class="text-3xl mb-3">{{current.title}}</h1>
+    <div class="prose prose-sm dark:text-white flex font-medium text-black truncate text-gray-600 mb-3 justify-between">
+      {{roundToTwoDigits(current.price/100)}}€ 
+      <app-button label="Bestellen" (click)="order(current)"></app-button>
+    </div>
+    <div class="prose prose-sm dark:text-white flex-shrink mt-10 divide-y divide-gray-200">
+      <div [innerHTML]="current.description | MarkdownToHtml"></div>
+    </div>
+  </ng-container>
+</ng-template>

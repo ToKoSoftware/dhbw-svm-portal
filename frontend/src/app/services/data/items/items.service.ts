@@ -49,4 +49,12 @@ export class ItemsService extends DataService<ItemData> implements DataServiceFu
       }));
   }
 
+  order(id: string) {
+    return this.api.post<ItemData>(`/items/`+id+'/order')
+      .pipe(map(res => {
+        this.reloadData();
+        return res.data;
+      }));
+  }
+
 }
