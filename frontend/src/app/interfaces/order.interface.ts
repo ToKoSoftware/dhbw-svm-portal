@@ -1,3 +1,6 @@
+import { ItemData } from "./item.interface";
+import { UserData } from "./user.interface";
+
 export interface OrderDataSnapshot{
     id?: string;
     amount: number;
