@@ -7,7 +7,6 @@ import {NotificationService} from '../../services/notification/notification.serv
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {EventRegistrationService} from '../../services/data/event-registration/event-registration.service';
 import {LoadingModalService} from '../../services/loading-modal/loading-modal.service';
-import {CurrentOrgService} from '../../services/current-org/current-org.service';
 import {LoginService} from '../../services/login/login.service';
 
 @Component({
@@ -69,7 +68,7 @@ export class JoinComponent implements OnInit, OnDestroy {
         this.router.navigate(['/join']);
       }, error => {
         this.loading.hideLoading();
-        this.notifications.savingFailed();
+        this.notifications.savingFailed(error.error.data.error);
       }
     );
   }

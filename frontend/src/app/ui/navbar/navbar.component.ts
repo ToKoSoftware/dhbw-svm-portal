@@ -1,10 +1,9 @@
-import {Component, ElementRef, HostBinding, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Router} from '@angular/router';
+import {Component, HostBinding, OnDestroy, OnInit} from '@angular/core';
 import {LoginService} from '../../services/login/login.service';
 import {SidebarPageGroup} from '../sidebar/sidebar.component';
 import {CurrentOrgService} from '../../services/current-org/current-org.service';
-import {TeamData} from '../../interfaces/team.interface';
 import {Subscription} from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-navbar',
@@ -15,10 +14,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public sidebarPageGroups: SidebarPageGroup[] = [];
   private currentOrgSubscription: Subscription = new Subscription();
   private isAdminSubscription: Subscription = new Subscription();
+  public environment = environment;
 
   constructor(
     public readonly login: LoginService,
-    private readonly currentOrg: CurrentOrgService) {
+    public readonly currentOrg: CurrentOrgService) {
   }
 
   ngOnInit(): void {
@@ -48,7 +48,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
               icon: 'pie-chart',
               title: 'Umfragen',
               url: '/polls'
-            }]
+            }, {
+              icon: 'shopping-bag',
+              title: 'Shop',
+              url: '/shop'
+            }/*, {
+              icon: 'file-text',
+              title: 'Formulare',
+              url: '/forms'
+            }*/]
           }];
           if (teams?.length) {
             this.sidebarPageGroups.push({

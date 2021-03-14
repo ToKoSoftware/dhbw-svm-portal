@@ -4,6 +4,7 @@ import {LoadingModalService} from '../../services/loading-modal/loading-modal.se
 import {NotificationService} from '../../services/notification/notification.service';
 import {RoleData} from '../../interfaces/role.interface';
 import {RolesService} from '../../services/data/roles/roles.service';
+import {SlideOverService} from '../../services/slide-over/slide-over.service';
 
 @Component({
   selector: 'app-create-role',
@@ -16,10 +17,10 @@ export class CreateRoleComponent implements OnInit {
 
   constructor(
     public readonly roles: RolesService,
-    private formBuilder: FormBuilder,
-    private loadingModalService: LoadingModalService,
-
-    private notificationService: NotificationService) {
+    private readonly formBuilder: FormBuilder,
+    private readonly loadingModalService: LoadingModalService,
+    private readonly slideOver: SlideOverService,
+    private readonly notificationService: NotificationService) {
   }
 
   ngOnInit(): void {
@@ -57,6 +58,7 @@ export class CreateRoleComponent implements OnInit {
     this.roles.create({...this.formGroup.value}).subscribe(
       data => {
         this.current = data;
+        this.slideOver.close();
         this.notificationService.savedSuccessfully();
       },
       error => {

@@ -23,6 +23,10 @@ const routes: Routes = [
     loadChildren: () => import('./join/join.module').then(m => m.JoinModule)
   },
   {
+    path: 'guest',
+    loadChildren: () => import('./guest/guest.module').then(m => m.GuestModule)
+  },
+  {
     path: 'events',
     canActivate: [IsLoggedInGuard],
     canActivateChild: [IsLoggedInGuard],
@@ -35,6 +39,12 @@ const routes: Routes = [
   {
     path: 'sso',
     loadChildren: () => import('./sso/sso.module').then(m => m.SsoModule)
+  },
+  {
+    path: 'about',
+    canActivate: [IsLoggedInGuard],
+    canActivateChild: [IsLoggedInGuard],
+    loadChildren: () => import('./about/about.module').then(m => m.AboutModule)
   },
   {
     path: 'polls',

@@ -32,7 +32,28 @@ export async function loadOrgSetting<T>(key: string): Promise<SingleConfiguratio
         : null;
 }
 
-export type OrganizationConfiguration = { [key: string]: SingleConfiguration<unknown> }
+export async function loadOrgSettingsForPermission(permission: ConfigProtectionType): Promise<OrganizationConfiguration | null> {
+    const currentOrg: Organization | null = await Organization.scope('full').findByPk(Vars.currentOrganization.id)
+        .then(org => org)
+        .catch(() => null);
+    if (!currentOrg) {
+        return null;
+    }
+    const configData: unknown | null = currentOrg?.config as unknown || null;
+    if (!configData && typeof configData !== 'object' && !Array.isArray(configData)) {
+        return null;
+    }
+    const configKeys: Array<keyof OrganizationConfiguration> = Object.keys(configData as OrganizationConfiguration);
+    const assertedConfig: OrganizationConfiguration = configData as OrganizationConfiguration;
+    configKeys.forEach(key => {
+        if (!assertedConfig[key].protection.includes(permission)) {
+            return delete assertedConfig[key];
+        }
+    });
+    return assertedConfig;
+}
+
+export type OrganizationConfiguration = { [key in availableConfigurationKey | string]: SingleConfiguration<unknown> }
 
 export interface SingleConfiguration<T> {
     data: T;
@@ -40,3 +61,4 @@ export interface SingleConfiguration<T> {
 }
 
 export type ConfigProtectionType = 'system' | 'admin' | 'login' | 'public';
+export type availableConfigurationKey = 'oauth2' | 'ftp' | 'colors';

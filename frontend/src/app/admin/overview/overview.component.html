@@ -1,11 +1,9 @@
-<app-layout
-  [sidebarPages]="sidebarPages"
-  heading="Übersicht"
->
+<app-layout [sidebarPages]="sidebarPages">
   <app-container>
     <form [formGroup]="editOrgForm" (ngSubmit)="save()">
       <app-titled-content
-        label="Allgemeine Einstellungen">
+        label="Allgemeine Einstellungen"
+        description="Hier finden Sie Einstellungen, welche Ihren Verein betreffen.">
         <app-input
           required="true"
           type="text"

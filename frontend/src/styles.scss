@@ -6,3 +6,70 @@
 router-outlet + * {
   width: 100%;
 }
+
+:root {
+  --accent-color: #18c05c;
+  --title-bar-background-color: #fff;
+  --title-bar-border-color: #18c05c;
+  --title-bar-text-color: #18c05c;
+  --sidebar-text-color: #18c05c;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --title-bar-background-color: #000;
+  }
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose strong,
+  .prose p,
+  .prose *,
+  .editor-toolbar a.fa {
+    color: #fff !important;
+  }
+
+  .editor-toolbar a.active, .editor-toolbar a:hover{
+    background-color: #000 !important;
+  }
+
+}
+
+.text-accent {
+  color: var(--accent-color);
+}
+
+.text-accent-hover:hover {
+  color: var(--accent-color);
+}
+
+.bg-accent {
+  background-color: var(--accent-color);
+}
+
+.bg-accent-hover:hover {
+  opacity: 0.8;
+}
+
+.bg-theme-title-bar {
+  --tw-bg-opacity: 1;
+  background-color: var(--title-bar-background-color);
+}
+
+.border-theme-title-bar {
+  border-color: var(--title-bar-border-color);
+}
+
+.text-theme-title-bar-text-color {
+  color: var(--title-bar-text-color);
+}
+
+.text-theme-sidebar-text-color {
+  color: var(--sidebar-text-color);
+}
+
+.text-theme-sidebar-text-color-hover:hover {
+  color: var(--sidebar-text-color);
+}
