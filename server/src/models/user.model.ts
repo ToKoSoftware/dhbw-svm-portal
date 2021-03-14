@@ -17,6 +17,8 @@ import { Role } from './role.model';
 import { RoleAssignment } from './role-assignment.model';
 import { SingleSignOnRequest } from './single-sign-on-request.model';
 import { DirectDebitMandate } from './direct-debit-mandate.model';
+import { Item } from './item.model';
+import { Order } from './order.model';
 
 @DefaultScope(() => ({
     required: false,
@@ -36,14 +38,14 @@ import { DirectDebitMandate } from './direct-debit-mandate.model';
         include: [ Organization, { model: Event, as: 'registered_events' }, {
             model: Event,
             as: 'created_events'
-        }, PollAnswer, Team, Role, News, Poll ]
+        }, PollAnswer, Team, Role, News, Poll, Item ]
     },
     verification: {
         required: false,
         include: [ Organization, { model: Event, as: 'registered_events' }, {
             model: Event,
             as: 'created_events'
-        }, PollAnswer, Team, Role, News, Poll ]
+        }, PollAnswer, Team, Role, News, Poll, Item ]
     },
     active: {
         required: false,
@@ -135,6 +137,8 @@ export class User extends Model {
     teams: Array<Team & { membership: Membership }>;
     @BelongsToMany(() => Role, () => RoleAssignment)
     assigned_roles: Array<Role & { role_assignment: RoleAssignment }>;
+    @BelongsToMany(() => Item, () => Order)
+    bought_items: Array<Item & { order: Order }>;
 
     @HasMany(() => Event)
     created_events: Event[];

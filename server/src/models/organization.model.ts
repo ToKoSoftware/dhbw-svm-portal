@@ -20,6 +20,7 @@ import { User } from './user.model';
 import { v4 as uuidv4 } from 'uuid';
 import { DirectDebitMandate } from './direct-debit-mandate.model';
 import { LoggedModel } from './logged.model';
+import { Item } from './item.model';
 
 @DefaultScope(() => ({
     required: false,
@@ -33,7 +34,7 @@ import { LoggedModel } from './logged.model';
 @Scopes(() => ({
     full: {
         include: [ { model: Role, as: 'admin_role' }, { model: Role, as: 'roles' },
-            User, { model: Team, as: 'public_team' }, { model: Team, as: 'teams' }, News, Poll, Event ]
+            User, { model: Team, as: 'public_team' }, { model: Team, as: 'teams' }, News, Poll, Event, Item ]
     },
     active: {
         required: false,
@@ -106,6 +107,8 @@ export class Organization extends LoggedModel {
     teams: Team[];
     @HasMany(() => DirectDebitMandate)
     direct_debit_mandates: DirectDebitMandate[];
+    @HasMany(() => Item)
+    items: Item[];
 
     @BeforeCreate
     static addUuid(instance: Organization): string {
