@@ -19,6 +19,7 @@ import {ShopComponent} from './shop/shop.component';
 import {InventoryComponent} from './inventory/inventory.component';
 import {EventRegistrationsComponent} from './events/event-registrations/event-registrations.component';
 import {TrainingComponent} from './training/training.component';
+import {OrdersComponent} from './orders/orders.component';
 
 export const adminRoutes = RouterModule.forChild([
   {path: '', pathMatch: 'full', component: OverviewComponent},
@@ -37,6 +38,8 @@ export const adminRoutes = RouterModule.forChild([
   {path: 'forms/:id', component: FormsComponent},
   {path: 'shop', component: ShopComponent},
   {path: 'shop/:id', component: ShopComponent},
+  {path: 'orders', component: OrdersComponent},
+  {path: 'orders/:id', component: OrdersComponent},
   {path: 'inventory', component: InventoryComponent},
   {path: 'inventory/:id', component: InventoryComponent},
   {path: 'training', component: TrainingComponent},

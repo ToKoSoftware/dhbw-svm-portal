@@ -1,10 +1,8 @@
 import { Table, PrimaryKey, Column, IsInt, ForeignKey, BeforeCreate, BelongsTo, Scopes, DefaultScope } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { RawOrderData } from '../interfaces/order.interface';
-import { currentOrg } from './current-org.scope';
 import { Item } from './item.model';
 import { LoggedModel } from './logged.model';
-import { Organization } from './organization.model';
 import { User } from './user.model';
 
 @DefaultScope(() => ({
@@ -15,7 +13,7 @@ import { User } from './user.model';
 @Scopes(() => ({
     full: {
         required: false,
-        include: [Organization, User, Item]
+        include: [User, Item]
     },
     ordered: {
         required: false,

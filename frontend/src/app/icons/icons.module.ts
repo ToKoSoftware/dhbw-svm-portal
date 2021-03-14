@@ -8,7 +8,7 @@ import {
   LogIn, UserPlus, Tool, Activity, Folder, FileText,
   Calendar, UserCheck, Info, Lock, Edit, EyeOff, List,
   X, PieChart, Plus, ChevronRight, ChevronLeft, Minus,
-  Check, Code, Shuffle, Copy, CreditCard, Shield, ShoppingBag
+  Check, Code, Shuffle, Copy, CreditCard, Shield, ShoppingBag, ShoppingCart
 } from 'angular-feather/icons';
 import {CommonModule} from '@angular/common';
 
@@ -20,7 +20,7 @@ const icons = {
   LogIn, UserPlus, Tool, Activity, Folder, FileText,
   Calendar, UserCheck, Info, Lock, Edit, EyeOff, List,
   X, PieChart, Plus, ChevronRight, ChevronLeft, Minus,
-  Check, Code, Shuffle, Copy, CreditCard, Shield, ShoppingBag
+  Check, Code, Shuffle, Copy, CreditCard, Shield, ShoppingBag, ShoppingCart
 };
 
 @NgModule({
