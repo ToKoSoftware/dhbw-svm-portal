@@ -4,6 +4,7 @@ import { SlideOverService } from '../../services/slide-over/slide-over.service';
 import { ItemsService } from '../../services/data/items/items.service';
 import { LoadingModalService } from 'src/app/services/loading-modal/loading-modal.service';
 import { ConfirmModalService } from 'src/app/services/confirm-modal/confirm-modal.service';
+import { NotificationService } from 'src/app/services/notification/notification.service';
 
 @Component({
   selector: 'app-overview',
@@ -15,8 +16,8 @@ export class OverviewComponent implements OnInit {
 
   constructor(public readonly items: ItemsService,
     public readonly slideOver: SlideOverService,
-    private readonly loading: LoadingModalService,
-    private readonly confirm: ConfirmModalService
+    private readonly confirm: ConfirmModalService,
+    private readonly notification: NotificationService
     ) { }
 
   ngOnInit(): void {
@@ -36,13 +37,9 @@ export class OverviewComponent implements OnInit {
     if (!confirm){
       return;
     }
-    this.items.order(item.id).subscribe(
-      () => this.loading.hideLoading(),
-      () => {
-        this.loading.hideLoading();
-      }
-    );
+    this.items.order(item.id).subscribe();
     this.slideOver.close();
+    this.notification.savedSuccessfully();
   }
 
 }
