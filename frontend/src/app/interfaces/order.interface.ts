@@ -7,6 +7,6 @@ export interface OrderDataSnapshot{
 }
 
 export interface OrderData extends OrderDataSnapshot{
-    user: unknown;
-    item: unknown;
+    user: UserData;
+    item: ItemData;
 }

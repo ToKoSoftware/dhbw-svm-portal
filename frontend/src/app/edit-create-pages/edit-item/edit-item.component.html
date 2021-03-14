@@ -1,24 +1,24 @@
 <app-container>
     <app-titled-content
-      label="Artikel anlegen">
+      label="Artikel bearbeiten">
       <form (ngSubmit)="update()" [formGroup]="formGroup">
         <app-input
           required="true"
           formControlName="title"
           description="Name des Artikels"
-          placeholder="Startpass 2020"
+          placeholder="Startpass"
           label="Titel">
         </app-input>
         <app-markdown-input
           label="Beschreibung"
           placeholder=""
           [formControl]="formGroup.controls['description']"
-          description="Beschreiben Sie hier den Artikel.">
+          description="Geben Sie hier eine Artikelbeschreibung ein.">
         </app-markdown-input>
         <app-input
           required="true"
           formControlName="price"
-          description="Preis des Artikels"
+          description="Preis"
           placeholder="19,95"
           label="Preis">
         </app-input>

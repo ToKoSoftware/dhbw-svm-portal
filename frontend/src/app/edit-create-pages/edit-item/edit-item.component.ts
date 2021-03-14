@@ -16,9 +16,9 @@ export class EditItemComponent implements OnInit, OnChanges {
 
   constructor(
     public readonly items: ItemsService,
-    private formBuilder: FormBuilder,
-    private loadingModalService: LoadingModalService,
-    private notificationService: NotificationService) {
+    private readonly formBuilder: FormBuilder,
+    private readonly loadingModalService: LoadingModalService,
+    private readonly notificationService: NotificationService) {
   }
 
   ngOnInit(): void {

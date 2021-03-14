@@ -16,10 +16,10 @@ export class CreateItemComponent implements OnInit {
 
   constructor(
     public readonly items: ItemsService,
-    private formBuilder: FormBuilder,
-    private slideOverService: SlideOverService,
-    private loadingModalService: LoadingModalService,
-    private notificationService: NotificationService) {
+    private readonly formBuilder: FormBuilder,
+    private readonly slideOverService: SlideOverService,
+    private readonly loadingModalService: LoadingModalService,
+    private readonly notificationService: NotificationService) {
   }
 
   ngOnInit(): void {
