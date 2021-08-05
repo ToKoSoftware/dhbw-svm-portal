@@ -1,8 +1,17 @@
 # Website project DHBW Heidenheim
 ![](https://github.com/ToKoSoftware/dhbw-svm-portal/workflows/CI/badge.svg)
 
+This repository contains the code for a online collaboration tool for sport's teams with many useful functions like news, event management, polls, filesharing, roles, a simple online shop for merchandise, single sign on, and many more. See the attached screenshots below for more information.
 
-This is a university assignment project for the course of Database application development (WWI2019A).
+This is a university assignment project for the course of database application development (WWI2019A). 
+
+Customize the site's theme             |  Edit users
+:-------------------------:|:-------------------------:
+![](https://raw.githubusercontent.com/ToKoSoftware/dhbw-svm-portal/main/screenshots/Screenshot4.png)  |  ![](https://raw.githubusercontent.com/ToKoSoftware/dhbw-svm-portal/main/screenshots/Screenshot2.png)
+Add polls, events, documents, ...             |  Configure roles
+![](https://raw.githubusercontent.com/ToKoSoftware/dhbw-svm-portal/main/screenshots/Screenshot3.png)  |  ![](https://raw.githubusercontent.com/ToKoSoftware/dhbw-svm-portal/main/screenshots/Screenshot1.png)
+
+
 
 
 ## Installation - Docker
